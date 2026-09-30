@@ -1,6 +1,6 @@
 # Project test profile
 
-Status: Pending candidate architecture
+Status: Proposed candidate architecture
 
 ## Purpose
 
@@ -21,30 +21,32 @@ an exact, copy-pasteable command and its expected result.
 
 ### Build
 
-Command: Pending candidate architecture
+Command: `swift build`
 
-Expected result: Pending candidate architecture
+Expected result: The `MeetingCore` library and `meeting-summarizer` executable
+compile successfully without fetching or calling a network service.
 
 ### Smoke tests
 
-Command: Pending candidate architecture
+Command: `swift run meeting-summarizer --help`
 
-Expected result: The application or prototype builds and starts its local
-critical path without network access.
+Expected result: The CLI prints its local-only import usage and exits without
+reading a meeting recording or contacting a network service.
 
 ### Unit tests
 
-Command: Pending candidate architecture
+Command: `swift test`
 
 Expected result: Core logic tests pass without audio, video, transcript, or
 metadata from real meetings.
 
 ### Integration tests
 
-Command: Pending candidate architecture
+Command: `swift test --filter MeetingIntegrationTests`
 
-Expected result: Synthetic local fixtures validate the prototype's selected
-end-to-end paths without network access.
+Expected result: Synthetic local fixtures validate import, source references,
+speaker correction persistence, minutes/action traceability, and the local
+UI/CLI handoff without network access.
 
 ## Local-only test-data policy
 
@@ -55,10 +57,11 @@ logs.
 
 ## Operational validation
 
-PBI-011/PBI-012 must define and perform the applicable manual checks for macOS
-permissions, recording import, live capture, local-model execution, and UI/CLI
-event cooperation. PBI-009 must also state how iOS portability will be checked
-without requiring an iOS implementation in Sprint 2.
+PBI-011/PBI-012 must define and perform the applicable manual checks for local
+recording import, local-model execution, and UI/CLI event cooperation. Live
+capture is deferred. iOS portability is checked by building and testing
+`MeetingCore` without macOS-only imports; it does not require an iOS app in
+Sprint 2.
 
 ## Acceptance gate
 
