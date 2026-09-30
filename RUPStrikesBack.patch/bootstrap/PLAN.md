@@ -44,15 +44,14 @@ Mode: managed
 Test: smoke, unit, integration
 Regression: smoke, unit, integration
 
-This is a provisional Elaboration iteration. It builds an executable
-architectural prototype, validates the highest-risk technical assumptions and
-use cases, refines requirements from the evidence, stabilizes the architecture
-baseline, assesses the Lifecycle Architecture milestone, and creates the
-Construction plan. Sprint 0 and Sprint 1 may retain, refine, split, reorder,
-or replace it. Before prototype construction, the iteration setup/design
-refines the prototype PBI into independently reviewable `PBI-XX.YY` sub-PBIs
-using the accepted candidate architecture; it must not invent those work items
-during Inception.
+This provisional Elaboration iteration uses an executable architectural
+prototype to validate the highest-risk technical assumptions and use cases,
+refine requirements, stabilize the architecture baseline, assess the
+Lifecycle Architecture milestone, and create the Construction plan. Sprint 0
+and Sprint 1 may retain, refine, split, reorder, or replace it; before
+prototype construction, iteration setup/design refines the prototype PBI into
+independently reviewable `PBI-XX.YY` sub-PBIs from the accepted candidate
+architecture without inventing work during Inception.
 
 Backlog Items:
 

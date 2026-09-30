@@ -15,9 +15,14 @@ This is a reusable lifecycle outline. A project creates its own roadmap from its
 
 ## Elaboration
 
-1. Validate the candidate architecture and resolve significant risks.
-2. Refine requirements, design, and the release plan from validation evidence.
-3. Establish the executable architecture baseline.
+1. When a prototype PBI spans independently reviewable work, refine it during
+   iteration setup/design from the accepted candidate architecture.
+2. Build an executable architectural prototype and validate significant
+   technical assumptions and representative use cases.
+3. Refine requirements, design, and the release plan from validation evidence,
+   then establish the executable architecture baseline.
+4. Assess the Lifecycle Architecture milestone and create or revise the
+   Construction plan from the evidence.
 
 ## Construction
 

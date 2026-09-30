@@ -12,7 +12,7 @@ From the project root, ask Codex to read and execute
 ```md
 bootstrap
 
-@RUPStrikesBack.patch/bootstrap/boot/BOOTSTRAP_PROMPT.md
+@RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md
 
 Read and execute this bootstrap prompt.
 ```
