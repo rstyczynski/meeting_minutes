@@ -41,3 +41,21 @@ Test: Review confirms that the candidate architecture addresses essential requir
 Review the vision, requirements, backlog, MVP scope, risks, and candidate architecture as one coherent Inception baseline.
 
 Test: Review confirms that the baseline is internally consistent and ready for Elaboration.
+
+### PBI-008. Validate the candidate architecture
+
+Test the highest-risk architectural assumptions through focused experiments and record the evidence needed to accept, change, or reject each assumption.
+
+Test: Review confirms that significant architectural risks have evidence-backed decisions.
+
+### PBI-009. Establish the executable architecture baseline
+
+Create a minimal executable or otherwise verifiable baseline that demonstrates the selected architecture can support the MVP.
+
+Test: Review confirms that the baseline demonstrates the essential architectural decisions and their acceptance signals.
+
+### PBI-010. Refine the delivery plan from validation evidence
+
+Update the roadmap, Product Backlog, MVP scope, risks, and next sprint proposal from architecture-validation evidence.
+
+Test: Review confirms that the delivery plan reflects accepted architecture decisions and unresolved risks.

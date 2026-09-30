@@ -26,3 +26,16 @@ Backlog Items:
 * PBI-005. Identify constraints and risks
 * PBI-006. Establish the candidate architecture
 * PBI-007. Review the Inception baseline
+
+## Sprint 2 - Architecture validation
+
+Status: Planned
+Mode: managed
+Test: none
+Regression: none
+
+Backlog Items:
+
+* PBI-008. Validate the candidate architecture
+* PBI-009. Establish the executable architecture baseline
+* PBI-010. Refine the delivery plan from validation evidence
