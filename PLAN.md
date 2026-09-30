@@ -1,13 +1,13 @@
 # Sprint Plan
 
-## Sprint 0 - Vision baseline
+## Sprint 0 - Vision and initial plan
 
-Status: Progress
+Status: Planned
 Mode: managed
 Test: none
 Regression: none
 
 Backlog Items:
 
-* PBI-001. Establish the Meeting Summarizer vision
-* PBI-010. Refine the project roadmap from the vision
+* PBI-001. Establish the product vision
+* PBI-002. Derive the initial project plan from the vision

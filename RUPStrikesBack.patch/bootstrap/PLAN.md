@@ -1,5 +1,13 @@
-# Generic Sprint Plan Template
+# Sprint Plan
 
-This template contains no project sprints. Create a project `PLAN.md` after establishing the first backlog items.
+## Sprint 0 - Vision and initial plan
 
-Each sprint selects one or more coherent backlog items, declares its status and execution mode, and states the applicable new-code and regression quality expectations.
+Status: Planned
+Mode: managed
+Test: none
+Regression: none
+
+Backlog Items:
+
+* PBI-001. Establish the product vision
+* PBI-002. Derive the initial project plan from the vision
