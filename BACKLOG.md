@@ -6,6 +6,12 @@ Create and agree a clear vision for a local-first macOS and iOS meeting summariz
 
 Test: Review confirms that the vision is internally consistent, understandable, and accepted by the Product Owner.
 
+### PBI-010. Refine the project roadmap from the vision
+
+Turn the generic RUP lifecycle roadmap into a project-specific roadmap after the vision is agreed. The roadmap must sequence the meaningful work for Meeting Summarizer and remain aligned with the vision, while retaining room for iterative refinement.
+
+Test: Review confirms that the roadmap is traceable to the agreed vision, has an appropriate sequence, and is accepted by the Product Owner.
+
 ### PBI-002. Define internal meeting use cases
 
 Define the representative internal meeting scenarios the product must support, including in-person recording, online meeting capture where permitted, shared-screen evidence, participant attribution, and real-time mention or subject alerts. The scenarios must identify the user goal, expected outcome, constraints, and evidence needed to judge the result.

@@ -1,4 +1,6 @@
-# Meeting Summarizer — Roadmap
+# Meeting Summarizer — Generic RUP Lifecycle Roadmap
+
+This is the initial generic lifecycle outline. Sprint 0 refines it into the project-specific roadmap derived from the agreed product vision.
 
 ## Lifecycle roadmap
 

@@ -10,6 +10,7 @@ Regression: none
 Backlog Items:
 
 * PBI-001. Establish the Meeting Summarizer vision
+* PBI-010. Refine the project roadmap from the vision
 
 ## Sprint 1 - Inception baseline
 
