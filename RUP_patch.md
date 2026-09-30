@@ -29,6 +29,12 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 Sprint 0 establishes the product vision and derives this project’s real roadmap, Product Backlog, and subsequent sprint plan from that vision. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
+## P0.3. Place project artifacts by lifecycle role
+
+The root `README.md` holds the accepted product vision and project orientation. `docs/` holds durable shared project deliverables created and accepted during sprints, such as requirements, architecture, decisions, and operating documentation.
+
+`progress/sprint_N/` holds the evidence and review artifacts for one sprint. `tmp/` holds provisional material retained only for reference; it is not a source of truth and must be recreated in `docs/` or another approved location when a sprint formally delivers it. `0.Generic/` remains the reusable bootstrap input described above.
+
 ## P1. Every sprint runs a complete agentic lifecycle
 
 Each RUP Strikes Back sprint runs the complete agentic cycle: contracting/inception, elaboration, construction, quality validation, and wrap-up. The cycle is a feedback loop, not a waterfall handoff.
