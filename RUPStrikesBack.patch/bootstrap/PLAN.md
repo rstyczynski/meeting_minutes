@@ -27,15 +27,17 @@ Backlog Items:
 * PBI-006. Establish the candidate architecture
 * PBI-007. Review the Inception baseline
 
-## Sprint 2 - Architecture validation
+## Sprint 2 - Elaboration 1: architecture-risk reduction
 
 Status: Planned
 Mode: managed
 Test: none
 Regression: none
 
+This is a provisional Elaboration iteration. It aims to gather the evidence required for the Lifecycle Architecture milestone; Sprint 0 and Sprint 1 may retain, refine, split, reorder, or replace it. Vision, requirements, design, implementation, and test are revisited as the risks require.
+
 Backlog Items:
 
-* PBI-008. Validate the candidate architecture
-* PBI-009. Establish the executable architecture baseline
-* PBI-010. Refine the delivery plan from validation evidence
+* PBI-008. Retire architecturally significant risks
+* PBI-009. Assess the Lifecycle Architecture milestone
+* PBI-010. Re-plan from iteration evidence

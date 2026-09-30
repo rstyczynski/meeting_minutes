@@ -42,20 +42,20 @@ Review the vision, requirements, backlog, MVP scope, risks, and candidate archit
 
 Test: Review confirms that the baseline is internally consistent and ready for Elaboration.
 
-### PBI-008. Validate the candidate architecture
+### PBI-008. Retire architecturally significant risks
 
-Test the highest-risk architectural assumptions through focused experiments and record the evidence needed to accept, change, or reject each assumption.
+Revisit the vision, requirements, risks, and candidate architecture while testing the highest-risk architectural assumptions. Record evidence that accepts, changes, or rejects each assumption.
 
-Test: Review confirms that significant architectural risks have evidence-backed decisions.
+Test: Review confirms that architecturally significant risks have evidence-backed decisions or explicit remaining validation work.
 
-### PBI-009. Establish the executable architecture baseline
+### PBI-009. Assess the Lifecycle Architecture milestone
 
-Create a minimal executable or otherwise verifiable baseline that demonstrates the selected architecture can support the MVP.
+Create or update the executable architecture baseline and determine whether it is stable enough to support Construction. If it is not, identify the remaining Elaboration objective rather than asserting the milestone prematurely.
 
-Test: Review confirms that the baseline demonstrates the essential architectural decisions and their acceptance signals.
+Test: Review confirms that the Lifecycle Architecture milestone is either met or has explicit evidence and objectives for another Elaboration iteration.
 
-### PBI-010. Refine the delivery plan from validation evidence
+### PBI-010. Re-plan from iteration evidence
 
-Update the roadmap, Product Backlog, MVP scope, risks, and next sprint proposal from architecture-validation evidence.
+Refine the vision, requirements, roadmap, Product Backlog, MVP scope, risks, and next iteration from the evidence gathered in this iteration.
 
-Test: Review confirms that the delivery plan reflects accepted architecture decisions and unresolved risks.
+Test: Review confirms that the proposed next iteration follows from accepted decisions, unresolved risks, and the lifecycle milestone assessment.

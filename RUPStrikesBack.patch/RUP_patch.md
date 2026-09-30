@@ -27,7 +27,7 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 `RUPStrikesBack.patch/bootstrap/` contains reusable RUP roadmap, backlog, and sprint-plan templates. These artifacts are inputs to Sprint 0 only; they are not product requirements, active backlog items, or active sprint definitions.
 
-At project initialization, copy the generic `README.md`, `BACKLOG.md`, and `PLAN.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic Sprint 1 is an initial proposal that Sprint 0 may retain, refine, split, or replace. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
+At project initialization, copy the generic `README.md`, `BACKLOG.md`, and `PLAN.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic later-sprint entries are initial hypotheses: Sprint 0 or subsequent iterations may retain, refine, split, reorder, or replace them. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
 ## P0.3. Place project artifacts by lifecycle role
 
@@ -37,7 +37,7 @@ The root `README.md` holds the accepted product vision and project orientation. 
 
 ## P1. Every sprint runs a complete agentic lifecycle
 
-Each RUP Strikes Back sprint runs the complete agentic cycle: contracting/inception, elaboration, construction, quality validation, and wrap-up. The cycle is a feedback loop, not a waterfall handoff.
+Each RUP Strikes Back sprint runs the complete agentic cycle: vision and contracting, elaboration and design, construction, quality validation, and transition/wrap-up. This inner cycle is a feedback loop, not a waterfall handoff; it does not itself advance the product from one project-level RUP phase to the next.
 
 The depth of each activity is proportional to the sprint’s purpose, risk, and the project’s current RUP lifecycle phase. An activity may be brief when prior work remains valid, but it must be consciously reviewed rather than silently skipped. Any activity that is not applicable must be recorded with its reason.
 
