@@ -27,7 +27,7 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 `RUPStrikesBack.patch/bootstrap/` contains reusable RUP roadmap, backlog, and sprint-plan templates. These artifacts are inputs to Sprint 0 only; they are not product requirements, active backlog items, or active sprint definitions.
 
-At project initialization, copy the generic `README.md`, `BACKLOG.md`, and `PLAN.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap, Product Backlog, and subsequent sprint plan from that vision. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
+At project initialization, copy the generic `README.md`, `BACKLOG.md`, and `PLAN.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic Sprint 1 is an initial proposal that Sprint 0 may retain, refine, split, or replace. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
 ## P0.3. Place project artifacts by lifecycle role
 
