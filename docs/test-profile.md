@@ -1,6 +1,6 @@
 # Project test profile
 
-Status: Proposed candidate architecture
+Status: Accepted candidate architecture
 
 ## Purpose
 
@@ -45,8 +45,8 @@ metadata from real meetings.
 Command: `swift test --filter MeetingIntegrationTests`
 
 Expected result: Synthetic local fixtures validate import, source references,
-speaker correction persistence, minutes/action traceability, and the local
-UI/CLI handoff without network access.
+speaker correction persistence, minutes/action traceability, and opening a
+CLI-created record by its local identifier without network access.
 
 ## Local-only test-data policy
 
@@ -58,8 +58,8 @@ logs.
 ## Operational validation
 
 PBI-011/PBI-012 must define and perform the applicable manual checks for local
-recording import, local-model execution, and UI/CLI event cooperation. Live
-capture is deferred. iOS portability is checked by building and testing
+recording import, local-model execution, and opening a CLI-created record in
+the review player. Live capture is deferred. iOS portability is checked by building and testing
 `MeetingCore` without macOS-only imports; it does not require an iOS app in
 Sprint 2.
 

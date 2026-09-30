@@ -2,7 +2,7 @@
 
 ## PBI-003 through PBI-010 — Inception baseline
 
-Status: Proposed
+Status: Accepted
 
 ### Design summary
 
@@ -74,4 +74,4 @@ only after the prototype package exists.
 
 ## Design approval status
 
-Awaiting Product Owner review.
+Accepted by the Product Owner on 2026-09-30.

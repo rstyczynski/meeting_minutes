@@ -55,10 +55,20 @@ having to rely on memory or an external service holding their meeting data.
 
 ## Sprint 0 status
 
-Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and the tailored roadmap as PBI-002. Sprint 1 remains planned until the Product Owner activates it.
+Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and the tailored roadmap as PBI-002. Sprint 1 has established the accepted Inception baseline. Sprint 2 remains planned until the Product Owner activates it.
 
 ## Recent updates
 
 ### Sprint 0 — Vision and initial plan
 
 The accepted vision establishes a fully local, macOS-first Meeting Summarizer that remains portable to iOS. It establishes local AI, live attribution, visual input, and cooperating UI/CLI modes as product constraints. The accepted plan starts Sprint 1 with system view, actors, and use cases before selecting the MVP.
+
+### Sprint 1 — Inception baseline
+
+The accepted MVP is a simple local macOS utility: import a recording through
+the CLI, create an offline transcript, let the operator correct speaker
+attribution while reviewing timestamped local media, and produce local minutes
+and action items. The candidate architecture uses Swift/SwiftUI, a shared
+Swift Package core, XCTest, and local-only storage. Live capture, direct
+recording, visual attachments, alerts, search, export, permanent deletion, and
+sharing are deferred.

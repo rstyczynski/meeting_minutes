@@ -4,11 +4,11 @@
 |--------|---------------|--------------|-------------|
 | Sprint 0 | tested | PBI-001 | tested |
 | Sprint 0 | tested | PBI-002 | tested |
-| Sprint 1 | under_design | PBI-003 | under_design |
-| Sprint 1 | under_design | PBI-004 | under_design |
-| Sprint 1 | under_design | PBI-005 | under_design |
-| Sprint 1 | under_design | PBI-006 | under_design |
-| Sprint 1 | under_design | PBI-007 | under_design |
-| Sprint 1 | under_design | PBI-008 | under_design |
-| Sprint 1 | under_design | PBI-009 | under_design |
-| Sprint 1 | under_design | PBI-010 | under_design |
+| Sprint 1 | tested | PBI-003 | tested |
+| Sprint 1 | tested | PBI-004 | tested |
+| Sprint 1 | tested | PBI-005 | tested |
+| Sprint 1 | tested | PBI-006 | tested |
+| Sprint 1 | tested | PBI-007 | tested |
+| Sprint 1 | tested | PBI-008 | tested |
+| Sprint 1 | tested | PBI-009 | tested |
+| Sprint 1 | tested | PBI-010 | tested |

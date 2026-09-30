@@ -1,6 +1,6 @@
 # Candidate architecture — Meeting Summarizer
 
-Status: Proposed
+Status: Accepted
 
 ## Decision
 
@@ -25,8 +25,7 @@ flowchart LR
     Core --> Transcript[Local transcription adapter]
     Core --> Attribution[Local diarization adapter]
     Core --> Minutes[Local minutes adapter]
-    Store --> Event[Local change notification]
-    Event --> UI
+    CLI --> UI[Review player opens record by ID]
     FutureCapture[Future macOS capture adapter] -. deferred .-> Core
 ```
 
@@ -34,24 +33,25 @@ flowchart LR
 |---|---|---|
 | `MeetingCore` | Meeting record, timeline references, attribution corrections, use cases, validation, and protocol contracts | Import SwiftUI/AppKit or call a network service |
 | `MeetingCLI` | Parse input arguments, invoke import, report local result/error | Own a separate record format or processing logic |
-| `MeetingMacApp` | SwiftUI review, chair correction workflow, local refresh subscription | Contain core transcription or minutes logic |
+| `MeetingMacApp` | SwiftUI local-media review player and chair correction workflow | Contain core transcription or minutes logic |
 | Local-model adapters | Invoke a selected on-device transcription, diarization, or minutes implementation | Expose remote fallback behavior |
 | Local meeting store | Atomically persist source references and derived data within the app-controlled local location | Synchronize to a cloud service |
-| Local change notifier | Tell the running UI that a record changed | Carry meeting contents outside the device |
 
 ## Domain contract
 
 A `MeetingRecord` has an immutable local source reference, ordered transcript
-segments, neutral or chair-assigned speaker identities, source-linked minutes,
-decisions, actions, and open questions. A `SourceRange` contains time offsets
-into the local recording. Corrections are additive record changes so a speaker
+segments, neutral or chair-assigned speaker identities, minutes, decisions,
+actions, and open questions. A `SourceRange` optionally connects a review item
+to time offsets in the local recording; participant-facing minutes do not
+require or display it. Corrections are additive record changes so a speaker
 label or segment attribution can be reviewed without rewriting unrelated data.
 
-The CLI calls the same import use case used by the UI. It writes through the
-local store and emits only an opaque local record identifier over the local
-change boundary. The UI then reloads the record from the same store. This
-avoids duplicate business logic and avoids passing meeting content through a
-separate IPC payload.
+The CLI calls the same import use case used by the review player. It writes
+through the local store and prints an opaque local record identifier. The
+operator opens that identifier in the review player, which reloads the record
+from the store and seeks local media when the operator selects a source range.
+This avoids duplicate business logic, a running background app, and a separate
+IPC payload.
 
 ## Platform and portability
 
@@ -71,6 +71,4 @@ its own UI and permitted-input adapters rather than reuse the macOS capture UI.
   meet quality, license, packaging, memory, and latency needs.
 - Exact input-media codecs and whether any conversion is needed.
 - Local storage encryption and lifecycle policy.
-- The lowest-risk local notification mechanism for a UI started before or after
-  a CLI import.
 - The future live-capture consent/permission path.
