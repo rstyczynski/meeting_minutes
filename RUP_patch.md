@@ -23,6 +23,12 @@ Update the submodule only through an explicit Product Owner request. Before adop
 
 Before the first code-bearing sprint, define the project’s test profile in this patch or a referenced project rule. It must map the generic test and regression fields to the actual macOS/iOS build, unit-test, integration-test, offline-operation, and privacy/capture validation commands. Do not claim that the submodule’s sample shell-test commands apply to this project.
 
+## P0.2. Generic artifacts bootstrap Sprint 0
+
+`0.Generic/` contains reusable RUP roadmap, backlog, and sprint-plan templates. These artifacts are inputs to Sprint 0 only; they are not product requirements, active backlog items, or active sprint definitions.
+
+Sprint 0 establishes the product vision and derives this project’s real roadmap, Product Backlog, and subsequent sprint plan from that vision. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
+
 ## P1. Every sprint runs a complete agentic lifecycle
 
 Each RUP Strikes Back sprint runs the complete agentic cycle: contracting/inception, elaboration, construction, quality validation, and wrap-up. The cycle is a feedback loop, not a waterfall handoff.
