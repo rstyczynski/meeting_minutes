@@ -7,7 +7,7 @@ Work on this directory as the project’s main goal. Establish RUP Strikes Back 
 
 First, inspect the supplied RUP Strikes Back version and its bootstrap assets. Use its formats, rules, and procedures as the method source; do not invent replacements.
 
-If RUPStrikesBack is not already present, add https://github.com/rstyczynski/RUPStrikesBack.git as the RUPStrikesBack Git submodule at the selected version or branch. If it is already present, inspect its pinned revision. Do not update the submodule remotely or change its revision unless the Product Owner explicitly requests a method update.
+If RUPStrikesBack is not already present, add https://github.com/rstyczynski/RUPStrikesBack.git as the RUPStrikesBack Git submodule, tracking branch feature/version-2.0-sprint-backlog-management. If it is already present, confirm that branch and inspect its pinned revision. Do not update the submodule remotely or change its revision unless the Product Owner explicitly requests a method update.
 
 Install the project-local adoption layer from the supplied bootstrap assets:
 
