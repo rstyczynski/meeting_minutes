@@ -21,7 +21,7 @@ Update the submodule only through an explicit Product Owner request. Before adop
 
 `BACKLOG.md` and `PLAN.md` are created before the first sprint. Progress artifacts, including `PROGRESS_BOARD.md` and sprint-specific records under `progress/`, are created and maintained by the RUP Strikes Back cycle when a sprint starts; do not create placeholder progress files in advance.
 
-Before the first code-bearing sprint, define the project’s test profile in this patch or a referenced project rule. It must map the generic test and regression fields to the actual macOS/iOS build, unit-test, integration-test, offline-operation, and privacy/capture validation commands. Do not claim that the submodule’s sample shell-test commands apply to this project.
+Before the first code-bearing sprint, define the project’s test profile in this patch or a referenced project rule. It must map the generic test and regression fields to the actual project’s build, unit-test, integration-test, and applicable operational-validation commands. Do not claim that the submodule’s sample shell-test commands apply to the project.
 
 ## P0.2. Generic artifacts bootstrap Sprint 0
 
@@ -29,17 +29,25 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 At project initialization, copy the generic `README.md`, `BACKLOG.md`, and `PLAN.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic later-sprint entries are initial hypotheses: Sprint 0 or subsequent iterations may retain, refine, split, reorder, or replace them. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
+The generic bootstrap is deliberately tailored over its first three iterations. Sprint 0 proposes an initial lifecycle and iteration plan from the vision. Sprint 1 tests and refines that plan against business context, requirements, scope, risks, and an initial architecture. Sprint 2 refines it again from technical-validation evidence and the Lifecycle Architecture assessment. In each of these iterations, the agent must propose additions, removals, mergers, splits, reordered work, or a simpler path when the project’s size, uncertainty, existing assets, constraints, or risk profile justify it. In managed mode, the Product Owner accepts each material plan change. The plan must record the decision and rationale; generic tasks are defaults, never mandatory ceremony.
+
 ## P0.3. Place project artifacts by lifecycle role
 
 The root `README.md` holds the accepted product vision and project orientation. `docs/` holds durable shared project deliverables created and accepted during sprints, such as requirements, architecture, decisions, and operating documentation.
 
 `progress/sprint_N/` holds the evidence and review artifacts for one sprint. `tmp/` holds provisional material retained only for reference; it is not a source of truth and must be recreated in `docs/` or another approved location when a sprint formally delivers it. `RUPStrikesBack.patch/bootstrap/` remains the reusable bootstrap input described above.
 
-## P1. Every sprint runs a complete agentic lifecycle
+## P1. Apply the RUP Strikes Back cycle proportionately
 
-Each RUP Strikes Back sprint runs the complete agentic cycle: vision and contracting, elaboration and design, construction, quality validation, and transition/wrap-up. This inner cycle is a feedback loop, not a waterfall handoff; it does not itself advance the product from one project-level RUP phase to the next.
+The RUP Strikes Back manager’s complete contracting, analysis/design, construction, quality-validation, and wrap-up pipeline is primarily a code-bearing Construction-iteration workflow. It should run fully when a sprint creates or materially changes production code.
 
-The depth of each activity is proportional to the sprint’s purpose, risk, and the project’s current RUP lifecycle phase. An activity may be brief when prior work remains valid, but it must be consciously reviewed rather than silently skipped. Any activity that is not applicable must be recorded with its reason.
+Sprint 0 and Inception iterations use the same collaboration discipline, but produce vision, requirements, plans, risk evidence, and reviews rather than forcing implementation. An Elaboration iteration may construct a prototype and run technical tests when that is needed to retire risk, but it need not produce a production feature. In non-code-bearing iterations, construction and automated-test gates may be not applicable; the plan and sprint evidence must state the reason and define the appropriate review or experiment instead.
+
+This is not a waterfall handoff. Every iteration consciously considers the relevant RUP disciplines, at a depth proportional to its purpose, risk, and lifecycle phase. The RUP Strikes Back workflow inside an iteration does not itself advance the product from one project-level RUP phase to the next.
+
+## P1.1. Use progressive plan refinement as a first-class outcome
+
+The plan is an evolving project artifact, not a one-time bootstrap output. Sprint 0 creates the initial project plan. Sprint 1 establishes or revises the Inception plan and evaluates the Lifecycle Objectives decision. Sprint 2 establishes or revises the Construction plan from technical evidence and evaluates the Lifecycle Architecture decision. Later iterations continue to refine scope, risks, ordering, quality expectations, and release plans when evidence requires it.
 
 ## P2. Project lifecycle phases set emphasis; they do not prohibit refinement
 
