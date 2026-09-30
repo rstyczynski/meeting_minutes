@@ -14,7 +14,7 @@ Backlog Items:
 
 ## Sprint 1 - Inception baseline
 
-Status: Planned
+Status: Progress
 Mode: managed
 Test: none
 Regression: none
