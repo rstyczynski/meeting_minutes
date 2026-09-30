@@ -1,5 +1,7 @@
 # RUP Patch — Method Adoption and Iteration Semantics
 
+This is an optional local wrapper over the canonical RUP Strikes Back method in the `RUPStrikesBack` submodule. A project may use RUP Strikes Back without this directory. When this wrapper is present, its policies refine or override the generic method only where stated below.
+
 ## P0. Include RUP Strikes Back as a controlled project method
 
 The project adopts RUP Strikes Back through the `RUPStrikesBack` Git submodule, tracked on the selected method branch and pinned by this repository’s Git submodule revision. The submodule is the source for the generic manager, phase-agent procedures, sprint/backlog formats, and generic rules.
@@ -9,11 +11,11 @@ The project root contains the local adoption layer:
 1. `.gitmodules` registers the RUP Strikes Back submodule and selected branch.
 2. `AGENTS.md` tells Codex where the method is and when to use it.
 3. `RUPStrikesBack.patch/RUP_patch.md` records project-specific method refinements and overrides; the root `RUP_patch.md` is its compatibility entry point.
-4. `.agents/skills/rup-strikes-back/SKILL.md` is the Codex wrapper for explicit RUP planning and sprint-execution requests.
+4. `.agents/skills/rup-strikes-back/` is the Codex invocation layer: its skill is the explicit entry point and its references map to the canonical manager and phase procedures in the submodule.
 5. `BACKLOG.md` holds Product Owner priorities and backlog-item acceptance signals.
 6. `PLAN.md` holds RUP Strikes Back sprint definitions, statuses, modes, and quality expectations.
 
-Do not copy the submodule’s `AGENTS.md`, `HUMANS.md`, `RUP_patch.md`, or Claude command files into the project root. The local `AGENTS.md`, this patch, and the Codex skill provide the project-specific integration layer while the submodule remains the single source for generic method content.
+Do not copy the submodule’s `AGENTS.md`, `HUMANS.md`, `RUP_patch.md`, or Claude command files into the project root. The local `AGENTS.md`, this patch, and the Codex skill provide the project-specific integration layer. The submodule remains the canonical generic agentic method; Codex adapters provide host-specific invocation and apply local refinements.
 
 Update the submodule only through an explicit Product Owner request. Before adopting an update, review the changed method rules, confirm that this patch and the Codex wrapper still apply, and commit the resulting submodule revision together with any required local changes. Do not update the method during an active sprint unless the Product Owner explicitly treats it as a process change.
 
@@ -33,7 +35,7 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 `RUPStrikesBack.patch/bootstrap/` contains reusable RUP roadmap, backlog, sprint-plan templates, a generic `AGENTS.md`, a Codex skill wrapper, and the bootstrap prompt. These artifacts are inputs to Sprint 0 only; they are not product requirements, active backlog items, or active sprint definitions.
 
-At project initialization, copy the generic `README.md`, `BACKLOG.md`, `PLAN.md`, and `ROADMAP.md` from `RUPStrikesBack.patch/bootstrap/` to the project root. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic later-sprint entries are initial hypotheses: Sprint 0 or subsequent iterations may retain, refine, split, reorder, or replace them. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
+At project initialization, overlay the complete contents of `RUPStrikesBack.patch/bootstrap/` onto the project root, including hidden directories. The Product Owner explicitly starts Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic later-sprint entries are initial hypotheses: Sprint 0 or subsequent iterations may retain, refine, split, reorder, or replace them. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
 The generic bootstrap is deliberately tailored over its first three iterations. Sprint 0 proposes an initial lifecycle and iteration plan from the vision. Sprint 1 tests and refines that plan against business context, requirements, scope, risks, and an initial architecture. Sprint 2 refines it again from technical-validation evidence and the Lifecycle Architecture assessment. In each of these iterations, the agent must propose additions, removals, mergers, splits, reordered work, or a simpler path when the project’s size, uncertainty, existing assets, constraints, or risk profile justify it. In managed mode, the Product Owner accepts each material plan change. The plan must record the decision and rationale; generic tasks are defaults, never mandatory ceremony.
 
@@ -45,7 +47,7 @@ The root `README.md` holds the accepted product vision and project orientation. 
 
 ## P1. Apply the RUP Strikes Back cycle proportionately
 
-The RUP Strikes Back manager’s complete contracting, analysis/design, construction, quality-validation, and wrap-up pipeline is primarily a code-bearing Construction-iteration workflow. It should run fully when a sprint creates or materially changes production code.
+The Codex RUP Strikes Back manager's complete contracting, analysis/design, construction, quality-validation, and wrap-up pipeline is primarily a code-bearing Construction-iteration workflow. It should run fully when a sprint creates or materially changes production code.
 
 Sprint 0 and Inception iterations use the same collaboration discipline, but produce vision, requirements, plans, risk evidence, and reviews rather than forcing implementation. An Elaboration iteration may construct a prototype and run technical tests when that is needed to retire risk, but it need not produce a production feature. In non-code-bearing iterations, construction and automated-test gates may be not applicable; the plan and sprint evidence must state the reason and define the appropriate review or experiment instead.
 
@@ -78,8 +80,8 @@ Each backlog item must retain its own value statement and acceptance signal. The
 
 ## P5. Process entry point and local method adoption
 
-The project root `BACKLOG.md` is the source of Product Owner priorities. The project root `PLAN.md` is the source of sprint selection and status. The root `RUP_patch.md` points to `RUPStrikesBack.patch/RUP_patch.md`, which defines local policy that supplements or overrides the generic method in the `RUPStrikesBack` submodule.
+The project root `BACKLOG.md` is the source of Product Owner priorities. The project root `PLAN.md` is the source of sprint selection and status. When installed, the root `RUP_patch.md` points to `RUPStrikesBack.patch/RUP_patch.md`, which defines local policy that supplements or overrides the generic method in the `RUPStrikesBack` submodule.
 
-To start a sprint, the Product Owner changes that sprint’s status in the root `PLAN.md` from `Planned` to `Progress` and invokes the RUP Strikes Back cycle manager, `RUPStrikesBack/.claude/commands/rup-manager.md`, in the declared mode. In this project, the agent reads the manager and its phase-agent definitions from `RUPStrikesBack` and applies this local patch before executing the sprint.
+To start a sprint, the Product Owner changes that sprint’s status in the root `PLAN.md` from `Planned` to `Progress` and explicitly invokes the Codex `rup-strikes-back` skill in the declared mode. The agent reads its manager and selected phase procedures from `.agents/skills/rup-strikes-back/references/`, then applies this local patch before executing the sprint.
 
-`rup-manager` is the method entry point. Its Claude slash-command form, `/rup-manager`, is not registered as a native Codex command in this workspace; in Codex, the Product Owner explicitly asks the agent to execute the manager document for the active sprint. Managed mode remains the default: the agent pauses for Product Owner approval at the defined decision points.
+`rup-strikes-back` is the Codex method entry point. The submodule's `/rup-manager` is a Claude compatibility command, not a native Codex command. Managed mode remains the default: the agent pauses for Product Owner approval at the defined decision points.
