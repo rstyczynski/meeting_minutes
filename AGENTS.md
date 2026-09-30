@@ -6,7 +6,7 @@ This project uses the `RUPStrikesBack` submodule as its agentic delivery method.
 
 The method orchestrator is `RUPStrikesBack/.claude/commands/rup-manager.md`. Its phase agents are in `RUPStrikesBack/.claude/commands/agents/`.
 
-The root `BACKLOG.md` is the Product Owner’s prioritized backlog. The root `PLAN.md` is the sprint plan and identifies the active sprint. The root `RUP_patch.md` contains local policy that supplements or overrides the generic RUP Strikes Back method.
+The root `BACKLOG.md` is the Product Owner’s prioritized backlog. The root `PLAN.md` is the sprint plan and identifies the active sprint. The root `RUP_patch.md` is the compatibility entry point for the full local policy at `RUPStrikesBack.patch/RUP_patch.md`.
 
 For an explicit request to start, plan, inspect, or manage a RUP Strikes Back sprint, read and use `.agents/skills/rup-strikes-back/SKILL.md`. Do not load that workflow for ordinary product, documentation, or implementation requests.
 
@@ -16,7 +16,7 @@ Do not start a RUP cycle automatically. Start one only when the Product Owner ex
 
 Before executing the cycle:
 
-1. Read `RUP_patch.md`.
+1. Read `RUP_patch.md`, then `RUPStrikesBack.patch/RUP_patch.md`.
 2. Read `RUPStrikesBack/.claude/commands/rup-manager.md`.
 3. Read the phase-agent and rule documents required by the manager.
 4. Apply local patches when they conflict with or refine the generic method.

@@ -11,10 +11,10 @@ Use this skill only for an explicit request to plan, start, inspect, or manage a
 
 - `BACKLOG.md` defines Product Owner priorities and backlog-item acceptance signals.
 - `PLAN.md` defines sprint selection, status, mode, and test/regression expectations.
-- `RUP_patch.md` defines this project’s local policies and overrides the generic method where they differ.
+- `RUP_patch.md` is the compatibility entry point; `RUPStrikesBack.patch/RUP_patch.md` defines this project’s local policies and overrides.
 - `RUPStrikesBack/.claude/commands/rup-manager.md` is the detailed cycle manager.
 
-For a sprint execution request, read those files in that order, then read the phase-agent and rule documents required by `rup-manager.md`. Treat the submodule’s Claude command files as procedures to follow, not native Codex slash commands.
+For a sprint execution request, read the root `RUP_patch.md`, then `RUPStrikesBack.patch/RUP_patch.md`, followed by the remaining sources above. Then read the phase-agent and rule documents required by `rup-manager.md`. Treat the submodule’s Claude command files as procedures to follow, not native Codex slash commands.
 
 ## Codex wrapper behavior
 
