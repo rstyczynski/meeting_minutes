@@ -12,8 +12,8 @@ If RUPStrikesBack is not already present, add https://github.com/rstyczynski/RUP
 Install the project-local adoption layer from the supplied bootstrap assets:
 
 - Register the submodule in .gitmodules.
-- Retain `RUPStrikesBack.patch/RUP_patch.md` as the full, active local policy. Its `bootstrap/RUP_patch.md` symlink exposes the same policy to the bootstrap package.
-- Copy `RUPStrikesBack.patch/bootstrap/boot/RUP_patch.md` to the root `RUP_patch.md`.
+- Retain `RUPStrikesBack.patch/RUP_patch.md` as the full, active local policy.
+- Copy `RUPStrikesBack.patch/bootstrap/RUP_patch.md` to the root `RUP_patch.md` as its short compatibility entry point.
 - Copy the generic `RUPStrikesBack.patch/bootstrap/AGENTS.md` to the project root when `AGENTS.md` does not already exist.
 - When the host is Codex, copy `RUPStrikesBack.patch/bootstrap/.agents/skills/rup-strikes-back/` to `.agents/skills/rup-strikes-back/`. For another host, create the equivalent local invocation wrapper without copying the submodule’s Claude command files into the project root.
 - Copy the generic bootstrap `README.md`, `BACKLOG.md`, `PLAN.md`, and `ROADMAP.md` into the project root when they do not already exist.
