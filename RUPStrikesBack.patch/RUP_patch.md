@@ -17,6 +17,12 @@ Do not copy the submodule’s `AGENTS.md`, `HUMANS.md`, `RUP_patch.md`, or Claud
 
 Update the submodule only through an explicit Product Owner request. Before adopting an update, review the changed method rules, confirm that this patch and the Codex wrapper still apply, and commit the resulting submodule revision together with any required local changes. Do not update the method during an active sprint unless the Product Owner explicitly treats it as a process change.
 
+## P0.0. Establish the Git baseline during bootstrap
+
+Bootstrap validates that the project is a Git repository and has an `origin` remote. If Git is absent, bootstrap initializes the repository and uses `main` as its default branch. If `origin` is absent, bootstrap creates a private repository on GitHub.com using the authenticated GitHub account, names it after the project directory, and configures it as `origin`. An existing origin is preserved; bootstrap does not rewrite it or force-push.
+
+After installing only the method and generic-bootstrap artifacts, bootstrap creates one semantic baseline commit and pushes the current branch to `origin`. This authorization applies to the bootstrap flow itself. Subsequent remote repositories, remote changes, and pushes still require an explicit Product Owner request.
+
 ## P0.1. Initialize process artifacts when needed
 
 `BACKLOG.md` and `PLAN.md` are created before the first sprint. Progress artifacts, including `PROGRESS_BOARD.md` and sprint-specific records under `progress/`, are created and maintained by the RUP Strikes Back cycle when a sprint starts; do not create placeholder progress files in advance.
