@@ -1,5 +1,5 @@
 # Project Name
 
-## Initial vision
+## Vision
 
-Describe the product’s intended user value, the problem it addresses, and the desired outcome. This is the Product Owner’s initial input; Sprint 0 reviews, refines, and accepts the project vision.
+This placeholder is replaced by Sprint 0. PBI-001 creates and accepts the product vision from the Product Owner’s stated intent.

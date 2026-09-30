@@ -2,7 +2,7 @@
 
 ### PBI-001. Establish the product vision
 
-Review and refine the Product Owner’s initial vision in `README.md` until it clearly states the intended user value, problem, outcome, and important constraints.
+Create and accept the product vision in `README.md` from the Product Owner’s stated intent. It must clearly state the intended user value, problem, outcome, and important constraints.
 
 Test: Review confirms that the product vision is understandable, internally consistent, and accepted by the Product Owner.
 
