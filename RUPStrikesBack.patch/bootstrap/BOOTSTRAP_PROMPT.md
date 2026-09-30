@@ -12,9 +12,9 @@ If RUPStrikesBack is not already present, add https://github.com/rstyczynski/RUP
 Install the project-local adoption layer from the supplied bootstrap assets:
 
 - Register the submodule in .gitmodules.
-- Create the project-local AGENTS.md that directs agents to the submodule and local policy.
+- Copy the generic AGENTS.md from the bootstrap assets into the project root when it does not already exist.
 - Create RUPStrikesBack.patch/RUP_patch.md as the full local method patch and a short root RUP_patch.md that points to it.
-- Create the local agent or skill wrapper needed by the host environment to invoke the RUP Strikes Back manager.
+- When the host is Codex, copy the generic `.agents/skills/rup-strikes-back/` wrapper from the bootstrap assets. For another host, create the equivalent local invocation wrapper without copying the submodule’s Claude command files into the project root.
 - Copy the generic bootstrap README.md, BACKLOG.md, PLAN.md, and ROADMAP.md into the project root when they do not already exist.
 
 Do not copy RUPStrikesBack’s AGENTS.md, HUMANS.md, RUP_patch.md, or Claude command files into the project root. The submodule remains the generic method source; the local adoption layer records only project-specific integration and refinements.
