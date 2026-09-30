@@ -2,7 +2,7 @@
 
 ## Sprint 0 - Vision and initial plan
 
-Status: Planned
+Status: Progress
 Mode: managed
 Test: none
 Regression: none

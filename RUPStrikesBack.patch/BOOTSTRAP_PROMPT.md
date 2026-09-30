@@ -17,9 +17,9 @@ Do not copy RUPStrikesBack’s AGENTS.md, HUMANS.md, RUP_patch.md, or Claude com
 
 Before completing bootstrap, inspect the `origin` remote. If `origin` already exists, preserve its URL and do not force-push. If it does not exist, create a private repository on GitHub.com, named after the project directory, under the authenticated GitHub account, and configure it as `origin`. GitHub.com is the default origin service; use another service only when the Product Owner specifies it.
 
-The copied root artifacts are a generic bootstrap portfolio, not a product definition or active delivery commitment. Do not invent a product vision, product backlog items, requirements, architecture, progress board, or other project artifacts. Do not start a sprint or run the RUP manager yet.
+The copied root artifacts are a generic bootstrap portfolio, not a product definition or active delivery commitment. Sprint 0 is preselected with `Status: Progress`, but do not run the RUP manager yet. Do not invent a product vision, product backlog items, requirements, architecture, progress board, or other project artifacts.
 
 After bootstrap setup, stage only the method and generic-bootstrap artifacts, create one semantic bootstrap commit, and push the current branch to `origin` without force. If GitHub authentication, repository creation, or the push cannot be completed, stop and report the exact condition requiring Product Owner action.
 
-Report the files created or preserved and the repository and origin status. Then wait for the Product Owner to provide product intent and explicitly start Sprint 0. Sprint 0, Sprint 1, and Sprint 2 will progressively tailor the generic roadmap, plan, and backlog to the actual project; generic work is a proposed default, not mandatory ceremony.
+Report the files created or preserved and the repository and origin status. Then wait for the Product Owner to provide product intent and explicitly request execution of Sprint 0. Sprint 0, Sprint 1, and Sprint 2 will progressively tailor the generic roadmap, plan, and backlog to the actual project; generic work is a proposed default, not mandatory ceremony.
 ```
