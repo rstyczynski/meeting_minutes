@@ -2,5 +2,5 @@
 
 | Sprint | Sprint Status | Backlog Item | Item Status |
 |--------|---------------|--------------|-------------|
-| Sprint 0 | under_analysis | PBI-001 | analysed |
-| Sprint 0 | under_analysis | PBI-002 | analysed |
+| Sprint 0 | tested | PBI-001 | tested |
+| Sprint 0 | tested | PBI-002 | tested |
