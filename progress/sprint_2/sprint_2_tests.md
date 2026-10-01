@@ -1,6 +1,6 @@
 # Sprint 2 — Functional test record
 
-Status: PBI-011.1 passed its completion gates and was committed. The other Sprint 2 children and PBI-018 have working construction checks and still require their own final six-gate runs, documentation reconciliation, board updates, and local completion commits. The [implementation record](sprint_2_implementation.md) gives working user commands; this record reports test intent, expected result, observed result, and limits.
+Status: all five PBI-011 children, PBI-018, and the PBI-011 parent passed separate six-gate runs. The completed technical measurement includes explicit model-quality failures and limits. The [implementation record](sprint_2_implementation.md) gives working user commands; this record reports test intent, expected result, observed result, and limits.
 
 ## Environment and fixtures
 
@@ -71,4 +71,114 @@ For PBI-011.5, the wrapper ran once with label pbi5; A1/A2/A3/B1/B2/B3 all passe
 
 For PBI-018, the wrapper ran once with label pbi18; A1/A2/A3/B1/B2/B3 all passed in test_run_pbi18_A1_smoke_20261001_172200.log through test_run_pbi18_B3_integration_20261001_172200.log. The four stored ASR outputs were rescored against the same manual reference: headset WER 0.1948 for Fluid and 0.2879 for whisper.cpp, lapel WER 0.2195 and 0.3262. Replayed diarization scoring found three predicted clusters for four reference speakers, with headset 2219/2600 correct reference-word midpoints and lapel 2200/2600; the headset warning covered 186/233 words from affected speaker A and 83 words from others. Replayed timing diagnostics reported median absolute start/end errors of 0.07/0.07 seconds for Fluid and 0.46/0.51 for whisper.cpp, with the documented segment-size limitation. All values matched the self-contained benchmark report. This validates reproducibility of the Sprint 2 measurements; Sprint 3 remains responsible for architecture interpretation.
 
-For the current PBI-011.2 increment, A1 first failed at SwiftPM's nested sandbox, then its outside-sandbox retry failed because help omitted the still-supported import route. After correcting help, A1 passed in test_run_A1_smoke_20261001_152814_retry2.log. A2, A3, B1, B2, and B3 passed in test_run_A2_unit_20261001_1530.log, test_run_A3_integration_20261001_1530.log, test_run_B1_smoke_20261001_1530.log, test_run_B2_unit_20261001_1530.log, and test_run_B3_integration_20261001_1530.log. The two failed A1 attempts remain in test_run_A1_smoke_20261001_152814.log and test_run_A1_smoke_20261001_152814_retry1.log for traceability. The current run includes all 18 automated cases. The documentation audit must verify every affected artifact, commands, links, content claims, open risks, and git diff --check before each local completion commit. Later children need their own fresh logs and audit. No Sprint 2 parent item is currently marked tested.
+For the current PBI-011.2 increment, A1 first failed at SwiftPM's nested sandbox, then its outside-sandbox retry failed because help omitted the still-supported import route. After correcting help, A1 passed in test_run_A1_smoke_20261001_152814_retry2.log. A2, A3, B1, B2, and B3 passed in test_run_A2_unit_20261001_1530.log, test_run_A3_integration_20261001_1530.log, test_run_B1_smoke_20261001_1530.log, test_run_B2_unit_20261001_1530.log, and test_run_B3_integration_20261001_1530.log. The two failed A1 attempts remain in test_run_A1_smoke_20261001_152814.log and test_run_A1_smoke_20261001_152814_retry1.log for traceability. The current run includes all 18 automated cases. The separate child audits and local commits were completed. The parent PBI-011 six-gate run also passed with label pbi11 and stamp 20261001_172551; its documentation reconciliation is recorded in the audit. The progress board marks the parent tested while the sprint awaits documentation review.
+
+## Artifacts
+
+Every saved RUP gate log is listed below. Failed attempts remain for diagnosis; the passing replacement is identified in the gate narrative above.
+
+[test_run_A1_smoke_20261001_090052.log](test_run_A1_smoke_20261001_090052.log)
+
+[test_run_A1_smoke_20261001_090116_retry1.log](test_run_A1_smoke_20261001_090116_retry1.log)
+
+[test_run_A1_smoke_20261001_152814.log](test_run_A1_smoke_20261001_152814.log)
+
+[test_run_A1_smoke_20261001_152814_retry1.log](test_run_A1_smoke_20261001_152814_retry1.log)
+
+[test_run_A1_smoke_20261001_152814_retry2.log](test_run_A1_smoke_20261001_152814_retry2.log)
+
+[test_run_A2_unit_20261001_095313.log](test_run_A2_unit_20261001_095313.log)
+
+[test_run_A2_unit_20261001_1530.log](test_run_A2_unit_20261001_1530.log)
+
+[test_run_A3_integration_20261001_095322.log](test_run_A3_integration_20261001_095322.log)
+
+[test_run_A3_integration_20261001_095611.log](test_run_A3_integration_20261001_095611.log)
+
+[test_run_A3_integration_20261001_1530.log](test_run_A3_integration_20261001_1530.log)
+
+[test_run_B1_smoke_20261001_095330.log](test_run_B1_smoke_20261001_095330.log)
+
+[test_run_B1_smoke_20261001_1530.log](test_run_B1_smoke_20261001_1530.log)
+
+[test_run_B2_unit_20261001_095337.log](test_run_B2_unit_20261001_095337.log)
+
+[test_run_B2_unit_20261001_1530.log](test_run_B2_unit_20261001_1530.log)
+
+[test_run_B3_integration_20261001_095343.log](test_run_B3_integration_20261001_095343.log)
+
+[test_run_B3_integration_20261001_101632.log](test_run_B3_integration_20261001_101632.log)
+
+[test_run_B3_integration_20261001_1530.log](test_run_B3_integration_20261001_1530.log)
+
+[test_run_pbi11_A1_smoke_20261001_172551.log](test_run_pbi11_A1_smoke_20261001_172551.log)
+
+[test_run_pbi11_A2_unit_20261001_172551.log](test_run_pbi11_A2_unit_20261001_172551.log)
+
+[test_run_pbi11_A3_integration_20261001_172551.log](test_run_pbi11_A3_integration_20261001_172551.log)
+
+[test_run_pbi11_B1_smoke_20261001_172551.log](test_run_pbi11_B1_smoke_20261001_172551.log)
+
+[test_run_pbi11_B2_unit_20261001_172551.log](test_run_pbi11_B2_unit_20261001_172551.log)
+
+[test_run_pbi11_B3_integration_20261001_172551.log](test_run_pbi11_B3_integration_20261001_172551.log)
+
+[test_run_pbi18_A1_smoke_20261001_172200.log](test_run_pbi18_A1_smoke_20261001_172200.log)
+
+[test_run_pbi18_A2_unit_20261001_172200.log](test_run_pbi18_A2_unit_20261001_172200.log)
+
+[test_run_pbi18_A3_integration_20261001_172200.log](test_run_pbi18_A3_integration_20261001_172200.log)
+
+[test_run_pbi18_B1_smoke_20261001_172200.log](test_run_pbi18_B1_smoke_20261001_172200.log)
+
+[test_run_pbi18_B2_unit_20261001_172200.log](test_run_pbi18_B2_unit_20261001_172200.log)
+
+[test_run_pbi18_B3_integration_20261001_172200.log](test_run_pbi18_B3_integration_20261001_172200.log)
+
+[test_run_pbi3_A1_smoke_20261001_1552.log](test_run_pbi3_A1_smoke_20261001_1552.log)
+
+[test_run_pbi3_A1_smoke_20261001_171053.log](test_run_pbi3_A1_smoke_20261001_171053.log)
+
+[test_run_pbi3_A2_unit_20261001_1552.log](test_run_pbi3_A2_unit_20261001_1552.log)
+
+[test_run_pbi3_A2_unit_20261001_171053.log](test_run_pbi3_A2_unit_20261001_171053.log)
+
+[test_run_pbi3_A3_integration_20261001_1552.log](test_run_pbi3_A3_integration_20261001_1552.log)
+
+[test_run_pbi3_A3_integration_20261001_171053.log](test_run_pbi3_A3_integration_20261001_171053.log)
+
+[test_run_pbi3_B1_smoke_20261001_1552.log](test_run_pbi3_B1_smoke_20261001_1552.log)
+
+[test_run_pbi3_B1_smoke_20261001_171053.log](test_run_pbi3_B1_smoke_20261001_171053.log)
+
+[test_run_pbi3_B2_unit_20261001_1552.log](test_run_pbi3_B2_unit_20261001_1552.log)
+
+[test_run_pbi3_B2_unit_20261001_171053.log](test_run_pbi3_B2_unit_20261001_171053.log)
+
+[test_run_pbi3_B3_integration_20261001_1552.log](test_run_pbi3_B3_integration_20261001_1552.log)
+
+[test_run_pbi3_B3_integration_20261001_171053.log](test_run_pbi3_B3_integration_20261001_171053.log)
+
+[test_run_pbi4_A1_smoke_20261001_171356.log](test_run_pbi4_A1_smoke_20261001_171356.log)
+
+[test_run_pbi4_A2_unit_20261001_171356.log](test_run_pbi4_A2_unit_20261001_171356.log)
+
+[test_run_pbi4_A3_integration_20261001_171356.log](test_run_pbi4_A3_integration_20261001_171356.log)
+
+[test_run_pbi4_B1_smoke_20261001_171356.log](test_run_pbi4_B1_smoke_20261001_171356.log)
+
+[test_run_pbi4_B2_unit_20261001_171356.log](test_run_pbi4_B2_unit_20261001_171356.log)
+
+[test_run_pbi4_B3_integration_20261001_171356.log](test_run_pbi4_B3_integration_20261001_171356.log)
+
+[test_run_pbi5_A1_smoke_20261001_171904.log](test_run_pbi5_A1_smoke_20261001_171904.log)
+
+[test_run_pbi5_A2_unit_20261001_171904.log](test_run_pbi5_A2_unit_20261001_171904.log)
+
+[test_run_pbi5_A3_integration_20261001_171904.log](test_run_pbi5_A3_integration_20261001_171904.log)
+
+[test_run_pbi5_B1_smoke_20261001_171904.log](test_run_pbi5_B1_smoke_20261001_171904.log)
+
+[test_run_pbi5_B2_unit_20261001_171904.log](test_run_pbi5_B2_unit_20261001_171904.log)
+
+[test_run_pbi5_B3_integration_20261001_171904.log](test_run_pbi5_B3_integration_20261001_171904.log)
