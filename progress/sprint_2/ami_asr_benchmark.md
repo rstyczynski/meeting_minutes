@@ -1,11 +1,12 @@
 # Sprint 2 — AMI ES2002a ASR benchmark evidence
 
-Status: Preliminary paired headset and alternate-input quality, repeated
+Status: Sprint 2 measurement complete; architecture interpretation remains
+for Sprint 3. Paired headset and alternate-input quality, repeated
 runtime, process memory, model footprint, reference-assisted speaker-turn,
 and exploratory quality-warning results. Process-level disconnected-network
 inference passed for staged ASR and diarization models. The prototype now
 persists speaker labels and warnings. Independent warning reliability and
-minutes quality remain open. This is
+minutes quality failed on the tested natural excerpt. This is
 PBI-018 measurement evidence, not a Sprint 3
 architecture decision.
 
@@ -409,3 +410,18 @@ need further operator checking. Packaging license obligations still need
 verification. The local MLX generator executed on synthetic and natural
 transcripts; the natural minutes failed content quality. Those failures are
 the measured inputs to the Sprint 3 architecture review.
+
+## PBI-018 acceptance assessment
+
+Both ASR options used the same pinned headset audio and the same manual
+reference, normalization, and scoring code. The separate lapel recording
+was labeled as a recovery condition, not mixed into that comparison.
+The four WER scores, two reference-assisted diarization scores, and two
+timestamp diagnostics were reproduced from stored outputs during the Sprint
+2 completion check and matched this report. Repeated runtime, memory, model
+footprint, license, input hashes, executable revisions, and measurement
+limits are stated above. The natural-minutes failure and the warning
+spillover are measured outcomes, not missing measurements. This satisfies
+PBI-018's requirement to preserve a reproducible comparison for Sprint 3;
+it does not approve a default ASR, a dependable participant warning, or an
+unattended minutes generator.

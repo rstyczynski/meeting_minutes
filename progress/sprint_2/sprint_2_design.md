@@ -154,8 +154,8 @@ through PBI-011.3. PBI-018 benchmarks its working model adapters.
 
 ```mermaid
 flowchart LR
-    Media[Local recording] --> CLI[CLI import]
-    CLI --> Core[MeetingCore import use case]
+    Media[Local recording] --> CLI[CLI transcribe, recognize, summarize]
+    CLI --> Core[MeetingCore use cases]
     Core --> Models[Local adapter contracts]
     Models --> Store[Atomic local record store]
     Store --> UI[SwiftUI review by record ID]
