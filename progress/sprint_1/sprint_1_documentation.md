@@ -5,10 +5,10 @@ Status: Complete
 ## Documentation validation
 
 The combined setup and analysis record, accepted design, non-code construction
-record, review evidence, Inception baseline, candidate architecture, and test
-profile are present and internally consistent. No executable code examples,
-test sequences, or test logs were created, so copy-paste code validation is not
-applicable.
+record, review evidence, Software Requirements Specification (`docs/srs.md`),
+candidate architecture (`docs/architecture.md`), and test profile are present
+and internally consistent. No executable code examples, test sequences, or
+test logs were created, so copy-paste code validation is not applicable.
 
 ## Non-code iteration compliance
 

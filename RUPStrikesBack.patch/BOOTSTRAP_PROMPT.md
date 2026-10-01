@@ -9,7 +9,7 @@ First, inspect the local wrapper at `RUPStrikesBack.patch/`, including this oper
 
 If RUPStrikesBack is not already present, add https://github.com/rstyczynski/RUPStrikesBack.git as the RUPStrikesBack Git submodule, tracking branch feature/version-2.0-sprint-backlog-management. If it is already present, confirm that branch and inspect its pinned revision. Do not update the submodule remotely or change its revision unless the Product Owner explicitly requests a method update.
 
-Install the project-local adoption layer by overlaying the complete contents of `RUPStrikesBack.patch/bootstrap/` onto the project root, including hidden directories such as `.agents/`. The bootstrap package supplies the root compatibility `RUP_patch.md`, `AGENTS.md`, generic portfolio artifacts including an unconfigured `docs/test-profile.md`, and the Codex wrapper. Keep `RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md` in the local wrapper; do not copy it into the project root. Retain `RUPStrikesBack.patch/RUP_patch.md` as the full, active local policy.
+Install the project-local adoption layer by overlaying the complete contents of `RUPStrikesBack.patch/bootstrap/` onto the project root, including hidden directories such as `.agents/`. The bootstrap package supplies the root compatibility `RUP_patch.md`, `AGENTS.md`, generic portfolio artifacts including an unconfigured `docs/test-profile.md`, and the Codex skill adapters. Keep `RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md` in the local wrapper; do not copy it into the project root. Retain `RUPStrikesBack.patch/RUP_patch.md` as the full, active local policy.
 
 For an existing project, do not overwrite a non-bootstrap artifact silently. Report each conflict and wait for Product Owner direction. Register the submodule in `.gitmodules`.
 

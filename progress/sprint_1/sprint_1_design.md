@@ -6,17 +6,17 @@ Status: Accepted
 
 ### Design summary
 
-The proposed baseline is documented in `docs/inception-baseline.md`. It
-defines the single-operator, local-only MVP: CLI import of a local recording,
-offline timestamped transcript, chair-managed attribution correction, and
-source-linked local minutes and actions. It explicitly defers live capture,
-direct recording, visual attachments, alerts, search, export, permanent
-deletion, and organization features.
+The accepted Software Requirements Specification (SRS) is documented in
+`docs/srs.md`. It defines the single-operator, local-only MVP: CLI import of a
+local recording, offline timestamped transcript, chair-managed attribution
+correction, and source-linked local minutes and actions. It explicitly defers
+live capture, direct recording, visual attachments, alerts, search, export,
+permanent deletion, and organization features.
 
-`docs/candidate-architecture.md` proposes Swift/SwiftUI, a shared Swift Package
-core, a CLI executable, XCTest, local durable storage, and local-model adapter
-contracts. `docs/test-profile.md` supplies the exact proposed Sprint 2 build,
-smoke, unit, and integration commands.
+`docs/architecture.md` records the accepted candidate architecture: Swift/SwiftUI,
+a shared Swift Package core, a CLI executable, XCTest, local durable storage,
+and local-model adapter contracts. `docs/test-profile.md` supplies the exact
+proposed Sprint 2 build, smoke, unit, and integration commands.
 
 ### Feasibility and risks
 
@@ -63,14 +63,14 @@ only after the prototype package exists.
 
 | Backlog item | Proposed evidence |
 |---|---|
-| PBI-003 | System view and stakeholders in `docs/inception-baseline.md` |
-| PBI-004 | Use-case and success-criteria table in `docs/inception-baseline.md` |
-| PBI-005 | Functional and non-functional requirements in `docs/inception-baseline.md` |
-| PBI-006 | Candidate Product Backlog in `docs/inception-baseline.md` |
-| PBI-007 | Initial release scope in `docs/inception-baseline.md` |
-| PBI-008 | Constraints, assumptions, and risks table in `docs/inception-baseline.md` |
-| PBI-009 | `docs/candidate-architecture.md` and `docs/test-profile.md` |
-| PBI-010 | Inception review checkpoint in `docs/inception-baseline.md` |
+| PBI-003 | System view and stakeholders in `docs/srs.md` |
+| PBI-004 | Use-case and success-criteria table in `docs/srs.md` |
+| PBI-005 | Functional and non-functional requirements in `docs/srs.md` |
+| PBI-006 | Candidate Product Backlog in `docs/srs.md` |
+| PBI-007 | Initial release scope in `docs/srs.md` |
+| PBI-008 | Constraints, assumptions, and risks table in `docs/srs.md` |
+| PBI-009 | `docs/architecture.md` and `docs/test-profile.md` |
+| PBI-010 | Inception review checkpoint in `docs/srs.md` |
 
 ## Design approval status
 

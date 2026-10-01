@@ -1,4 +1,4 @@
-# Candidate architecture — Meeting Summarizer
+# Architecture — Meeting Summarizer
 
 Status: Accepted
 

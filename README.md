@@ -68,7 +68,8 @@ The accepted vision establishes a fully local, macOS-first Meeting Summarizer th
 The accepted MVP is a simple local macOS utility: import a recording through
 the CLI, create an offline transcript, let the operator correct speaker
 attribution while reviewing timestamped local media, and produce local minutes
-and action items. The candidate architecture uses Swift/SwiftUI, a shared
+and action items. The accepted [Software Requirements Specification](docs/srs.md)
+and candidate [architecture](docs/architecture.md) use Swift/SwiftUI, a shared
 Swift Package core, XCTest, and local-only storage. Live capture, direct
 recording, visual attachments, alerts, search, export, permanent deletion, and
 sharing are deferred.

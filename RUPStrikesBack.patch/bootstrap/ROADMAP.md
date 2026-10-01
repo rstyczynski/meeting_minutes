@@ -6,11 +6,11 @@ This is a reusable lifecycle outline. A project creates its own roadmap from its
 
 1. Establish the product vision and intended outcomes.
 2. Define stakeholders, use cases, and success criteria.
-3. Define functional and non-functional requirements.
+3. Materialize the Software Requirements Specification (SRS).
 4. Establish and prioritize the Product Backlog.
 5. Define the initial release scope and acceptance criteria.
 6. Identify constraints, assumptions, and major risks.
-7. Define a candidate architecture.
+7. Materialize the candidate architecture.
 8. Review the Inception baseline for consistency and viability.
 
 ## Elaboration

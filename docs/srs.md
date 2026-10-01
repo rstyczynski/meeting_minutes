@@ -1,4 +1,4 @@
-# Inception baseline — Meeting Summarizer
+# Software Requirements Specification — Meeting Summarizer
 
 Status: Accepted
 

@@ -20,6 +20,20 @@ Read the applicable adapter reference and the canonical RUP Strikes Back procedu
 
 Codex acts as the cycle manager. The RUP roles are responsibilities and quality gates, not mandatory long-lived or parallel subagents. Use Codex subagents only for independent, bounded work that does not edit the same artifacts.
 
+## Mandatory artifact routing
+
+Before a RUP-managed artifact is changed, read the specialized skill for that
+artifact in addition to this routing skill:
+
+- `BACKLOG.md`: [rup-backlog](../rup-backlog/SKILL.md)
+- `PLAN.md` or a sprint status: [rup-sprint](../rup-sprint/SKILL.md)
+- `PROGRESS_BOARD.md`: [rup-progress](../rup-progress/SKILL.md)
+
+For a request that changes more than one of these artifacts, read every
+applicable specialized skill before editing. These skills are thin adapters to
+the canonical procedures; they do not replace the local patch or the RUP
+method.
+
 Start a cycle only when the user explicitly requests it and exactly one sprint is marked `Status: Progress`. If no sprint is active, report the condition and ask the Product Owner to select one. Do not change a sprint’s status merely because it is discussed.
 
 In `managed` mode, stop at every manager-defined Product Owner approval or material ambiguity. In `YOLO` mode, apply the local patch when present and document decisions as the method requires; never expand the user’s authority or bypass external-action approvals.

@@ -74,15 +74,15 @@ architectural requirement, but command-line ingestion is the initial input
 path. Success can be defined through offline processing, source-linked review,
 and operator control.
 
-### PBI-005 — Functional and non-functional requirements
+### PBI-005 — Software Requirements Specification
 
-Requirements can be organized around capture/import, transcript and speaker
-correction, local summary/action extraction, reviewability, UI/CLI cooperation,
-local durable data, privacy, performance, accessibility, reliability, and
-portability. The absolute non-functional constraint is no transmission of
-meeting audio, video, transcripts, or metadata to the internet. Requirements
-for retention/deletion, export, encryption, model quality, device baseline,
-and consent handling remain material open decisions.
+`docs/srs.md` must organize requirements around capture/import, transcript and
+speaker correction, local summary/action extraction, reviewability, UI/CLI
+cooperation, local durable data, privacy, performance, accessibility,
+reliability, and portability. The absolute non-functional constraint is no
+transmission of meeting audio, video, transcripts, or metadata to the internet.
+Requirements for retention/deletion, export, encryption, model quality, device
+baseline, and consent handling remain material open decisions.
 
 ### PBI-006 — Product Backlog
 
@@ -113,7 +113,7 @@ privacy boundary.
 
 ### PBI-009 — Candidate architecture
 
-A candidate architecture can use a shared Swift Package core for meeting
+`docs/architecture.md` can propose a shared Swift Package core for meeting
 records, timeline evidence, speaker labels, transcript, and minutes; a thin
 SwiftUI macOS UI adapter; a local event boundary shared with the CLI; local
 model adapters; and local durable storage. XCTest will supply the exact test

@@ -24,11 +24,11 @@ Identify the actors and define representative end-to-end use cases and success c
 
 Test: Review confirms that each use case has a clear actor, outcome, and success criterion.
 
-### PBI-005. Define functional and non-functional requirements
+### PBI-005. Materialize the Software Requirements Specification
 
-Define the functional and non-functional requirements needed to support the agreed use cases and their success criteria.
+Create `docs/srs.md` as the Software Requirements Specification for the agreed system boundary, stakeholders, use cases, success criteria, functional and non-functional requirements, release scope, constraints, assumptions, and risks.
 
-Test: Review confirms that requirements are understandable, testable, and traceable to use cases.
+Test: Review confirms that the SRS is understandable, testable, and traceable to use cases and the accepted vision.
 
 ### PBI-006. Establish and prioritize the Product Backlog
 
@@ -48,15 +48,15 @@ Identify the constraints, assumptions, and major risks affecting the selected in
 
 Test: Review confirms that significant risks have a mitigation or validation approach and assumptions are explicit.
 
-### PBI-009. Define the candidate architecture
+### PBI-009. Materialize the candidate architecture
 
-Define a technology-neutral candidate architecture for the selected initial release, covering shared core capabilities, UI/CLI cooperation, local event coordination, local AI responsibilities, capture, and durable local data. Identify the architectural guidance needed to refine the later prototype work without inventing that work prematurely. Complete the project test profile with the selected toolchain's exact build and test commands before Sprint 2 starts.
+Create `docs/architecture.md` as a technology-neutral candidate architecture for the selected initial release, covering shared core capabilities, UI/CLI cooperation, local event coordination, local AI responsibilities, capture, and durable local data. Identify the architectural guidance needed to refine the later prototype work without inventing that work prematurely. Complete the project test profile with the selected toolchain's exact build and test commands before Sprint 2 starts.
 
 Test: Review confirms that the candidate architecture addresses the selected initial release and its significant risks, and that `docs/test-profile.md` contains the exact commands required for Sprint 2.
 
 ### PBI-010. Review the Inception baseline for consistency and viability
 
-Review the vision and intended outcomes, system view, stakeholders, actors, use cases, requirements, backlog, initial release scope, constraints, assumptions, risks, and candidate architecture as one coherent Inception baseline. Record the checkpoint requiring Sprint 2 to refine PBI-011 into independently reviewable prototype work items from the accepted architecture.
+Review the vision and intended outcomes, `docs/srs.md`, `docs/architecture.md`, Product Backlog, and test profile as one coherent Inception baseline. Record the checkpoint requiring Sprint 2 to refine PBI-011 into independently reviewable prototype work items from the accepted architecture.
 
 Test: Review confirms that the baseline is internally consistent, viable, ready for architecture-risk validation, and has the required prototype-refinement checkpoint.
 
@@ -95,3 +95,15 @@ Test: Review confirms that the milestone decision has explicit supporting eviden
 Create the Construction plan from the validation evidence, including the updated backlog, delivery order, resource assumptions, and remaining risks.
 
 Test: Review confirms that the Construction plan follows accepted decisions, unresolved risks, resource assumptions, and the milestone assessment.
+
+### PBI-017. Chair-assisted participant identification
+
+Status: Proposed
+
+Allow the local operator, acting as meeting chair, to explicitly provide a
+participant list and review suggestions derived only from information they
+intentionally supply. This improves speaker attribution without introducing
+accounts, mailbox access, external lookup, or any departure from the local-only
+privacy boundary.
+
+Test: Review confirms that participant identification uses only explicitly supplied local information and requires no accounts, mailbox access, or network service.

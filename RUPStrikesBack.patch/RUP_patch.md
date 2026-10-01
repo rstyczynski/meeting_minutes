@@ -11,7 +11,7 @@ The project root contains the local adoption layer:
 1. `.gitmodules` registers the RUP Strikes Back submodule and selected branch.
 2. `AGENTS.md` tells Codex where the method is and when to use it.
 3. `RUPStrikesBack.patch/RUP_patch.md` records project-specific method refinements and overrides; the root `RUP_patch.md` is its compatibility entry point.
-4. `.agents/skills/rup-strikes-back/` is the Codex invocation layer: its skill is the explicit entry point and its references map to the canonical manager and phase procedures in the submodule.
+4. `.agents/skills/rup-strikes-back/` is the Codex cycle entry point, while `rup-backlog`, `rup-sprint`, and `rup-progress` are mandatory artifact adapters. Their references map to the canonical manager, command, and phase procedures in the submodule.
 5. `BACKLOG.md` holds Product Owner priorities and backlog-item acceptance signals.
 6. `PLAN.md` holds RUP Strikes Back sprint definitions, statuses, modes, and quality expectations.
 
@@ -33,7 +33,7 @@ Before the first code-bearing sprint, define the project’s test profile in thi
 
 ## P0.2. Generic artifacts bootstrap Sprint 0
 
-`RUPStrikesBack.patch/bootstrap/` contains reusable RUP roadmap, backlog, sprint-plan, and test-profile templates, a generic `AGENTS.md`, and a Codex skill wrapper. `RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md` is the operator-only bootstrap prompt and is deliberately kept outside the overlay. These artifacts are inputs to Sprint 0 only; they are not product requirements or active product backlog items. The bootstrap plan preselects Sprint 0 with `Status: Progress`, but execution still requires an explicit Product Owner request.
+`RUPStrikesBack.patch/bootstrap/` contains reusable RUP roadmap, backlog, sprint-plan, and test-profile templates, a generic `AGENTS.md`, and Codex skill adapters. `RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md` is the operator-only bootstrap prompt and is deliberately kept outside the overlay. These artifacts are inputs to Sprint 0 only; they are not product requirements or active product backlog items. The bootstrap plan preselects Sprint 0 with `Status: Progress`, but execution still requires an explicit Product Owner request.
 
 At project initialization, overlay the complete contents of `RUPStrikesBack.patch/bootstrap/` onto the project root, including hidden directories. Do not copy `RUPStrikesBack.patch/BOOTSTRAP_PROMPT.md` into the project root. The Product Owner explicitly requests execution of the preselected Sprint 0 and supplies the initial product intent through the working conversation. PBI-001 creates and accepts the project `README.md` as the vision product. Sprint 0 then derives this project’s real roadmap and proposes the next sprint from that vision. The generic later-sprint entries are initial hypotheses: Sprint 0 or subsequent iterations may retain, refine, split, reorder, or replace them. After Sprint 0, the root project artifacts—not the generic templates—are the sources of truth for the project’s scope and delivery work.
 
@@ -44,6 +44,20 @@ The generic bootstrap is deliberately tailored over its first three iterations. 
 The root `README.md` holds the accepted product vision and project orientation. `docs/` holds durable shared project deliverables created and accepted during sprints, such as requirements, architecture, decisions, and operating documentation.
 
 `progress/sprint_N/` holds the evidence and review artifacts for one sprint. `tmp/` holds provisional material retained only for reference; it is not a source of truth and must be recreated in `docs/` or another approved location when a sprint formally delivers it. `RUPStrikesBack.patch/bootstrap/` remains the reusable bootstrap input described above.
+
+## P0.4. Anchor progress-board items to an assigned sprint
+
+`PROGRESS_BOARD.md` follows the canonical four-column form and tracks both a
+sprint's real-time status and the real-time statuses of backlog items assigned
+to that sprint. Every backlog-item row must name the Sprint that contains the
+item in `PLAN.md`; an unscheduled item never receives a standalone progress
+board row.
+
+A Product Owner may promote an accepted review or feedback proposal into the
+root backlog with `Status: Proposed`. It remains there, without a progress
+board row, until the Product Owner prioritizes and assigns it to a named Sprint
+in `PLAN.md`. The sprint procedure then creates its board row. This refines the
+canonical `/backlog add` instruction only for unscheduled proposals.
 
 ## P1. Apply the RUP Strikes Back cycle proportionately
 
@@ -56,6 +70,26 @@ This is not a waterfall handoff. Every iteration consciously considers the relev
 ## P1.1. Use progressive plan refinement as a first-class outcome
 
 The plan is an evolving project artifact, not a one-time bootstrap output. Sprint 0 creates the initial project plan. Sprint 1 establishes or revises the Inception plan and evaluates the Lifecycle Objectives decision. Sprint 2 establishes or revises the Construction plan from technical evidence and evaluates the Lifecycle Architecture decision. Later iterations continue to refine scope, risks, ordering, quality expectations, and release plans when evidence requires it.
+
+## P1.2. Materialize durable Inception requirements and architecture artifacts
+
+When an Inception iteration establishes the initial requirements, PBI-005
+materializes `docs/srs.md` as the Software Requirements Specification (SRS).
+It records the accepted system boundary, stakeholders, use cases and success
+criteria, functional and non-functional requirements, initial release scope,
+constraints, assumptions, and risks needed to guide the next iteration.
+
+PBI-009 materializes `docs/architecture.md` as the accepted candidate
+architecture. It explains how the proposed architecture supports the SRS,
+identifies the assumptions requiring Elaboration validation, and defines the
+project's concrete test-profile commands before a code-bearing iteration
+starts. An accepted candidate architecture is an accepted direction for
+validation, not evidence that its technical risks have been retired.
+
+These artifacts are created from the accepted project vision during Inception;
+they are not blank bootstrap templates. Later iterations refine them when
+validation evidence or product decisions change their content. The Inception
+review evaluates them together with the Product Backlog and test profile.
 
 ## P2. Project lifecycle phases set emphasis; they do not prohibit refinement
 

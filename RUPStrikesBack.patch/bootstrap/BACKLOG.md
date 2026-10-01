@@ -24,11 +24,11 @@ Identify the actors and define representative end-to-end use cases and success c
 
 Test: Review confirms that each use case has a clear actor, outcome, and success criterion.
 
-### PBI-005. Define functional and non-functional requirements
+### PBI-005. Materialize the Software Requirements Specification
 
-Define the functional and non-functional requirements needed to support the agreed use cases and their success criteria.
+Create `docs/srs.md` as the Software Requirements Specification for the agreed system boundary, stakeholders, use cases, success criteria, functional and non-functional requirements, release scope, constraints, assumptions, and risks.
 
-Test: Review confirms that requirements are understandable, testable, and traceable to use cases.
+Test: Review confirms that the SRS is understandable, testable, and traceable to use cases and the accepted vision.
 
 ### PBI-006. Establish and prioritize the Product Backlog
 
@@ -48,15 +48,15 @@ Identify material product, legal, technical, delivery, and usability constraints
 
 Test: Review confirms that significant risks have a planned mitigation or validation approach and assumptions are explicit.
 
-### PBI-009. Define the candidate architecture
+### PBI-009. Materialize the candidate architecture
 
-Define a candidate architecture that supports the selected initial release and identifies assumptions requiring validation. Identify the architectural guidance needed to refine the later prototype work without inventing that work prematurely. Complete the project test profile with the selected toolchain's exact build and test commands before the Elaboration iteration starts.
+Create `docs/architecture.md` as a candidate architecture that supports the selected initial release and identifies assumptions requiring validation. Identify the architectural guidance needed to refine the later prototype work without inventing that work prematurely. Complete the project test profile with the selected toolchain's exact build and test commands before the Elaboration iteration starts.
 
 Test: Review confirms that the candidate architecture addresses essential requirements and significant risks, and that the project test profile contains the exact commands required for the Elaboration iteration.
 
 ### PBI-010. Review the Inception baseline for consistency and viability
 
-Review the vision and intended outcomes, system view, stakeholders, actors, use cases, requirements, backlog, initial release scope, constraints, assumptions, risks, and candidate architecture as one coherent Inception baseline. Record the checkpoint requiring the next Elaboration iteration to refine the prototype PBI into independently reviewable work items from the accepted architecture.
+Review the vision and intended outcomes, `docs/srs.md`, `docs/architecture.md`, Product Backlog, and test profile as one coherent Inception baseline. Record the checkpoint requiring the next Elaboration iteration to refine the prototype PBI into independently reviewable work items from the accepted architecture.
 
 Test: Review confirms that the baseline is internally consistent, viable, ready for Elaboration, and has the required prototype-refinement checkpoint.
 

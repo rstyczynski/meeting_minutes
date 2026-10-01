@@ -31,11 +31,11 @@ Backlog Items:
 
 * PBI-003. Define system view and stakeholders
 * PBI-004. Define actors, use cases, and success criteria
-* PBI-005. Define functional and non-functional requirements
+* PBI-005. Materialize the Software Requirements Specification
 * PBI-006. Establish and prioritize the Product Backlog
 * PBI-007. Define the initial release scope
 * PBI-008. Identify constraints, assumptions, and major risks
-* PBI-009. Define the candidate architecture
+* PBI-009. Materialize the candidate architecture
 * PBI-010. Review the Inception baseline for consistency and viability
 
 ## Sprint 2 - Elaboration 1: architecture-risk reduction
