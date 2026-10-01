@@ -148,7 +148,9 @@ weight preparation or prove packaging on another device.
 **PBI-018, local minutes experiment — measured with a quality failure.**
 Xcode 27 and its Metal Toolchain built MLX Swift's shader library. The pinned
 MLX Swift LM 3.31.3 adapter loaded locally staged Qwen3-4B-Instruct-2507
-4-bit weights and generated valid, source-linked minutes from the invented
+4-bit weights (revision `50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b`;
+model SHA-256 `2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f`)
+and generated valid, source-linked minutes from the invented
 five-turn fixture. The model produced one summary, one decision, one action
 with the correct owner ID, and one open question; the CLI persisted all four
 in record `8DAAA0BB-C4A0-4863-9198-025E9FD4E643` under
@@ -389,6 +391,12 @@ JSON and contained 210, 28, and 15 segments, respectively. Files named
 are under `/private/tmp/meeting-minutes-ami/ES2002a/`. This establishes
 local inference with prepared weights on this Mac; it does not test a fresh
 installation with no assets or an iOS package.
+The separately built MLX minutes adapter also exited 0 under the same
+network-denial profile on the invented five-turn transcript and produced
+parseable JSON with cited decision, action, and open-question IDs in
+`/private/tmp/meeting-mlx-synthetic-offline.json`. This establishes local
+LLM inference after staging its weights and Metal shader library; it does
+not repair the natural-meeting content failure described above.
 
 ## Remaining checks
 
