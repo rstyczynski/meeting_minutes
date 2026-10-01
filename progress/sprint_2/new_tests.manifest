@@ -1,0 +1,14 @@
+# Sprint 2 new tests; suite:script[:function]
+smoke:test_cli.sh
+unit:test_core.sh:test_UT1_record_ranges
+unit:test_core.sh:test_UT2_atomic_store
+unit:test_core.sh:test_UT3_import_rejection
+unit:test_core.sh:test_UT4_corrections
+unit:test_core.sh:test_UT5_minutes_validation
+unit:test_core.sh:test_UT6_backend_configuration
+integration:test_meeting_flow.sh:test_IT1_cli_record
+integration:test_meeting_flow.sh:test_IT2_source_links
+integration:test_meeting_flow.sh:test_IT3_correction_review
+integration:test_meeting_flow.sh:test_IT4_chunk_merge
+integration:test_meeting_flow.sh:test_IT5_backend_selection
+integration:test_meeting_flow.sh:test_IT6_fixture_generation

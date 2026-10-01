@@ -1,0 +1,69 @@
+{
+  "fixture_id": "synthetic_meeting_v1",
+  "provenance": "Invented dialogue synthesized with macOS say; no real meeting content",
+  "audio_file": "synthetic_meeting.wav",
+  "sample_rate_hz": 16000,
+  "channels": 1,
+  "speakers": {
+    "speaker_1": "Daniel voice",
+    "speaker_2": "Samantha voice"
+  },
+  "turns": [
+    {
+      "id": "turn_1",
+      "speaker": "speaker_1",
+      "text": "Let's review the release plan for Friday.",
+      "start_seconds": 0.0,
+      "end_seconds": 2.325
+    },
+    {
+      "id": "turn_2",
+      "speaker": "speaker_2",
+      "text": "The audio import is ready for a small test.",
+      "start_seconds": 2.775,
+      "end_seconds": 5.304
+    },
+    {
+      "id": "turn_3",
+      "speaker": "speaker_1",
+      "text": "We decide to test both transcription engines on the same recording.",
+      "start_seconds": 5.754,
+      "end_seconds": 9.565
+    },
+    {
+      "id": "turn_4",
+      "speaker": "speaker_2",
+      "text": "I will write the reference transcript by Thursday.",
+      "start_seconds": 10.015,
+      "end_seconds": 12.542
+    },
+    {
+      "id": "turn_5",
+      "speaker": "speaker_1",
+      "text": "Who will check the speaker labels? That is still open.",
+      "start_seconds": 12.992,
+      "end_seconds": 16.219
+    }
+  ],
+  "minutes": {
+    "decision": {
+      "text": "Test both transcription engines on the same recording",
+      "source_turns": [
+        "turn_3"
+      ]
+    },
+    "action": {
+      "text": "Write the reference transcript by Thursday",
+      "owner": "speaker_2",
+      "source_turns": [
+        "turn_4"
+      ]
+    },
+    "open_question": {
+      "text": "Who will check the speaker labels?",
+      "source_turns": [
+        "turn_5"
+      ]
+    }
+  }
+}
