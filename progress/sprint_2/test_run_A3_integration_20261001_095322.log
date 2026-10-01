@@ -1,0 +1,61 @@
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.16s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testCLIRecordOpen() started.
+✔ Test testCLIRecordOpen() passed after 0.011 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.011 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.011 seconds.
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.15s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testSourceLinks() started.
+✔ Test testSourceLinks() passed after 0.002 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.003 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.003 seconds.
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.15s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testCorrectionAndReview() started.
+✔ Test testCorrectionAndReview() passed after 0.003 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.004 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.004 seconds.
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.15s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testChunkMerge() started.
+✔ Test testChunkMerge() passed after 0.001 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.001 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.001 seconds.
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.16s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testBackendSelection() started.
+✔ Test testBackendSelection() passed after 0.004 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.004 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.004 seconds.
+Building for debugging...
+[0/6] Write swift-version--1AB21518FC5DEDBE.txt
+Build complete! (0.14s)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testFixtureGeneration() started.
+✔ Test testFixtureGeneration() passed after 0.001 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.001 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.001 seconds.
+integration: all available test scripts passed

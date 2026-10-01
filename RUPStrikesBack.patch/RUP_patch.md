@@ -154,3 +154,40 @@ may amend it through an explicit request; do not infer durable preferences
 from incidental conversation. A preference does not change a mandatory
 method-defined artifact structure unless the Product Owner explicitly asks
 for that process change.
+
+## P8. Reconcile documentation and verify before each commit
+
+Work may use multiple edits while completing one increment. An increment is
+an assigned PBI or a sprint-tracked child PBI with its own completion
+evidence. Do not commit after each file change or merely because a phase has
+advanced. After each increment is complete, reconcile its code, tests, and
+documentation as one unit. Before committing it, create or update the active
+sprint's documentation audit under `progress/sprint_N/`. The audit must check
+the root SRS, architecture, test profile, sprint setup, accepted design and
+test specification, implementation record, functional test record, README,
+and progress board against the latest Product Owner decisions and actual
+executable behavior. Record each checked artifact, the evidence inspected,
+corrections made, and any unresolved approval or implementation dependency.
+Check copy-paste commands and expected output against real execution before
+calling them working examples. Label proposed commands and unrun tests as
+pending. Keep the required progress-board table, but follow
+`USER_PREFERENCES.md` for narrative documents.
+
+Run the applicable build, tests, experiments, syntax or link checks, and
+`git diff --check` before the commit. Record the exact checks and their
+results in the sprint evidence. A failed check or unresolved material design
+approval blocks that PBI's completion commit. Stage and commit the completed
+increment's implementation, tests, documentation, and audit evidence
+together. Its Git commit is the durable completion marker; identify that
+commit in the next audit or sprint wrap-up. Work shared by multiple PBIs
+must be attributed in the audit and included with the first completed
+increment that depends on it, without claiming later PBIs are complete.
+This local commit rule does not authorize a remote push.
+
+The audit is a pre-commit and pre-advance control, not the canonical Phase 5
+documentation wrap-up. A failed or incomplete audit blocks the affected next
+step; it does not change a sprint or backlog-item status by itself. In
+managed mode, a material design change still requires Product Owner approval
+before its code or test skeletons are implemented. Record the approval and
+re-run the audit after that change. Do not mark the documentation audit
+complete merely because files exist or their headings match.

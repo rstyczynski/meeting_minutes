@@ -52,10 +52,11 @@ context, not a system user in the MVP; the local operator manages it locally.
 
 ## Use cases and success criteria
 
-### Import a recording
+### Transcribe a recording
 
 The local operator supplies a local audio or video recording as a CLI argument.
-It becomes a local meeting record without network use. A UI file picker is not
+It becomes a local meeting record with a timestamped transcript, without
+network use or automatic generation of minutes. A UI file picker is not
 required for the MVP.
 
 ### Review the transcript
@@ -66,36 +67,64 @@ segment's timestamp.
 
 ### Attribute speakers
 
-The local operator, acting as meeting chair, renames neutral speaker labels to
-participants and corrects an incorrectly attributed segment after reviewing
-the corresponding local media at its timestamp.
+The local operator, acting as meeting chair, may rename neutral speaker labels
+to participants and correct an incorrectly attributed segment after reviewing
+the corresponding local media at its timestamp. This step is optional. If it
+is skipped, a requested meeting summary uses neutral speaker labels.
+
+### Find a participant affected by poor audio
+
+After transcription, the local operator reviews quality warnings. When one
+participant's recording is weak or noisy, the system links suspect time
+ranges to that participant's neutral speaker ID if the audio supports a
+reliable attribution. The operator can seek to the original recording and
+decide whether to correct transcript words or speaker attribution. If the
+system cannot determine which speaker is affected, it shows the suspect
+time range without naming anyone. Success means the operator can locate and
+review the affected speech without treating uncertain attribution as fact.
+
+### Review and recover low-quality audio
+
+When the system finds audio that may undermine transcription or attribution,
+the local operator sees which parts of the record need attention and can
+replay the unchanged original. If a local enhancement or alternate recording
+is available, the operator may compare a new transcript with the original
+result and choose which version to use. A failed or unhelpful recovery keeps
+the original source and previous local result available. Success means poor
+audio is visible, reviewable, and never silently presented as reliable text.
 
 ### Review minutes and actions
 
-The local operator reads locally generated summary, decisions, and action items
-with links to relevant transcript time ranges.
+When requested, the system generates a summary, decisions, and action items
+from the saved transcript, using chair-assigned names where available and
+neutral speaker labels elsewhere. The local operator reads the result with
+links to relevant transcript time ranges. Transcription does not
+automatically trigger this step.
 
 ### Coordinate UI and CLI
 
-The CLI and review player use the same local meeting-record store. After import,
-the CLI prints a local record identifier; the operator opens that record in the
-review player. No background application, event subscription, or automatic
+The CLI and review player use the same local meeting-record store. After
+transcription, the CLI prints a local record identifier; the operator opens
+that record in the review player. The CLI separately controls recognition and
+summary. No background application, event subscription, or automatic
 cross-process refresh is required.
 
 ## Requirements
 
 ### Functional requirements
 
-#### FR-01 — Import local recording
+#### FR-01 — Transcribe local recording
 
-The CLI shall accept a local recording path as an import argument and reject
-nonexistent or unsupported input without copying data to a network service.
+The CLI shall accept a local recording path for a transcribe command and
+reject nonexistent or unsupported input without copying data to a network
+service.
 
 #### FR-02 — Create local meeting record
 
 The system shall create a local meeting record containing source identity,
-timestamps, transcript segments, neutral speaker labels, minutes, decisions,
-actions, and source references.
+timestamps, transcript segments, neutral speaker labels, and source
+references. Minutes, decisions, and actions are added only if summary is
+requested.
 
 #### FR-03 — Generate transcript
 
@@ -105,14 +134,19 @@ recording through a replaceable local transcription adapter.
 #### FR-04 — Correct speaker attribution
 
 The system shall assign neutral speaker labels and allow the meeting chair to
-rename labels and correct a segment's attribution.
+rename labels and correct a segment's attribution through an optional
+recognize step. Chair assignments are authoritative. If recognize is skipped,
+the record and any summary retain neutral speaker labels.
 
 #### FR-05 — Generate source-linked minutes
 
-The system shall generate local minutes containing a summary, decisions, action
-items, and open questions. It may retain and show source references for an
-operator's review, but those references are optional and are not part of the
-participant-facing minutes delivery.
+When requested through a separate summarize command, the system shall
+generate local minutes containing a summary, decisions, action items, and open
+questions from the saved transcript. It shall use assigned speaker names when
+available and otherwise retain neutral labels; it shall not invent a person's
+identity or transcribe the media again. It may retain and show source
+references for an operator's review, but those references are optional and
+are not part of the participant-facing minutes delivery.
 
 #### FR-06 — Share local records between CLI and review player
 
@@ -120,6 +154,48 @@ The CLI and review player shall use the same local meeting-record contract and
 store. The CLI shall print the created record identifier, and the review player
 shall open a record by that identifier. No background application, event
 subscription, or automatic refresh is required.
+
+#### FR-07 — Independent CLI capabilities
+
+The CLI shall expose transcribe, recognize, and summarize as separately
+invoked capabilities. A transcript-only record is valid. Recognize and
+summarize are independent optional operations after transcription. Summarize
+shall run with neutral speaker labels when recognize has not assigned names.
+Detailed rules for changes made after a summary, reruns, and stale derived
+content will be defined from validation evidence in a later iteration.
+
+#### FR-08 — Optional automatic speaker-name suggestions
+
+As a nice-to-have capability beyond the initial MVP, recognize may suggest
+speaker names from local evidence, including spoken introductions in the
+meeting media and, if the operator supplies them, local voice references or
+other local meeting context. Suggestions must identify their evidence and
+uncertainty, remain editable by the chair, and never become confirmed names
+without chair review. The system must work without this capability through
+manual name assignment. Automatic diarization labels alone are not a person's
+identity.
+
+#### FR-09 — Identify a participant affected by low-quality audio
+
+The system shall identify time ranges whose audio quality may make
+transcription or speaker attribution unreliable. When it can determine the
+affected speaker, it shall flag that neutral speaker ID and the relevant
+source ranges for operator review. When it cannot, it shall flag the
+recording or ranges without inventing an identity. The warning shall state
+the uncertainty and shall not present unreliable words or attribution as
+confirmed. Sprint 2 shall validate this requirement against a reference
+participant with a documented microphone problem.
+
+#### FR-10 — Preserve and review low-quality audio
+
+The system shall preserve the original recording and make each suspect range
+replayable for operator review. If local enhancement or an alternate input
+is offered, the operator shall be able to compare its derived result with the
+original result, retain provenance, and keep the prior local result if
+recovery fails or does not help. Sprint 2 shall measure whether the proposed
+local recovery path improves or harms transcription and attribution; exact
+quality thresholds and production recovery policy will be defined from that
+evidence.
 
 ### Non-functional requirements
 
@@ -129,7 +205,7 @@ Meeting audio, video, transcripts, metadata, and derived records remain local an
 
 #### NFR-02 — Portable core
 
-Core meeting-domain code must not depend on SwiftUI, AppKit, or a capture API. Core XCTest tests must compile and run without the app target.
+Core meeting-domain code must not depend on SwiftUI, AppKit, or a capture API. Core Swift tests must compile and run without the app target.
 
 #### NFR-03 — Replaceable platform adapters
 
@@ -148,11 +224,14 @@ Processing failures are explicit and preserve the source recording and already-c
 Included:
 
 - A single local macOS operator.
-- CLI import of a local recording using a positional or named input argument.
+- CLI transcription of a local recording using a positional or named input argument.
 - Offline transcript creation with neutral labels.
-- Chair-managed participant naming and attribution correction.
-- Local minutes, decisions, action items, and open questions; optional source
-  references are available only for operator review.
+- Detection and review flags for audio regions or participants whose recording
+  quality undermines transcription or attribution.
+- Optional chair-managed participant naming and attribution correction.
+- Optional, separately invoked local minutes, decisions, action items, and
+  open questions, using assigned names when available and neutral labels
+  otherwise; source references are available only for operator review.
 - A local SwiftUI review player that opens a CLI-created local record and
   synchronizes transcript selection with local-media seeking.
 
@@ -163,6 +242,8 @@ Excluded:
 - Alerts, search, export, permanent deletion, automatic sharing, and cloud sync.
 - Participant accounts, organization administration, and policy management.
 - Persistent facial identification.
+- Automatic speaker-name discovery from media or local voice references
+  (FR-08); manual assignment remains in the MVP.
 
 ## Candidate Product Backlog
 
@@ -171,11 +252,14 @@ backlog until accepted.
 
 1. Import a local recording into a durable local meeting record.
 2. Create an offline timestamped transcript through a local-model adapter.
-3. Support chair-managed speaker naming and attribution correction.
-4. Generate source-linked local minutes, decisions, actions, and open questions.
+3. Support optional chair-managed speaker naming and attribution correction.
+4. Generate source-linked local minutes, decisions, actions, and open questions
+   only when requested, with or without prior speaker-name assignment.
 5. Open and review a local meeting record by its CLI-created identifier in the SwiftUI review player.
 6. Validate privacy, local-model feasibility, record-opening flow, and iOS portability through an architectural prototype.
 7. Add deferred capture, retention, search, export, and sharing capabilities only as separately prioritized increments.
+8. Consider optional automatic speaker-name suggestions under FR-08 only as a
+   separately prioritized increment.
 
 ## Constraints, assumptions, and risks
 
@@ -194,6 +278,15 @@ The MVP accepts only a small documented set of local formats. Media decoding may
 ### Attribution
 
 Chair corrections are authoritative for the meeting record, but automated speaker segmentation can be inaccurate. Sprint 2 must test correction persistence and source traceability.
+
+### Low-quality participant audio
+
+A participant's microphone may be distant, missing, or noisy while other
+voices remain clear. Sprint 2 must test whether the candidate local pipeline
+detects the affected participant or time ranges, measure transcription and
+attribution quality separately for that participant when reference data
+allows, and report whether local preprocessing helps or harms the result.
+The system must preserve and make reviewable the original audio.
 
 ### Durable data
 

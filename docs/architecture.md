@@ -2,14 +2,21 @@
 
 Status: Accepted
 
+This is the Sprint 1 candidate architecture. Sprint 2 has revised the SRS
+with separate transcription, optional speaker recognition, optional summary,
+and low-quality-audio use cases. The shared core and local-adapter direction
+remain accepted. The single-import flow below is the original baseline;
+its replacement is under managed-mode design review, as recorded in the
+[Sprint 2 change proposal](../progress/sprint_2/sprint_2_proposedchanges.md).
+
 ## Decision
 
 Use Swift on macOS, with a SwiftUI review application, a shared Swift Package
-core, a command-line executable, XCTest, local-only storage, and replaceable
+core, a command-line executable, Swift Testing, local-only storage, and replaceable
 local-model adapters. This is a candidate architecture, not a claim that the
 selected local AI models have already passed feasibility validation.
 
-Swift Package Manager provides package targets and XCTest test targets; SwiftUI
+Swift Package Manager provides package and test targets; SwiftUI
 is designed for Apple-platform user interfaces. The architecture therefore
 keeps reusable domain behavior in the package and restricts macOS UI/capture
 integration to adapters. See [Swift Package documentation](https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html)
@@ -29,13 +36,22 @@ flowchart LR
     FutureCapture[Future macOS capture adapter] -. deferred .-> Core
 ```
 
-| Component | Responsibility | Must not do |
-|---|---|---|
-| `MeetingCore` | Meeting record, timeline references, attribution corrections, use cases, validation, and protocol contracts | Import SwiftUI/AppKit or call a network service |
-| `MeetingCLI` | Parse input arguments, invoke import, report local result/error | Own a separate record format or processing logic |
-| `MeetingMacApp` | SwiftUI local-media review player and chair correction workflow | Contain core transcription or minutes logic |
-| Local-model adapters | Invoke a selected on-device transcription, diarization, or minutes implementation | Expose remote fallback behavior |
-| Local meeting store | Atomically persist source references and derived data within the app-controlled local location | Synchronize to a cloud service |
+`MeetingCore` owns the meeting record, timeline references, attribution
+corrections, use cases, validation, and protocol contracts. It must not import
+SwiftUI or AppKit or call a network service.
+
+`MeetingCLI` parses arguments, invokes core use cases, and reports local
+results or errors. It must not own a separate record format or processing
+logic. The current prototype exposes `import`; the proposed revision exposes
+`transcribe`, `recognize`, and `summarize` independently.
+
+`MeetingMacApp` is the SwiftUI local-media review player and chair correction
+workflow. It must not contain core transcription or minutes logic.
+
+Local-model adapters invoke the selected on-device transcription,
+diarization, or minutes implementation. They must not expose a remote
+fallback. The local meeting store atomically persists source references and
+derived data; it must not synchronize to a cloud service.
 
 ## Domain contract
 
@@ -52,6 +68,23 @@ operator opens that identifier in the review player, which reloads the record
 from the store and seeks local media when the operator selects a source range.
 This avoids duplicate business logic, a running background app, and a separate
 IPC payload.
+
+## Sprint 2 change under review
+
+The requested CLI will split the baseline import flow into a transcript-only
+operation, optional speaker-turn recognition and chair edits, and optional
+minutes generation. A summary may use neutral labels if the recognition step
+is skipped. These operations should update the same local meeting record and
+retain model provenance. Their exact commands, persistence behavior, and
+tests are in the Sprint 2 proposal until its design revision is accepted.
+
+The revised SRS also requires warnings for audio that may undermine
+transcription or attribution. The architecture must allow warnings to refer
+to a neutral speaker ID when supported by evidence, or to a source range
+alone when speaker attribution is uncertain. It must preserve the original
+recording and prior local result for comparison with any alternate input.
+Sprint 2 PBI-018 tests this risk on an approved AMI meeting; the benchmark
+does not yet establish a production detection threshold or recovery policy.
 
 ## Platform and portability
 

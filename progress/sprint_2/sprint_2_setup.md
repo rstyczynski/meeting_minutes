@@ -16,14 +16,18 @@ the backlog and sprint procedures. Only assigned items appear on the progress
 board. No remote push is authorized by this sprint request.
 
 The accepted test profile names exact Swift build, smoke, unit, and integration
-commands. Its introductory template wording is stale, but its command fields
-are filled and Sprint 1 review accepted them. No real meeting data may enter
+commands. Its introductory status and runner commands were reconciled during
+Sprint 2 documentation review. No real meeting data may enter
 source, fixtures, or logs. Sprint 2 is an architecture-risk prototype, not a
 production release.
 
 Open contracting questions: none. Ready for analysis.
 
 ## Analysis
+
+This section records the initial analysis at Sprint 2 setup. Later Product
+Owner decisions and construction status are tracked in the cross-sprint
+impact section below and the implementation record.
 
 The accepted MVP imports an existing local recording through the CLI, creates
 a timestamped offline meeting record, allows chair correction of neutral
@@ -114,3 +118,41 @@ comparison requested for this sprint. PBI-011 supplies the executable
 prototype; Sprint 3 PBI-012 uses its benchmark evidence for broader validation.
 The earlier notes about placing the benchmark within PBI-011.5 record the
 superseded proposal.
+
+## Cross-sprint requirements impact — 2026-10-01
+
+During Sprint 2, the Product Owner refined the CLI workflow to three
+independently invoked capabilities: transcribe, optional recognize, and
+optional summarize. A summary may use neutral speaker labels when no names
+have been assigned. The Product Owner also requested optional automatic
+speaker-name suggestions from local evidence as a nice-to-have functional
+requirement beyond the initial MVP. These decisions revised the durable
+Sprint 1 SRS in docs/srs.md, particularly FR-01, FR-02, FR-04, FR-05,
+FR-07, FR-08, the use cases, and release scope. The SRS is a shared
+project artifact, not a Sprint 2-only document.
+
+The Product Owner subsequently added FR-09 and FR-10 for low-quality meeting
+audio, including participant-level detection or warning when possible,
+original preservation, review, and comparison of any alternate input. These
+have corresponding use cases in the SRS. The requirements are critical to
+validate in Sprint 2 against the approved
+ES2002a meeting's documented headset problem. It is another change to the
+Sprint 1 SRS baseline and must be included in the cross-sprint review.
+
+This change triggers a cross-sprint baseline review. Sprint 1 PBI-004
+(use cases), PBI-005 (SRS), PBI-009 (candidate architecture), and PBI-010
+(Inception consistency review) may no longer be fully supported by their
+original evidence. The architecture's single-import flow and the Sprint 2
+accepted design must be reconciled with the revised SRS. The test profile
+must also be checked against the new commands. If review finds that an
+earlier acceptance result is invalid, record a targeted redo or replacement
+as new backlog and sprint work through the Product Owner's process. Do not
+silently rewrite Sprint 1 history or change its Done status. Sprint 3's
+PBI-012 through PBI-014 provide a planned evidence-based review point,
+subject to Product Owner prioritization if extra redo work is required.
+The current Sprint 2 design still specifies a combined import operation;
+construction of the revised CLI workflow waits for an updated design and
+Product Owner acceptance in managed mode.
+Sprint 2 validates the separability and feasibility of the three
+capabilities; detailed dependency and stale-derived-content rules belong
+to later requirements refinement, not this architecture-risk benchmark.

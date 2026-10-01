@@ -2,6 +2,56 @@
 
 Status: Accepted
 
+The original combined `import` design below remains the accepted baseline
+for work already built. The Product Owner subsequently requested separate
+`transcribe`, optional `recognize`, and optional `summarize` commands. Their
+revised contract and test coverage are in
+[the change proposal](sprint_2_proposedchanges.md), pending the managed-mode
+design decision. The FR-09/FR-10 low-quality-audio experiment was separately
+approved and added below. Do not read `Status: Accepted` as approval of the
+three-command revision.
+
+## Proposed CLI revision — awaiting Product Owner approval
+
+Status: Proposed. This section is a managed-mode design amendment and does
+not authorize code or test-skeleton changes until accepted.
+
+`transcribe <local.wav> --transcriber fluid|whisper` will validate local
+media, run the selected local ASR adapter, and atomically create one record
+with timed transcript segments, backend provenance, and neutral or unknown
+speaker labels. It will not create minutes. The existing store contract and
+record ID will remain the handoff to the review player.
+
+`recognize <record-id> --diarizer fluid` will optionally assign neutral
+speaker turns to that same record from local audio. `recognize name` will let
+the chair assign a display name to an existing speaker ID, and `recognize
+move` will reassign a segment while preserving its source range. Automatic
+person-name suggestions from media or local voice references remain the
+nice-to-have FR-08, outside this prototype's MVP acceptance. If recognition
+is skipped, a summary can still use neutral or unknown labels.
+
+`summarize <record-id> --summarizer mlx` will read the saved transcript and
+current chair assignments, run a local LLM, validate cited source segments,
+and atomically add review items without transcribing again. A missing model,
+unknown record, invalid source ID, or failed generation must leave the prior
+record usable. Detailed rules for changes after a summary and reruns are
+deferred to later requirements refinement, as the Product Owner directed.
+The complete proposed command syntax and error cases are recorded in
+[the change proposal](sprint_2_proposedchanges.md).
+
+The proposed test amendment is: **SM-2** checks that help advertises all
+three commands. **UT-7** checks a transcript-only result and unchanged store
+on a missing-media error. **UT-8** checks name assignment and segment movement
+without losing source ranges. **UT-9** checks that minutes validation rejects
+unknown source IDs and that no recognition is needed for neutral-label
+summary. **IT-7** executes the three commands in separate processes against
+one synthetic fixture and one store, checking JSON after each step. **IT-8**
+skips recognition and confirms the optional summary retains neutral labels.
+**IT-9** checks unknown record and missing local model failures preserve the
+last valid record. These are proposed test specifications; executable
+skeletons and `new_tests.manifest` updates follow design acceptance, before
+construction. Real-model quality remains under PBI-018 experiments.
+
 ## Objective and boundary
 
 Exercise the accepted macOS-first architecture with an executable Swift
@@ -19,7 +69,7 @@ already selected.
 The accepted Sprint 1 architecture selects **Swift** for the product prototype:
 `MeetingCore`, the `meeting-summarizer` CLI, the local store, model adapter
 contracts, and the macOS review application. SwiftUI supplies the review UI;
-XCTest verifies Swift behavior. This keeps the shared core usable from a
+Swift Testing verifies Swift behavior. This keeps the shared core usable from a
 future iOS adapter and matches the accepted `swift build` and `swift test`
 quality gates. The Sprint 2 design applies that existing choice; it does not
 silently select a new product language.
@@ -162,7 +212,7 @@ diarization, or LLM quality.
 ### Feasibility and errors
 
 Swift 6.3.3 is available on the working Mac. The accepted Swift Package,
-SwiftUI, and XCTest structure supplies the build path. Media playback and seek
+SwiftUI, and Swift Testing structure supplies the build path. Media playback and seek
 remain macOS adapter responsibilities. The design handles missing input,
 unsupported codec, malformed timestamps, missing record ID, adapter failure,
 and failed atomic write with explicit local errors. No path silently calls a
@@ -216,6 +266,42 @@ attribution using the same reference. The evaluation report must show results
 for each engine, its model revision and configuration, and measurement limits.
 Sprint 3 analyzes the results and recommends a default; both remain
 operator-selectable unless the Product Owner changes scope.
+
+### FR-09 and FR-10 low-quality audio validation — approved revision
+
+The Product Owner made low-quality audio and identification of an affected
+participant a critical Sprint 2 validation requirement and approved this
+design revision on 2026-10-01. The SRS contains separate use cases and
+requirements for finding the affected participant (FR-09) and preserving
+and reviewing the source and recovery result (FR-10). The approved natural
+fixture is AMI ES2002a.
+Its official data-problems record says participant 1 wore a headset
+improperly, and the official meeting metadata maps participant 1 to
+annotation speaker A. The mixed headset recording is the normal prototype
+input; individual speaker tracks and annotations are evaluation references,
+never hints supplied to the recognition pipeline.
+
+For both ASR engines, score the unchanged headset mix against the same manual
+reference, including errors in A's turns and in the other speakers' turns.
+Compare speaker attribution and inspect whether the pipeline produces a
+reviewable low-quality warning attached to an affected neutral speaker ID or
+source time range. Use the manual annotation only afterward to measure how
+well the warning covers A's affected speech and to count missed regions and
+warnings on other speakers. If speaker attribution is uncertain, retain a
+region-level warning without asserting an identity. Then run the mixed lapel
+recording as a separate alternate-input condition and measure whether it
+improves or worsens transcription and attribution. Preserve the original
+recording and report uncertainty and resource costs.
+
+The participant-recognition experiment passes only if the prototype itself
+produces the reviewable warning and reference alignment shows it covers A's
+degraded speech. Manual identification from the corpus metadata is not a
+prototype result. FR-10 additionally requires that the original remain
+available, the affected ranges can be replayed, and the alternate-input
+result can be compared without destroying the prior result. If those
+behaviors are absent or inaccurate, report the respective requirement as
+failing validation with the measured model results. Sprint 3 will set
+production thresholds and recovery policy from this evidence.
 
 ### Open-source library choices for the audio pipeline
 
@@ -489,15 +575,24 @@ on exactly the EXP-3 audio. Score each engine against one reference transcript
 using the same normalization, and compare time boundaries, runtime, memory,
 and footprint. Repeat on an approved natural meeting sample; if absent, mark
 representative accuracy blocked. This covers PBI-018.
+**EXP-5:** Use AMI ES2002a's unchanged mixed headset recording for both
+engines and the official participant-1-to-A mapping as a scoring reference.
+Measure A's and other speakers' transcript and attribution errors separately;
+measure whether prototype warnings identify A or affected source ranges,
+including misses and warnings on other speakers. Run the mixed lapel audio
+as a separate recovery condition and check original preservation and review
+of suspect ranges. Record a pass or failure for FR-09 and FR-10 and all
+limitations. This covers PBI-018 and the approved FR-09/FR-10 revision.
 
 The real-model runs in PBI-011.5 and PBI-018 have a separate experiment record;
 they cannot be made deterministic unit tests and are required evidence for
 the milestone assessment. Runnable shell skeletons and the new-test manifest
-are attached under `tests/` and `progress/sprint_2/`. The unit skeleton run
-is red: all six cases fail because `Package.swift` does not yet exist. This
-confirms runner wiring, not the assertions; XCTest bodies will be added only
-after design approval and the Swift package exists. The project-specific
-Swift commands in `docs/test-profile.md` remain the build and quality gates.
+are attached under `tests/` and `progress/sprint_2/`. At the original design
+review, the unit skeleton run was red because `Package.swift` did not yet
+exist. Construction has since added the package and Swift Testing bodies;
+preliminary runs pass, as recorded in the implementation and test documents.
+The project-specific commands in `docs/test-profile.md` remain the build and
+quality gates.
 
 ## Review decisions requested
 

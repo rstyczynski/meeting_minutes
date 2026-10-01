@@ -55,7 +55,11 @@ having to rely on memory or an external service holding their meeting data.
 
 ## Sprint 0 status
 
-Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and the tailored roadmap as PBI-002. Sprint 1 has established the accepted Inception baseline. Sprint 2 remains planned until the Product Owner activates it.
+Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and
+the tailored roadmap as PBI-002. Sprint 1 established the Inception baseline.
+Sprint 2 is active in managed mode and is building an architectural prototype
+and benchmarking its technical choices. The vision above describes the
+longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 
 ## Recent updates
 
@@ -70,6 +74,26 @@ the CLI, create an offline transcript, let the operator correct speaker
 attribution while reviewing timestamped local media, and produce local minutes
 and action items. The accepted [Software Requirements Specification](docs/srs.md)
 and candidate [architecture](docs/architecture.md) use Swift/SwiftUI, a shared
-Swift Package core, XCTest, and local-only storage. Live capture, direct
+Swift Package core, Swift Testing, and local-only storage. Live capture, direct
 recording, visual attachments, alerts, search, export, permanent deletion, and
 sharing are deferred.
+
+### Sprint 2 — Architectural prototype and benchmark in progress
+
+PBI-011 is constructing the Swift core, local store, CLI, review player, and
+local model adapters. PBI-018 will benchmark FluidAudio and whisper.cpp on
+the same approved AMI meeting recording. The Product Owner added use cases and
+requirements for low-quality audio, including warnings for the affected
+speaker or source ranges and review of the original recording. The
+[Sprint 2 design](progress/sprint_2/sprint_2_design.md) specifies the
+experiment; the [implementation record](progress/sprint_2/sprint_2_implementation.md)
+and [test record](progress/sprint_2/sprint_2_tests.md) state what has actually
+run. Real-model measurements and formal quality gates are pending.
+
+The Product Owner also requested three independent CLI capabilities:
+`transcribe`, optional `recognize`, and optional `summarize`. The current
+executable still has a combined `import` command for the synthetic fixture.
+The [CLI change proposal](progress/sprint_2/sprint_2_proposedchanges.md)
+records the requested commands. They are not working commands yet; the
+accepted design and functional tests require revision before their
+implementation proceeds in managed mode.
