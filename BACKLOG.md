@@ -66,6 +66,12 @@ Build a focused executable prototype that exercises the selected MVP's architect
 
 Test: Review confirms that the prototype can be executed and covers the intended architectural paths.
 
+### PBI-018. Benchmark technical decisions
+
+Compare architecturally significant technology options on common test data and explicit quality and resource measures. Record the evidence, tradeoffs, and unresolved limits so later validation and architecture decisions have a sound basis.
+
+Test: Review confirms that compared options used the same evaluation basis and that results and limits are reproducible.
+
 ### PBI-012. Validate critical technical assumptions and use cases
 
 Use the prototype to gather evidence for the highest-risk local capture, transcription, attribution, summarization/action, and UI/CLI-coordination assumptions and use cases.

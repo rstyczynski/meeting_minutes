@@ -57,7 +57,7 @@ logs.
 
 ## Operational validation
 
-PBI-011/PBI-012 must define and perform the applicable manual checks for local
+PBI-011/PBI-018 must define and perform the applicable manual checks for local
 recording import, local-model execution, and opening a CLI-created record in
 the review player. Live capture is deferred. iOS portability is checked by building and testing
 `MeetingCore` without macOS-only imports; it does not require an iOS app in

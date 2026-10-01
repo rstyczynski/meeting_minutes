@@ -46,30 +46,31 @@ Test: smoke, unit, integration
 Regression: smoke, unit, integration
 
 Build an executable architectural prototype with both selectable transcription
-backends and benchmark them on the same test data. Before construction, refine
-PBI-011 into reviewable `PBI-011.1`-style sub-PBIs from the accepted architecture.
-The Product Owner split evidence-dependent baseline and planning work into
-Sprint 3 so prototype and benchmark results can be reviewed first.
+backends, then benchmark the technical options on the same test data. Before
+construction, refine PBI-011 into reviewable `PBI-011.1`-style sub-PBIs from
+the accepted architecture. The Product Owner moved broader validation and
+evidence-dependent decisions to Sprint 3.
 
 Backlog Items:
 
 * PBI-011. Build an executable architectural prototype
-* PBI-012. Validate critical technical assumptions and use cases
+* PBI-018. Benchmark technical decisions
 
 ## Sprint 3 - Elaboration 2: evidence-based baseline
 
 Status: Planned
 Mode: managed
-Test: none
+Test: smoke, unit, integration
 Regression: smoke, unit, integration
 
-Use Sprint 2 prototype and benchmark evidence to refine requirements, stabilize
-the architecture, assess the Lifecycle Architecture milestone, and create the
-Construction plan. These outcomes depend on Sprint 2 evidence and are reviewed
-as a separate iteration.
+Use the Sprint 2 prototype and benchmark evidence to validate critical
+assumptions and use cases, refine requirements, stabilize the architecture,
+assess the Lifecycle Architecture milestone, and create the Construction plan.
+These outcomes depend on Sprint 2 evidence and receive a separate review.
 
 Backlog Items:
 
+* PBI-012. Validate critical technical assumptions and use cases
 * PBI-013. Refine use cases and supplementary requirements
 * PBI-014. Stabilize the architecture baseline
 * PBI-015. Assess the Lifecycle Architecture milestone

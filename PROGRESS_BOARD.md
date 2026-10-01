@@ -18,7 +18,8 @@
 | Sprint 2 | under_design | PBI-011.3 | under_design |
 | Sprint 2 | under_design | PBI-011.4 | under_design |
 | Sprint 2 | under_design | PBI-011.5 | under_design |
-| Sprint 2 | under_design | PBI-012 | under_design |
+| Sprint 2 | under_design | PBI-018 | under_design |
+| Sprint 3 | Planned | PBI-012 | Planned |
 | Sprint 3 | Planned | PBI-013 | Planned |
 | Sprint 3 | Planned | PBI-014 | Planned |
 | Sprint 3 | Planned | PBI-015 | Planned |

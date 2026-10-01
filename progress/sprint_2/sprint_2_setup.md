@@ -96,3 +96,21 @@ can use the completed Sprint 2 evidence. PBI-012 may validate completed
 prototype paths incrementally instead of waiting for the whole prototype.
 The earlier analysis of PBI-013 through PBI-016 above records the initial
 scope; their execution now belongs to Sprint 3.
+
+## Replanning correction — 2026-10-01
+
+The Product Owner clarified that PBI-012 is the broader validation item and
+belongs with PBI-013 through PBI-016 in Sprint 3. Sprint 2 keeps the
+same-data FluidAudio and whisper.cpp benchmark as acceptance evidence for
+PBI-011.5. The earlier analysis and replanning note record the evolving
+scope; the current assignments are those in `PLAN.md`.
+
+## Benchmark item decision — 2026-10-01
+
+The Product Owner made benchmarking an independent Product Backlog item,
+PBI-018, assigned to Sprint 2. It compares technical options using shared
+test data and documented measures, including the FluidAudio and whisper.cpp
+comparison requested for this sprint. PBI-011 supplies the executable
+prototype; Sprint 3 PBI-012 uses its benchmark evidence for broader validation.
+The earlier notes about placing the benchmark within PBI-011.5 record the
+superseded proposal.
