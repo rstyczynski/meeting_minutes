@@ -122,3 +122,32 @@ documents. The mandatory progress board retains its four-column table.
 `git diff --check` passed. The board marks PBI-011.6 tested and keeps the
 parent and Sprint under construction; PBI-018 remains under construction
 pending its separate audit and local commit. No remote push is authorized.
+
+## PBI-018 bilingual extension pre-commit reconciliation — 2026-10-01
+
+PBI-011.6 was committed as `3717845` after its own audit. PBI-018's new
+increment compares Parakeet v3 and multilingual Whisper base on the same
+five English and five Polish FLEURS clips per language. The decision-facing
+benchmark reports 11.49%/3.41% versus 18.39%/27.27% WER, Unicode CER,
+per-sample outcomes, fresh-process wall times, model footprint, licensing,
+input and model hashes, offline Polish inference, a Whisper Metal load
+failure, and an exploratory mixed-language `auto` failure. The report
+separates these short read-speech results from the earlier AMI English
+meeting benchmark and preserves the limitations of the tiny sample and
+missing verified speaker IDs. The SRS and architecture present model choice
+as an open decision. The test profile, accepted Sprint 2 design, setup,
+implementation, test record, README, documentation summary, and progress
+board now agree that measurement is complete while Sprint 3 PBI-012 must
+analyze it. The raw references, 20 paired runs, four `auto` runs, and mixed
+records are saved in the Sprint 2 test evidence directory.
+
+The corrected single gate wrapper ran A1/A2/A3/B1/B2/B3 for this PBI-018
+increment with stamp `20261001_211557`; all six logs end with an actual
+`Finished: ... (PASS)` and are linked in the test record. The earlier
+`pbi18_languages` false-positive logs remain linked and explained. Before
+this local completion commit, the source and scoring scripts compiled,
+all results JSON parsed, 92 retained gate logs had 92 links, a fresh
+16-document local-link and narrative-format check found zero issues, and
+`git diff --check` passed. The board advances only PBI-018 to tested;
+PBI-011 and Sprint 2 stay under construction until their corrected-wrapper
+parent gates and separate reconciliation. No remote push is authorized.
