@@ -57,8 +57,9 @@ having to rely on memory or an external service holding their meeting data.
 
 Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and
 the tailored roadmap as PBI-002. Sprint 1 established the Inception baseline.
-Sprint 2 is active in managed mode and is building an architectural prototype
-and benchmarking its technical choices. The vision above describes the
+Sprint 2 remains active in managed mode. Its architectural prototype and
+benchmark are implemented and tested; documentation awaits Product Owner review.
+The vision above describes the
 longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 
 ## Recent updates
@@ -78,10 +79,10 @@ Swift Package core, Swift Testing, and local-only storage. Live capture, direct
 recording, visual attachments, alerts, search, export, permanent deletion, and
 sharing are deferred.
 
-### Sprint 2 — Architectural prototype and benchmark in progress
+### Sprint 2 — Architectural prototype and benchmark implemented
 
-PBI-011 is constructing the Swift core, local store, CLI, review player, and
-local model adapters. PBI-018 measures FluidAudio and whisper.cpp on
+PBI-011 built and tested the Swift core, local store, CLI, review player, and
+local model adapters. PBI-018 measured FluidAudio and whisper.cpp on
 the same approved AMI meeting recording. The Product Owner added use cases and
 requirements for low-quality audio, including warnings for the affected
 speaker or source ranges and review of the original recording. The
@@ -91,6 +92,16 @@ and [test record](progress/sprint_2/sprint_2_tests.md) state what has actually
 run. The [benchmark report](progress/sprint_2/ami_asr_benchmark.md) gives
 measured quality, speed, memory, model size, speaker attribution, and
 low-quality-audio results with their limitations.
+
+On the common AMI headset input, FluidAudio reached 19.48% word error rate
+against 28.79% for whisper.cpp; the weak-headset participant remained hard to
+identify because diarization merged two people. The local MLX adapter ran and
+saved minutes, but its natural-audio sample invented actions and questions and
+therefore failed content quality. The benchmark records the precise evidence
+and leaves architecture interpretation for Sprint 3. All five PBI-011 child
+increments, PBI-018, and the PBI-011 parent passed their separate six-gate
+runs. The [Sprint 2 documentation review](progress/sprint_2/sprint_2_documentation.md)
+shows the traceability and remaining limits.
 
 The accepted CLI has three independent capabilities: `transcribe`, optional
 `recognize`, and optional `summarize`. `transcribe` saves a transcript-only
