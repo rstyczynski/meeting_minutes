@@ -68,15 +68,15 @@ Test: Review confirms that the prototype can be executed and covers the intended
 
 ### PBI-018. Benchmark technical decisions
 
-Compare architecturally significant technology options on common test data and explicit quality and resource measures. Record the evidence, tradeoffs, and unresolved limits so later validation and architecture decisions have a sound basis.
+Compare architecturally significant technology options on common test data and explicit quality and resource measures. Preserve reproducible measurements and their limits so the next iteration can analyze them and make architecture decisions.
 
 Test: Review confirms that compared options used the same evaluation basis and that results and limits are reproducible.
 
 ### PBI-012. Validate critical technical assumptions and use cases
 
-Use the prototype to gather evidence for the highest-risk local capture, transcription, attribution, summarization/action, and UI/CLI-coordination assumptions and use cases.
+Analyze the prototype and benchmark evidence against the highest-risk local capture, transcription, attribution, summarization/action, and UI/CLI-coordination assumptions and use cases. Perform targeted follow-up validation where the evidence is incomplete.
 
-Test: Review confirms that each significant assumption and use case has validation evidence or explicitly defined remaining work.
+Test: Review confirms that each significant assumption and use case has an evidence-based conclusion or explicitly defined remaining work.
 
 ### PBI-013. Refine use cases and supplementary requirements
 

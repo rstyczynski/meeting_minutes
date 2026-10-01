@@ -63,7 +63,7 @@ Mode: managed
 Test: smoke, unit, integration
 Regression: smoke, unit, integration
 
-Use the Sprint 2 prototype and benchmark evidence to validate critical
+Analyze the Sprint 2 prototype and benchmark evidence against critical
 assumptions and use cases, refine requirements, stabilize the architecture,
 assess the Lifecycle Architecture milestone, and create the Construction plan.
 These outcomes depend on Sprint 2 evidence and receive a separate review.
