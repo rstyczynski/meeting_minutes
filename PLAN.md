@@ -40,7 +40,7 @@ Backlog Items:
 
 ## Sprint 2 - Elaboration 1: architecture-risk reduction
 
-Status: Planned
+Status: Progress
 Mode: managed
 Test: smoke, unit, integration
 Regression: smoke, unit, integration

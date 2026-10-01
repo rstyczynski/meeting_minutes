@@ -12,3 +12,9 @@
 | Sprint 1 | tested | PBI-008 | tested |
 | Sprint 1 | tested | PBI-009 | tested |
 | Sprint 1 | tested | PBI-010 | tested |
+| Sprint 2 | under_analysis | PBI-011 | analysed |
+| Sprint 2 | under_analysis | PBI-012 | analysed |
+| Sprint 2 | under_analysis | PBI-013 | analysed |
+| Sprint 2 | under_analysis | PBI-014 | analysed |
+| Sprint 2 | under_analysis | PBI-015 | analysed |
+| Sprint 2 | under_analysis | PBI-016 | analysed |
