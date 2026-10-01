@@ -45,20 +45,31 @@ Mode: managed
 Test: smoke, unit, integration
 Regression: smoke, unit, integration
 
-This is a provisional Elaboration iteration. It builds an executable
-architectural prototype, validates the highest-risk technical assumptions and
-use cases, refines requirements from the evidence, stabilizes the architecture
-baseline, assesses the Lifecycle Architecture milestone, and creates the
-Construction plan. Sprint 0 and Sprint 1 may retain, refine, split, reorder,
-or replace it. Before prototype construction, Sprint 2 setup/design refines
-PBI-011 into independently reviewable `PBI-011.1`-style sub-PBIs using the
-accepted candidate architecture; it must not invent those work items during
-Inception.
+Build an executable architectural prototype with both selectable transcription
+backends and benchmark them on the same test data. Before construction, refine
+PBI-011 into reviewable `PBI-011.1`-style sub-PBIs from the accepted architecture.
+The Product Owner split evidence-dependent baseline and planning work into
+Sprint 3 so prototype and benchmark results can be reviewed first.
 
 Backlog Items:
 
 * PBI-011. Build an executable architectural prototype
 * PBI-012. Validate critical technical assumptions and use cases
+
+## Sprint 3 - Elaboration 2: evidence-based baseline
+
+Status: Planned
+Mode: managed
+Test: none
+Regression: smoke, unit, integration
+
+Use Sprint 2 prototype and benchmark evidence to refine requirements, stabilize
+the architecture, assess the Lifecycle Architecture milestone, and create the
+Construction plan. These outcomes depend on Sprint 2 evidence and are reviewed
+as a separate iteration.
+
+Backlog Items:
+
 * PBI-013. Refine use cases and supplementary requirements
 * PBI-014. Stabilize the architecture baseline
 * PBI-015. Assess the Lifecycle Architecture milestone

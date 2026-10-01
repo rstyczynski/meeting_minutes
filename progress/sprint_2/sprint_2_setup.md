@@ -84,3 +84,15 @@ Open analysis questions: none blocks design. Product Owner review is required
 for the proposed PBI-011 breakdown and design before construction.
 
 Readiness: ready for design.
+
+## Replanning decision — 2026-10-01
+
+The Product Owner identified that PBI-013 through PBI-016 depend on prototype
+and benchmark results produced late in this iteration. The active Sprint 2
+retains PBI-011 and PBI-012, including implementation of both configurable
+transcription backends, the fixture generator, and their same-data benchmark.
+PBI-013 through PBI-016 move to planned Sprint 3 so their acceptance decisions
+can use the completed Sprint 2 evidence. PBI-012 may validate completed
+prototype paths incrementally instead of waiting for the whole prototype.
+The earlier analysis of PBI-013 through PBI-016 above records the initial
+scope; their execution now belongs to Sprint 3.
