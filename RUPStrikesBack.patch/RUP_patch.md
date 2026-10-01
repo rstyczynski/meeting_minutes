@@ -143,3 +143,14 @@ Product-Owner backlog items. Keep the parent PBI in the root `BACKLOG.md` and
 independent product value, priority, or deferral authority. In managed mode,
 the Product Owner approves the proposed decomposition before prototype
 construction starts.
+
+## P7. Read the separate Product Owner preferences file
+
+`RUPStrikesBack.patch/USER_PREFERENCES.md` is this project's plain Markdown
+customization file for durable preferences explicitly stated by the Product
+Owner. Read it alongside this patch before drafting new or revised
+project-authored narrative artifacts or a sprint review. The Product Owner
+may amend it through an explicit request; do not infer durable preferences
+from incidental conversation. A preference does not change a mandatory
+method-defined artifact structure unless the Product Owner explicitly asks
+for that process change.

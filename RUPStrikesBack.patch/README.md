@@ -56,3 +56,20 @@ approval for the product vision (`README.md`) and then for the initial roadmap
 and next-sprint proposal. The generic Sprint 0 backlog contains PBI-001
 (product vision) and PBI-002 (initial project plan); the Product Owner may
 refine that work based on the supplied intent.
+
+## User preferences
+
+The Product Owner can make a durable writing or presentation preference part
+of this project's method. Preferences live in the separate, ordinary Markdown
+file [`USER_PREFERENCES.md`](USER_PREFERENCES.md). Open that file to see or
+edit them. Ask Codex to record a new preference there in your own words and,
+if useful, say which artifacts it applies to. Codex should show the file
+change for review and apply it to new or revised project artifacts. A later
+explicit preference can amend an earlier one.
+
+For example, you can say: “Add to `RUPStrikesBack.patch/USER_PREFERENCES.md`:
+use paragraphs with clear headings in Markdown documents; avoid Markdown
+tables in narrative reports.” The local [RUP patch](RUP_patch.md#p7-read-the-separate-product-owner-preferences-file)
+requires agents to read this file during sprint work. The canonical
+four-column progress board remains a table unless you explicitly request a
+separate change to that method format.

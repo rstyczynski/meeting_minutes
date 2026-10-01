@@ -32,14 +32,41 @@ CLI-created record in a local SwiftUI review player. Live capture, alerts,
 visual extraction, and cloud services are outside this sprint. There is no
 product code yet; Swift 6.3.3 is installed on the working Mac.
 
-| Item | Analysis and acceptance evidence | Dependency |
-|---|---|---|
-| PBI-011 | Build an executable Swift prototype of the shared core, CLI import, local store, model-adapter boundaries, correction flow, and record opening. Split this parent into bounded child items in the design; demonstrate each path. | Accepted SRS and architecture; Product Owner approves decomposition before construction. |
-| PBI-012 | Run offline experiments on local transcription, diarization, and minutes generation, plus supported media, resource use, source links, persistence, and UI/CLI coordination. Record results or explicitly named remaining risks. | PBI-011 paths and synthetic or approved fixtures. |
-| PBI-013 | Amend use cases and supplementary requirements only where experiment evidence changes an assumption or exposes a gap. | PBI-012 evidence. |
-| PBI-014 | Record which component boundaries and model choices are supported by evidence and what remains provisional. | PBI-012 and PBI-013. |
-| PBI-015 | Assess the Lifecycle Architecture milestone against measured evidence; identify further Elaboration work if the architecture is not ready. | PBI-014. |
-| PBI-016 | Propose Construction delivery order, resource assumptions, quality gates, and unresolved risks. Material plan changes require Product Owner acceptance. | PBI-015. |
+### PBI-011 — Prototype
+
+Build an executable Swift prototype of the shared core, CLI import, local
+store, model-adapter boundaries, correction flow, and record opening. Split
+this parent into bounded child items in the design and demonstrate each path.
+The accepted SRS and architecture are its prerequisites; Product Owner
+approval of the decomposition precedes construction.
+
+### PBI-012 — Validation
+
+Run offline experiments on local transcription, diarization, and minutes
+generation, plus supported media, resource use, source links, persistence,
+and UI/CLI coordination. Record results or explicitly named remaining risks.
+This work depends on the PBI-011 paths and synthetic or approved fixtures.
+
+### PBI-013 — Requirements
+
+Amend use cases and supplementary requirements only where PBI-012 evidence
+changes an assumption or exposes a gap.
+
+### PBI-014 — Architecture
+
+Record which component boundaries and model choices are supported by PBI-012
+and PBI-013 evidence and what remains provisional.
+
+### PBI-015 — Milestone
+
+Assess the Lifecycle Architecture milestone against measured evidence from
+PBI-014. Identify further Elaboration work if the architecture is not ready.
+
+### PBI-016 — Construction plan
+
+Propose delivery order, resource assumptions, quality gates, and unresolved
+risks from the milestone assessment. Material plan changes require Product
+Owner acceptance.
 
 The architecture deliberately leaves transcription, diarization, and language
 model implementations unselected. A deterministic adapter can verify the
