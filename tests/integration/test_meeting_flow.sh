@@ -8,6 +8,9 @@ test_IT3_correction_review() { swift test --filter 'MeetingIntegrationTests.Meet
 test_IT4_chunk_merge() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testChunkMerge'; }
 test_IT5_backend_selection() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testBackendSelection'; }
 test_IT6_fixture_generation() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testFixtureGeneration'; }
+test_IT7_three_commands() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testThreeCommands'; }
+test_IT8_neutral_summary() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testNeutralSummary'; }
+test_IT9_failure_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testFailurePreservesRecord'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -18,4 +21,7 @@ else
   test_IT4_chunk_merge
   test_IT5_backend_selection
   test_IT6_fixture_generation
+  test_IT7_three_commands
+  test_IT8_neutral_summary
+  test_IT9_failure_preserves_record
 fi

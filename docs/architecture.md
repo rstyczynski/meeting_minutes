@@ -2,12 +2,10 @@
 
 Status: Accepted
 
-This is the Sprint 1 candidate architecture. Sprint 2 has revised the SRS
-with separate transcription, optional speaker recognition, optional summary,
-and low-quality-audio use cases. The shared core and local-adapter direction
-remain accepted. The single-import flow below is the original baseline;
-its replacement is under managed-mode design review, as recorded in the
-[Sprint 2 change proposal](../progress/sprint_2/sprint_2_proposedchanges.md).
+This is the Sprint 1 candidate architecture, refined by the accepted Sprint 2
+design amendment. The separate transcription, optional speaker recognition,
+optional summary, and low-quality-audio use cases keep the shared core and
+local-adapter direction.
 
 ## Decision
 
@@ -26,7 +24,7 @@ and [SwiftUI documentation](https://developer.apple.com/documentation/technology
 
 ```mermaid
 flowchart LR
-    CLI[CLI importer] --> Core[MeetingCore Swift Package]
+    CLI[CLI transcribe, recognize, summarize] --> Core[MeetingCore Swift Package]
     UI[SwiftUI macOS app] --> Core
     Core --> Store[Local meeting store]
     Core --> Transcript[Local transcription adapter]
@@ -42,8 +40,8 @@ SwiftUI or AppKit or call a network service.
 
 `MeetingCLI` parses arguments, invokes core use cases, and reports local
 results or errors. It must not own a separate record format or processing
-logic. The current prototype exposes `import`; the proposed revision exposes
-`transcribe`, `recognize`, and `summarize` independently.
+logic. The prototype exposes `transcribe`, `recognize`, and `summarize`
+independently; `import` remains as a compatibility command for early tests.
 
 `MeetingMacApp` is the SwiftUI local-media review player and chair correction
 workflow. It must not contain core transcription or minutes logic.
@@ -62,21 +60,21 @@ to time offsets in the local recording; participant-facing minutes do not
 require or display it. Corrections are additive record changes so a speaker
 label or segment attribution can be reviewed without rewriting unrelated data.
 
-The CLI calls the same import use case used by the review player. It writes
-through the local store and prints an opaque local record identifier. The
+The CLI calls core transcription, recognition, and summarization use cases.
+It writes through the local store and prints an opaque local record identifier. The
 operator opens that identifier in the review player, which reloads the record
 from the store and seeks local media when the operator selects a source range.
 This avoids duplicate business logic, a running background app, and a separate
 IPC payload.
 
-## Sprint 2 change under review
+## Sprint 2 accepted CLI refinement
 
-The requested CLI will split the baseline import flow into a transcript-only
-operation, optional speaker-turn recognition and chair edits, and optional
-minutes generation. A summary may use neutral labels if the recognition step
-is skipped. These operations should update the same local meeting record and
-retain model provenance. Their exact commands, persistence behavior, and
-tests are in the Sprint 2 proposal until its design revision is accepted.
+The CLI splits the baseline import flow into a transcript-only operation,
+optional speaker-turn recognition and chair edits, and optional minutes
+generation. A summary may use neutral labels if the recognition step is
+skipped. These operations update the same local meeting record and retain
+model provenance. The accepted commands and their evidence are in the
+[Sprint 2 implementation record](../progress/sprint_2/sprint_2_implementation.md).
 
 The revised SRS also requires warnings for audio that may undermine
 transcription or attribution. The architecture must allow warnings to refer

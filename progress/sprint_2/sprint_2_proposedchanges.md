@@ -2,7 +2,8 @@
 
 ## PBI-011 — Separate transcription, optional recognition, and optional summary
 
-Status: None
+Status: Accepted by the Product Owner on 2026-10-01. The three-command
+contract and named tests now amend the accepted Sprint 2 design.
 
 This is a cross-sprint change because the resulting CLI requirements revise
 the Sprint 1 SRS. The impact and possible targeted redo of earlier baseline
@@ -12,13 +13,12 @@ proposal.
 
 The Product Owner specified three CLI capabilities named transcribe,
 recognize, and summarize. Recognize and summarize are independent optional
-operations after transcription. Recognize should support chair-controlled
+operations after transcription. Recognize supports chair-controlled
 assignments or corrections; automatic name suggestions are a nice-to-have
-requirement beyond the MVP. The accepted design currently describes one
-import use case, and the current CLI's import command combines transcription
-with fixture minutes generation. That hides the separate capability
-boundaries and can make fixture output look like a completed product
-capability.
+requirement beyond the MVP. This accepted amendment replaced the original
+single-import prototype flow. The legacy import route remains for early test
+compatibility. Actual operation and limitations are in the
+[implementation record](sprint_2_implementation.md).
 
 Proposed CLI contract: transcribe a local recording with an explicit
 transcription backend, producing a durable record ID with timed transcript
@@ -74,14 +74,14 @@ Synthetic tests may use a fixture generator through a test-only option, but
 its output must be labeled as fixture-derived. A real meeting summary cannot
 be claimed from the synthetic fixture path.
 
-The revised CLI test specification must cover transcribe producing only a
+The revised CLI test specification covers transcribe producing only a
 transcript; recognize diarization and chair edits preserving the same record;
 summarize after recognition using assigned names; and summarize without
 recognition using neutral labels. It must test missing media, unknown record,
 missing local model, invalid speaker or segment ID, and an invalid source
-reference. Functional sequences must show actual commands and inspect the
-saved JSON, not infer success from a zero exit code alone. Every command
-remains pending until it executes against the revised implementation.
+reference. Functional sequences show actual commands and inspect the
+saved JSON, not infer success from a zero exit code alone. Their executed
+results are in the [functional test record](sprint_2_tests.md).
 
 Separating commands and adding chair-controlled names refines PBI-011.2,
 PBI-011.3, PBI-011.4, and PBI-011.5 within Sprint 2. Automatic identity

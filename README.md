@@ -81,19 +81,23 @@ sharing are deferred.
 ### Sprint 2 — Architectural prototype and benchmark in progress
 
 PBI-011 is constructing the Swift core, local store, CLI, review player, and
-local model adapters. PBI-018 will benchmark FluidAudio and whisper.cpp on
+local model adapters. PBI-018 measures FluidAudio and whisper.cpp on
 the same approved AMI meeting recording. The Product Owner added use cases and
 requirements for low-quality audio, including warnings for the affected
 speaker or source ranges and review of the original recording. The
 [Sprint 2 design](progress/sprint_2/sprint_2_design.md) specifies the
 experiment; the [implementation record](progress/sprint_2/sprint_2_implementation.md)
 and [test record](progress/sprint_2/sprint_2_tests.md) state what has actually
-run. Real-model measurements and formal quality gates are pending.
+run. The [benchmark report](progress/sprint_2/ami_asr_benchmark.md) gives
+measured quality, speed, memory, model size, speaker attribution, and
+low-quality-audio results with their limitations.
 
-The Product Owner also requested three independent CLI capabilities:
-`transcribe`, optional `recognize`, and optional `summarize`. The current
-executable still has a combined `import` command for the synthetic fixture.
-The [CLI change proposal](progress/sprint_2/sprint_2_proposedchanges.md)
-records the requested commands. They are not working commands yet; the
-accepted design and functional tests require revision before their
-implementation proceeds in managed mode.
+The accepted CLI has three independent capabilities: `transcribe`, optional
+`recognize`, and optional `summarize`. `transcribe` saves a transcript-only
+record. `recognize` adds neutral speaker labels and permits a chair to assign
+names or correct a segment. `summarize` saves minutes from the transcript,
+using neutral labels when recognition is skipped. Each command updates or
+creates the same local record. The old `import` command remains for
+compatibility with the first prototype tests. Copyable working commands,
+formatted `jq` output, prerequisites, and an error example are in the
+[implementation record](progress/sprint_2/sprint_2_implementation.md).

@@ -1,6 +1,6 @@
 import Foundation
 
-private func runProcess(_ executable: String, _ arguments: [String]) throws -> Data {
+func runProcess(_ executable: String, _ arguments: [String]) throws -> Data {
     guard FileManager.default.isExecutableFile(atPath: executable) else {
         throw MeetingError.adapterFailure("Executable unavailable: \(executable)")
     }

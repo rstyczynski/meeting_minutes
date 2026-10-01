@@ -10,16 +10,28 @@ public struct MeetingConfiguration: Codable, Sendable {
     public var whisperModelPath: String?
     public var fluidExecutable: String?
     public var whisperExecutable: String?
+    public var fluidDiarizerModelDirectory: String?
+    public var fluidDiarizerExecutable: String?
+    public var mlxModelDirectory: String?
+    public var mlxExecutable: String?
     public var storeDirectory: String?
 
     public init(transcriber: String = "fluid", fluidModelDirectory: String? = nil,
                 whisperModelPath: String? = nil, fluidExecutable: String? = nil,
-                whisperExecutable: String? = nil, storeDirectory: String? = nil) {
+                whisperExecutable: String? = nil,
+                fluidDiarizerModelDirectory: String? = nil,
+                fluidDiarizerExecutable: String? = nil,
+                mlxModelDirectory: String? = nil, mlxExecutable: String? = nil,
+                storeDirectory: String? = nil) {
         self.transcriber = transcriber
         self.fluidModelDirectory = fluidModelDirectory
         self.whisperModelPath = whisperModelPath
         self.fluidExecutable = fluidExecutable
         self.whisperExecutable = whisperExecutable
+        self.fluidDiarizerModelDirectory = fluidDiarizerModelDirectory
+        self.fluidDiarizerExecutable = fluidDiarizerExecutable
+        self.mlxModelDirectory = mlxModelDirectory
+        self.mlxExecutable = mlxExecutable
         self.storeDirectory = storeDirectory
     }
 

@@ -1,3 +1,7 @@
 smoke:test_cli.sh
 unit:test_core.sh:test_UT3_import_rejection
 integration:test_meeting_flow.sh:test_IT1_cli_record
+unit:test_core.sh:test_UT7_transcript_only
+integration:test_meeting_flow.sh:test_IT7_three_commands
+integration:test_meeting_flow.sh:test_IT8_neutral_summary
+integration:test_meeting_flow.sh:test_IT9_failure_preserves_record

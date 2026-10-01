@@ -7,9 +7,10 @@ Status: Accepted Sprint 1 test profile; Sprint 2 commands reconciled
 This document maps the RUP test levels to Meeting Summarizer's actual build,
 test, and operational-validation commands. PBI-009 established the profile
 before Sprint 2. The active sprint uses the checked-in `tests/run.sh` runner
-and its `new_tests.manifest`; the formal six-gate execution is still pending.
-The Product Owner chose the open-source Swift Testing package because Apple
-Command Line Tools on this Mac do not provide an importable XCTest module.
+and its `new_tests.manifest`. The Product Owner chose the open-source Swift
+Testing package when only Apple Command Line Tools were installed. Xcode is
+now installed for the MLX Metal experiment; the approved test library remains
+Swift Testing.
 
 ## Required Sprint 2 settings
 
@@ -35,11 +36,9 @@ fresh machine; processing a meeting must not call a network service.
 
 Command: `tests/run.sh --smoke`
 
-Expected result: The package builds and CLI help prints usage without reading
-a meeting recording or contacting a network service. The current smoke test
-checks the implemented `import` command. When the three-command revision is
-accepted and implemented, the smoke test must check `transcribe`,
-`recognize`, and `summarize` instead.
+Expected result: The package builds and CLI help advertises `transcribe`,
+`recognize`, and `summarize` without reading a recording or contacting a
+network service. The smoke test also checks the compatible `import` route.
 
 ### Unit tests
 
@@ -56,8 +55,8 @@ Command: `tests/run.sh --integration`
 Expected result: Named Swift Testing integration cases validate synthetic
 local fixtures, source references, correction persistence, minutes/action
 traceability, and opening a CLI-created record by its local identifier.
-The requested separate CLI commands need revised test specifications and
-new runner entries after managed-mode design approval.
+The separate CLI commands have approved functional checks IT-7 through IT-9,
+including saved-state checks after each optional step.
 
 ## Local-only test-data policy
 
@@ -79,6 +78,6 @@ iOS app in Sprint 2.
 ## Acceptance gate
 
 The PBI-009 acceptance gate selected Swift, Swift Testing, and local fixtures.
-The current profile records the working runner commands. Revising CLI
-semantics requires corresponding smoke, unit, integration, and manual
-validation changes before the new behavior can pass Sprint 2 gates.
+The current profile records the working runner commands. Sprint 2's accepted
+CLI revision has corresponding smoke, unit, integration, and manual checks;
+their outcomes are recorded in the [Sprint 2 test record](../progress/sprint_2/sprint_2_tests.md).

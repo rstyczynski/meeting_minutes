@@ -1,374 +1,86 @@
-
 # Sprint 2 — Implementation record
 
-This record is updated during Sprint 2 construction. A completed artifact is
-listed only after it builds or its behavior is verified. The final test and
-benchmark results will be recorded separately and linked here.
+Status: under construction. This is the Product Owner's account of what the executable prototype does, what was measured, and what still limits an architecture decision. The accepted [design](sprint_2_design.md), [functional test record](sprint_2_tests.md), and [AMI benchmark report](ami_asr_benchmark.md) contain the corresponding criteria and evidence. Model weights and the approved AMI recording remain outside Git.
 
-## Evidence required by RUP Strikes Back
+## Implementation and design compliance
 
-The canonical constructor procedure requires implementation details for each
-assigned backlog item, design compliance, code artifacts and their status,
-test results, known issues, and user instructions with prerequisites, options,
-working command examples, expected output, and an error case. Functional test
-sequences and their results belong in `sprint_2_tests.md`; the manager also
-requires timestamped quality-gate logs. This record tracks those fields as
-work proceeds. The Product Owner's paragraph preference replaces narrative
-tables; the progress board keeps its required table.
+The Swift package has a portable MeetingCore library, a meeting-summarizer CLI, and a SwiftUI MeetingReview app. MeetingCore owns validated source ranges, transcript segments, neutral speaker labels, chair corrections, source-linked review items, processing provenance, quality warnings, and atomic local JSON storage. It does not import SwiftUI or AppKit. The CLI and review player load the same persisted record, so neither has a second business-data format. Local model executables are configured by path and run as separate processes. There is no remote inference fallback.
 
-## Implementation overview and RUP checkpoint
+The accepted CLI amendment gives three independent operations. Transcribe creates a transcript-only record. Recognize is optional: the local FluidAudio diarizer assigns anonymous labels, while recognize name and recognize move let a chair correct the record. Summarize is optional and works with neutral or absent speaker labels. It invokes a local MLX language model, validates its structured output and source IDs, and saves minutes to the same record. The older import command remains for compatibility with the first prototype tests. The test-only fixture-reference option supplies invented data and must not be interpreted as model-quality evidence.
 
-The real-time Sprint and PBI states are `under_construction` on
-`PROGRESS_BOARD.md`. The design is `Accepted`. Sprint 2 covers PBI-011 and its
-five children, plus PBI-018. This is an Elaboration prototype; retention for
-production will be decided from later validation evidence.
-The accepted design covers the original combined import and the approved
-FR-09/FR-10 experiment. The requested three-command CLI revision is proposed
-and waits for managed-mode design approval before implementation.
+PBI-011.1, core and store: the record contract and atomic store are implemented. IT-1 starts the CLI in a separate process and reloads its output through MeetingStore. The child passed its six prescribed gates and was committed as 72fb8d4. The new CLI and model code described below have not yet passed their own completion gates.
 
-For a hands-on view of what works today, go to Working synthetic import below.
-It imports an invented local meeting, prints the saved transcript and review
-items, and needs no model weights. Real-model integration and generated
-minutes are still under construction; their intended command and missing
-prerequisites are stated separately below.
+PBI-011.2, CLI: transcribe, recognize, recognize name, recognize move, and summarize are implemented and return the same record UUID across later steps. Invalid media, unknown IDs, missing configured models, and invalid corrections produce explicit errors. A synthetic three-command flow and a real FluidAudio transcription have run. Its six prescribed gates passed after help was corrected to mention the compatible import route; the completion audit and local commit are pending.
 
-The canonical `tests/run.sh` and `new_tests.manifest` are the prescribed gate
-entry points. Their unit and integration wrappers have been repaired from
-stale XCTest filters to the approved Swift Testing case identifiers. Both
-preliminary new-only runs pass. For the completed PBI-011.1 core/store
-increment, all six prescribed quality gates passed with timestamped logs
-recorded in [the functional test record](sprint_2_tests.md). Other children
-and PBI-018 remain under construction and require their own completion
-checks.
+PBI-011.3, fixture and corrections: the checked-in invented 16 kHz mono WAV and paired reference JSON contain five timed turns from two speakers, a decision, an action, and an open question. The fixture generator was rerun outside the checkout; it produced 16.727125 seconds of audio with valid ranges and references. The chair named speaker_2 Ada and moved turn_1 to that label in a saved record. The synthetic summary then produced four review items. Full child gates and commit remain pending.
 
-## PBI-011 — Executable prototype
+PBI-011.4, review player: the SwiftUI app built and opened the real AMI record by ID. It displayed the transcript and 16 quality warnings; selecting the first warning sought the local audio to 19.3 seconds, and selecting a transcript turn sought to 4.7 seconds. The first AVKit VideoPlayer version crashed, so audio playback was changed to AVFoundation. A continuous-playback check was disruptive; the current version pauses after the selected source range and builds. That bounded playback has not been manually replayed since the user closed the app. No preview player is running. Formal child gates and commit remain pending.
 
-### PBI-011.1 — Core and local store
+PBI-011.5, local-model integration: FluidAudio 0.17.4 with Parakeet TDT 0.6B v2, whisper.cpp with Whisper base.en, the FluidAudio offline diarizer, and MLX Swift LM 3.31.3 with locally staged Qwen3-4B-Instruct-2507 4-bit weights have all executed locally. The Fluid and whisper adapters each saved a timed synthetic transcript. Fluid transcribed the full approved AMI headset recording, and the diarizer saved labels and 16 warnings to record 87A64680-FD3C-44D4-9529-039E7071E46A. Xcode 27 with Metal Toolchain built MLX Swift's default.metallib. The MLX adapter generated and persisted source-linked minutes from the invented fixture in record 8DAAA0BB-C4A0-4863-9198-025E9FD4E643. On a natural 120-second AMI excerpt, the first word-level prompt produced truncated JSON. Source chunks made the response parseable; citations expand to original transcript IDs and an unsupported model owner is discarded. Record 4604E907-2EE9-4FE6-974A-8D22A5F9914D now contains the natural-audio minutes experiment. Its content quality failed, as explained below. Full child gates and commit remain pending.
 
-The Swift package now has a portable `MeetingCore` library with validated
-source ranges, transcript segments, review items, provenance fields, and an
-atomic JSON record store. It has no SwiftUI or AppKit import. The package
-builds on the working Mac. Core unit tests and all six prescribed gates pass.
-IT-1 now runs the CLI as a separate process and loads its persisted synthetic
-record through `MeetingStore` in the test process, satisfying the fresh-process
-reload acceptance check. Status: tested for this bounded core/store child.
+PBI-018, benchmark technical decisions: [the decision-facing report](ami_asr_benchmark.md) includes same-input accuracy, affected-speaker errors, alternate lapel input, repeated wall time, process resident memory, model footprint, timestamp diagnostics, diarization coverage, warning coverage and spillover, disconnected-network inference, and the MLX minutes experiment. On the common headset input, FluidAudio had 19.48% WER against 28.79% for whisper.cpp. Its affected-speaker reference-linked error rate was 27.78% against 58.55%. Three 120-second runs gave median wall times of 0.73 and 1.29 seconds. The diarizer found three clusters for four reference people and merged the low-quality participant with another speaker. The stored 16 warnings are therefore useful review cues, not reliable participant identification. The natural-audio MLX minutes converted a project goal into a decision, invented two actions, and generated two questions that were not asked. This is an observed quality failure, not a recommendation to use those minutes. Sprint 3 will analyze the measurements and select architecture changes.
 
-### PBI-011.2 — CLI import
+## Build, test, and environment
 
-`meeting-summarizer` now parses local WAV import, backend selection, settings,
-store location, and a synthetic fixture reference. It rejects invalid backend
-names and missing configuration. The CLI builds. One synthetic fixture import
-created a record that was reloaded and inspected; the formal gate remains open.
+The root package builds with swift build. Swift Testing 6.3.2 is pinned for the test targets; swift test currently passes 18 tests across core and integration suites. The accepted RUP runner uses smoke, unit, and integration levels, both new-only and regression. All six current PBI-011.2 gates passed; timestamped results and failed-attempt explanations are in [the test record](sprint_2_tests.md). Each later child needs its own completion check before its status or commit advances.
 
-### PBI-011.3 — Derived record and corrections
+The normal package does not download model weights. The FluidAudio helper, whisper.cpp executable and model, MLX Swift adapter and Qwen model are staged separately. Model setup may require network access once; meeting inference uses local paths. The tested Mac now has Xcode 27 and the Metal Toolchain. Xcode reports the Metal component installed and its compiler runs directly, although xcrun metal still reports a missing component. The MLX Swift library was built by xcodebuild; its generated default.metallib was copied beside the adapter executable as mlx.metallib. That manual packaging step remains a portability risk.
 
-The synthetic meeting generator, checked-in WAV, and reference JSON provide
-five invented turns from two voices. The fixture is 16 kHz mono PCM with
-nonempty speech, valid turn ranges, and cited decision, action, and open
-question annotations. Fixture adapters, minutes source validation, speaker
-renaming, and segment reassignment are implemented. Integration verification
-is pending.
+## Working CLI instructions
 
-### PBI-011.4 — Review player
-
-A SwiftUI review executable builds. Its implementation loads a record by ID
-from the shared store, presents transcript and review items, and offers source
-seeking with AVPlayer. A manual UI run and the specified integration checks
-remain, so that behavior is not yet verified.
-
-### PBI-011.5 — Local-model integration
-
-The common transcription contract and process adapters for whisper.cpp and
-FluidAudio are in place. The FluidAudio helper is isolated in
-`experiments/FluidAdapter/`; its pinned 0.17.4 dependency resolved and the
-helper builds in release mode and now runs inference against local model
-weights. An explicit `--download-models ROOT` setup mode staged v2 Core ML
-weights outside Git. The first run revealed that FluidAudio's returned path
-did not name the actual repository folder; the helper was corrected and
-rebuilt successfully. Speaker diarization and LLM minutes generation are not
-yet integrated into real-model imports.
-
-Using the same 16-second synthetic WAV and locally staged models, the current
-CLI saved a FluidAudio record
-`C7BFBF64-4CBC-42DA-B03A-FEAEE681BE82` with 45 timed segments,
-backend `fluid`, model revision `parakeet-tdt-0.6b-v2`, and zero review
-items. It saved a whisper.cpp record
-`7890A5EE-1EE4-40F5-BDE2-43720714F8F6` with five timed segments,
-backend `whisper`, model revision `ggml-base.en.bin`, and zero review
-items. Both records are outside Git under
-`/private/tmp/meeting-minutes-ami/real_asr_records`. These are adapter and
-record-contract checks, not reference-scored ASR quality evidence.
-
-## PBI-018 — Benchmark technical decisions
-
-The paired synthetic audio/reference fixture is ready. The same-audio
-benchmark has a preliminary full-headset quality result from both real
-ASR engines on the approved natural meeting. Separate lapel runs indicate
-how a changed microphone mix affects the documented poor-headset speaker
-and overall accuracy. Three repeated 120-second runs per engine record
-elapsed time, process resident memory, and staged model footprint. The
-scores, resource measurements, scoring normalization, model identities,
-and limits are in [the benchmark evidence](ami_asr_benchmark.md).
-Speaker attribution, low-quality warnings, timing error, actual offline
-operation, and minutes-quality results remain outstanding. Sprint 2 records
-measurements and their limits;
-Sprint 3 interprets them for architecture decisions.
-
-The Product Owner approved AMI meeting ES2002a. Its headset and lapel mixes
-and manual annotations are downloaded outside Git, with source links,
-license, integrity checks, and SHA-256 hashes recorded in
-[the fixture evidence](ami_es2002a_fixture.md). The known headset problem
-for one participant makes this meeting useful for FR-09 and FR-10 validation. A
-preliminary annotation-guided signal probe found that speaker A's individual
-headset track has much lower speech level than the corresponding lapel track;
-speaker B's tracks did not show that pattern. The official meeting metadata
-maps the documented participant 1 problem to annotation speaker A. The exact
-commands, readings, and limits are in the fixture evidence. This targets the
-critical test. Reference-linked errors have now been measured for A, but no
-automatic quality warning or speaker-attribution score has been produced.
-FR-09 and FR-10 remain unvalidated.
-
-The whisper.cpp source was built locally outside Git at commit
-`6e4ab854f67f743900934a703d5603419384c961` with the Metal backend. The
-`base.en` model is staged outside Git at
-`/private/tmp/meeting-minutes-whisper.cpp/models/ggml-base.en.bin`
-(147,964,211 bytes; SHA-256
-`a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002`).
-An initial 120-second probe on the approved AMI headset mix completed and
-produced a JSON transcript outside Git. Its schema includes timed
-`transcription` entries compatible with the adapter's expected offsets.
-This is a tool and format check only; the full same-audio comparison,
-reference scoring, repeated runtime measurement, and low-quality-audio
-result remain pending.
-
-## Quality and environment
-
-`swift build` passes for the root prototype. The available Apple Command Line
-Tools omit a directly importable XCTest module. The Product Owner chose the
-open-source Swift Testing package for this sprint. Its pinned 6.3.2 package
-now links after the test targets supply the Command Line Tools interop library
-path. A preliminary `swift test` run passed 12 tests in two suites. The formal
-new-work and regression gates remain pending. No model-quality result is
-claimed yet.
-
-The main package has no speech-model dependency, so a normal build does not
-download model weights. The FluidAudio experiment package resolves its own
-dependency separately. No external push or release has been performed.
-
-## Design compliance and code artifacts
-
-The main `Package.swift` keeps model dependencies outside the core package.
-`Sources/MeetingCore/` implements the record, local store, configuration,
-import contracts, and adapter boundary. `Sources/MeetingCLI/` provides the
-local import entry point. `Sources/MeetingReview/` provides the SwiftUI review
-entry point. `tests/fixtures/` holds generated synthetic evidence. The
-FluidAudio experiment helper is being verified in
-`experiments/FluidAdapter/`. The approved design's real-model minutes,
-diarization, and two-engine measurement requirements remain open.
-
-`Package.swift` and `Package.resolved` define the root targets and pinned test
-dependency; they build and twelve selected Swift Testing cases have run.
-`Sources/MeetingCore/` contains the record contract, store, importer, and
-adapter boundary; the unit and fixture-backed integration tests exercise
-portions of it. `Sources/MeetingCLI/` contains the import command; help, one
-fixture import, and a missing-media error were run as separate processes.
-`Sources/MeetingReview/` contains the SwiftUI player; compilation passed,
-manual operation is pending. `tests/fixtures/` contains the generator, WAV,
-and reference; the checked-in fixture was validated, while fresh regeneration
-is pending. `tests/run.sh`, its suite scripts, and the Sprint 2 manifest are
-the RUP test artifacts; preliminary new-only unit and integration runs pass,
-but formal gate execution is pending. `experiments/FluidAdapter/` builds;
-synthetic inference passes, while diarization remains pending. The
-whisper.cpp executable and model were built or staged outside Git; its
-adapter also passes a synthetic end-to-end CLI run.
-
-The verified explicit FluidAudio setup command is:
-
-~~~text
-swift run --package-path experiments/FluidAdapter -c release meeting-fluid-asr --download-models /private/tmp/meeting-minutes-models
-~~~
-
-This is a preparation command that downloads model weights under the local
-root directory; it is not a meeting-processing command. The first version
-of the helper downloaded the weights but printed a nonexistent requested
-path because FluidAudio stores them under its repository folder. The helper
-now reports `/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v2` after
-checking for its vocabulary file; the corrected command ran successfully
-and printed that path. An initial Fluid inference probe produced timed JSON
-but Core ML appended a diagnostic to standard output after the JSON, making
-the original stdout adapter response invalid. The helper and process adapter
-now use `--output-json FILE` and read that dedicated file. The corrected
-helper and root package both build, the dedicated JSON file parses, and the
-current CLI successfully saves a FluidAudio transcript from synthetic audio.
-The normal inference form loads staged assets locally and does not download
-at runtime.
-
-## User documentation in progress
-
-### Three independent CLI capabilities — pending revised design and code
-
-The Product Owner requested `transcribe`, optional `recognize`, and optional
-`summarize`. These are documented in
-[the proposed changes](sprint_2_proposedchanges.md), but the current executable
-still implements the older combined `import` command shown below. The
-following commands are the proposed user workflow; they are **not yet working
-CLI examples** and must not be used as evidence of implementation.
-
-`transcribe` will accept a local recording and a selectable ASR backend. It
-will create a durable record with timed text and neutral or unknown speaker
-labels, and no minutes:
-
-~~~text
-meeting-summarizer transcribe <local.wav> --transcriber fluid|whisper [--settings settings.json] [--store directory]
-~~~
-
-`recognize` will optionally assign neutral speaker turns from local audio.
-The chair will also be able to assign a name to a speaker ID and move a
-misattributed segment. Diarization alone does not identify a person:
-
-~~~text
-meeting-summarizer recognize <record-id> --diarizer fluid [--settings settings.json] [--store directory]
-meeting-summarizer recognize name <record-id> <speaker-id> <display-name> [--store directory]
-meeting-summarizer recognize move <record-id> <segment-id> <speaker-id> [--store directory]
-~~~
-
-`summarize` will read the saved transcript and generate minutes only when
-requested. It will use chair-assigned names where available and neutral
-labels otherwise. Real generation will require a local LLM and weights:
-
-~~~text
-meeting-summarizer summarize <record-id> --summarizer mlx [--settings settings.json] [--store directory]
-~~~
-
-The revised functional tests in [the test record](sprint_2_tests.md) are
-pending. A separate low-quality-audio experiment will check whether the
-pipeline flags the affected speaker or source ranges; the `recognize`
-command alone must not be interpreted as proof of FR-09.
-
-### Working synthetic import
-
-The prototype requires macOS, Swift 6, and a local WAV recording. The
-deterministic fixture path also requires the paired reference JSON in
-`tests/fixtures/`. A normal model import additionally requires local model
-weights and a configured local adapter executable; missing assets cause an
-explicit error. The CLI accepts `import`, `--transcriber fluid|whisper`,
-`--settings`, `--store`, and the test-only `--fixture-reference` option.
-The verified fixture example, run from the repository root, is:
-
-```bash
-record_id="$(swift run meeting-summarizer import tests/fixtures/synthetic_meeting.wav --transcriber fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo)"
-printf '%s\n' "$record_id"
-```
-
-Expected output is one UUID, such as
-`9E7DAFA1-D474-41D2-B316-F51C9B2E61AF`; each import creates a new UUID.
-With jq installed, the following command displays the saved record for a
-human reader. Run it in the same shell immediately after the import above:
+Run from the repository root on macOS with Swift and jq installed. The synthetic example needs no model weights. The WAV and reference JSON are paired test files; each transcribe command prints a new UUID. The later commands print that same UUID. The test-only fixture-reference option substitutes deterministic transcript, diarization, or minutes data at the corresponding step.
 
 ~~~bash
-jq -r '
+record_id="$(swift run meeting-summarizer transcribe tests/fixtures/synthetic_meeting.wav --transcriber fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo)"
+printf 'Record: %s\n' "$record_id"
+swift run meeting-summarizer recognize "$record_id" --diarizer fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
+swift run meeting-summarizer recognize name "$record_id" speaker_2 Ada --store /private/tmp/meeting-sprint2-demo
+swift run meeting-summarizer recognize move "$record_id" turn_1 speaker_2 --store /private/tmp/meeting-sprint2-demo
+swift run meeting-summarizer summarize "$record_id" --summarizer mlx --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
+~~~
+
+Recognize and summarize may each be skipped. To check transcript-only operation, stop after the first command; reviewItems is then empty. To generate minutes without recognizing speakers, run summarize directly after transcribe; the summary retains neutral or unknown labels. The name and move commands are chair corrections, not automatic voice identity discovery. Fluid's diarizer detects anonymous voices only.
+
+Immediately after the commands, print a concise human view of the saved JSON. This is the requested cat/jq result after CLI use:
+
+~~~bash
+cat "/private/tmp/meeting-sprint2-demo/$record_id.json" | jq -r '
   "Meeting: \(.id)",
   "Source: \(.sourcePath)",
   "Backend: \(.backend) (\(.modelRevision))",
+  "Speaker names: \(.speakerNames | to_entries | map("\(.key)=\(.value)") | join(", "))",
   "",
   "Transcript:",
   (.segments[] | "  [\(.range.startSeconds)-\(.range.endSeconds)s] \(.speakerID // "unknown"): \(.text)"),
   "",
-  "Review items:",
-  (.reviewItems[] |
-    "  \(.kind): \(.text) [source: \(.sourceSegmentIDs | join(", "))]" +
+  "Minutes and review:",
+  (.reviewItems[] | "  \(.kind): \(.text) [source: \(.sourceSegmentIDs | join(", "))]" +
     (if .ownerSpeakerID then " [owner: \(.ownerSpeakerID)]" else "" end))
-' "/private/tmp/meeting-sprint2-demo/$record_id.json"
+'
 ~~~
 
-Representative output (the meeting ID changes on each import):
+In the verified flow, the result has five timed turns and four review items: one summary, the turn_3 decision, the turn_4 action owned by speaker_2, and the turn_5 open question. speakerNames maps speaker_2 to Ada. The move makes turn_1 belong to speaker_2. A new UUID is generated each time, so use the shell variable rather than a UUID copied from this document.
 
-~~~text
-Meeting: 61D514FF-684A-4556-AB92-E56730F61F1E
-Source: /Users/rstyczynski/projects/meeting_minutes/tests/fixtures/synthetic_meeting.wav
-Backend: fluid (synthetic-reference-v1)
-
-Transcript:
-  [0-2.325s] speaker_1: Let's review the release plan for Friday.
-  [2.775-5.304s] speaker_2: The audio import is ready for a small test.
-  [5.754-9.565s] speaker_1: We decide to test both transcription engines on the same recording.
-  [10.015-12.542s] speaker_2: I will write the reference transcript by Thursday.
-  [12.992-16.219s] speaker_1: Who will check the speaker labels? That is still open.
-
-Review items:
-  decision: Test both transcription engines on the same recording [source: turn_3]
-  action: Write the reference transcript by Thursday [source: turn_4] [owner: speaker_2]
-  openQuestion: Who will check the speaker labels? [source: turn_5]
-~~~
-
-The display starts with the meeting ID, local source path, and
-fluid (synthetic-reference-v1). It shows five timed speaker turns, then a
-decision sourced to turn_3, an action sourced to turn_4 with speaker_2 as
-owner, and an open question sourced to turn_5. To inspect every stored field,
-run cat on the same JSON file:
+For real Fluid transcription, --settings must point to a JSON file with fluidExecutable and fluidModelDirectory. Real recognition also needs fluidDiarizerExecutable and fluidDiarizerModelDirectory. Real MLX summary needs mlxExecutable and mlxModelDirectory and a compiled mlx.metallib beside the executable. A whisper run needs whisperExecutable and whisperModelPath and selects --transcriber whisper. All paths refer to local executable or model files. For example, after staging them:
 
 ~~~bash
-cat "/private/tmp/meeting-sprint2-demo/$record_id.json"
+record_id="$(swift run meeting-summarizer transcribe /absolute/path/to/meeting.wav --transcriber fluid --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store)"
+swift run meeting-summarizer recognize "$record_id" --diarizer fluid --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store
+swift run meeting-summarizer summarize "$record_id" --summarizer mlx --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store
+cat "/private/tmp/meeting-real-store/$record_id.json" | jq '{id, segments: (.segments | length), qualityWarnings, reviewItems, processingParameters}'
 ~~~
 
-The stored record contains five transcript segments and three source-linked
-review items. `--transcriber` chooses `fluid` or `whisper`; `--settings` reads
-a local configuration path; `--store` chooses the record directory; and the
-test-only `--fixture-reference` supplies the synthetic reference. It is not
-evidence of ASR accuracy. A normal import requires local model files and its
-adapter executable.
+The AMI benchmark is evidence of model behavior on one approved meeting, not a promise that natural minutes are accurate. Inspect each derived item against its cited source before using it.
 
-### Real meeting import — implementation pending
+A missing local WAV gives a clear error and does not create a record:
 
-The intended real-audio CLI form is:
-
-```bash
-swift run meeting-summarizer import /absolute/path/to/meeting.wav --transcriber fluid --settings /absolute/path/to/settings.json
-```
-
-The settings JSON must identify a local `fluidModelDirectory` and
-`fluidExecutable`; selecting `whisper` instead requires a local
-`whisperModelPath` and `whisperExecutable`. The whisper.cpp executable and
-base.en model and Fluid weights are staged outside Git. Both CLI adapters
-have been verified end to end on the synthetic WAV, but neither has completed
-a reference-scored natural-meeting benchmark. The current real-model path
-also uses an empty minutes
-generator, so even successful transcription would not yet produce the
-source-linked meeting minutes required by the accepted design. This command
-is an interface example, **not a verified working workflow**. Do not treat
-the synthetic import above as a benchmark or full product demonstration.
-
-### Missing-media error
-
-The verified error example is:
-
-```bash
-swift run meeting-summarizer import tests/fixtures/no-such-meeting.wav --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
+~~~bash
+swift run meeting-summarizer transcribe tests/fixtures/no-such-meeting.wav --transcriber fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
 printf 'status=%s\n' "$?"
-```
+~~~
 
-SwiftPM may print its usual build progress first. The CLI then prints
-`Media file does not exist` on stderr, and the second line prints `status=2`.
-This failure must not create a new record. Review-player usage will be added
-after manual operation is checked.
+The command prints Media file does not exist to stderr and exits with status 2. SwiftPM may print build progress first. The review app accepts a record UUID and the same store path; it was manually checked, but the real AMI audio preview was deliberately closed after playback became disruptive.
 
-## Known issues and limits
+## Remaining limitations and next checks
 
-Whisper base.en weights have been staged and a 120-second tool probe ran, but
-neither transcription backend has produced a reference-scored result. The
-FluidAudio timing and diarization path remain under construction. The first integration
-tests cover the shared core with fixture adapters; stronger automated CLI
-process checks and a manual review-player check are still required by the
-design.
-
-## Sprint implementation summary
-
-Overall status remains `under_construction`, and the increment is not ready
-for production use. The package and fixture-path prototype build. Twelve
-selected tests, one CLI import, and one missing-media error passed preliminary
-checks. The Swift Testing switch resolved the Command Line Tools XCTest
-limitation. The FluidAudio dependency was upgraded to pinned 0.17.4 after
-upstream 0.12.4 failed under Swift 6.3. Synthetic real-model inference now
-works through both adapters; speaker diarization, local LLM minutes,
-two-engine measurement, UI operation, and the
-formal RUP gates remain open. Test and user documentation are in progress.
+The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need final checks. The six prescribed gates, document reconciliation, progress-board updates, and one local commit per completed child or increment are still required. No remote push has been made.

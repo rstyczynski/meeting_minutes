@@ -8,6 +8,9 @@ test_UT3_import_rejection() { swift test --filter 'MeetingCoreTests.MeetingCoreT
 test_UT4_corrections() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testCorrections'; }
 test_UT5_minutes_validation() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testMinutesValidation'; }
 test_UT6_backend_configuration() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testBackendConfiguration'; }
+test_UT7_transcript_only() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testTranscriptOnly'; }
+test_UT8_chair_corrections() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testChairCorrections'; }
+test_UT9_optional_minutes() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testOptionalMinutes'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -18,4 +21,7 @@ else
   test_UT4_corrections
   test_UT5_minutes_validation
   test_UT6_backend_configuration
+  test_UT7_transcript_only
+  test_UT8_chair_corrections
+  test_UT9_optional_minutes
 fi

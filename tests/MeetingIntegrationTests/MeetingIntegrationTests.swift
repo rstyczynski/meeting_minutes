@@ -3,6 +3,25 @@ import Testing
 @testable import MeetingCore
 
 struct MeetingIntegrationTests {
+    private var executable: URL {
+        URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent(".build/debug/meeting-summarizer")
+    }
+
+    private func cli(_ arguments: [String]) throws -> (Int32, String) {
+        let process = Process()
+        let output = Pipe()
+        process.executableURL = executable
+        process.arguments = arguments
+        process.standardOutput = output
+        process.standardError = output
+        try process.run()
+        process.waitUntilExit()
+        let text = String(decoding: output.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return (process.terminationStatus, text)
+    }
+
     private var fixtureDirectory: URL {
         URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent("tests/fixtures")
@@ -104,5 +123,88 @@ struct MeetingIntegrationTests {
         XCTAssertTrue(Set(fixture.minutes.decision.sourceTurns).isSubset(of: ids))
         XCTAssertTrue(Set(fixture.minutes.action.sourceTurns).isSubset(of: ids))
         XCTAssertTrue(Set(fixture.minutes.openQuestion.sourceTurns).isSubset(of: ids))
+    }
+
+    @Test func testThreeCommands() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let media = fixtureDirectory.appendingPathComponent("synthetic_meeting.wav")
+        let reference = fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")
+        let created = try cli(["transcribe", media.path, "--transcriber", "fluid",
+                               "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertEqual(created.0, 0)
+        let id = try #require(UUID(uuidString: created.1))
+        let store = MeetingStore(directory: root)
+        let transcript = try store.load(id)
+        XCTAssertEqual(transcript.segments.count, 5)
+        XCTAssertTrue(transcript.reviewItems.isEmpty)
+
+        let recognized = try cli(["recognize", created.1, "--diarizer", "fluid",
+                                  "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertEqual(recognized.0, 0)
+        XCTAssertEqual(try store.load(id).segments[0].speakerID, "speaker_1")
+        let named = try cli(["recognize", "name", created.1, "speaker_2", "Ada",
+                             "--store", root.path])
+        XCTAssertEqual(named.0, 0)
+        let moved = try cli(["recognize", "move", created.1, "turn_1", "speaker_2",
+                             "--store", root.path])
+        XCTAssertEqual(moved.0, 0)
+        let afterEdits = try store.load(id)
+        XCTAssertEqual(afterEdits.speakerNames["speaker_2"], "Ada")
+        XCTAssertEqual(afterEdits.segments[0].speakerID, "speaker_2")
+        XCTAssertEqual(afterEdits.segments[0].range, transcript.segments[0].range)
+
+        let summarized = try cli(["summarize", created.1, "--summarizer", "mlx",
+                                  "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertEqual(summarized.0, 0)
+        let completed = try store.load(id)
+        XCTAssertEqual(completed.reviewItems.count, 4)
+        XCTAssertEqual(completed.speakerNames["speaker_2"], "Ada")
+        XCTAssertEqual(completed.processingParameters["minutesSource"], "fixture")
+        XCTAssertEqual(completed.reviewItems.first?.kind, .summary)
+    }
+
+    @Test func testNeutralSummary() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let media = fixtureDirectory.appendingPathComponent("synthetic_meeting.wav")
+        let reference = fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")
+        let created = try cli(["transcribe", media.path, "--fixture-reference", reference.path,
+                               "--store", root.path])
+        XCTAssertEqual(created.0, 0)
+        let id = try #require(UUID(uuidString: created.1))
+        let summarized = try cli(["summarize", created.1, "--fixture-reference",
+                                  reference.path, "--store", root.path])
+        XCTAssertEqual(summarized.0, 0)
+        let record = try MeetingStore(directory: root).load(id)
+        XCTAssertTrue(record.speakerNames.isEmpty)
+        XCTAssertEqual(record.segments[3].speakerID, "speaker_2")
+        XCTAssertEqual(record.reviewItems.first(where: { $0.kind == .action })?.ownerSpeakerID,
+                       "speaker_2")
+    }
+
+    @Test func testFailurePreservesRecord() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let media = fixtureDirectory.appendingPathComponent("synthetic_meeting.wav")
+        let reference = fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")
+        let created = try cli(["transcribe", media.path, "--fixture-reference", reference.path,
+                               "--store", root.path])
+        XCTAssertEqual(created.0, 0)
+        let id = try #require(UUID(uuidString: created.1))
+        let storedFile = root.appendingPathComponent("\(id.uuidString).json")
+        let original = try Data(contentsOf: storedFile)
+        let unknown = try cli(["recognize", UUID().uuidString,
+                               "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertTrue(unknown.0 != 0)
+        XCTAssertTrue(unknown.1.contains("does not exist"))
+        let missing = try cli(["summarize", created.1, "--summarizer", "mlx",
+                               "--store", root.path])
+        XCTAssertTrue(missing.0 != 0)
+        XCTAssertTrue(missing.1.contains("Missing local model"))
+        let badSpeaker = try cli(["recognize", "name", created.1, "speaker_99", "Ghost",
+                                  "--store", root.path])
+        XCTAssertTrue(badSpeaker.0 != 0)
+        XCTAssertEqual(try Data(contentsOf: storedFile), original)
     }
 }

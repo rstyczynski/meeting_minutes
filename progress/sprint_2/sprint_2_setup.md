@@ -150,9 +150,10 @@ as new backlog and sprint work through the Product Owner's process. Do not
 silently rewrite Sprint 1 history or change its Done status. Sprint 3's
 PBI-012 through PBI-014 provide a planned evidence-based review point,
 subject to Product Owner prioritization if extra redo work is required.
-The current Sprint 2 design still specifies a combined import operation;
-construction of the revised CLI workflow waits for an updated design and
-Product Owner acceptance in managed mode.
+The Product Owner accepted the revised Sprint 2 CLI design on 2026-10-01.
+The commands have since been implemented and their exercised behavior is
+recorded in the implementation and functional test records. A targeted
+Sprint 1 baseline review remains for the later evidence-based iteration.
 Sprint 2 validates the separability and feasibility of the three
 capabilities; detailed dependency and stale-derived-content rules belong
 to later requirements refinement, not this architecture-risk benchmark.

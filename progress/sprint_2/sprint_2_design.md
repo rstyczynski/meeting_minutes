@@ -2,19 +2,17 @@
 
 Status: Accepted
 
-The original combined `import` design below remains the accepted baseline
-for work already built. The Product Owner subsequently requested separate
-`transcribe`, optional `recognize`, and optional `summarize` commands. Their
-revised contract and test coverage are in
-[the change proposal](sprint_2_proposedchanges.md), pending the managed-mode
-design decision. The FR-09/FR-10 low-quality-audio experiment was separately
-approved and added below. Do not read `Status: Accepted` as approval of the
-three-command revision.
+The original combined `import` design below records work already built. The
+Product Owner approved separate `transcribe`, optional `recognize`, and
+optional `summarize` commands on 2026-10-01. Their revised contract and test
+coverage are in [the accepted change](sprint_2_proposedchanges.md). The
+FR-09/FR-10 low-quality-audio experiment was separately approved and added
+below. The three-command contract governs the remaining construction.
 
-## Proposed CLI revision — awaiting Product Owner approval
+## Approved CLI revision
 
-Status: Proposed. This section is a managed-mode design amendment and does
-not authorize code or test-skeleton changes until accepted.
+Status: Accepted by the Product Owner on 2026-10-01. The Test Architect added
+SM-2, UT-7–9, and IT-7–9 skeletons before revised CLI construction.
 
 `transcribe <local.wav> --transcriber fluid|whisper` will validate local
 media, run the selected local ASR adapter, and atomically create one record
@@ -36,10 +34,10 @@ and atomically add review items without transcribing again. A missing model,
 unknown record, invalid source ID, or failed generation must leave the prior
 record usable. Detailed rules for changes after a summary and reruns are
 deferred to later requirements refinement, as the Product Owner directed.
-The complete proposed command syntax and error cases are recorded in
+The complete accepted command syntax and error cases are recorded in
 [the change proposal](sprint_2_proposedchanges.md).
 
-The proposed test amendment is: **SM-2** checks that help advertises all
+The accepted test amendment is: **SM-2** checks that help advertises all
 three commands. **UT-7** checks a transcript-only result and unchanged store
 on a missing-media error. **UT-8** checks name assignment and segment movement
 without losing source ranges. **UT-9** checks that minutes validation rejects
@@ -48,9 +46,9 @@ summary. **IT-7** executes the three commands in separate processes against
 one synthetic fixture and one store, checking JSON after each step. **IT-8**
 skips recognition and confirms the optional summary retains neutral labels.
 **IT-9** checks unknown record and missing local model failures preserve the
-last valid record. These are proposed test specifications; executable
-skeletons and `new_tests.manifest` updates follow design acceptance, before
-construction. Real-model quality remains under PBI-018 experiments.
+last valid record. Executable skeletons and `new_tests.manifest` entries are
+prepared before construction. Real-model quality remains under PBI-018
+experiments.
 
 ## Objective and boundary
 
@@ -583,6 +581,21 @@ including misses and warnings on other speakers. Run the mixed lapel audio
 as a separate recovery condition and check original preservation and review
 of suspect ranges. Record a pass or failure for FR-09 and FR-10 and all
 limitations. This covers PBI-018 and the approved FR-09/FR-10 revision.
+
+The Product Owner approved the CLI amendment on 2026-10-01. **SM-2** requires
+help to advertise `transcribe`, `recognize`, and `summarize`. **UT-7** requires
+a transcript-only result and no saved record on missing media. **UT-8**
+requires chair naming and segment movement to preserve source ranges.
+**UT-9** requires unknown source IDs to be rejected while a summary without
+recognition keeps neutral labels. **IT-7** runs transcribe, recognize, and
+summarize as separate processes on the synthetic fixture and verifies the
+same record after every step. **IT-8** skips recognition and verifies that
+optional summary uses neutral labels. **IT-9** checks that unknown records and
+missing local model assets fail without altering the last valid record. These
+cases trace to PBI-011.2, PBI-011.3, and PBI-011.5; IT-7 also exercises the
+PBI-011.4 shared-store contract. The Test Architect adds runnable red
+skeletons to the existing CLI/core test domains and registers them in both
+the component manifests and `new_tests.manifest` before construction.
 
 The real-model runs in PBI-011.5 and PBI-018 have a separate experiment record;
 they cannot be made deterministic unit tests and are required evidence for

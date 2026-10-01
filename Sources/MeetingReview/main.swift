@@ -1,24 +1,38 @@
 import Foundation
 import MeetingCore
 import SwiftUI
-import AVKit
+import AVFoundation
 
 private struct ReviewScreen: View {
     let record: MeetingRecord
     @State private var player: AVPlayer
+    @State private var playbackMessage = "Ready to play local audio"
+    @State private var playbackToken = UUID()
 
     init(record: MeetingRecord) {
         self.record = record
         _player = State(initialValue: AVPlayer(url: URL(fileURLWithPath: record.sourcePath)))
     }
 
+    private func playRange(_ range: SourceRange, label: String) {
+        let token = UUID()
+        playbackToken = token
+        player.seek(to: CMTime(seconds: range.startSeconds, preferredTimescale: 600))
+        player.play()
+        playbackMessage = String(format: "Playing %@ from %.1f s", label,
+                                 range.startSeconds)
+        DispatchQueue.main.asyncAfter(deadline: .now() + range.endSeconds - range.startSeconds) {
+            guard playbackToken == token else { return }
+            player.pause()
+            playbackMessage = String(format: "Stopped at %.1f s", range.endSeconds)
+        }
+    }
+
     var body: some View {
         HStack(spacing: 18) {
             List(record.segments) { segment in
                 Button {
-                    player.seek(to: CMTime(seconds: segment.range.startSeconds,
-                                           preferredTimescale: 600))
-                    player.play()
+                    playRange(segment.range, label: "transcript")
                 } label: {
                     VStack(alignment: .leading) {
                         Text(record.speakerNames[segment.speakerID ?? ""]
@@ -31,17 +45,49 @@ private struct ReviewScreen: View {
                 }
             }
             VStack(alignment: .leading) {
-                VideoPlayer(player: player).frame(minWidth: 320, minHeight: 180)
+                Text(URL(fileURLWithPath: record.sourcePath).lastPathComponent)
+                    .font(.subheadline)
+                HStack {
+                    Button("Play") {
+                        playbackToken = UUID()
+                        player.play()
+                        playbackMessage = "Playing local audio"
+                    }
+                    Button("Pause") {
+                        playbackToken = UUID()
+                        player.pause()
+                        playbackMessage = "Paused"
+                    }
+                }
+                Text(playbackMessage).font(.caption)
                 Text("Meeting \(record.id.uuidString)").font(.headline)
                 List(record.reviewItems) { item in
                     VStack(alignment: .leading) {
                         Text(item.kind.rawValue.capitalized).font(.headline)
                         Text(item.text)
+                        if let owner = item.ownerSpeakerID {
+                            Text("Owner: \(record.speakerNames[owner] ?? owner)")
+                                .font(.subheadline)
+                        }
                         if let range = item.sourceRange {
                             Button("Play source") {
-                                player.seek(to: CMTime(seconds: range.startSeconds,
-                                                       preferredTimescale: 600))
-                                player.play()
+                                playRange(range, label: "source")
+                            }
+                        }
+                    }
+                }
+                if let warnings = record.qualityWarnings, !warnings.isEmpty {
+                    Text("Audio to review").font(.headline)
+                    List(Array(warnings.enumerated()), id: \.offset) { _, warning in
+                        VStack(alignment: .leading) {
+                            Text(warning.speakerID.flatMap { record.speakerNames[$0] }
+                                 ?? warning.speakerID ?? "Uncertain speaker")
+                                .font(.subheadline)
+                            Text(warning.reason)
+                            Button(String(format: "Play %.1f–%.1f s",
+                                          warning.range.startSeconds,
+                                          warning.range.endSeconds)) {
+                                playRange(warning.range, label: "warning")
                             }
                         }
                     }

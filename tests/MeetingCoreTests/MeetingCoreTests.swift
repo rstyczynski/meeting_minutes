@@ -79,4 +79,66 @@ struct MeetingCoreTests {
         XCTAssertThrowsError(try config.selectedBackend(override: "unknown"))
         XCTAssertThrowsError(try MeetingConfiguration(transcriber: "bad").selectedBackend(override: nil))
     }
+
+    @Test func testTranscriptOnly() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let fixtureDirectory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent("tests/fixtures")
+        let reference = try JSONDecoder().decode(FixtureReference.self, from: Data(contentsOf:
+            fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")))
+        let store = MeetingStore(directory: directory)
+        let record = try MeetingImporter(store: store).importMedia(
+            fixtureDirectory.appendingPathComponent("synthetic_meeting.wav"),
+            backend: .fluid, transcriber: FixtureTranscriber(reference: reference))
+        XCTAssertEqual(record.segments.count, 5)
+        XCTAssertTrue(record.reviewItems.isEmpty)
+        let persisted = try store.load(record.id)
+        XCTAssertTrue(persisted.reviewItems.isEmpty)
+        XCTAssertThrowsError(try MeetingImporter(store: store).importMedia(
+            fixtureDirectory.appendingPathComponent("missing.wav"),
+            backend: .fluid, transcriber: FixtureTranscriber(reference: reference)))
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: directory.path).count, 1)
+    }
+
+    @Test func testChairCorrections() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = MeetingStore(directory: directory)
+        let first = try segment("s1", speaker: "speaker_1")
+        let second = try segment("s2", speaker: "speaker_2")
+        var record = MeetingRecord(sourcePath: "/tmp/source.wav", segments: [first, second],
+                                   backend: "fluid", modelRevision: "test")
+        try record.assignSpeakerName("speaker_2", to: " Ada ")
+        try record.moveSegment("s1", to: "speaker_2")
+        XCTAssertThrowsError(try record.assignSpeakerName("speaker_3", to: "Unknown"))
+        XCTAssertThrowsError(try record.moveSegment("s1", to: "speaker_3"))
+        XCTAssertThrowsError(try record.moveSegment("missing", to: "speaker_2"))
+        try store.save(record)
+        let loaded = try store.load(record.id)
+        XCTAssertEqual(loaded.speakerNames["speaker_2"], "Ada")
+        XCTAssertEqual(loaded.segments[0].speakerID, "speaker_2")
+        XCTAssertEqual(loaded.segments[0].range, first.range)
+    }
+
+    @Test func testOptionalMinutes() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let fixtureDirectory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent("tests/fixtures")
+        let reference = try JSONDecoder().decode(FixtureReference.self, from: Data(contentsOf:
+            fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")))
+        let store = MeetingStore(directory: directory)
+        let record = try MeetingImporter(store: store).importMedia(
+            fixtureDirectory.appendingPathComponent("synthetic_meeting.wav"),
+            backend: .fluid, transcriber: FixtureTranscriber(reference: reference))
+        let summarized = try MeetingSummarizer(store: store).summarize(record.id,
+            generator: FixtureSummaryGenerator(reference: reference),
+            modelRevision: "synthetic-reference-v1", fixtureDerived: true)
+        XCTAssertEqual(summarized.reviewItems.count, 4)
+        XCTAssertTrue(summarized.speakerNames.isEmpty)
+        XCTAssertEqual(summarized.reviewItems.first?.kind, .summary)
+        XCTAssertThrowsError(try MinutesValidator.item(kind: .decision, text: "bad",
+            sourceIDs: ["missing"], segments: record.segments))
+    }
 }

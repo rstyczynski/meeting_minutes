@@ -197,6 +197,14 @@ local recovery path improves or harms transcription and attribution; exact
 quality thresholds and production recovery policy will be defined from that
 evidence.
 
+#### FR-11 — Recognition languages
+
+The system shall support speech recognition and transcription in English and
+Polish. Both languages are required; language selection, mixed-language
+behavior, and measurable acceptance criteria will be refined later. FR-11 is
+deferred and does not change the scope or acceptance criteria of the current
+Elaboration work.
+
 ### Non-functional requirements
 
 #### NFR-01 — Local-only data

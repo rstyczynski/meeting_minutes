@@ -1,10 +1,13 @@
 # Sprint 2 — AMI ES2002a ASR benchmark evidence
 
 Status: Preliminary paired headset and alternate-input quality, repeated
-runtime, process memory, and model footprint results. Speaker-attribution,
-quality-warning, timing-error, and disconnected-network checks remain
-pending. This is PBI-018 measurement
-evidence, not a Sprint 3 architecture decision.
+runtime, process memory, model footprint, reference-assisted speaker-turn,
+and exploratory quality-warning results. Process-level disconnected-network
+inference passed for staged ASR and diarization models. The prototype now
+persists speaker labels and warnings. Independent warning reliability and
+minutes quality remain open. This is
+PBI-018 measurement evidence, not a Sprint 3
+architecture decision.
 
 ## Summary for the Product Owner
 
@@ -21,8 +24,10 @@ for both combinations, to **22.65%** for FluidAudio and **32.91%** for
 whisper.cpp, but worsened overall word error rate to **21.95%** and
 **32.62%**, respectively. It is therefore a plausible recovery input for
 the affected participant, not an automatic improvement for the whole
-meeting. Neither prototype path currently detects the affected participant
-or marks audio ranges for review.
+meeting. An experimental local quality check flagged anonymous speaker
+cluster S3 on the headset, which reference evaluation later mapped mainly
+to A. Its warning also covered much of speaker C's speech because the
+diarizer merged that person, so it is not yet a reliable participant warning.
 
 In three runs on the same 120-second headset excerpt, FluidAudio's median
 wall time was **0.73 seconds** and whisper.cpp's was **1.29 seconds**.
@@ -30,17 +35,21 @@ FluidAudio's measured process resident memory ranged from 113 to 121 MB,
 versus 452 to 454 MB for whisper.cpp. The installed FluidAudio model
 directory was larger, about 452 MiB versus 141 MiB for the Whisper model.
 The memory figures omit any accelerator allocation not reported as process
-resident memory. Both are practical local ASR candidates, but the
-speaker-label, poor-audio-warning, timing, offline, and minutes checks must
-be finished before recommending a default in Sprint 3.
+resident memory. The separate FluidAudio offline diarizer found only three
+speaker clusters against four annotated people. Its reference-aligned
+coverage improved for the affected speaker on lapel input but lost some
+overall accuracy. Both are practical local ASR candidates, but reliable
+speaker labels and dependable poor-audio warnings require further work.
+The local MLX minutes experiment below also exposed unsupported claims on
+natural speech. Sprint 3 should decide how these findings affect the default.
 
 ## Compared model combinations
 
 **FluidAudio 0.17.4 with Parakeet TDT 0.6B v2 Core ML** is the Swift and
 Apple-device path. In this experiment it led on transcription accuracy,
 affected-speaker errors, measured wall time, and process resident memory.
-Its staged model footprint was larger. FluidAudio also offers diarization,
-but this prototype has not yet measured its attribution quality.
+Its staged model footprint was larger. Its separate offline diarizer missed
+one of four reference speakers, so attribution remains a material risk.
 
 **whisper.cpp commit `6e4ab854` with Whisper base.en** is the C/C++ path
 invoked through the Swift process adapter. In this experiment its staged
@@ -72,33 +81,100 @@ The per-run times, resident sizes, output segment counts, and model sizes
 are reproduced in this report below. This establishes a same-machine,
 warm-cache comparison; packaging size and accelerator memory remain open.
 
-**FR-09, warning about unreliable audio — fails current prototype
-validation.** Official AMI metadata identifies headset-problem participant
+**FR-09, warning about unreliable audio — partial experimental detection;
+requirement not validated.** Official AMI metadata identifies headset-problem participant
 1 as annotation speaker A. Alignment of the two headset transcripts with
 that speaker's reference words found 65 errors in 234 tokens for
 FluidAudio and 137 in 234 for whisper.cpp, with insertions excluded from
-these speaker-linked counts. This proves the participant is an important
-accuracy case; it does not prove automatic detection. Neither prototype
-output names an affected speaker or flags a suspect source range. Thus no
-warning coverage, missed-region rate, or false-warning rate can yet be
-reported. The specific reference and limitation are recorded below and
-in the [fixture provenance](ami_es2002a_fixture.md).
+these speaker-linked counts. The local experimental diarizer/energy helper,
+without reference input, flagged 16 source ranges for its low-level S3
+speaker cluster. Evaluation afterward found those ranges covered 186 of
+A's 233 annotated words but missed 47. They also covered 83 words from
+other speakers, including 61 of C's 82 because C had been merged with S3.
+The lapel run emitted no warning. This is a useful signal but does not
+reliably isolate the participant. The prototype persisted the same 16 S3
+warning ranges in AMI headset record
+`87A64680-FD3C-44D4-9529-039E7071E46A` under
+`/private/tmp/meeting-sprint2-real-store`. This proves the warning reaches
+the review record; it does not make identification reliable. The
+[fixture provenance](ami_es2002a_fixture.md) explains
+the reference mapping.
 
 **FR-10, source review and recovery — partial evidence; requirement not
 validated.** The original headset WAV remains available. Separate lapel
 outputs `fluid_lapel.json` and `whisper_lapel.json` were scored against the
 same manual words, showing better speaker-A reference-linked error rates
-but worse overall WER. The current prototype has not demonstrated
-range-level replay or an operator comparison that preserves both derived
-results. The ASR measurement alone cannot pass FR-10.
+but worse overall WER. The SwiftUI review app loaded the real AMI record,
+showed 16 warnings, and sought to the first warning at 19.3 seconds and
+a transcript segment at 4.7 seconds. That manual check also found continuous
+playback disruptive, so the player was changed to pause after the selected
+range; the bounded replay change builds but has not been manually replayed.
+An operator comparison that preserves both derived results remains open.
 
-**PBI-018, remaining architecture options — pending.** Both backends return
-timed segments and local model provenance. Speaker-attribution accuracy,
-word or segment timing error, disconnected-network operation, and LLM
-minutes quality have no completed measurements. PBI-018 cannot be marked
-complete until these are measured or explicitly reported as blocked in the
-Sprint 2 quality review. Sprint 3 will analyze the completed evidence for
-an architecture recommendation.
+**PBI-018, speaker attribution — measured with a major limitation.**
+FluidAudio's offline diarizer produced `diarization_headset.json` and
+`diarization_lapel.json` from the corresponding full meeting recordings.
+The [diarization scorer](../../experiments/score_ami_diarization.py) maps
+anonymous clusters to reference speakers only after inference, then checks
+whether each manual word midpoint has the right label. It found three
+predicted speakers for four reference speakers. Headset input correctly
+covered 2,219 of 2,600 reference words; lapel input covered 2,200.
+Speaker A improved from 186 of 233 words to 206 of 233, while speaker C
+had zero correctly attributed words in both conditions. This is a
+reference-assisted word-midpoint measure, not standard diarization error
+rate or automatic identity recognition. The current product adapter attached
+the headset labels and 16 warnings to the real AMI record cited above;
+2582 transcript segments were saved after recognition. Three predicted
+speaker IDs still represent four reference people, so the stored labels
+must not be presented as dependable identities.
+
+**PBI-018, timestamp quality — diagnostic measured.** Exact ASR words were
+aligned to timed reference words. Among complete segments with a match,
+FluidAudio's median absolute start and end deviations were each 0.07 s;
+whisper.cpp's were 0.46 s and 0.51 s. The engines output very different
+segment lengths, and the reference envelope is formed only from matched
+words, so this is a useful seekability diagnostic rather than a directly
+comparable timestamp benchmark. Counts and upper-tail errors appear below.
+
+**PBI-018, local-only inference — passed for staged models on this Mac.**
+After staging weights, all three local processes ran the same 120-second
+headset sample under a macOS process sandbox that denied networking.
+FluidAudio ASR emitted 210 segments, whisper.cpp emitted 28, and FluidAudio
+diarization emitted 15. A `curl` control inside that sandbox could not
+resolve `example.com`, confirming the network restriction. This verifies
+inference without a network service; it does not eliminate the one-time
+weight preparation or prove packaging on another device.
+
+**PBI-018, local minutes experiment — measured with a quality failure.**
+Xcode 27 and its Metal Toolchain built MLX Swift's shader library. The pinned
+MLX Swift LM 3.31.3 adapter loaded locally staged Qwen3-4B-Instruct-2507
+4-bit weights and generated valid, source-linked minutes from the invented
+five-turn fixture. The model produced one summary, one decision, one action
+with the correct owner ID, and one open question; the CLI persisted all four
+in record `8DAAA0BB-C4A0-4863-9198-025E9FD4E643` under
+`/private/tmp/meeting-sprint2-mlx-flow`.
+
+The same adapter then processed the first 120 seconds of the approved AMI
+headset recording. The first attempt fed 210 word-level segments and produced
+truncated JSON with excessive citations. Grouping adjacent words into
+short source chunks yielded parseable JSON; the validator expanded citations
+back to original transcript IDs. The CLI persisted record
+`4604E907-2EE9-4FE6-974A-8D22A5F9914D`. Its summary reasonably identifies
+the remote-control kickoff, but the derived decision treats the project goal
+as a decision, the two actions propose work not committed in the cited text,
+and the two open questions are model-generated rather than questions asked in
+the source. Those items are **not trustworthy meeting minutes**. The adapter
+discarded an unsupported owner ID instead of assigning it to a person. This
+experiment demonstrates local execution and traceable storage, not minutes
+quality. The saved JSON is low-level evidence; these findings are the
+decision-facing interpretation.
+
+**PBI-018, remaining architecture options — measured limits.** Both ASR
+backends return timed segments and local model provenance. The chosen
+minutes model passed a small synthetic contract check but failed natural
+meeting content quality. Sprint 3 must analyze these results and decide
+whether a different model, prompt, chunking strategy, or human review gate
+is needed before treating generated minutes as reliable.
 
 ## Input and model identity
 
@@ -201,6 +277,71 @@ recovery strategy. Neither model identified the affected speaker or warned
 about poor audio; those acceptance checks remain open. The lapel runs are
 separate input conditions, not part of the same-audio engine comparison.
 
+## Speaker attribution experiment
+
+The pinned FluidAudio offline diarizer was run once on each full mixed
+recording, separately from the two ASR engines. It emitted 117 headset
+speaker-turn segments and 140 lapel segments, but only three anonymous
+clusters in each case. The reference has four speakers. The scorer chooses
+the one-to-one label mapping that maximizes reference-word coverage; this
+uses ground truth solely for evaluation, never as a prototype input. On
+the headset it mapped S1 to B, S2 to D, and S3 to A. The same mapping won
+for the lapel. Speaker C received no distinct predicted cluster.
+
+For the headset, 2,219 of 2,600 manual word midpoints had a correctly
+mapped active diarizer label, 300 had a wrong label, and 81 had no label.
+For the lapel, the counts were 2,200 correct, 311 wrong, and 89 uncovered.
+The affected speaker A had 186 correct, 31 wrong, and 16 uncovered words
+on the headset; lapel changed these to 206 correct, 18 wrong, and 9
+uncovered. Speaker C had zero correct out of 82 on both. The alternate
+input helps A's attribution under this measure but does not fix the
+four-speaker failure. This is not DER or JER: it samples manual word
+midpoints, gives credit if any overlapping predicted label matches, and
+does not count false alarms outside annotated words. No person name is
+generated by this experiment.
+
+The experimental warning rule measures RMS audio level within each predicted
+speaker turn lasting at least half a second. It flags all turns belonging
+to a cluster whose median turn RMS is below half the median of all cluster
+medians. This uses only the audio and predicted anonymous labels. On the
+headset, S3's median was 0.001864 against a threshold of 0.002862, producing
+16 warning ranges. On the lapel, S3's median was 0.005921 against a threshold
+of 0.004147, so no range was warned. The threshold was chosen during this
+single-meeting exploration, not validated on an independent corpus.
+Against manual annotations, headset warning ranges covered 186/233 A words
+and 83/2,367 words from other speakers; C accounts for 61 of those 83.
+The warning is reviewable by source range, but its participant identity is
+unreliable. It must remain an uncertain range-level cue until speaker
+separation improves.
+
+The reproducible checks are:
+
+~~~bash
+python3 experiments/score_ami_diarization.py --reference /private/tmp/meeting-minutes-ami/ES2002a/manual_words.json --diarization /private/tmp/meeting-minutes-ami/ES2002a/diarization_headset.json
+python3 experiments/score_ami_diarization.py --reference /private/tmp/meeting-minutes-ami/ES2002a/manual_words.json --diarization /private/tmp/meeting-minutes-ami/ES2002a/diarization_lapel.json
+~~~
+
+## Timestamp diagnostic
+
+The [timing scorer](../../experiments/score_ami_timing.py) aligns exact
+recognized words to the manual timed words, then compares each complete
+hypothesis segment's start and end with the envelope of its matched
+reference words. FluidAudio had 2,147 segments with an exact match among
+2,308 complete segments. Its median absolute start and end deviations were
+0.07 s each; 90th-percentile deviations were 0.18 s and 0.33 s. whisper.cpp
+had 365 matched segments among 424 complete segments. Its medians were
+0.46 s and 0.51 s; 90th percentiles were 1.43 s and 1.65 s. FluidAudio
+emits mostly word-sized segments, while whisper.cpp emits longer phrases.
+The scores therefore show the precision of the current adapter outputs for
+seeking, not a controlled comparison of identical boundary types. Only
+exact matched words in segments wholly inside the annotation window count;
+omissions and false words have no timing score.
+
+~~~bash
+python3 experiments/score_ami_timing.py --reference /private/tmp/meeting-minutes-ami/ES2002a/manual_words.json --hypothesis /private/tmp/meeting-minutes-ami/ES2002a/fluid_headset.json
+python3 experiments/score_ami_timing.py --reference /private/tmp/meeting-minutes-ami/ES2002a/manual_words.json --hypothesis /private/tmp/meeting-minutes-ami/ES2002a/whisper_headset.json
+~~~
+
 ## Resource measurements
 
 Each engine ran the same 120-second headset excerpt three times in sequence
@@ -230,15 +371,33 @@ states CC BY 4.0. The pinned
 [whisper.cpp source](https://github.com/ggml-org/whisper.cpp/blob/master/LICENSE)
 uses MIT, and the [converted Whisper model collection](https://huggingface.co/ggerganov/whisper.cpp)
 is marked MIT. The staged executables completed the measured runs using
-local model paths without a download step. This confirms local-path
-inference, but an explicit disconnected-network run and any packaging
-attribution review are still pending.
+local model paths without a download step. A process-level
+disconnected-network check passed as detailed below; packaging attribution
+review is still pending.
+
+## Disconnected-network check
+
+The one-time model downloads were completed before this check. macOS
+`sandbox-exec` applied `(version 1) (allow default) (deny network*)` to
+each inference process without changing system-wide connectivity. As a
+control, `curl -I --max-time 3 https://example.com` under the same profile
+exited 6 because it could not resolve the host. Under that profile, the
+staged FluidAudio ASR, whisper.cpp ASR, and FluidAudio offline diarizer
+each exited 0 on the 120-second headset WAV. Their outputs were parsed as
+JSON and contained 210, 28, and 15 segments, respectively. Files named
+`fluid_offline`, `whisper_offline`, and `diarization_offline` (JSON and logs)
+are under `/private/tmp/meeting-minutes-ami/ES2002a/`. This establishes
+local inference with prepared weights on this Mac; it does not test a fresh
+installation with no assets or an iOS package.
 
 ## Remaining checks
 
-Timed transcript segments exist for both engines, but boundary timing error
-against the manual annotation and speaker attribution have not yet been
-scored. The prototype has not emitted FR-09 warnings or demonstrated FR-10
-replay and recovery. Actual disconnected-network operation and packaging
-license obligations also need verification. No minutes-quality result is
-available because the current real-model path has no minutes generator.
+Timed transcript segments and the limited exact-match timing diagnostic
+exist for both engines. The offline diarizer's anonymous labels and
+exploratory audio-level warnings now reach a saved prototype record, but
+the warning fails reliable participant isolation. The review player sought
+to selected source ranges; bounded playback and alternate-input comparison
+need further operator checking. Packaging license obligations still need
+verification. The local MLX generator executed on synthetic and natural
+transcripts; the natural minutes failed content quality. Those failures are
+the measured inputs to the Sprint 3 architecture review.

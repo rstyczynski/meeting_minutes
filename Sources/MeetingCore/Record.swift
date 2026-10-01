@@ -78,25 +78,40 @@ public struct ReviewItem: Codable, Sendable, Identifiable, Equatable {
     }
 }
 
+public struct QualityWarning: Codable, Sendable, Equatable {
+    public let range: SourceRange
+    public let speakerID: String?
+    public let reason: String
+
+    public init(range: SourceRange, speakerID: String?, reason: String) {
+        self.range = range
+        self.speakerID = speakerID
+        self.reason = reason
+    }
+}
+
 public struct MeetingRecord: Codable, Sendable, Identifiable {
     public let id: UUID
     public let sourcePath: String
     public var segments: [TranscriptSegment]
     public var speakerNames: [String: String]
     public var reviewItems: [ReviewItem]
+    public var qualityWarnings: [QualityWarning]?
     public let backend: String
     public let modelRevision: String
-    public let processingParameters: [String: String]
+    public var processingParameters: [String: String]
 
     public init(id: UUID = UUID(), sourcePath: String,
                 segments: [TranscriptSegment], speakerNames: [String: String] = [:],
-                reviewItems: [ReviewItem] = [], backend: String,
+                reviewItems: [ReviewItem] = [], qualityWarnings: [QualityWarning]? = nil,
+                backend: String,
                 modelRevision: String, processingParameters: [String: String] = [:]) {
         self.id = id
         self.sourcePath = sourcePath
         self.segments = segments
         self.speakerNames = speakerNames
         self.reviewItems = reviewItems
+        self.qualityWarnings = qualityWarnings
         self.backend = backend
         self.modelRevision = modelRevision
         self.processingParameters = processingParameters
@@ -104,6 +119,24 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
 
     public mutating func renameSpeaker(_ id: String, to name: String) {
         speakerNames[id] = name
+    }
+
+    public mutating func assignSpeakerName(_ id: String, to name: String) throws {
+        guard segments.contains(where: { $0.speakerID == id }) else {
+            throw MeetingError.adapterFailure("Unknown speaker ID: \(id)")
+        }
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw MeetingError.adapterFailure("Speaker name cannot be empty")
+        }
+        speakerNames[id] = trimmed
+    }
+
+    public mutating func moveSegment(_ id: String, to speakerID: String) throws {
+        guard segments.contains(where: { $0.speakerID == speakerID }) else {
+            throw MeetingError.adapterFailure("Unknown speaker ID: \(speakerID)")
+        }
+        try reassignSegment(id, to: speakerID)
     }
 
     public mutating func reassignSegment(_ id: String, to speakerID: String) throws {
