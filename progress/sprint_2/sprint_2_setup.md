@@ -45,8 +45,7 @@ The architecture deliberately leaves transcription, diarization, and language
 model implementations unselected. A deterministic adapter can verify the
 contracts and record flow, but cannot establish real-model quality, latency,
 license, packaging, or memory feasibility. PBI-012 must report those results
-separately. The retained `tmp/2.Elaboration/` material is provisional and
-contains deferred capture and alert scope; it is not an accepted requirement.
+separately. Sprint scope follows the accepted SRS, architecture, and plan.
 
 The prototype is feasible as a bounded Swift Package experiment. The main
 uncertainty is obtaining and evaluating suitable fully local models and
