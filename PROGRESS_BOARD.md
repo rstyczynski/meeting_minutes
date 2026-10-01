@@ -15,7 +15,7 @@
 | Sprint 2 | under_construction | PBI-011 | under_construction |
 | Sprint 2 | under_construction | PBI-011.1 | tested |
 | Sprint 2 | under_construction | PBI-011.2 | tested |
-| Sprint 2 | under_construction | PBI-011.3 | under_construction |
+| Sprint 2 | under_construction | PBI-011.3 | tested |
 | Sprint 2 | under_construction | PBI-011.4 | under_construction |
 | Sprint 2 | under_construction | PBI-011.5 | under_construction |
 | Sprint 2 | under_construction | PBI-018 | under_construction |

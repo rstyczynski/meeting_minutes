@@ -24,6 +24,14 @@ progress/sprint_2/new_tests.manifest` for the Sprint 2 new-work gates and
 runs its full suite without that option for regression. The manager records
 each formal gate in a timestamped log under `progress/sprint_2/`.
 
+The single entry point for the complete Sprint 2 quality sequence is
+`tests/run-sprint-gates.sh progress/sprint_2 [log-label]`. It runs A1 smoke,
+A2 unit, A3 integration, B1 smoke, B2 unit, and B3 integration in order,
+writes a separate timestamped log for each, and stops at the first failure.
+Use a label such as `pbi3` to distinguish a child PBI's run. On this Mac,
+SwiftPM's nested sandbox fails before tests run; execute this wrapper outside
+the sandbox once rather than requesting permission for each gate separately.
+
 ### Build
 
 Command: `swift build`

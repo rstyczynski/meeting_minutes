@@ -40,6 +40,14 @@ The review player initially crashed when AVKit VideoPlayer was used. The AVFound
 
 Each completed child or increment requires a new-work smoke, unit, and integration run, then full-regression smoke, unit, and integration run. Run the following from the repository root and save timestamped output in progress/sprint_2:
 
+The main entry point runs the complete sequence and writes the six logs:
+
+~~~bash
+tests/run-sprint-gates.sh progress/sprint_2 pbi3
+~~~
+
+The entry point executes these underlying commands in order:
+
 ~~~bash
 tests/run.sh --smoke --new-only progress/sprint_2/new_tests.manifest
 tests/run.sh --unit --new-only progress/sprint_2/new_tests.manifest
@@ -50,5 +58,9 @@ tests/run.sh --integration
 ~~~
 
 For PBI-011.1, all six passed. A1 first failed at SwiftPM's nested sandbox before product assertions; the outside-sandbox retry passed. A3 and B3 were rerun successfully after IT-1 was strengthened. The logs are test_run_A1_smoke_20261001_090052.log (sandbox failure), test_run_A1_smoke_20261001_090116_retry1.log (PASS), test_run_A2_unit_20261001_095313.log (PASS), test_run_A3_integration_20261001_095611.log (PASS), test_run_B1_smoke_20261001_095330.log (PASS), test_run_B2_unit_20261001_095337.log (PASS), and test_run_B3_integration_20261001_101632.log (PASS). Earlier A3/B3 logs at 095322/095343 also passed before the IT-1 change. IT-1 launched the CLI in a separate process and reloaded its record through MeetingStore, satisfying that child's persistence criterion.
+
+For PBI-011.3, the fixture generator was copied to /private/tmp/meeting-fixture-regenerate-pbi3 and executed there, leaving the checked-in fixture unchanged. The generated WAV had a 16,000 Hz sample rate, one channel, two bytes per sample, 16.727 seconds duration, and five reference turns. The source-linked output and reloaded chair corrections are covered by the passing integration cases. Fresh A1, A2, A3, B1, B2, and B3 logs named test_run_pbi3_A1_smoke_20261001_1552.log through test_run_pbi3_B3_integration_20261001_1552.log all ended successfully; each level used its required new-only or full-regression mode. The generator's macOS voices needed an outside-sandbox run, while the six gates passed on their first attempts.
+
+After the Product Owner requested a single test entry point, tests/run-sprint-gates.sh was added and syntax-checked with bash -n. Its full PBI-011.3 run also passed all six levels, writing test_run_pbi3_A1_smoke_20261001_171053.log through test_run_pbi3_B3_integration_20261001_171053.log. The command prefix received one outside-sandbox approval for future runs, avoiding separate approval prompts for each gate. The earlier successful per-level logs remain as evidence of the pre-wrapper run.
 
 For the current PBI-011.2 increment, A1 first failed at SwiftPM's nested sandbox, then its outside-sandbox retry failed because help omitted the still-supported import route. After correcting help, A1 passed in test_run_A1_smoke_20261001_152814_retry2.log. A2, A3, B1, B2, and B3 passed in test_run_A2_unit_20261001_1530.log, test_run_A3_integration_20261001_1530.log, test_run_B1_smoke_20261001_1530.log, test_run_B2_unit_20261001_1530.log, and test_run_B3_integration_20261001_1530.log. The two failed A1 attempts remain in test_run_A1_smoke_20261001_152814.log and test_run_A1_smoke_20261001_152814_retry1.log for traceability. The current run includes all 18 automated cases. The documentation audit must verify every affected artifact, commands, links, content claims, open risks, and git diff --check before each local completion commit. Later children need their own fresh logs and audit. No Sprint 2 parent item is currently marked tested.

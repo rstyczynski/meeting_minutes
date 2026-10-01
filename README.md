@@ -101,3 +101,9 @@ creates the same local record. The old `import` command remains for
 compatibility with the first prototype tests. Copyable working commands,
 formatted `jq` output, prerequisites, and an error example are in the
 [implementation record](progress/sprint_2/sprint_2_implementation.md).
+
+For a complete local Sprint 2 quality check, run
+`tests/run-sprint-gates.sh progress/sprint_2` from the repository root. It
+executes the six required smoke, unit, and integration gates and saves one
+timestamped log per gate; [the test profile](docs/test-profile.md) explains
+the levels and the optional log label.
