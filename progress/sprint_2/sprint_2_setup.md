@@ -157,3 +157,16 @@ Sprint 1 baseline review remains for the later evidence-based iteration.
 Sprint 2 validates the separability and feasibility of the three
 capabilities; detailed dependency and stale-derived-content rules belong
 to later requirements refinement, not this architecture-risk benchmark.
+
+## FR-11 scope addition — 2026-10-01
+
+After reviewing the English-only ASR evidence, the Product Owner moved
+FR-11 English and Polish transcription validation into the active Sprint 2.
+The completed English-only PBI-011 children and PBI-018 benchmark remain
+historical evidence, but they do not satisfy FR-11. PBI-011.6 is accepted as
+the new sprint-scoped language-control and multilingual-adapter child;
+PBI-018 gains an English/Polish comparison increment. The [design
+amendment](sprint_2_design.md) defines a reviewable path and test evidence.
+Production thresholds and code-switching policy still belong to later
+requirements refinement. The earlier Sprint 2 documentation approval
+request is superseded until this new work is completed and reconciled.

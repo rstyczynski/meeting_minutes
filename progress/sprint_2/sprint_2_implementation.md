@@ -1,6 +1,6 @@
 # Sprint 2 — Implementation record
 
-Status: implemented and tested for the Sprint 2 prototype scope. This is the Product Owner's account of what the executable prototype does, what was measured, and what still limits an architecture decision. The accepted [design](sprint_2_design.md), [functional test record](sprint_2_tests.md), and [AMI benchmark report](ami_asr_benchmark.md) contain the corresponding criteria and evidence. Model weights and the approved AMI recording remain outside Git.
+Status: initial English prototype and PBI-011.6 bilingual CLI implemented and tested; the PBI-018 language comparison is measured. This is the Product Owner's account of what the executable prototype does, what was measured, and what still limits an architecture decision. The accepted [design](sprint_2_design.md), [functional test record](sprint_2_tests.md), and [benchmark report](ami_asr_benchmark.md) contain the corresponding criteria and evidence. Model weights and approved natural audio remain outside Git.
 
 ## Implementation and design compliance
 
@@ -20,6 +20,19 @@ PBI-011.5, local-model integration: FluidAudio 0.17.4 with Parakeet TDT 0.6B v2,
 
 PBI-018, benchmark technical decisions: [the decision-facing report](ami_asr_benchmark.md) includes same-input accuracy, affected-speaker errors, alternate lapel input, repeated wall time, process resident memory, model footprint, timestamp diagnostics, diarization coverage, warning coverage and spillover, disconnected-network inference, and the MLX minutes experiment. On the common headset input, FluidAudio had 19.48% WER against 28.79% for whisper.cpp. Its affected-speaker reference-linked error rate was 27.78% against 58.55%. Three 120-second runs gave median wall times of 0.73 and 1.29 seconds. The diarizer found three clusters for four reference people and merged the low-quality participant with another speaker. The stored 16 warnings are therefore useful review cues, not reliable participant identification. The natural-audio MLX minutes converted a project goal into a decision, invented two actions, and generated two questions that were not asked. This is an observed quality failure, not a recommendation to use those minutes. The benchmark scoring was reproduced from stored outputs and all six PBI-018 gates passed. Sprint 3 will analyze the measurements and select architecture changes.
 
+PBI-011.6, bilingual transcription: `transcribe` now accepts
+`--language en|pl|auto`, with `en` as the existing-command default. It saves
+`requestedLanguage` with backend and model revision. `fluidModelVersion` in
+settings selects Parakeet v2 or v3; `v2` rejects `pl` and `auto`. The
+multilingual Whisper model accepts `pl` and `auto`, while `.en` model paths
+are rejected for them. The Fluid helper loads v3 and passes the available
+language hint. `whisperUseGPU: false` requests CPU execution after the
+multilingual model's Metal initialization failed on this Mac. On five pinned
+natural clips per language, v3 WER was 11.49% English and 3.41% Polish;
+Whisper base WER was 18.39% and 27.27%. These read-speech measurements and
+their limits are fully interpreted in the benchmark. Mixed-language `auto`
+omitted the English half of an exploratory splice for both engines.
+
 ## Build, test, and environment
 
 The root package builds with swift build. Swift Testing 6.3.2 is pinned for the test targets; swift test currently passes 18 tests across core and integration suites. The accepted RUP runner uses smoke, unit, and integration levels, both new-only and regression. The main wrapper, tests/run-sprint-gates.sh, runs all six levels once and saves separate timestamped logs. Every Sprint 2 child, PBI-018, and the PBI-011 parent passed separate six-gate runs; results and failed-attempt explanations are in [the test record](sprint_2_tests.md).
@@ -35,6 +48,18 @@ cp /private/tmp/meeting-mlx-derived/Build/Products/Debug/mlx-swift_Cmlx.bundle/C
 ~~~
 
 The copied resource is a local build artifact, not checked into Git. This Xcode 27 build places the adapter at experiments/MinutesAdapter/.build/out/Products/Release/meeting-mlx-minutes. A prior Command Line Tools build used a different .build path. Set mlxExecutable to the executable's actual absolute path and mlxModelDirectory to the staged Qwen directory in the settings JSON. A process-level network-denial run of that executable generated valid structured synthetic minutes using only the staged local model. The natural AMI result is a quality failure even though local execution succeeded.
+
+For FR-11, stage a multilingual model before use. The tested Fluid assets
+are under `/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3` and
+the release helper is
+`experiments/FluidAdapter/.build/release/meeting-fluid-asr`. The tested
+multilingual Whisper weight is
+`/private/tmp/meeting-minutes-whisper.cpp/models/ggml-base.bin` and its
+executable is `/private/tmp/meeting-minutes-whisper.cpp/build/bin/whisper-cli`.
+The [benchmark](ami_asr_benchmark.md) records artifact checksums, licenses,
+the FLEURS references, all scores, and offline behavior. The source and
+scoring scripts are [fetch_fleurs_subset.py](../../experiments/fetch_fleurs_subset.py)
+and [benchmark_fleurs.py](../../experiments/benchmark_fleurs.py).
 
 ## Working CLI instructions
 
@@ -82,6 +107,26 @@ cat "/private/tmp/meeting-real-store/$record_id.json" | jq '{id, segments: (.seg
 
 The AMI benchmark is evidence of model behavior on one approved meeting, not a promise that natural minutes are accurate. Inspect each derived item against its cited source before using it.
 
+For the new language control, this is the exact shape of a real Polish
+transcription using the staged v3 model. Write the JSON settings file once,
+then run the CLI and inspect the saved transcript and provenance:
+
+~~~bash
+cat > /private/tmp/meeting-fr11-fluid-settings.json <<'JSON'
+{"transcriber":"fluid","fluidModelDirectory":"/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3","fluidModelVersion":"v3","fluidExecutable":"/Users/rstyczynski/projects/meeting_minutes/experiments/FluidAdapter/.build/release/meeting-fluid-asr"}
+JSON
+record_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-fr11-fleurs/pl_pl_0001.wav --transcriber fluid --language pl --settings /private/tmp/meeting-fr11-fluid-settings.json --store /private/tmp/meeting-fr11-demo)"
+cat "/private/tmp/meeting-fr11-demo/$record_id.json" | jq -r '"Requested: \(.processingParameters.requestedLanguage)", "Model: \(.modelRevision)", "Transcript:", (.segments[].text)'
+~~~
+
+The expected transcript begins “Jakiekolwiek korekty lub żądania” and the
+record says `Requested: pl` and `Model: parakeet-tdt-0.6b-v3`. The tested
+Whisper alternative uses `--transcriber whisper`, a settings file with
+`whisperModelPath` and `whisperExecutable` set to the staged paths above,
+and `whisperUseGPU: false` on this Mac. `--language en` selects English;
+omitting the option defaults to English. `--language auto` requests automatic
+selection, but it failed the exploratory within-recording language switch.
+
 A missing local WAV gives a clear error and does not create a record:
 
 ~~~bash
@@ -93,4 +138,4 @@ The command prints Media file does not exist to stderr and exits with status 2. 
 
 ## Remaining limitations and next checks
 
-The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each increment and the parent; architecture interpretation belongs to Sprint 3. No remote push has been made.
+The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. FR-11 adds a small paired read-speech check, but lacks referenced Polish meeting audio and verified multiple speakers. Its `auto` setting is unsuitable for an in-recording language switch in the exploratory check, and the multilingual Whisper Metal path failed on this host. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each earlier increment and PBI-011.6; architecture interpretation belongs to Sprint 3. No remote push has been made.

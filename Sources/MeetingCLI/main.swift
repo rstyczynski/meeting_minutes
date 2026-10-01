@@ -3,6 +3,7 @@ import MeetingCore
 
 private let help = """
 meeting-summarizer transcribe <local.wav> --transcriber fluid|whisper
+  [--language en|pl|auto]
   [--settings settings.json] [--store directory] [--fixture-reference reference.json]
 meeting-summarizer recognize <record-id> --diarizer fluid
   [--settings settings.json] [--store directory] [--fixture-reference reference.json]
@@ -85,11 +86,12 @@ struct MeetingCLI {
 
     private static func transcribe(_ args: [String], legacyImport: Bool) throws {
         let (parts, values) = try options(args, positional: 1,
-            allowed: ["--transcriber", "--settings", "--store", "--fixture-reference"])
+            allowed: ["--transcriber", "--language", "--settings", "--store", "--fixture-reference"])
         let media = URL(fileURLWithPath: parts[0]).standardizedFileURL
         try MediaValidator.validate(media)
         let (config, store) = try context(values)
         let backend = try config.selectedBackend(override: values["--transcriber"])
+        let language = try config.selectedLanguage(override: values["--language"])
         let fixture = try reference(values)
         let transcriber: any Transcribing
         if let fixture {
@@ -99,18 +101,24 @@ struct MeetingCLI {
                   let executable = config.whisperExecutable else {
                 throw MeetingError.missingModel("whisper")
             }
-            transcriber = WhisperProcessTranscriber(executable: executable, modelPath: model)
+            try MeetingConfiguration.validateWhisperModel(model, language: language)
+            transcriber = WhisperProcessTranscriber(executable: executable, modelPath: model,
+                                                    language: language,
+                                                    useGPU: config.whisperUseGPU ?? true)
         } else {
             guard let model = config.fluidModelDirectory,
                   let executable = config.fluidExecutable else {
                 throw MeetingError.missingModel("fluid")
             }
-            transcriber = FluidProcessTranscriber(executable: executable, modelDirectory: model)
+            let version = try config.selectedFluidVersion(for: language)
+            transcriber = FluidProcessTranscriber(executable: executable, modelDirectory: model,
+                                                  modelVersion: version, language: language)
         }
         let minutes: any MinutesGenerating = legacyImport && fixture != nil
             ? FixtureMinutesGenerator(reference: fixture!) : EmptyMinutesGenerator()
         let record = try MeetingImporter(store: store).importMedia(
-            media, backend: backend, transcriber: transcriber, minutes: minutes)
+            media, backend: backend, transcriber: transcriber, minutes: minutes,
+            requestedLanguage: language)
         print(record.id.uuidString)
     }
 

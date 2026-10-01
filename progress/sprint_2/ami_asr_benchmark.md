@@ -1,6 +1,7 @@
 # Sprint 2 — AMI ES2002a ASR benchmark evidence
 
-Status: Sprint 2 measurement complete; architecture interpretation remains
+Status: initial English measurement complete; FR-11 bilingual extension measured;
+architecture interpretation remains
 for Sprint 3. Paired headset and alternate-input quality, repeated
 runtime, process memory, model footprint, reference-assisted speaker-turn,
 and exploratory quality-warning results. Process-level disconnected-network
@@ -398,6 +399,120 @@ parseable JSON with cited decision, action, and open-question IDs in
 `/private/tmp/meeting-mlx-synthetic-offline.json`. This establishes local
 LLM inference after staging its weights and Metal shader library; it does
 not repair the natural-meeting content failure described above.
+
+## FR-11 language coverage audit — the original English-only variants
+
+The Product Owner's [FR-11](../../docs/srs.md) requires English and Polish transcription. The Product Owner added two-language validation and explicit language control to Sprint 2. The original Fluid adapter used Parakeet TDT 0.6B **v2**. [FluidAudio's ASR documentation](https://github.com/FluidInference/FluidAudio/blob/main/Documentation/ASR/GettingStarted.md) calls v2 English only. The original whisper.cpp weight was `ggml-base.en.bin`; [Whisper's model documentation](https://github.com/openai/whisper/blob/main/README.md) lists `base.en` as English only. Consequently neither originally benchmarked model supports required Polish transcription by its documented capability. The AMI scores above are English-only evidence.
+
+Source-supported candidate variants were identified before the new increment. [NVIDIA's Parakeet v3 model card](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) lists English and Polish among its 25 languages, and FluidAudio publishes a [v3 Core ML conversion](https://huggingface.co/FluidInference/parakeet-tdt-0.6b-v3-coreml). Whisper publishes multilingual `base` separately from `base.en`, and [whisper.cpp recognizes `pl`](https://github.com/ggml-org/whisper.cpp/blob/master/src/whisper.cpp). At the time of this source audit, the helper was fixed to v2 and the product adapters had no language option. The subsequent PBI-011.6 work added both controls and measured the new variants below.
+
+The original English results alone did not validate FR-11. The following
+extension is a separate comparison of different model variants on different
+speech data; do not combine its percentages with the AMI model ranking above.
+
+## FR-11 bilingual extension — PBI-011.6 and PBI-018
+
+**Decision-facing result.** Both new local adapters produced English and
+Polish transcripts through the product's `transcribe --language` command.
+On the same five English FLEURS clips, Parakeet v3 made **10 errors in 87
+reference words (11.49% WER)**, versus multilingual Whisper base's **16 in
+87 (18.39%)**. On the same five Polish clips, Parakeet v3 made **3 errors in
+88 words (3.41%)**, versus Whisper's **24 in 88 (27.27%)**. Unicode character
+error rates, excluding spaces, were **2.65% versus 7.51%** for English and
+**0.88% versus 7.36%** for Polish. These are ten short read-speech clips,
+not meetings; no production accuracy threshold is established. The saved
+[per-clip results](tests/fr11_fleurs_results.json) contain every reference,
+hypothesis, score, runtime, requested language, model revision, SHA-256, and
+record ID. [Input provenance](tests/fr11_fleurs_manifest.json) identifies
+all ten audio clips.
+
+**Runtime and footprint.** End-to-end product CLI times include a fresh
+model load for each clip. Parakeet v3 took a median **6.18 s** per English
+clip and **6.27 s** per Polish clip. Whisper base took **0.46 s** and
+**0.51 s** respectively in CPU mode. These times are useful startup
+observations, but the accelerators differ and the tiny clips are unsuitable
+for sustained-throughput ranking. The staged v3 Core ML directory uses
+about **470 MiB**; `ggml-base.bin` is **147,951,465 bytes** (about 141 MiB).
+Whisper's Metal execution asserted during model initialization in this
+environment (`GGML_ASSERT(buffer)`), before any audio was decoded. Explicit
+`whisperUseGPU: false` in settings passed `-ng` and allowed all ten CPU runs.
+This is a packaging/Metal risk for the multilingual Whisper candidate, not
+an observed recognition error. The earlier base.en AMI timing and memory
+numbers are for a different model and must not be reused for this comparison.
+
+**Reproducibility and rights.** The [FLEURS dataset](https://huggingface.co/datasets/google/fleurs)
+validation rows 0–4 for each of `en_us` and `pl_pl` were fetched through
+Hugging Face's dataset server. The reported dataset revision is
+`70bb2e84b976b7e960aa89f1c648e09c59f894dd`; no audio conversion was
+used in the separate-language scores. The ten downloaded WAVs, source URLs,
+clip IDs, bytes, exact reference text, and SHA-256 hashes are in the manifest.
+FLEURS is licensed CC BY 4.0. The large WAVs and model weights stay outside
+Git under `/private/tmp/meeting-fr11-fleurs/` and
+`/private/tmp/meeting-minutes-models/`. Both language subsets include source
+gender classes 0 and 1, confirming voice diversity, but no verified speaker
+IDs are supplied. This does not establish a multiple-speaker Polish meeting
+result. The earlier AMI experiment remains the English meeting and
+poor-audio evidence. More representative Polish meeting audio is needed
+before an architecture default can be selected.
+
+The new Fluid adapter uses FluidAudio 0.17.4 at revision
+`21493f8dac5a97e65742e6ff26f42f164c2fda0f` and Parakeet TDT 0.6B v3
+Core ML. Its local model folder is
+`/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3`; the encoder
+weight file SHA-256 is
+`d48034a167a82e88fc3df64f60af963ab3983538271175b8319e7d5720a0fb86`.
+The [upstream v3 conversion](https://huggingface.co/FluidInference/parakeet-tdt-0.6b-v3-coreml)
+and [original model](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3)
+both identify CC BY 4.0. The Whisper comparison uses whisper.cpp commit
+`6e4ab854f67f743900934a703d5603419384c961` and multilingual
+`ggml-base.bin` SHA-256
+`60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe`;
+the [published model repository](https://huggingface.co/ggerganov/whisper.cpp)
+identifies MIT. Artifact hashes fix the exact tested bytes where upstream
+release tags can move.
+
+**Scoring and traceability.** The [fetcher](../../experiments/fetch_fleurs_subset.py)
+stages the fixed subset; the [runner](../../experiments/benchmark_fleurs.py)
+calls the real product CLI, verifies input checksums, reloads each persisted
+record, and computes Levenshtein word and character error. It applies Unicode
+NFKC, casefolding, and punctuation removal while preserving Polish letters;
+CER excludes spaces. The ten references contain 87 English and 88 Polish
+words, or 453 and 571 nonspace characters. English per-clip Fluid WER values
+were 0%, 15.15%, 14.29%, 20%, and 0%; Whisper's were 6.67%, 21.21%, 0%,
+80%, and 0%. Polish Fluid values were 2.70%, 0%, 6.67%, 0%, and 11.11%;
+Whisper's were 24.32%, 20%, 33.33%, 16.67%, and 55.56%. The one high
+Whisper English error clip contains a proper name and unfamiliar word; the
+sample is too small to infer general language behavior from it. All 20
+product records persisted the requested language and model name.
+
+**Offline and mixed-language checks.** With networking denied at the
+macOS process level, the product CLI successfully created Polish records
+`41A894A8-2063-4F59-AC1B-9F42FB603754` (Whisper CPU) and
+`58B80C7C-80EA-4B1B-AD01-73878D446E26` (Fluid v3) from the same staged
+clip. This verifies local inference for those variants on this host.
+In a separate one-clip-per-language check, `auto` reproduced each backend's
+explicit-language transcript on the selected English and Polish clips; the
+four saved [auto results](tests/fr11_auto_results.json) show the requested
+language, model, text, and scores. This establishes a basic single-language
+auto route, not a trustworthy language detector across meetings. An
+exploratory `en` then `pl` concatenation was made from two of the licensed
+WAVs with ffmpeg (SHA-256
+`ad6bcf724aeefa4814d96ccaa8d8bf23158fdfb409ce9338f3152a1295a1acf7`).
+With `--language auto`, both engines returned only the Polish sentence and
+omitted the preceding English sentence. The saved [Fluid](tests/fr11_mixed_fluid_record.json)
+and [Whisper](tests/fr11_mixed_whisper_record.json) records show this
+failure. The splice is artificial and exploratory, but it rules out a claim
+that `auto` currently handles a language switch within one recording.
+
+**Assessment.** PBI-011.6 demonstrates explicit language selection,
+English-only model rejection, persisted language/model provenance, and
+working English and Polish local transcription. The paired PBI-018 extension
+provides comparable small-sample quality, runtime, footprint, offline,
+license, and failure evidence. Parakeet v3 led on this subset, while
+Whisper base had a Metal load failure and required CPU mode. Neither result
+selects the production model. Polish meeting audio, multiple verified
+speakers, mixed-language handling, larger varied sets, and production quality
+thresholds remain for Sprint 3 analysis and later validation.
 
 ## Remaining checks
 

@@ -22,7 +22,7 @@ unit, integration`.
 Run these commands from the repository root. The runner accepts `--new-only
 progress/sprint_2/new_tests.manifest` for the Sprint 2 new-work gates and
 runs its full suite without that option for regression. The manager records
-each formal gate in a timestamped log under `progress/sprint_2/`.
+each formal gate in a timestamped log under `progress/sprint_2/tests/`.
 
 The single entry point for the complete Sprint 2 quality sequence is
 `tests/run-sprint-gates.sh progress/sprint_2 [log-label]`. It runs A1 smoke,
@@ -31,6 +31,15 @@ writes a separate timestamped log for each, and stops at the first failure.
 Use a label such as `pbi3` to distinguish a child PBI's run. On this Mac,
 SwiftPM's nested sandbox fails before tests run; execute this wrapper outside
 the sandbox once rather than requesting permission for each gate separately.
+
+The Product Owner added FR-11 English and Polish transcription validation to
+the active sprint after the English-only runs. Its accepted design adds a
+language-control smoke check, compatibility/provenance unit check, persisted
+CLI integration check, and real multilingual model comparison. The FLEURS
+experiment uses pinned English and Polish references and reports Unicode
+word and character error. The earlier 18 automated cases and AMI results
+alone do not validate Polish; the new operational evidence is in the Sprint 2
+[benchmark](../progress/sprint_2/ami_asr_benchmark.md).
 
 ### Build
 

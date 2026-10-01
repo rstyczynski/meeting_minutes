@@ -1,5 +1,20 @@
 # Sprint 2 — Proposed changes
 
+## FR-11 — Add English and Polish validation to Sprint 2
+
+Status: Sprint scope and PBI-011.6 design accepted by the Product Owner on
+2026-10-01. The Product
+Owner asked why the prototype lacked language control and directed FR-11 into
+the current sprint. The root plan and SRS now include the two-language
+validation objective. The accepted design adds an explicit language option,
+multilingual local model variants, common referenced English/Polish audio,
+quality and resource measurements, and failure behavior. The existing
+English-only benchmark remains valid for its measured scope, but it cannot
+demonstrate Polish support. The prior documentation approval request is
+superseded by this new work. PBI-011.6 has since implemented the language
+option and both multilingual candidates; the observed measurements and
+remaining gaps are in the [benchmark](ami_asr_benchmark.md).
+
 ## PBI-011 — Separate transcription, optional recognition, and optional summary
 
 Status: Accepted by the Product Owner on 2026-10-01. The three-command

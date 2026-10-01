@@ -207,4 +207,39 @@ struct MeetingIntegrationTests {
         XCTAssertTrue(badSpeaker.0 != 0)
         XCTAssertEqual(try Data(contentsOf: storedFile), original)
     }
+
+    @Test func testLanguageRecord() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let media = fixtureDirectory.appendingPathComponent("synthetic_meeting.wav")
+        let reference = fixtureDirectory.appendingPathComponent("synthetic_meeting_reference.json")
+        let created = try cli(["transcribe", media.path, "--language", "pl",
+                               "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertEqual(created.0, 0)
+        let id = try #require(UUID(uuidString: created.1))
+        let record = try MeetingStore(directory: root).load(id)
+        XCTAssertEqual(record.processingParameters["requestedLanguage"], "pl")
+        XCTAssertEqual(record.segments.count, 5)
+        let before = try FileManager.default.contentsOfDirectory(atPath: root.path).count
+        let invalid = try cli(["transcribe", media.path, "--language", "de",
+                               "--fixture-reference", reference.path, "--store", root.path])
+        XCTAssertTrue(invalid.0 != 0)
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: root.path).count, before)
+        let fluidSettings = root.appendingPathComponent("fluid-settings.json")
+        try Data(#"{"transcriber":"fluid","fluidModelDirectory":"/tmp/parakeet-v2","fluidExecutable":"/tmp/fluid","fluidModelVersion":"v2"}"#.utf8)
+            .write(to: fluidSettings)
+        let wrongFluid = try cli(["transcribe", media.path, "--language", "pl",
+                                  "--settings", fluidSettings.path, "--store", root.path])
+        XCTAssertTrue(wrongFluid.0 != 0)
+        XCTAssertTrue(wrongFluid.1.contains("English only"))
+        let whisperSettings = root.appendingPathComponent("whisper-settings.json")
+        try Data(#"{"transcriber":"whisper","whisperModelPath":"/tmp/ggml-base.en.bin","whisperExecutable":"/tmp/whisper"}"#.utf8)
+            .write(to: whisperSettings)
+        let wrongWhisper = try cli(["transcribe", media.path, "--transcriber", "whisper",
+                                    "--language", "pl", "--settings", whisperSettings.path,
+                                    "--store", root.path])
+        XCTAssertTrue(wrongWhisper.0 != 0)
+        XCTAssertTrue(wrongWhisper.1.contains("English only"))
+        XCTAssertEqual(try MeetingStore(directory: root).load(id).processingParameters["requestedLanguage"], "pl")
+    }
 }

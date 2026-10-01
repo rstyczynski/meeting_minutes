@@ -141,4 +141,20 @@ struct MeetingCoreTests {
         XCTAssertThrowsError(try MinutesValidator.item(kind: .decision, text: "bad",
             sourceIDs: ["missing"], segments: record.segments))
     }
+
+    @Test func testLanguageCompatibility() throws {
+        let config = MeetingConfiguration(fluidModelVersion: "v2")
+        XCTAssertEqual(try config.selectedLanguage(override: nil), .en)
+        XCTAssertEqual(try config.selectedLanguage(override: "pl"), .pl)
+        XCTAssertEqual(try config.selectedLanguage(override: "auto"), .auto)
+        XCTAssertThrowsError(try config.selectedLanguage(override: "de"))
+        XCTAssertThrowsError(try config.selectedFluidVersion(for: .pl))
+        XCTAssertThrowsError(try config.selectedFluidVersion(for: .auto))
+        XCTAssertEqual(try MeetingConfiguration(fluidModelVersion: "v3")
+            .selectedFluidVersion(for: .pl), .v3)
+        XCTAssertThrowsError(try MeetingConfiguration.validateWhisperModel(
+            "/tmp/ggml-base.en.bin", language: .pl))
+        try MeetingConfiguration.validateWhisperModel(
+            "/tmp/ggml-base.bin", language: .pl)
+    }
 }

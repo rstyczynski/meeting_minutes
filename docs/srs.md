@@ -57,7 +57,11 @@ context, not a system user in the MVP; the local operator manages it locally.
 The local operator supplies a local audio or video recording as a CLI argument.
 It becomes a local meeting record with a timestamped transcript, without
 network use or automatic generation of minutes. A UI file picker is not
-required for the MVP.
+required for the MVP. The operator may request English, Polish, or automatic
+language selection for transcription; the saved record shows the request and
+the selected local ASR model. An incompatible English-only model must fail
+clearly without replacing an earlier record. Automatic selection does not
+promise recognition of language switches within a recording.
 
 ### Review the transcript
 
@@ -200,10 +204,11 @@ evidence.
 #### FR-11 — Recognition languages
 
 The system shall support speech recognition and transcription in English and
-Polish. Both languages are required; language selection, mixed-language
-behavior, and measurable acceptance criteria will be refined later. FR-11 is
-deferred and does not change the scope or acceptance criteria of the current
-Elaboration work.
+Polish. Both languages are required. Sprint 2 shall prototype explicit
+language control for transcription and validate local ASR on referenced
+English and Polish speech. The current English-only model measurements do
+not satisfy this requirement. Mixed-language behavior and production quality
+thresholds will be refined from the new evidence in a later iteration.
 
 ### Non-functional requirements
 

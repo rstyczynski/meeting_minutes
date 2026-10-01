@@ -45,10 +45,29 @@ struct FluidASR {
     static func main() async {
         do {
             let args = Array(CommandLine.arguments.dropFirst())
-            if args.first == "--download-models", args.count == 2 {
+            let versionName = args.firstIndex(of: "--model-version").flatMap {
+                $0 + 1 < args.count ? args[$0 + 1] : nil
+            } ?? "v2"
+            guard ["v2", "v3"].contains(versionName) else {
+                throw NSError(domain: "FluidASR", code: 2,
+                              userInfo: [NSLocalizedDescriptionKey: "Model version must be v2 or v3"])
+            }
+            let version: AsrModelVersion = versionName == "v3" ? .v3 : .v2
+            let languageName = args.firstIndex(of: "--language").flatMap {
+                $0 + 1 < args.count ? args[$0 + 1] : nil
+            } ?? "en"
+            guard ["en", "pl", "auto"].contains(languageName) else {
+                throw NSError(domain: "FluidASR", code: 2,
+                              userInfo: [NSLocalizedDescriptionKey: "Language must be en, pl, or auto"])
+            }
+            guard versionName == "v3" || languageName == "en" else {
+                throw NSError(domain: "FluidASR", code: 2,
+                              userInfo: [NSLocalizedDescriptionKey: "Parakeet v2 is English only"])
+            }
+            if args.first == "--download-models", args.count == 2 || args.count == 4 {
                 let root = URL(fileURLWithPath: args[1], isDirectory: true)
-                let repository = root.appendingPathComponent("parakeet-tdt-0.6b-v2", isDirectory: true)
-                _ = try await AsrModels.download(to: repository, version: .v2)
+                let repository = root.appendingPathComponent("parakeet-tdt-0.6b-\(versionName)", isDirectory: true)
+                _ = try await AsrModels.download(to: repository, version: version)
                 guard FileManager.default.fileExists(atPath: repository
                     .appendingPathComponent("parakeet_vocab.json").path) else {
                     throw NSError(domain: "FluidASR", code: 3,
@@ -124,11 +143,13 @@ struct FluidASR {
             let modelDir = URL(fileURLWithPath: args[modelIndex + 1], isDirectory: true)
             let input = URL(fileURLWithPath: args[inputIndex + 1])
             let outputFile = URL(fileURLWithPath: args[outputIndex + 1])
-            let models = try AsrModels.loadLocal(from: modelDir, version: .v2)
+            let models = try AsrModels.loadLocal(from: modelDir, version: version)
             let manager = AsrManager()
             try await manager.loadModels(models)
             var decoderState = try TdtDecoderState()
-            let result = try await manager.transcribe(input, decoderState: &decoderState)
+            let hint: Language? = languageName == "auto" ? nil : Language(rawValue: languageName)
+            let result = try await manager.transcribe(input, decoderState: &decoderState,
+                                                      language: hint)
             let wordTimings = buildWordTimings(from: result.tokenTimings ?? [])
             let segments: [Output.Segment]
             if wordTimings.isEmpty {

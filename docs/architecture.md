@@ -84,6 +84,15 @@ recording and prior local result for comparison with any alternate input.
 Sprint 2 PBI-018 tests this risk on an approved AMI meeting; the benchmark
 does not yet establish a production detection threshold or recovery policy.
 
+The accepted FR-11 prototype amendment adds an explicit transcription language
+request (`en`, `pl`, or `auto`) at the CLI boundary. MeetingCore persists that
+request separately from the ASR backend and selected model revision. The
+process adapters reject known English-only weights for Polish and automatic
+selection. Parakeet v3 and multilingual Whisper are local candidates; a
+requested or automatically selected language does not by itself prove correct
+speech recognition. Sprint 2 compares both candidates on referenced speech,
+while mixed-language policy and production thresholds remain open.
+
 ## Platform and portability
 
 The macOS app owns SwiftUI presentation and any later operating-system

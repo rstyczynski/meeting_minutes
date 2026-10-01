@@ -25,20 +25,28 @@ func runProcess(_ executable: String, _ arguments: [String]) throws -> Data {
 public struct WhisperProcessTranscriber: Transcribing {
     public let executable: String
     public let modelPath: String
-    public init(executable: String, modelPath: String) {
+    public let language: TranscriptionLanguage
+    public let useGPU: Bool
+    public init(executable: String, modelPath: String, language: TranscriptionLanguage = .en,
+                useGPU: Bool = true) {
         self.executable = executable
         self.modelPath = modelPath
+        self.language = language
+        self.useGPU = useGPU
     }
 
     public func transcribe(_ media: URL) throws -> TranscriptionResult {
         guard FileManager.default.fileExists(atPath: modelPath) else {
             throw MeetingError.missingModel("whisper")
         }
+        try MeetingConfiguration.validateWhisperModel(modelPath, language: language)
         let base = FileManager.default.temporaryDirectory
             .appendingPathComponent("meeting-whisper-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: base.appendingPathExtension("json")) }
-        _ = try runProcess(executable, ["-m", modelPath, "-f", media.path,
-                                        "-oj", "-of", base.path, "-np"])
+        var arguments = ["-m", modelPath, "-f", media.path,
+                         "-l", language.rawValue, "-oj", "-of", base.path, "-np"]
+        if !useGPU { arguments.append("-ng") }
+        _ = try runProcess(executable, arguments)
         let bytes = try Data(contentsOf: base.appendingPathExtension("json"))
         let decoded = try JSONDecoder().decode(WhisperOutput.self, from: bytes)
         let segments = try decoded.transcription.enumerated().map { index, entry in
@@ -50,7 +58,8 @@ public struct WhisperProcessTranscriber: Transcribing {
         }
         return TranscriptionResult(segments: segments,
                                    modelRevision: URL(fileURLWithPath: modelPath).lastPathComponent,
-                                   parameters: ["engine": "whisper.cpp"])
+                                   parameters: ["engine": "whisper.cpp",
+                                                "accelerator": useGPU ? "GPU" : "CPU"])
     }
 }
 
@@ -66,20 +75,30 @@ private struct WhisperOutput: Decodable {
 public struct FluidProcessTranscriber: Transcribing {
     public let executable: String
     public let modelDirectory: String
-    public init(executable: String, modelDirectory: String) {
+    public let modelVersion: FluidModelVersion
+    public let language: TranscriptionLanguage
+    public init(executable: String, modelDirectory: String,
+                modelVersion: FluidModelVersion = .v2, language: TranscriptionLanguage = .en) {
         self.executable = executable
         self.modelDirectory = modelDirectory
+        self.modelVersion = modelVersion
+        self.language = language
     }
 
     public func transcribe(_ media: URL) throws -> TranscriptionResult {
         guard FileManager.default.fileExists(atPath: modelDirectory) else {
             throw MeetingError.missingModel("fluid")
         }
+        guard modelVersion == .v3 || language == .en else {
+            throw MeetingError.adapterFailure("Fluid Parakeet v2 is English only")
+        }
         let outputFile = FileManager.default.temporaryDirectory
             .appendingPathComponent("meeting-fluid-\(UUID().uuidString)")
             .appendingPathExtension("json")
         defer { try? FileManager.default.removeItem(at: outputFile) }
         _ = try runProcess(executable, ["--model-dir", modelDirectory,
+                                        "--model-version", modelVersion.rawValue,
+                                        "--language", language.rawValue,
                                         "--input", media.path,
                                         "--output-json", outputFile.path])
         let bytes = try Data(contentsOf: outputFile)

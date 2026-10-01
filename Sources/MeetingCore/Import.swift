@@ -33,16 +33,19 @@ public struct MeetingImporter {
     @discardableResult
     public func importMedia(_ media: URL, backend: TranscriptionBackend,
                             transcriber: any Transcribing,
-                            minutes: any MinutesGenerating = EmptyMinutesGenerator()) throws -> MeetingRecord {
+                            minutes: any MinutesGenerating = EmptyMinutesGenerator(),
+                            requestedLanguage: TranscriptionLanguage? = nil) throws -> MeetingRecord {
         try MediaValidator.validate(media)
         let result = try transcriber.transcribe(media)
         guard !result.segments.isEmpty else { throw MeetingError.adapterFailure("No transcript segments") }
         let items = try minutes.generate(from: result.segments)
+        var parameters = result.parameters
+        if let requestedLanguage { parameters["requestedLanguage"] = requestedLanguage.rawValue }
         let record = MeetingRecord(sourcePath: media.standardizedFileURL.path,
                                    segments: result.segments, reviewItems: items,
                                    backend: backend.rawValue,
                                    modelRevision: result.modelRevision,
-                                   processingParameters: result.parameters)
+                                   processingParameters: parameters)
         try store.save(record)
         return record
     }

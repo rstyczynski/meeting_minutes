@@ -49,7 +49,11 @@ Build an executable architectural prototype with both selectable transcription
 backends, then benchmark the technical options on the same test data. Before
 construction, refine PBI-011 into reviewable `PBI-011.1`-style sub-PBIs from
 the accepted architecture. The Product Owner moved broader validation and
-evidence-dependent decisions to Sprint 3.
+evidence-dependent decisions to Sprint 3. The Product Owner subsequently
+added FR-11 to this active sprint: prototype explicit English and Polish
+transcription control and validate local multilingual ASR on referenced speech
+in both languages. Mixed-language policy and production quality thresholds
+remain subjects of later requirements refinement.
 
 Backlog Items:
 

@@ -11,6 +11,7 @@ test_IT6_fixture_generation() { swift test --filter 'MeetingIntegrationTests.Mee
 test_IT7_three_commands() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testThreeCommands'; }
 test_IT8_neutral_summary() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testNeutralSummary'; }
 test_IT9_failure_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testFailurePreservesRecord'; }
+test_IT10_language_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testLanguageRecord'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -24,4 +25,5 @@ else
   test_IT7_three_commands
   test_IT8_neutral_summary
   test_IT9_failure_preserves_record
+  test_IT10_language_record
 fi

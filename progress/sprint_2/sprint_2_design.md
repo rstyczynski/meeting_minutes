@@ -8,6 +8,70 @@ optional `summarize` commands on 2026-10-01. Their revised contract and test
 coverage are in [the accepted change](sprint_2_proposedchanges.md). The
 FR-09/FR-10 low-quality-audio experiment was separately approved and added
 below. The three-command contract governs the remaining construction.
+The Product Owner then added FR-11 English and Polish transcription to the
+active sprint and approved its design amendment on 2026-10-01. The earlier
+accepted design and completed English measurements remain historical evidence.
+
+## Approved FR-11 amendment — PBI-011.6 bilingual transcription
+
+Status: accepted by the Product Owner on 2026-10-01. PBI-011.6 is a
+sprint-scoped child of PBI-011. It depends on the completed CLI and local
+adapter children PBI-011.2 and PBI-011.5. Its bounded outcome is a transcript
+command with an explicit `--language en|pl|auto` option, persisted requested
+language and model provenance, and a clear error when the configured model
+cannot serve the requested language. It does not change the optional
+recognize or summarize workflow.
+
+Omitting `--language` retains the prototype's English default for existing
+commands. `auto` is a deliberate request for automatic detection and requires
+a multilingual model; it is not inferred from the user's location or system
+language.
+
+The first multilingual candidates are FluidAudio with Parakeet TDT 0.6B v3
+Core ML and whisper.cpp with a multilingual Whisper model. The current
+Parakeet v2 and Whisper base.en weights are English only and must never be
+used silently for `pl`. The [FluidAudio source](https://github.com/FluidInference/FluidAudio/blob/main/Documentation/ASR/GettingStarted.md)
+distinguishes v2 and v3; [NVIDIA's v3 card](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3)
+lists English and Polish. [Whisper's documentation](https://github.com/openai/whisper/blob/main/README.md)
+distinguishes `base.en` from multilingual `base`. Pin and record the actual
+weight revision, hash, license, executable version, and local path before
+using either candidate. A model's published language list establishes only
+candidate capability; Sprint 2 must measure actual local outputs.
+
+For whisper.cpp, `--language en` and `--language pl` pass the corresponding
+language code to its CLI; `auto` requests model detection. For FluidAudio,
+the adapter loads v3 when Polish or automatic language handling is requested
+and passes its available language hint where applicable. The pinned
+FluidAudio API describes the hint as script-aware token filtering, so it may
+not distinguish English and Polish, which both use Latin script. The UI and
+record must not claim a guaranteed detected language from that hint. The
+adapter will record requested language and selected model separately, fail
+on unsupported combinations, and preserve the existing record on failure.
+
+Use a pinned, licensed set of natural English and Polish utterances with
+reference text and multiple speakers, staged outside Git if necessary. The
+[Google FLEURS dataset](https://huggingface.co/datasets/google/fleurs) offers
+`en_us` and `pl_pl` splits under CC BY 4.0 and downloadable per-language
+Parquet files; select a small fixed subset from both rather than fetching the
+whole corpus. [Mozilla Common Voice Polish](https://mozilladatacollective.com/datasets/cmu5wsxwp00e0nq07m8v0274j)
+is a CC0 alternative but its full archive is large and forbids re-hosting.
+Document source revision, clip IDs, reference text, checksums, attribution,
+audio conversion, and scoring normalization. Compare both multilingual
+engines on the same selected audio within each language.
+Measure word and character error, output language, execution time, and
+offline behavior; report each sample and aggregate results without inventing
+a production threshold. A small mixed-language sample is exploratory and
+must be labeled separately from the two-language acceptance evidence.
+
+The proposed test specification adds **SM-3** for help and invalid language
+rejection, **UT-10** for model/language compatibility and provenance,
+**IT-10** for persisted English and Polish transcript flow plus preservation
+on a missing or incompatible model, and **EXP-7** for both real multilingual
+adapters on common licensed English and Polish references. All six Sprint 2
+RUP gates run for the completed child; PBI-018 reruns the comparative
+measurement and its own gates after the bilingual evidence is added. This
+amendment validates the two required languages at prototype level. It does
+not set production accuracy thresholds or certify in-meeting code switching.
 
 ## Approved CLI revision
 

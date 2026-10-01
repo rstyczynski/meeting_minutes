@@ -9,3 +9,5 @@ help_text="$(swift run meeting-summarizer --help)"
 [[ "$help_text" == *"transcribe"* ]]
 [[ "$help_text" == *"recognize"* ]]
 [[ "$help_text" == *"summarize"* ]]
+# SM-3: explicit language selection is visible to the operator.
+[[ "$help_text" == *"--language en|pl|auto"* ]]

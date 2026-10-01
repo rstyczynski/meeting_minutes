@@ -21,19 +21,26 @@ fi
 stamp="$(date '+%Y%m%d_%H%M%S')"
 prefix="test_run_"
 if [[ -n "$label" ]]; then prefix="$prefix$label"_ ; fi
+evidence_dir="$sprint_dir/tests"
+mkdir -p "$evidence_dir"
 
 run_gate() {
   local name="$1"
   shift
-  local logfile="$sprint_dir/$prefix$name"_"$stamp.log"
+  local logfile="$evidence_dir/$prefix$name"_"$stamp.log"
   echo "Running $name; log: $logfile"
   {
     printf 'Started: %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
     printf 'Command: tests/run.sh'
     printf ' %q' "$@"
     printf '\n'
-    tests/run.sh "$@"
-    printf 'Finished: %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    if tests/run.sh "$@"; then
+      printf 'Finished: %s (PASS)\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    else
+      status=$?
+      printf 'Finished: %s (FAIL %s)\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$status"
+      return "$status"
+    fi
   } > "$logfile" 2>&1 || {
     echo "$name failed; last log lines:" >&2
     tail -n 25 "$logfile" >&2

@@ -73,3 +73,52 @@ The five child increments and PBI-018 have local completion commits 72fb8d4, 5c5
 The parent PBI-011 six-gate run used the single wrapper with label pbi11 on 2026-10-01. A1, A2, A3, B1, B2, and B3 all passed; their six timestamped logs end in 20261001_172551 and are linked from the functional test record. This is additional parent evidence beyond separate child gates. The root build, 18-case direct test suite, fixture regeneration, model runs, saved-record reload, and manual review seek are described in the implementation and test records. No natural-minutes content-quality pass is claimed.
 
 The progress board now marks the parent and every Sprint 2 child tested and Sprint 2 implemented, consistent with the manager's post-quality-gate state. The benchmark provides measurements for Sprint 3 interpretation, while FR-09/FR-10 reliable participant identification and input comparison, natural minutes accuracy, bounded player replay, and model packaging remain explicit limits. No Plan, backlog, or Sprint 3 status was changed. No remote push was made. Local-link, copy/paste-block, narrative-format, and git diff --check results for final documentation review are recorded in the Sprint 2 documentation summary.
+
+## Evidence-directory and FR-11 source audit — 2026-10-01
+
+At the Product Owner's request, all 53 historical gate logs were moved from the Sprint 2 document root into `progress/sprint_2/tests/`. The single gate wrapper now creates that directory and writes its logs there. The test profile, test record, and documentation summary were updated to point at the new location. A fresh six-gate run with label evidence_move passed and wrote six additional logs there, bringing the retained log count to 59. The test record's Artifacts section links each log. The Product Owner also asked whether the current models meet FR-11. An official-source audit found that the exact Parakeet v2 and Whisper base.en variants measured in Sprint 2 are English only; candidate multilingual variants exist, but the present adapters expose no language control. The benchmark now states that distinction and cites the model documentation. This audit is a compatibility finding, not a Polish runtime claim. The Product Owner subsequently directed FR-11 into the active sprint; its design and implementation are a separate new increment.
+
+## PBI-011.6 pre-commit reconciliation — 2026-10-01
+
+The Product Owner approved the FR-11 design amendment and progress-board reset
+on 2026-10-01. The root plan, SRS use case and FR-11, architecture, test
+profile, Sprint setup and accepted design, implementation record, functional
+test record, benchmark, README, documentation summary, and progress board
+were reconciled to the same scope: explicit `en|pl|auto` transcription,
+English-only model rejection, persisted request and model provenance, local
+multilingual adapters, and paired referenced English/Polish comparison. The
+FLEURS subset is natural read speech with both source gender classes in each
+language, but has no verified speaker IDs and is not a Polish meeting. The
+benchmark is decision-facing and includes per-language WER/CER, per-clip
+results, model identity and license, resource observations, offline results,
+and the `auto` mixed-language failure. The implementation record includes a
+copyable Polish CLI and `cat`/`jq` human view. The original English AMI
+evidence remains separate.
+
+The first PBI-011.6 and PBI-018 language gate attempts were false positives:
+unit and integration tests failed to compile, but the wrapper's final
+timestamp command hid `tests/run.sh`'s nonzero exit. Log inspection caught
+this before commit. The wrapper now returns the test status and records
+PASS/FAIL; its `pbi6_retry` run correctly stopped at a failing integration
+case caused by missing `transcriber` in two test settings files. After fixing
+those files and the copyable example, the targeted integration case passed.
+The corrected full PBI-011.6 run, stamp `20261001_211415`, passed all six
+A1/A2/A3/B1/B2/B3 levels with actual `Finished: ... (PASS)` log endings.
+The paired PBI-018 extension also has six passing corrected-wrapper logs,
+stamp `20261001_211557`, ready for its separate completion audit and commit.
+All failed attempts are retained and explained in the test record.
+
+The root Swift package and Fluid helper build. The benchmark runner verified
+all ten input hashes, persisted 20 explicit-language records, and scored
+both models on identical clips in each language. Four single-language `auto`
+runs passed; the mixed-language splice lost the English portion for both.
+Polish offline runs succeeded with process networking denied. All 92 gate
+logs now reside in the Sprint 2 `tests/` evidence directory and each has a
+link in the functional test record. The source and scoring scripts pass
+Python compilation; shell scripts pass `bash -n`; JSON manifests and results
+parse. A fresh link and format check found zero broken local links in 16
+README/Plan/board/docs/Sprint 2 Markdown files and zero tables in narrative
+documents. The mandatory progress board retains its four-column table.
+`git diff --check` passed. The board marks PBI-011.6 tested and keeps the
+parent and Sprint under construction; PBI-018 remains under construction
+pending its separate audit and local commit. No remote push is authorized.

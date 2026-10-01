@@ -15,6 +15,8 @@ integration:test_meeting_flow.sh:test_IT6_fixture_generation
 unit:test_core.sh:test_UT7_transcript_only
 unit:test_core.sh:test_UT8_chair_corrections
 unit:test_core.sh:test_UT9_optional_minutes
+unit:test_core.sh:test_UT10_language_compatibility
 integration:test_meeting_flow.sh:test_IT7_three_commands
 integration:test_meeting_flow.sh:test_IT8_neutral_summary
 integration:test_meeting_flow.sh:test_IT9_failure_preserves_record
+integration:test_meeting_flow.sh:test_IT10_language_record

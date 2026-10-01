@@ -57,8 +57,11 @@ having to rely on memory or an external service holding their meeting data.
 
 Sprint 0 is complete. The Product Owner accepted this vision as PBI-001 and
 the tailored roadmap as PBI-002. Sprint 1 established the Inception baseline.
-Sprint 2 remains active in managed mode. Its architectural prototype and
-benchmark are implemented and tested; documentation awaits Product Owner review.
+Sprint 2 remains active in managed mode. Its initial architectural prototype
+and English benchmark were implemented and tested. The Product Owner then
+added FR-11 English and Polish transcription validation to this sprint. Its
+language-control CLI and paired multilingual model check have now run; final
+Sprint 2 reconciliation is in progress.
 The vision above describes the
 longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 
@@ -100,8 +103,16 @@ saved minutes, but its natural-audio sample invented actions and questions and
 therefore failed content quality. The benchmark records the precise evidence
 and leaves architecture interpretation for Sprint 3. All five PBI-011 child
 increments, PBI-018, and the PBI-011 parent passed their separate six-gate
-runs. The [Sprint 2 documentation review](progress/sprint_2/sprint_2_documentation.md)
-shows the traceability and remaining limits.
+runs for that completed scope. The [Sprint 2 documentation review](progress/sprint_2/sprint_2_documentation.md)
+shows the traceability and remaining limits. The [FR-11 design
+amendment](progress/sprint_2/sprint_2_design.md) sets out the additional
+language-control and validation work. The originally tested Parakeet v2 and
+Whisper base.en models are English only. On a later fixed FLEURS subset of
+five English and five Polish clips, Parakeet v3 made 11.49% and 3.41% word
+error respectively; multilingual Whisper base made 18.39% and 27.27% in CPU
+mode. Those clips are read speech, and neither `auto` run kept both languages
+in an exploratory language-switch splice. The report has the exact references,
+per-clip outputs, model identities, runtime, offline results, and limits.
 
 The accepted CLI has three independent capabilities: `transcribe`, optional
 `recognize`, and optional `summarize`. `transcribe` saves a transcript-only
