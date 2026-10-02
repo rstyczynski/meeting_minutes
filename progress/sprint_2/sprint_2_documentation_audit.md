@@ -151,3 +151,46 @@ all results JSON parsed, 92 retained gate logs had 92 links, a fresh
 `git diff --check` passed. The board advances only PBI-018 to tested;
 PBI-011 and Sprint 2 stay under construction until their corrected-wrapper
 parent gates and separate reconciliation. No remote push is authorized.
+
+## Reopened PBI-011 parent pre-commit reconciliation — 2026-10-02
+
+The PBI-011.6 child and PBI-018 bilingual extension have separate completion
+commits `3717845` and `caa51be`. The root SRS now includes the local
+operator's language-selection use case and FR-11. The architecture keeps the
+language request and model revision distinct, while the test profile names
+the new contract checks and real-model comparison. Sprint setup, accepted
+design and test specification, implementation record, functional test
+record, README, benchmark, documentation summary, and progress board were
+reviewed against those decisions and the executable CLI. The accepted
+design's English/Polish candidate and `auto` paths have actual run evidence;
+the report explicitly identifies the small read-speech subset, absent
+verified speaker IDs, the Whisper Metal failure, and the missed English
+portion in the exploratory mixed-language recording. These are Sprint 3
+analysis inputs, not a claim of production quality.
+
+The reopened parent used the corrected wrapper after both increment commits.
+Its A1/A2/A3/B1/B2/B3 gates passed with stamp `20261001_213621`, and each
+log has an explicit PASS finish. The new Polish copy-paste example was run
+with the staged v3 model: `swift run meeting-summarizer transcribe` created
+record `84C30D16-200F-4D48-9569-F709F30B359B`; the documented `cat`/`jq`
+view printed `Requested: pl`, `Model: parakeet-tdt-0.6b-v3`, and Polish
+transcript words beginning “Jakiekolwiek korekty lub żądania.” An
+incompatible `.en` Whisper model and Parakeet v2 reject Polish in the
+integration test without replacing the previous saved record. The 98
+retained logs in `progress/sprint_2/tests/` are each linked by the test
+record; no gate logs remain at the Sprint document root. The previous
+false-positive attempt logs remain labeled as failures.
+
+The parent and all children now meet their specified executable and gate
+criteria. The board advances PBI-011 to tested and Sprint 2 to implemented;
+PBI-018 is already tested. PLAN.md remains Progress pending the managed
+Phase 5 Product Owner documentation approval and lifecycle update. The
+documentation review is prepared but not marked complete. The final
+pre-commit audit inspected 16 README/Plan/board/docs/Sprint 2 Markdown files
+and found zero broken local links and zero narrative tables. Every PBI-011
+and PBI-018 traceability symlink resolves, and no copyable Markdown block
+contains an `exit` command. `bash -n` passed for the gate and test shell
+scripts; both FLEURS Python scripts compiled; the 20-result JSON validation
+passed; all six parent logs end in PASS; no gate log remains at the Sprint
+document root; and `git diff --check` passed. The mandatory board is still
+the four-column table. No remote push is authorized.

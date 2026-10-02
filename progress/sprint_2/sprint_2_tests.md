@@ -122,6 +122,13 @@ are linked under Artifacts. This gate
 supplements the real-model comparison and does not erase the observed Metal
 and language-switch failures.
 
+The reopened PBI-011 parent then ran the corrected wrapper after the
+PBI-011.6 and PBI-018 completion commits. All six parent gates passed with
+stamp `20261001_213621`; their logs end with explicit PASS and are linked
+below. The parent pass supports the implemented Sprint 2 board state; it
+does not make the natural-minutes, diarization, or mixed-language quality
+findings pass.
+
 ## Artifacts
 
 Every saved RUP gate log is listed below from the Sprint 2 `tests/` evidence directory. Failed attempts remain for diagnosis; the passing replacement is identified in the gate narrative above.
@@ -309,3 +316,15 @@ Every saved RUP gate log is listed below from the Sprint 2 `tests/` evidence dir
 [test_run_pbi6_retry_A2_unit_20261001_211249.log](tests/test_run_pbi6_retry_A2_unit_20261001_211249.log)
 
 [test_run_pbi6_retry_A3_integration_20261001_211249.log](tests/test_run_pbi6_retry_A3_integration_20261001_211249.log)
+
+[test_run_pbi11_fr11_final_A1_smoke_20261001_213621.log](tests/test_run_pbi11_fr11_final_A1_smoke_20261001_213621.log)
+
+[test_run_pbi11_fr11_final_A2_unit_20261001_213621.log](tests/test_run_pbi11_fr11_final_A2_unit_20261001_213621.log)
+
+[test_run_pbi11_fr11_final_A3_integration_20261001_213621.log](tests/test_run_pbi11_fr11_final_A3_integration_20261001_213621.log)
+
+[test_run_pbi11_fr11_final_B1_smoke_20261001_213621.log](tests/test_run_pbi11_fr11_final_B1_smoke_20261001_213621.log)
+
+[test_run_pbi11_fr11_final_B2_unit_20261001_213621.log](tests/test_run_pbi11_fr11_final_B2_unit_20261001_213621.log)
+
+[test_run_pbi11_fr11_final_B3_integration_20261001_213621.log](tests/test_run_pbi11_fr11_final_B3_integration_20261001_213621.log)

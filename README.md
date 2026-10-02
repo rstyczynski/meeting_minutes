@@ -60,8 +60,9 @@ the tailored roadmap as PBI-002. Sprint 1 established the Inception baseline.
 Sprint 2 remains active in managed mode. Its initial architectural prototype
 and English benchmark were implemented and tested. The Product Owner then
 added FR-11 English and Polish transcription validation to this sprint. Its
-language-control CLI and paired multilingual model check have now run; final
-Sprint 2 reconciliation is in progress.
+language-control CLI and paired multilingual model check have now run; all
+Sprint 2 implementation gates have passed, with managed documentation review
+pending.
 The vision above describes the
 longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 
