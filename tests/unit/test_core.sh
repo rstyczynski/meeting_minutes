@@ -12,6 +12,9 @@ test_UT7_transcript_only() { swift test --filter 'MeetingCoreTests.MeetingCoreTe
 test_UT8_chair_corrections() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testChairCorrections'; }
 test_UT9_optional_minutes() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testOptionalMinutes'; }
 test_UT10_language_compatibility() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testLanguageCompatibility'; }
+test_UT11_evidence_first_minutes() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testEvidenceFirstMinutes'; }
+test_UT12_minutes_input_bound() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testMinutesInputBound'; }
+test_UT13_adapter_validation() { swift test --package-path experiments/MinutesAdapter --filter ResponseValidationTests; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -26,4 +29,7 @@ else
   test_UT8_chair_corrections
   test_UT9_optional_minutes
   test_UT10_language_compatibility
+  test_UT11_evidence_first_minutes
+  test_UT12_minutes_input_bound
+  test_UT13_adapter_validation
 fi

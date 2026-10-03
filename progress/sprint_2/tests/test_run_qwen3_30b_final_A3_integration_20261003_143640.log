@@ -1,0 +1,704 @@
+Started: 2026-10-03T12:37:20Z
+Command: tests/run.sh --integration --new-only progress/sprint_2/new_tests.manifest
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 2] meeting-summarizer-product
+Build complete! (0,70 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testCLIRecordOpen() started.
+✔ Test testCLIRecordOpen() passed after 0.013 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.013 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.013 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[Provisioning 1 / 37]
+[1 / 69] MeetingCore
+Build complete! (0,68 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testSourceLinks() started.
+✔ Test testSourceLinks() passed after 0.003 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.003 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.003 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 59] SwiftParserDiagnostics
+Build complete! (0,69 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testCorrectionAndReview() started.
+✔ Test testCorrectionAndReview() passed after 0.004 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.005 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.005 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 55] SwiftSyntax
+Build complete! (0,69 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testChunkMerge() started.
+✔ Test testChunkMerge() passed after 0.001 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.001 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.001 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[Provisioning 4 / 37]
+[1 / 65] SwiftDiagnostics
+Build complete! (0,68 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testBackendSelection() started.
+✔ Test testBackendSelection() passed after 0.005 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.005 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.005 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[Provisioning 3 / 37]
+[1 / 65] MeetingCore
+Build complete! (0,67 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testFixtureGeneration() started.
+✔ Test testFixtureGeneration() passed after 0.001 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.001 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.002 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[Provisioning 4 / 37]
+[1 / 65] SwiftSyntax
+Build complete! (0,67 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testThreeCommands() started.
+✔ Test testThreeCommands() passed after 0.050 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.051 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.051 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 90] MeetingCoreTests-product
+Build complete! (0,68 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testNeutralSummary() started.
+✔ Test testNeutralSummary() passed after 0.024 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.024 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.024 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 2] meeting-summarizer-product
+Build complete! (0,72 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testFailurePreservesRecord() started.
+✔ Test testFailurePreservesRecord() passed after 0.042 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.042 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.042 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 2] meeting-summarizer-product
+Build complete! (0,73 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testLanguageRecord() started.
+✔ Test testLanguageRecord() passed after 0.041 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.042 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.042 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 1]
+Build complete! (0,85 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testEvidenceFirstCLI() started.
+✔ Test testEvidenceFirstCLI() passed after 0.404 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.405 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.405 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 57] SwiftParserDiagnostics
+Build complete! (0,70 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingIntegrationTests started.
+◇ Test testModelValidationFailurePreservesRecord() started.
+✔ Test testModelValidationFailurePreservesRecord() passed after 0.393 seconds.
+✔ Suite MeetingIntegrationTests passed after 0.393 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.393 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+integration: all available test scripts passed
+Finished: 2026-10-03T12:37:43Z (PASS)

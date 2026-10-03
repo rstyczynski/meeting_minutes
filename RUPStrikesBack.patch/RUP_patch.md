@@ -191,3 +191,115 @@ managed mode, a material design change still requires Product Owner approval
 before its code or test skeletons are implemented. Record the approval and
 re-run the audit after that change. Do not mark the documentation audit
 complete merely because files exist or their headings match.
+
+## P9. Demonstrate each sprint increment at handover
+
+### Purpose
+
+Every sprint ends with a developer-led, live increment demonstration to the
+Product Owner before the Product Owner is asked to accept the sprint
+documentation or close the sprint. The developer operates the actual product
+or opens the actual delivered artifact in front of the Product Owner. A slide
+deck, recording, screenshot, test log, or claim that a command ran earlier
+does not substitute for this demonstration. This adds a review step to the
+existing RUP wrap-up; it does not change the canonical sprint states, PBI
+acceptance criteria, or Product Owner decision rights. A demonstration is
+required even for a non-code-bearing iteration:
+show the actual delivered document, experiment, or decision outcome rather
+than pretending that an executable feature exists.
+
+This local practice follows the [Scrum Guide's Sprint Review purpose](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf):
+inspect the sprint outcome together and determine future adaptations in a
+working session.
+
+Demo day should leave the Product Owner confident and satisfied that the
+time and money invested produced an understandable, useful result. The
+Product Owner should be able to answer: what was promised, what was
+delivered, how does it work, what can a user accomplish now, what remains
+uncertain, and what should happen next? Earn that confidence through direct
+inspection and honest discussion. Record the Product Owner's actual reaction;
+the developer cannot declare the Product Owner satisfied on their behalf.
+
+### Prepare the demonstration
+
+The developer owns and presents the handover. Prepare one coherent user
+journey tied to the sprint goal and assigned PBIs. Identify local
+prerequisites, exact actions, expected visible results, and one relevant
+failure or limitation to show. Run a preflight and rehearsal on the intended
+environment before inviting the Product Owner. State benefits only when the
+demonstration or evidence supports them; do not invent a return on investment.
+
+### Run demo day
+
+1. Set the context in product language: the user problem, sprint goal, and
+   specific outcome promised for this sprint.
+2. Start with a known product or artifact state and real input. Perform the
+   user actions in order. Show intermediate results and the final output so
+   the Product Owner can follow the complete path from input to useful
+   outcome. For model-backed behavior, use actual model inference when
+   claiming model capability; label synthetic or injected data as a contract
+   check.
+3. Let the Product Owner inspect the result, try a step where practical,
+   ask questions, and request a repeat or alternative input. Explain what
+   can now be done with the increment and what still requires work.
+4. After the journey, show the relevant failure or limitation and the
+   supporting test or benchmark evidence. Explain which parts were delivered
+   this sprint, what the investment established, and which questions remain
+   for later decisions.
+5. Discuss feedback and what to change next. In managed mode, ask for the
+   Product Owner's explicit handover decision through the existing process.
+
+If the live journey cannot run, record the blocker and arrange a corrected
+demonstration. Do not treat slides or earlier test evidence as a completed
+live demo.
+
+### Prepare the handover material
+
+Update `progress/sprint_N/user_manual.md` as the sprint handover source for the
+increment that a user can actually operate or review. A release-ready copy may
+be promoted to `docs/` after review, with its scope and links reconciled.
+State prerequisites, supported tasks, exact steps and
+expected results, recovery from common errors, and known limits. If an
+iteration has no executable behavior, explain how the Product Owner can
+inspect its delivered artifacts and why normal product-use steps do not yet
+apply. Create a concise slide presentation at
+`progress/sprint_N/sprint_N_increment_demo.pptx`. Build the deck around the
+same complete user journey as the live demonstration: user need and sprint
+promise, starting state and input, the product actions in order, visible
+intermediate and final results, and the task the user can now complete.
+Give this walkthrough enough space to be understandable without the
+developer's narration; a single agenda or step-list slide is insufficient.
+Use real product screens, output, or delivered artifacts when they help the
+Product Owner see what happened. Then state what was delivered against the
+sprint goal and PBIs, material limitations or failures, supporting test or
+benchmark findings, and the feedback or decision sought. Evidence supports
+the product story; it must not displace the walkthrough. Slides support the
+live demonstration, and detailed proofs belong in the sprint records linked
+from the manual or presentation.
+
+### Check quality and record the decision
+
+Before the meeting, the developer checks every factual claim against the
+current build, accepted scope, and sprint evidence. Execute each command
+presented as copyable on the stated environment; show actual prerequisites
+and expected output, and label paths or commands that require local staging.
+Distinguish synthetic or reference-injected contract tests from real-model or
+real-user behavior. Recheck links, slide readability, exported slide content,
+and the consistency of the manual, slides, README, implementation record,
+test record, benchmark where applicable, and progress board. Record the
+preflight and rehearsal results, live steps performed, observed results,
+Product Owner questions, and remaining demonstration limits in
+`progress/sprint_N/sprint_N_handover.md`. A broken example, unsupported claim,
+missing material limitation, unreadable slide, or live-demo blocker prevents
+handover acceptance until corrected. A known product failure may be shown if
+its effect and follow-up are made explicit.
+
+In managed mode, inspect the outcome together with the Product Owner and
+discuss what should change next. Capture questions, reactions to the user
+journey, and feedback in the handover record, then request an explicit
+review decision. The Product Owner may accept the handover, request
+corrections, or direct new scope through the existing backlog and sprint
+procedures. Do not infer acceptance from silence or from passing automated
+tests. Continue the canonical Phase 5 documentation approval and sprint
+status procedure only after the demonstration decision is recorded; this
+patch does not itself mark a sprint complete or authorize a remote push.

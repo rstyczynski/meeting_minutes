@@ -232,6 +232,22 @@ When an operator chooses review mode, the system can trace a transcript segment,
 
 Processing failures are explicit and preserve the source recording and already-completed local results. Error-path tests must verify that no destructive overwrite occurs.
 
+#### NFR-06 — Validate model responses before downstream use
+
+Every model-backed step shall validate its response before storing it or
+passing it to another product step. Technical checks cover a complete
+parseable response, the required schema and types, bounded output size,
+and references to existing source data. Content checks must establish
+that saved claims are supported by their cited source and appropriate for
+their item type; valid JSON alone is insufficient. A failed technical
+check may be returned to the model with a concrete repair request, but
+retries must be bounded. If validation still fails, the product shall
+report the reason, withhold the unvalidated result, and preserve the last
+valid meeting record. This requirement was added during Sprint 2 after
+real-meeting minutes experiments exposed unsupported claims and truncated
+model output. The Sprint 2 minutes adapter is its first implementation;
+later model-backed capabilities must apply the same boundary.
+
 ## Initial release scope
 
 Included:

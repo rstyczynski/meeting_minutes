@@ -194,3 +194,376 @@ scripts; both FLEURS Python scripts compiled; the 20-result JSON validation
 passed; all six parent logs end in PASS; no gate log remains at the Sprint
 document root; and `git diff --check` passed. The mandatory board is still
 the four-column table. No remote push is authorized.
+
+## Phase 5 documentation quality correction — 2026-10-02
+
+The Product Owner tried a copyable command in the implementation record and
+correctly received `Media file does not exist`: the documented media and
+settings paths were literal placeholders. The canonical RUP Documentor
+procedure requires extraction and execution of snippets, rejection of
+placeholders, verification of expected output and prerequisites, and a
+consistency check before documentation approval. The previous Phase 5
+review covered links and formatting but failed this executable-example
+criterion. The invalid block was removed rather than relabeled as working.
+
+The implementation record now gives a Product Owner validation path. Its
+end-to-end synthetic CLI flow uses checked-in WAV and reference files and
+was rerun: record `EC9EB600-9DDC-4CD9-9009-A02C9EDC2387` had five turns,
+speaker_2 named Ada, the first turn moved to speaker_2, and four source-linked
+review items. The real Polish example now has one-time staging commands for
+the FLEURS clip and v3 model, explicit prerequisites, an executed CLI command,
+and the verified `cat`/`jq` result. The failure example uses a deliberately
+missing file and states the expected status. The README and documentation
+review point to these instructions and explain their validation purpose.
+All eight executable shell blocks in README, implementation, and functional
+test records were checked for placeholder paths, `exit` commands, and shell
+syntax; none failed. The missing-media example was rerun and returned status
+2 with the expected message. A fresh 16-document scan found zero broken
+local links and zero narrative tables. Both PBI traceability directories
+have no broken symlinks; the 98 retained gate logs have 98 document links;
+and `git diff --check` passed. The documentation correction has no product
+code change, so prior passing product gates remain valid. Managed Phase 5
+approval is still pending before this correction is committed as the
+documentation completion marker.
+
+## Phase 5 model-versus-fixture correction — 2026-10-02
+
+The Product Owner challenged the apparent end-to-end model claim in the
+`--fixture-reference` walkthrough. Inspection confirmed that this option
+injects prewritten transcript, speaker, and minutes data, so the walkthrough
+checks CLI dispatch, chair correction, source links, and persistence only.
+The implementation record now directs Product Owner review first to the
+real-model benchmark, labels the short Polish Parakeet run as actual ASR
+inference, and isolates the fixture walkthrough under a synthetic CLI
+contract heading. The README and documentation review state the same
+boundary. This correction changes documentation only; it does not add model
+test evidence. The AMI and FLEURS results and their quality failures remain
+the model-validation evidence. Managed Phase 5 approval remains pending.
+
+## Phase 5 test-only option placement — 2026-10-02
+
+The Product Owner directed that the reference-injection command be described
+in the test record and excluded from implementation instructions. The complete
+synthetic CLI sequence, human-readable saved-record view, and expected
+contract outcome were moved to `sprint_2_tests.md`. The implementation record
+now contains the real Polish model run, actual settings and media staging,
+expected transcript, and a missing-media error example without the test-only
+option. The README and documentation review were reconciled to those paths.
+No product code or benchmark result changed. Managed Phase 5 approval remains
+pending.
+
+The revised missing-media command was executed without the test-only option;
+it printed `Media file does not exist` and exited 2. `git diff --check`
+passed after the document move.
+
+## Phase 5 Product Owner walkthrough gate — 2026-10-02
+
+The Product Owner required the implementation record to demonstrate four
+tasks: transcribe English and Polish, inspect low-quality recording elements,
+assign names, and generate a summary. The Documentor's existing
+copy-paste/expected-output responsibility applies to those actual product
+tasks. The implementation record now gives one same-session walkthrough
+using staged real models and real AMI/FLEURS audio. It explicitly states
+that Polish input is a single sentence, the AMI full meeting is needed to
+show warnings, anonymous S3 merges two annotated people, and the local MLX
+minutes fail content quality. It identifies local-model packaging as an
+unresolved fresh-Mac dependency. The README and documentation review now
+point to the walkthrough; the functional test record holds the observed
+record IDs and keeps the synthetic contract path separate.
+
+The English AMI v2 CLI created record
+`F4A47777-5288-4498-95D5-0A067D7DBA2E` with 2,576 segments. Fluid
+recognition saved S1/S2/S3 labels and 16 S3 warning ranges. The first
+begins at 19.32 seconds. The manual name command saved `S2 = Ada (demo
+label)`. The Polish v3 CLI created record
+`685ABDCF-BF44-42BA-9A9F-DD2F8734F6FA` with 15 Polish segments. A
+120-second AMI record `4CDA78E1-3E3A-4380-875B-CC976A53CB72` passed
+through transcribe, recognize, name, and real MLX summarize; its six review
+items contain unsupported content and repeat the demo label. The documented
+human-readable `jq` expressions were run on these saved records. The
+missing-media command without a test hook exited 2 as documented. The
+walkthrough commands are executed evidence for the Product Owner, not a
+claim that its minutes or low-quality identification meet production
+acceptance. Managed documentation approval remains pending.
+
+After the walkthrough rewrite, 16 README/Plan/board/docs/Sprint 2 Markdown
+files had zero broken local links and zero narrative tables. Twelve Bash
+blocks in the implementation and functional test records passed `bash -n`;
+none used a placeholder path or an `exit` command. The implementation record
+contains no `--fixture-reference` option. The three saved real-model records
+were reloaded: English has 2,576 segments, 16 warnings, and the persisted
+demo name; Polish has 15 segments with requested language `pl`; the short
+AMI record has six items with `minutesSource: local-model`. The documented
+human-readable `jq` expressions ran against these records. `git diff
+--check` passed. Product code was not changed, so these are documentation
+and executable-example checks, not a new six-gate product increment.
+
+Preflight and settings blocks also ran exactly as written. A single nested
+Bash replay of all walkthrough blocks stopped before transcription when
+SwiftPM could not apply its own sandbox under Codex's filesystem sandbox.
+The [failed replay log](tests/product_owner_walkthrough_nested_sandbox_failure_20261002.log)
+is retained and linked from the functional test record. Each direct model
+command had already run successfully and saved the records described above;
+the integrated nested replay is not presented as a pass.
+
+## P9 increment handover preparation — 2026-10-02
+
+The Product Owner explicitly requested execution of the newly added local
+P9 handover procedure. It is compatible with the canonical Phase 5
+Documentor: the developer presents the increment before the managed
+documentation-approval decision, without changing PBI acceptance, board
+states, or PLAN status. The initial root `user_manual.md` explained prerequisites,
+the four supported product tasks, exact commands and expected results,
+common recovery, and current limits. The six-slide
+`sprint_2_increment_demo.pptx` maps the live path to PBI-011 and the measured
+comparisons to PBI-018, discloses the speaker, minutes, and language-switch
+failures, and asks for a Product Owner handover decision. The separate
+`sprint_2_handover.md` records claims, checks, limits, and pending feedback.
+README and the Sprint 2 documentation review link to the package. Both
+assigned backlog directories link to the handover and deck.
+
+All six slides were rendered and visually inspected at full size. The first
+draft's chart legends were too small; the revised deck uses large model
+labels and keeps editable native charts on slides 3 and 4. Its finalization
+passed package integrity, chart-data packaging, font, and layout checks.
+The initial copied sprint deck had SHA-256
+`256cec84f396eab03b34f81fea7c003ddb729ae040c36e9f263a9236f235c581`.
+The deck was inspected through rendering, not opened in PowerPoint. Eighteen
+README/Plan/board/docs/manual/Sprint 2 Markdown files had no broken local
+links and no narrative Markdown tables. The manual's four Bash blocks and
+the implementation and test Bash blocks passed `bash -n` with no placeholder
+paths or `exit` commands. The real-model run evidence and failing nested
+replay are described in the functional test record. All traceability
+symlinks resolve; `git diff --check` passed. The handover is prepared for
+the Product Owner's explicit review, so Phase 5 completion, commit, and
+sprint closure remain pending.
+
+The final handover scan included the new manual and handover record: 18
+Markdown files had no broken local links or narrative tables, 16 Bash blocks
+in the manual, implementation, and test record passed `bash -n`, all 99
+retained `.log` files in the Sprint 2 test directory are linked from the
+functional test record, and every PBI-011/PBI-018 traceability symlink
+resolves. The manual's five `jq` views returned the documented English and
+Polish segment counts, warnings, demonstration name, and minutes-source
+marker from real saved records. The copied slide deck's SHA-256 matches the
+validated final deck, and `git diff --check` passed again. Product Owner
+handover acceptance has not been inferred from these checks.
+
+## P9 live demonstration and location correction — 2026-10-02
+
+The Product Owner corrected the manual location. P9 now makes
+`progress/sprint_N/user_manual.md` the handover source and allows a reviewed
+copy in `docs/` later. Sprint 2's manual moved into its process directory;
+README, the documentation review, and handover links were updated. The deck's
+Live demo slide now states the starting state, four actions, and visible
+results. The revised six-slide deck passed package, chart, font, and layout
+validation, was rendered, and slide 2 was visually inspected. Its SHA-256 is
+`598bee9d8d257ac1f7a26ffb347f483921f8d3738675609065ffb01ed54efbd9`.
+
+The developer then performed the four-step CLI scenario in a fresh local
+store with real models and saved the observed record IDs and outcomes in
+[the handover record](sprint_2_handover.md). The live result repeated the
+known limitations: three labels for four AMI people, 16 weak-audio warning
+ranges, and six draft minutes items containing unsupported content. No
+reference-injected test data was used. The manual's new fresh-store command
+ran successfully. A final scan found zero broken local links or narrative
+tables across 18 Markdown files; 17 Bash blocks in the manual, implementation,
+and test record passed `bash -n`; all 99 retained logs are cited by the test
+record; 18 traceability symlinks resolve; and `git diff --check` passed.
+The Product Owner decision, Phase 5 documentation approval, commit, and
+sprint closure remain pending under P9.
+
+## Sejm meeting correction and minutes defect — 2026-10-02
+
+The Product Owner rejected the single-speaker FLEURS clips as meeting demo
+inputs and approved a Sejm committee sitting. The handover now uses a real
+ten-minute Polish multi-person excerpt with an official recording entry and
+written sitting record. The [fixture record](polish_sejm_meeting_fixture.md)
+gives the source URL, local media hash, staging command, and reference limits.
+The [test capture](tests/polish_sejm_meeting_run_20261002.json) records 802
+timed segments, three speaker IDs, the chair name basis, the initial minutes
+error, and the repaired rerun. No FLEURS sentence is described as a meeting
+or used in the product walkthrough.
+
+The Product Owner identified the minutes error as a blocking product defect
+and said the increment is not ready for delivery. Source inspection found
+that the model cited speaker label `S1` instead of a source segment ID; the
+strict validator correctly rejected the item. The adapter now distinguishes
+`SOURCE_ID` from `SPEAKER` and retries once for an invalid citation. The
+core now drops an action owner unless the cited segments contain that
+speaker. The focused regression test passed, and all six Sprint gates passed
+in the [2026-10-02 gate logs](sprint_2_tests.md#polish-multi-person-meeting-correction--2026-10-02).
+The real Sejm rerun saved four draft items. Content inspection against the
+cited transcript found a valid positive-opinion decision but also a false
+action and invented open question. The summary has no source citation.
+These content defects remain a delivery blocker; the repaired structural
+path is not represented as a successful minutes-quality result.
+
+The [manual](user_manual.md), [implementation record](sprint_2_implementation.md#product-owner-walkthrough--real-local-models),
+[test record](sprint_2_tests.md), [handover record](sprint_2_handover.md),
+[documentation review](sprint_2_documentation.md), README, and 13-slide
+[deck](sprint_2_increment_demo.pptx) now reflect the real Sejm journey and
+remaining blocker. At that point, the copied deck SHA-256 was
+`000ef7f4bda0e89b499b0e73a972ade07acbc55c07d27f6da0604d9db3d1d39f`;
+package, layout, native-chart, font, and import validation passed. All 13
+slides were rendered; the changed Polish minutes slide was visually
+inspected. A fresh audit of 14 README/Sprint 2 Markdown files found zero
+broken local links, zero narrative tables, and no Bash syntax errors in 24
+copyable Bash blocks. The fixture restaging block ran and returned the
+documented duration, size, and SHA-256. `git diff --check` and the compact
+JSON capture parse passed. An additional summary-citation prompt experiment
+was discarded after it switched languages and added unsupported budget
+detail on the same record. The final `minutes-v2` code passed all six gates
+again, as linked from the test record. Product Owner live review, handover
+acceptance, Phase 5 completion, and commit remain pending.
+
+## Longer English meeting and second minutes model — 2026-10-02
+
+The Product Owner requested a longer English official meeting. The
+[DOE fixture](doe_itiac_day2_fixture.md) and [run capture](tests/doe_itiac_day2_run_20261002.json)
+document a 30-minute, multi-person excerpt with an official speaker-labeled
+transcript. The real CLI saved 4,216 timed English segments and eight
+anonymous speaker IDs. Both local minutes models exited on structured
+output for that full excerpt; neither saved review items. A staged 7B
+alternative also failed source-content review on the same Sejm transcript
+used for the 4B model. The [benchmark](ami_asr_benchmark.md#polish-meeting-minutes-quality-check)
+now gives the same-input comparison and explicitly withholds a default
+minutes-model choice. The manual, implementation record, test record,
+handover, documentation review, and README link the new source and state
+the delivery blocker. The updated deck includes the DOE failure and has
+SHA-256 `184d289cc25b538eaba6c05daf172ae772864defa3bfc4df8beb78789f693f84`.
+It passed package, layout, font, native-chart, and import validation;
+all 13 slides rendered and the changed failure slide was visually checked.
+
+The canonical bug policy requires sprint defects under their affected item.
+[Sprint 2 bugs](sprint_2_bugs.md) now records the repaired citation error
+separately from the open Sejm content defect and DOE structured-output
+failure. A fresh README/Sprint 2 audit covered 16 Markdown files and 26
+copyable Bash blocks, with zero broken local links, zero narrative tables,
+and zero Bash syntax failures. `git diff --check` passed. This is a
+documentation check, not a minutes-quality pass or handover approval.
+
+## Sejm PDF transcription comparison — 2026-10-02
+
+The Product Owner pointed out that the official Sejm PDF can test more than
+meeting provenance. The [passage-level review](tests/polish_sejm_pdf_transcription_review_20261002.md)
+now compares the saved Polish transcript with PDF pages 4–5 over the formal
+opening through the beginning of the next agenda item. It documents
+recognizable turns, monetary amounts, and the positive-opinion decision,
+alongside word, name, acronym, and numeric-unit errors. The edited PDF is
+not a time-aligned verbatim reference, so no whole-excerpt WER was added.
+The fixture, benchmark, test record, implementation, handover, and
+documentation review were reconciled with this narrower finding. The
+README/Sprint 2 Markdown audit again found zero broken links, zero
+narrative tables, and 26 syntactically valid Bash blocks; `git diff --check`
+passed. Minutes quality remains blocked independently of this ASR review.
+
+## Product Owner presentation set and final consistency check — 2026-10-02
+
+The [presentation brief](sprint_2_product_owner_presentation.md),
+[13-slide deck](sprint_2_increment_demo.pptx), [manual](user_manual.md),
+and [handover record](sprint_2_handover.md) now form one review set. The deck
+shows real AMI and Sejm inputs, actual saved transcript and warning output,
+the deliberately invented AMI alias, neutral Sejm speakers, the supported
+decision, unsupported draft minutes items, and the longer DOE minutes
+failure. Its charts retain the benchmark's cited scope. Speaker names are
+not inferred from a whole cluster merely because the official PDF names a
+chair on one turn. The latest fresh [AMI](tests/43CE873A-603C-473F-9B23-A785A0689456.json),
+[Sejm](tests/5DC83D71-D1B0-4568-A66D-70F3B9A71D46.json), and
+[short AMI](tests/4395B92A-60B8-4B8C-9A20-3AE37642FE92.json) records
+support the shown segment counts, warning, name state, and draft-item
+examples. The test and handover reports distinguish those fresh results
+from earlier exploratory records.
+
+The final deck SHA-256 is
+`c6ffc49272a149380505e383741147b345db362684e84affe5f46804a7a28cd7`.
+Presentation package, layout, font, chart, and import checks passed; all
+13 slides rendered and were reviewed for readability. The PPTX archive
+passed `unzip -t`. The Markdown audit covered 17 README/Sprint 2 files and
+26 copyable Bash blocks: zero broken local links, zero narrative tables,
+and zero Bash syntax errors. The three fresh JSON captures passed `jq empty`,
+and `git diff --check` passed. The commands retained in the manual and
+implementation record use the `swift run` entry point that succeeded in
+the fresh rehearsal. Direct debug-binary summarization aborted with an
+unexplained adapter exception; that path is not counted as passed.
+
+This completes preparation and document consistency checking for the
+presentation set. It does not complete the P9 live demonstration or change
+the Product Owner's minutes-quality blocker. Product Owner questions,
+handover decision, Phase 5 approval, increment commit, and sprint closure
+remain pending.
+
+The subsequent blocker investigation retained the 4B DOE adapter's
+[truncated raw response](tests/doe_minutes_raw_adapter_response_20261002.json)
+and a [diagnosis](tests/doe_minutes_failure_diagnosis_20261002.md). It also
+reproduced the direct-binary exception and the successful same-record
+`swift run --skip-build` route. At the time of that investigation the
+[recovery design](sprint_2_design.md#approved-minutes-quality-recovery-amendment--2026-10-02)
+was a proposal. The Product Owner subsequently approved it, and the
+implementation and presentation were updated as recorded below. The
+BUG-3 root cause is narrowed only for the 4B attempt; the 7B raw output
+was not retained.
+
+## Approved response gate and presentation reconciliation — 2026-10-02
+
+The Product Owner approved the evidence-first repair and asked for
+technical checks of non-deterministic model responses, bounded repair
+prompts, an NFR, implementation guidance, tests, and a Product Owner demo.
+NFR-06 is in the SRS; the architecture and approved design describe the
+gate; the implementation record includes the exact active and historical
+prompts. Controlled validator, core, and integration tests cover malformed
+JSON, schema and citation faults, bounded retry, transcript preservation,
+and the ten-minute limit. The single six-gate wrapper passed A1–A3 and
+B1–B3 with stamp `20261002_155412`; the [test
+record](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
+links each retained log.
+
+The Product Owner manual, presentation brief, documentation summary, and
+handover now distinguish old `minutes-v2` saved drafts from the current
+evidence-first gate. The 14-slide [deck](sprint_2_increment_demo.pptx)
+contains a gate slide that states the real Sejm draft still fails. Package
+and layout validation found 14 slides and zero layout findings; all slides
+were rendered and the new slide was visually inspected. The Sprint and both
+PBI deck copies have identical SHA-256
+`6f6c77616f5ec6b57d3df5f044878214af750611eb12af9877dd29efcb6a47c2`.
+Twenty README/docs/Sprint Markdown files had zero missing relative link
+targets, narrative documents had zero Markdown tables, and
+`git diff --check` passed. The active gate has not yet yielded a useful
+real-meeting minutes draft; Product Owner acceptance and Sprint closure
+remain blocked.
+
+## 30B model staging evidence — 2026-10-03
+
+The Product Owner asked to continue the larger local model download.
+The temporary partial transfer from the previous day was absent, so the
+download restarted in the persistent Git-ignored `.models/` directory.
+The [download record](tests/qwen3_30b_download_20261003.md) identifies
+the pinned Hugging Face revision, complete 16-file manifest, exact
+shard sizes, matching SHA-256 hashes, and connection-reset recovery.
+The [benchmark](ami_asr_benchmark.md#evidence-first-gate-and-larger-local-model-candidate),
+[implementation record](sprint_2_implementation.md), and [test
+record](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
+were synchronized at staging. The model has since run in the controlled
+same-input trial below. The product default and Sprint 2 acceptance
+status are unchanged.
+
+## 30B trial documentation reconciliation — 2026-10-03
+
+The [trial report](tests/qwen3_30b_minutes_trial_20261003.md) includes
+the clean-input identity check, raw response attempts, saved outputs,
+source review, timings, memory observations, and failure interpretation.
+The benchmark now gives the Product Owner the model comparison and
+decision without requiring reconstruction from logs. The implementation
+record identifies the opt-in raw-response capture and Metal resource
+packaging step; the test record distinguishes technical acceptance of
+AMI's short quotation from the failed Sejm JSON and minutes quality.
+The handover and presentation brief retain the delivery blocker. The
+normal manual still demonstrates the 4B product setting because the 30B
+candidate was not promoted. A fresh `swift test` run passed four focused
+adapter tests, and the [six Sprint gates](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
+passed with stamp `20261003_143640`. All seven raw attempt and saved
+record JSON files passed `jq empty`. A link scan of the nine edited
+decision and evidence Markdown files checked 355 local links with zero
+missing targets; the same files have no narrative Markdown tables, and
+`git diff --check` passed. This audit checks document
+consistency and traceability, not model quality or Phase 5 acceptance.

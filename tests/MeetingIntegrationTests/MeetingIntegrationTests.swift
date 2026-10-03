@@ -3,6 +3,81 @@ import Testing
 @testable import MeetingCore
 
 struct MeetingIntegrationTests {
+    @Test func testEvidenceFirstCLI() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = MeetingStore(directory: root)
+        let source = try TranscriptSegment(id: "d1", range: SourceRange(startSeconds: 3, endSeconds: 5),
+                                           speakerID: "S1", text: "We approved the budget.")
+        let record = MeetingRecord(sourcePath: "/tmp/meeting.wav", segments: [source],
+                                   backend: "fluid", modelRevision: "test")
+        try store.save(record)
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let responseFile = root.appendingPathComponent("response.json")
+        let helper = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: helper,
+            atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755],
+                                              ofItemAtPath: helper.path)
+        let response = """
+        {"summary":{"text":"We approved the budget.","source_ids":["d1"]},
+        "decisions":[{"text":"We approved the budget.","source_ids":["d1"]}],
+        "actions":[],"open_questions":[]}
+        """
+        let wrapper = ["modelRevision": "test", "promptRevision": "test", "response": response]
+        try JSONSerialization.data(withJSONObject: wrapper).write(to: responseFile)
+        let settings = root.appendingPathComponent("settings.json")
+        let config = ["transcriber": "fluid", "mlxModelDirectory": model.path,
+                      "mlxExecutable": helper.path]
+        try JSONSerialization.data(withJSONObject: config).write(to: settings)
+        let result = try cli(["summarize", record.id.uuidString, "--summarizer", "mlx",
+                              "--settings", settings.path, "--store", root.path])
+        guard result.0 == 0 else {
+            Issue.record("CLI summarize failed: \(result.1)")
+            return
+        }
+        let completed = try store.load(record.id)
+        XCTAssertEqual(completed.reviewItems.map(\.kind), [.summary, .decision])
+        XCTAssertTrue(completed.reviewItems.allSatisfy { $0.sourceSegmentIDs == ["d1"] })
+        XCTAssertEqual(completed.reviewItems[1].sourceRange, source.range)
+        XCTAssertTrue(completed.speakerNames.isEmpty)
+    }
+
+    @Test func testModelValidationFailurePreservesRecord() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = try TranscriptSegment(id: "d1", range: SourceRange(startSeconds: 3, endSeconds: 5),
+                                           speakerID: "S1", text: "We approved the budget.")
+        var record = MeetingRecord(sourcePath: "/tmp/meeting.wav", segments: [source],
+                                   backend: "fluid", modelRevision: "test")
+        record.renameSpeaker("S1", to: "Chair")
+        let store = MeetingStore(directory: root)
+        try store.save(record)
+        let saved = root.appendingPathComponent("\(record.id.uuidString).json")
+        let original = try Data(contentsOf: saved)
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let responseFile = root.appendingPathComponent("response.json")
+        let helper = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: helper,
+            atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755],
+                                              ofItemAtPath: helper.path)
+        let wrapper = ["modelRevision": "test", "promptRevision": "test", "response": "not json"]
+        try JSONSerialization.data(withJSONObject: wrapper).write(to: responseFile)
+        let settings = root.appendingPathComponent("settings.json")
+        let config = ["transcriber": "fluid", "mlxModelDirectory": model.path,
+                      "mlxExecutable": helper.path]
+        try JSONSerialization.data(withJSONObject: config).write(to: settings)
+        let result = try cli(["summarize", record.id.uuidString, "--summarizer", "mlx",
+                              "--settings", settings.path, "--store", root.path])
+        XCTAssertTrue(result.0 != 0)
+        XCTAssertTrue(result.1.contains("Model minutes response is not valid evidence JSON"))
+        XCTAssertEqual(try Data(contentsOf: saved), original)
+    }
     private var executable: URL {
         URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent(".build/debug/meeting-summarizer")

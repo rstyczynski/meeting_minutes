@@ -10,3 +10,6 @@ integration:test_meeting_flow.sh:test_IT3_correction_review
 integration:test_meeting_flow.sh:test_IT4_chunk_merge
 integration:test_meeting_flow.sh:test_IT5_backend_selection
 integration:test_meeting_flow.sh:test_IT6_fixture_generation
+unit:test_core.sh:test_UT11_evidence_first_minutes
+unit:test_core.sh:test_UT12_minutes_input_bound
+unit:test_core.sh:test_UT13_adapter_validation

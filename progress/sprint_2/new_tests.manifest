@@ -20,3 +20,8 @@ integration:test_meeting_flow.sh:test_IT7_three_commands
 integration:test_meeting_flow.sh:test_IT8_neutral_summary
 integration:test_meeting_flow.sh:test_IT9_failure_preserves_record
 integration:test_meeting_flow.sh:test_IT10_language_record
+unit:test_core.sh:test_UT11_evidence_first_minutes
+unit:test_core.sh:test_UT12_minutes_input_bound
+unit:test_core.sh:test_UT13_adapter_validation
+integration:test_meeting_flow.sh:test_IT11_evidence_first_cli
+integration:test_meeting_flow.sh:test_IT12_validation_preserves_record

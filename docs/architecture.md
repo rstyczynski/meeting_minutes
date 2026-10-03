@@ -51,6 +51,18 @@ diarization, or minutes implementation. They must not expose a remote
 fallback. The local meeting store atomically persists source references and
 derived data; it must not synchronize to a cloud service.
 
+The Sprint 2 minutes failure added an explicit **model-response gate** to
+this boundary. An adapter validates response syntax, schema, size, and
+references before handing a candidate to core. Core then validates source
+grounding and domain meaning before a derived item can enter the local
+record or feed another step. A bounded technical repair request may be
+sent back to the model; final failure preserves the prior record. The
+prototype currently implements this gate for minutes. NFR-06 requires
+future model-backed adapters to provide an equivalent validated boundary,
+with checks suited to their output contract. The gate cannot establish
+audio or transcription truth on its own; chair review remains part of the
+workflow.
+
 ## Domain contract
 
 A `MeetingRecord` has an immutable local source reference, ordered transcript

@@ -1,0 +1,29 @@
+{
+  "sourcePage": "https://www.energy.gov/cmei/ito/industrial-technology-innovation-advisory-committee-first-meeting-day-2-text-version",
+  "officialRecording": "https://www.youtube.com/watch?v=5b1h1WHExuc",
+  "publisher": "U.S. Department of Energy",
+  "meetingDate": "2024-03-22",
+  "fullRecordingDurationSeconds": 9586,
+  "localExcerpt": "/private/tmp/meeting-doe-itiac-day2-30min.wav",
+  "excerptDurationSeconds": 1800,
+  "excerptSha256": "a0351f3cbae39118864e1a90b245590fbf5543956211bc305c5afa5c662f0d9b",
+  "sampleRateHz": 16000,
+  "channels": 1,
+  "store": "/private/tmp/meeting-doe-itiac-sprint2",
+  "recordId": "36237678-66EB-456D-897A-4687BF33F390",
+  "requestedLanguage": "en",
+  "asrModel": "parakeet-tdt-0.6b-v2",
+  "timedSegments": 4216,
+  "speakerIds": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+  "qualityWarnings": 0,
+  "turnChecks": [
+    {"speakerId": "S1", "approxStartSeconds": 3, "referenceSpeaker": "Zachary Pritchard", "basis": "official transcript opening greeting"},
+    {"speakerId": "S3", "approxStartSeconds": 128, "referenceSpeaker": "Sharon Nolen", "basis": "official transcript handoff"},
+    {"speakerId": "S5", "approxStartSeconds": 852, "referenceSpeaker": "Sue", "basis": "official transcript interruption and question"}
+  ],
+  "minutesAttempts": [
+    {"model": "Qwen3-4B-Instruct-2507-4bit", "exitStatus": 2, "error": "The data couldn’t be read because it isn’t in the correct format.", "reviewItemsPersisted": 0},
+    {"model": "Qwen2.5-7B-Instruct-4bit", "exitStatus": 2, "error": "The data couldn’t be read because it is missing.", "reviewItemsPersisted": 0}
+  ],
+  "referenceLimits": "Official HTML transcript has speaker labels but no time alignment to the WAV; no whole-excerpt WER or diarization accuracy is claimed."
+}

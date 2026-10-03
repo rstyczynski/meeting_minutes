@@ -1,0 +1,22 @@
+{
+  "source": "https://api.sejm.gov.pl/sejm/term10/videos/518331A64B2ACCCDC1258BB20032D02B",
+  "reference": "https://api.sejm.gov.pl/sejm/term10/committees/GOR/sittings/39/pdf",
+  "localMedia": "/private/tmp/meeting-polish-gor-20241016-10min.wav",
+  "mediaSha256": "1045d5199ea673b56c63f77c02a59b9a6be7c2887f1922253c887e2f93f184b9",
+  "durationSeconds": 599.996688,
+  "sampleRateHz": 16000,
+  "channels": 1,
+  "store": "/private/tmp/meeting-polish-gor-sprint2",
+  "recordId": "CA95C7AB-695E-4501-9176-938F0D463DFC",
+  "requestedLanguage": "pl",
+  "asrModel": "parakeet-tdt-0.6b-v3",
+  "timedSegments": 802,
+  "speakerIds": ["S1", "S2", "S3"],
+  "speakerIdFirstObservedSeconds": {"S1": 108, "S2": 222, "S3": 582},
+  "qualityWarnings": 0,
+  "manualNameAssignment": {"speakerId": "S1", "name": "Ryszard Petru", "basis": "official sitting record opening turn; whole-cluster identity not independently validated"},
+  "minutesInitialAttempt": {"engine": "mlx", "exitStatus": 2, "error": "Unknown source segment: S1", "reviewItemsPersisted": false},
+  "minutesRepair": {"promptRevision": "minutes-v2", "sourceIdGuard": "retry once when model cites a speaker label or invented ID", "ownerGuard": "only keep an owner when cited segments contain that speaker", "rerunExitStatus": 0, "reviewItemsPersisted": 4, "itemKinds": ["summary", "decision", "action", "openQuestion"], "contentReview": "The decision at 540-553 s is supported. The action misclassifies an invitation to present. The open question is not asked in its cited 288-296 s range. Draft is not publishable."},
+  "discardedPromptExperiment": {"promptRevision": "minutes-v3", "change": "requested summary source citations", "observed": "model changed to English and introduced unsupported budget details; change reverted to minutes-v2", "releaseStatus": "not retained"},
+  "referenceLimits": "Official PDF is edited and not time aligned; no whole-clip WER claimed."
+}

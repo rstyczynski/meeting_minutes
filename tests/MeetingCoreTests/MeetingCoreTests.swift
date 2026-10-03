@@ -8,6 +8,97 @@ struct MeetingCoreTests {
                           speakerID: speaker, text: "We decide to test both engines.")
     }
 
+    @Test func testEvidenceFirstMinutes() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let responseFile = root.appendingPathComponent("response.json")
+        let executable = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: executable,
+            atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755],
+                                              ofItemAtPath: executable.path)
+        let segments = [
+            try TranscriptSegment(id: "decision", range: SourceRange(startSeconds: 1, endSeconds: 3),
+                                  speakerID: "S1", text: "Nie słyszę sprzeciwu, komisja pozytywnie opiniuje projekt."),
+            try TranscriptSegment(id: "invitation", range: SourceRange(startSeconds: 4, endSeconds: 6),
+                                  speakerID: "S1", text: "Panią prezes poproszę o przedstawienie budżetu."),
+            try TranscriptSegment(id: "statement", range: SourceRange(startSeconds: 7, endSeconds: 9),
+                                  speakerID: "S2", text: "Środki zostały zabezpieczone w rezerwie.")]
+        let response = """
+        {"summary":{"text":"Nie słyszę sprzeciwu, komisja pozytywnie opiniuje projekt.","source_ids":["decision"]},
+        "decisions":[{"text":"Nie słyszę sprzeciwu, komisja pozytywnie opiniuje projekt.","source_ids":["decision"]}],
+        "actions":[{"text":"Panią prezes poproszę o przedstawienie budżetu.","source_ids":["invitation"]}],
+        "open_questions":[{"text":"Czy środki zostały zabezpieczone w rezerwie?","source_ids":["statement"]}]}
+        """
+        let wrapper = ["modelRevision": "test", "promptRevision": "test", "response": response]
+        try JSONSerialization.data(withJSONObject: wrapper).write(to: responseFile)
+        let generator = MLXProcessMinutesGenerator(executable: executable.path,
+            modelDirectory: model.path, speakerNames: [:])
+        let items = try generator.generate(from: segments)
+        XCTAssertEqual(items.map(\.kind), [.summary, .decision])
+        XCTAssertEqual(items[1].sourceSegmentIDs, ["decision"])
+        XCTAssertEqual(items[1].text, segments[0].text)
+    }
+
+    @Test func testMinutesInputBound() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let executable = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\nexit 99\n".write(to: executable, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755],
+                                              ofItemAtPath: executable.path)
+        let longSegment = try TranscriptSegment(id: "long", range: SourceRange(startSeconds: 0, endSeconds: 601),
+                                                speakerID: nil, text: "Long meeting")
+        let generator = MLXProcessMinutesGenerator(executable: executable.path,
+            modelDirectory: model.path, speakerNames: [:])
+        do {
+            _ = try generator.generate(from: [longSegment])
+            Issue.record("Expected an explicit minutes input limit")
+        } catch {
+            XCTAssertTrue(error.localizedDescription.contains("minutes input exceeds prototype limit"))
+        }
+    }
+
+    @Test func testModelMinutesRejectsBadCitationsAndUncitedOwner() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let responseFile = root.appendingPathComponent("response.json")
+        let executable = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: executable,
+            atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755],
+                                              ofItemAtPath: executable.path)
+        let segments = [try segment("s1", speaker: "S1"),
+                        try TranscriptSegment(id: "s2", range: SourceRange(startSeconds: 3, endSeconds: 4),
+                                              speakerID: "S2", text: "I will check the report.")]
+        let generator = MLXProcessMinutesGenerator(executable: executable.path,
+            modelDirectory: model.path, speakerNames: [:])
+        func writeResponse(sourceID: String) throws {
+            let minutes = """
+            {"summary":{"text":"We decide to test both engines.","source_ids":["s1"]},"decisions":[],"actions":[{"text":"I will check the report.","source_ids":["\(sourceID)"],"owner_speaker_id":"S2"}],"open_questions":[]}
+            """
+            let wrapper = ["modelRevision": "test", "promptRevision": "test",
+                           "response": minutes]
+            try JSONSerialization.data(withJSONObject: wrapper).write(to: responseFile)
+        }
+        try writeResponse(sourceID: "S1")
+        let withheld = try generator.generate(from: segments)
+        XCTAssertEqual(withheld.map(\.kind), [.summary])
+        try writeResponse(sourceID: "s2")
+        let items = try generator.generate(from: segments)
+        XCTAssertEqual(items.last?.sourceSegmentIDs, ["s2"])
+        XCTAssertEqual(items.last?.ownerSpeakerID, "S2")
+    }
+
     @Test func testRecordRanges() throws {
         XCTAssertThrowsError(try SourceRange(startSeconds: -1, endSeconds: 2))
         XCTAssertThrowsError(try SourceRange(startSeconds: 2, endSeconds: 1))

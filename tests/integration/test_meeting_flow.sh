@@ -12,6 +12,8 @@ test_IT7_three_commands() { swift test --filter 'MeetingIntegrationTests.Meeting
 test_IT8_neutral_summary() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testNeutralSummary'; }
 test_IT9_failure_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testFailurePreservesRecord'; }
 test_IT10_language_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testLanguageRecord'; }
+test_IT11_evidence_first_cli() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testEvidenceFirstCLI'; }
+test_IT12_validation_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testModelValidationFailurePreservesRecord'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -26,4 +28,6 @@ else
   test_IT8_neutral_summary
   test_IT9_failure_preserves_record
   test_IT10_language_record
+  test_IT11_evidence_first_cli
+  test_IT12_validation_preserves_record
 fi

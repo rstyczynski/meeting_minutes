@@ -452,8 +452,10 @@ Git under `/private/tmp/meeting-fr11-fleurs/` and
 gender classes 0 and 1, confirming voice diversity, but no verified speaker
 IDs are supplied. This does not establish a multiple-speaker Polish meeting
 result. The earlier AMI experiment remains the English meeting and
-poor-audio evidence. More representative Polish meeting audio is needed
-before an architecture default can be selected.
+poor-audio evidence. At the time of this paired experiment, representative
+Polish meeting audio had not yet been run. The later Sejm run is described
+below; a scored reference is still needed before an architecture default
+can be selected.
 
 The new Fluid adapter uses FluidAudio 0.17.4 at revision
 `21493f8dac5a97e65742e6ff26f42f164c2fda0f` and Parakeet TDT 0.6B v3
@@ -510,11 +512,177 @@ working English and Polish local transcription. The paired PBI-018 extension
 provides comparable small-sample quality, runtime, footprint, offline,
 license, and failure evidence. Parakeet v3 led on this subset, while
 Whisper base had a Metal load failure and required CPU mode. Neither result
-selects the production model. Polish meeting audio, multiple verified
-speakers, mixed-language handling, larger varied sets, and production quality
-thresholds remain for Sprint 3 analysis and later validation.
+selects the production model. Polish meeting reference scoring,
+independently verified speaker mapping, mixed-language handling, larger
+varied sets, and production quality thresholds remain for Sprint 3 analysis
+and later validation.
+
+After the Product Owner rejected read-speech clips as meeting demo material,
+the prototype transcribed and diarized a ten-minute excerpt from an
+[official Polish Sejm committee meeting](polish_sejm_meeting_fixture.md).
+Parakeet v3 saved 802 timed segments and the diarizer saved three anonymous
+speaker IDs. The official written record supports identifying the chair on
+the opening turn, but it is edited and not time aligned. Therefore this
+additional real meeting test does not add a Polish whole-meeting WER or a
+speaker-attribution accuracy score to the paired benchmark. The minutes
+path initially rejected an invalid model citation. After a structural
+repair it saved draft items, but a false action and invented open question
+remain; the [test record](sprint_2_tests.md#polish-multi-person-meeting-correction--2026-10-02)
+contains the evidence. These are reasons to withhold a minutes-quality
+decision, not to revise the ASR comparison scores.
 
 ## Remaining checks
+
+### Polish meeting minutes quality check
+
+Before evaluating minutes, the Sejm ASR output was checked against the
+[official full sitting PDF](https://api.sejm.gov.pl/sejm/term10/committees/GOR/sittings/39/pdf).
+The [passage-level review](tests/polish_sejm_pdf_transcription_review_20261002.md)
+aligns the formal opening through the start of the PKN presentation, about
+181–600 seconds of the ten-minute excerpt, with PDF pages 4–5. The saved
+transcript follows the chair's opening, minister's budget presentation,
+positive-opinion decision, and next-speaker handoff. Several important
+amounts and the decision are recognizable. It also contains material
+word/name/acronym errors and malformed or ambiguous numeric units: `Witwa`
+for `Witam`, `Panie Mistrze` for `Panie ministrze`, `Polsca` for `POLSA`,
+`CIDG` for `CEIDG`, and `28` where the PDF has agenda points 2–8. The
+34,662,000-thousand-złoty amount ends in a truncated ASR unit. This is
+useful but not authoritative transcription; a reviewer must correct it
+before treating it as the meeting record. The PDF is polished, omits
+pre-meeting speech, and is not time aligned, so no whole-excerpt WER or
+speaker-attribution score is claimed. This reference-backed review
+corrects the earlier overly broad statement that Polish meeting ASR
+quality had not been assessed at all.
+
+The Sejm excerpt adds a real, ten-minute Polish multi-person input to the
+minutes experiment. The fixed input is the 599.997-second WAV with SHA-256
+`1045d5199ea673b56c63f77c02a59b9a6be7c2887f1922253c887e2f93f184b9`.
+Parakeet v3 produced 802 timed segments; Fluid assigned three speaker IDs.
+The minutes generator used local MLX Swift LM with staged
+Qwen3-4B-Instruct-2507 4-bit weights. The source and exact run identity are
+in the [fixture record](polish_sejm_meeting_fixture.md) and [run
+capture](tests/polish_sejm_meeting_run_20261002.json).
+
+The first model output cited `S1`, a speaker label, as a source segment ID.
+The prototype's strict validator rejected it with status 2 and persisted
+zero items. That is a structural integration failure, independent of
+whether any sentence was accurate. The repaired `minutes-v2` adapter
+distinguishes source IDs from speaker IDs, retries once on invalid IDs, and
+keeps an action owner only if cited segments include that speaker. On the
+same input, the CLI then exited 0 and persisted four draft items. The
+structural path passed a focused regression test and the six Sprint gates.
+
+Content was checked item by item against the cited transcript range and
+the official written sitting record. The positive-opinion decision at
+about 540–553 seconds is supported by the chair's words. The model also
+called a request to present the next budget an action and generated an
+open question absent from the cited 288–296 second source. The summary has
+no source citation. Thus one of the three non-summary items is supported
+and two fail this manual source review; this is a four-item case study, not
+a population estimate. The draft must not be published. A stronger prompt
+requesting summary citations was also tried on the same input; it changed
+to English and added unsupported budget details, so that experiment was
+reverted. At that comparison the tested adapter remained `minutes-v2`;
+the later approved evidence-first gate is assessed below.
+
+From an architecture perspective, this evidence shows that valid JSON and
+valid segment IDs are insufficient measures of minutes quality. The
+current 4B model and prompt do not meet a reliable source-grounded minutes
+bar on this real meeting. Sprint 2 cannot select it as the default
+unattended minutes generator or claim the increment ready for delivery.
+The next comparison needs a fixed set of real multi-person meetings in
+English and Polish, item-level human source review, unsupported-item and
+missed-item counts, language fidelity, citation validity, runtime, and
+memory. The Product Owner has identified the present defect as a delivery
+blocker. This finding does not change the paired Fluid/Whisper ASR scores.
+
+To test whether a larger compatible model removes the problem, the same
+Sejm record was copied to a separate store and run through the same
+`minutes-v2` adapter with
+[Qwen2.5-7B-Instruct-4bit](https://huggingface.co/mlx-community/Qwen2.5-7B-Instruct-4bit)
+at revision `c26a38f6a37d0a51b4e9a1eb3026530fa35d9fed`. Its staged
+`model.safetensors` is 4,284,346,255 bytes, SHA-256
+`86110f368236b53cf4c2336f991a85703b17bcc60bb75f292b4002ec0219f071`;
+the 4B baseline file is 2,263,022,417 bytes. The 7B run exited 0 and
+saved a summary, decision, and action. The summary switched to English.
+The decision's cited range ended near 533 seconds, before the chair's
+positive-opinion conclusion near 540 seconds, and the action again
+misclassified a transition to the next budget item. No open question was
+invented, but neither non-summary item passed manual source review. This
+single controlled comparison does not establish that model size predicts
+meeting-minutes quality. The alternative was not promoted to the product
+default.
+
+A second, longer English fixture comes from the [U.S. Department of Energy
+advisory committee recording and speaker-labeled
+transcript](doe_itiac_day2_fixture.md). The first 30 minutes produced 4,216
+timed English segments and eight anonymous speaker IDs. On this identical
+saved transcript, both the 4B and 7B minutes attempts exited with status
+2 while parsing model output and persisted zero review items. The [English
+run capture](tests/doe_itiac_day2_run_20261002.json) records the exact
+errors. This tests longer real multi-person input rather than substituting
+short speech. The DOE transcript is not time aligned, so this additional
+fixture does not add a defensible whole-excerpt ASR WER. Taken together,
+the Polish and English cases show that neither tested local minutes model
+is ready for a dependable default. They also expose a length-related
+structured-output risk requiring focused follow-up; the two cases alone
+do not prove that length caused the parse failures.
+
+### Evidence-first gate and larger local model candidate
+
+The approved `minutes-v3-evidence` adapter now requires parseable JSON,
+bounded item counts, existing source IDs, and exact quotations in the
+cited chunks. It sends at most two specific repair prompts and rejects
+unrepaired output before MeetingCore can save it. Controlled tests and all
+six Sprint gates pass. On the same real AMI and Sejm inputs, however, the
+4B model still failed technical or content review; 7B found part of the
+Sejm decision wording but did not cite the entire quote. This improves
+failure containment, not minutes quality. The [test
+record](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
+lists the observed failures.
+
+The local Mac has an M4 Pro, 48 GB unified memory, and 51 GiB free at the
+start of this feasibility check. The [Qwen3-30B-A3B-Instruct-2507 model
+card](https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507) identifies
+30.5B total parameters, 3.3B active parameters, and multilingual
+instruction following. Its [MLX 4-bit
+conversion](https://huggingface.co/mlx-community/Qwen3-30B-A3B-Instruct-2507-4bit)
+has 17,181,071,994 bytes of weight shards (about 16 GiB). [MLX Swift LM
+lists `qwen3_moe` as a supported
+architecture](https://github.com/ml-explore/mlx-swift-lm/blob/main/skills/mlx-swift-lm/references/supported-models.md).
+This makes a local trial plausible within the Mac's storage and memory,
+but it was not a measured runtime or quality pass at selection. On 2026-10-03 all 16
+files of the pinned revision were downloaded into the local Git-ignored
+`.models/qwen3-30b-a3b-instruct-2507-4bit/` directory. The four shard
+sizes and SHA-256 hashes match repository metadata; the [download
+evidence](tests/qwen3_30b_download_20261003.md) gives exact values.
+
+**30B same-input result.** The [controlled trial](tests/qwen3_30b_minutes_trial_20261003.md)
+used the same 217-segment AMI and 801-segment Sejm transcripts, the same
+`minutes-v3-evidence` prompt and bounded validator, and a separate clean
+store. AMI exited 0 in **11.97 seconds** with **9.77 GB** maximum resident
+set size reported by `/usr/bin/time -l`. After one citation repair it
+saved one exact, cited quotation of the remote-control design brief and
+no decision, action, or question. That is technically grounded, but it
+does not demonstrate useful minutes. Sejm exited 2 in **26.32 seconds**
+with **17.33 GB** reported maximum resident set size; its three identical
+responses omitted the closing bracket of `decisions`, so the validator
+withheld all review items and preserved the transcript. Even a mechanical
+JSON repair would leave a misspelled decision quotation whose cited
+`source_73` ends before the quoted words in `source_74`. The Polish summary
+quotes an incomplete opening sentence. Both run logs, all raw attempts,
+saved records, transcript identity checks, and source review are linked
+in the trial. The memory figures are host process observations, not
+isolated GPU allocation; no comparable timed 4B/7B run under this exact
+setup was captured, so a speed ranking would be unjustified.
+
+The 30B model improves a narrow AMI citation result but fails the Polish
+technical and content checks. Neither the 4B, 7B, nor 30B candidate has
+established dependable local minutes on this two-meeting review set.
+The larger model is not promoted to the product default. Sprint 3 must
+assess the model, prompting and human-review workflow using item-level
+correctness, missed items, citation coverage, language fidelity, runtime,
+and memory on more representative meetings.
 
 Timed transcript segments and the limited exact-match timing diagnostic
 exist for both engines. The offline diarizer's anonymous labels and

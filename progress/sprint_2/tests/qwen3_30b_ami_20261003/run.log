@@ -1,0 +1,20 @@
+Withheld 0 unsupported minutes candidates
+4395B92A-60B8-4B8C-9A20-3AE37642FE92
+       11.97 real         1.69 user         6.71 sys
+          9771171840  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1064351  page reclaims
+                 169  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                 401  voluntary context switches
+              197967  involuntary context switches
+            96042311  instructions retired
+            46764705  cycles elapsed
+             3867104  peak memory footprint

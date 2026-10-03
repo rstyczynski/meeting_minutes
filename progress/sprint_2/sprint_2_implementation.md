@@ -2,11 +2,37 @@
 
 Status: initial English prototype and PBI-011.6 bilingual CLI implemented and tested; the PBI-018 language comparison is measured. This is the Product Owner's account of what the executable prototype does, what was measured, and what still limits an architecture decision. The accepted [design](sprint_2_design.md), [functional test record](sprint_2_tests.md), and [benchmark report](ami_asr_benchmark.md) contain the corresponding criteria and evidence. Model weights and approved natural audio remain outside Git.
 
+## How the Product Owner can validate this increment
+
+Follow the [four-step real-model walkthrough](#product-owner-walkthrough--real-local-models)
+to transcribe English and Polish, inspect poor-audio warning ranges, assign a
+speaker name, and generate minutes. It gives runnable commands, human-readable
+record views, observed results, and limitations. The [benchmark's Product
+Owner summary](ami_asr_benchmark.md#summary-for-the-product-owner) and
+[FR-11 comparison](ami_asr_benchmark.md#fr-11-bilingual-extension--pbi-0116-and-pbi-018)
+add reference-based quality, runtime, footprint, and offline evidence. The
+[test record](sprint_2_tests.md) states expected and observed gate outcomes
+and links every raw log. The [SRS](../../docs/srs.md) defines the accepted
+requirements; the [progress board](../../PROGRESS_BOARD.md) shows PBI status.
+
+The [functional test record](sprint_2_tests.md#synthetic-cli-contract-check--test-only-reference-path)
+contains the separate deterministic CLI and storage test.
+
+The implementation is traceable from [CLI dispatch](../../Sources/MeetingCLI/main.swift)
+through [configuration](../../Sources/MeetingCore/Configuration.swift),
+[local ASR adapters](../../Sources/MeetingCore/ProcessTranscribers.swift),
+and the [stored record](../../Sources/MeetingCore/Record.swift). The
+[FLEURS fetcher](../../experiments/fetch_fleurs_subset.py) and
+[benchmark runner](../../experiments/benchmark_fleurs.py) reproduce the
+language experiment; the [fixture generator](../../tests/fixtures/README.md)
+documents the invented meeting. These links are for traceability after
+reading the result, not a substitute for its interpretation here.
+
 ## Implementation and design compliance
 
 The Swift package has a portable MeetingCore library, a meeting-summarizer CLI, and a SwiftUI MeetingReview app. MeetingCore owns validated source ranges, transcript segments, neutral speaker labels, chair corrections, source-linked review items, processing provenance, quality warnings, and atomic local JSON storage. It does not import SwiftUI or AppKit. The CLI and review player load the same persisted record, so neither has a second business-data format. Local model executables are configured by path and run as separate processes. There is no remote inference fallback.
 
-The accepted CLI amendment gives three independent operations. Transcribe creates a transcript-only record. Recognize is optional: the local FluidAudio diarizer assigns anonymous labels, while recognize name and recognize move let a chair correct the record. Summarize is optional and works with neutral or absent speaker labels. It invokes a local MLX language model, validates its structured output and source IDs, and saves minutes to the same record. The older import command remains for compatibility with the first prototype tests. The test-only fixture-reference option supplies invented data and must not be interpreted as model-quality evidence.
+The accepted CLI amendment gives three independent operations. Transcribe creates a transcript-only record. Recognize is optional: the local FluidAudio diarizer assigns anonymous labels, while recognize name and recognize move let a chair correct the record. Summarize is optional and works with neutral or absent speaker labels. It invokes a local MLX language model, validates its structured output and source IDs, and saves minutes to the same record. The older import command remains for compatibility with the first prototype tests.
 
 PBI-011.1, core and store: the record contract and atomic store are implemented. IT-1 starts the CLI in a separate process and reloads its output through MeetingStore. The child passed its six prescribed gates and was committed as 72fb8d4.
 
@@ -49,6 +75,27 @@ cp /private/tmp/meeting-mlx-derived/Build/Products/Debug/mlx-swift_Cmlx.bundle/C
 
 The copied resource is a local build artifact, not checked into Git. This Xcode 27 build places the adapter at experiments/MinutesAdapter/.build/out/Products/Release/meeting-mlx-minutes. A prior Command Line Tools build used a different .build path. Set mlxExecutable to the executable's actual absolute path and mlxModelDirectory to the staged Qwen directory in the settings JSON. A process-level network-denial run of that executable generated valid structured synthetic minutes using only the staged local model. The natural AMI result is a quality failure even though local execution succeeded.
 
+On 2026-10-03 the larger Qwen3-30B-A3B-Instruct-2507 MLX 4-bit candidate
+was downloaded to the persistent, Git-ignored
+`/Users/rstyczynski/projects/meeting_minutes/.models/qwen3-30b-a3b-instruct-2507-4bit/`
+directory. All
+16 files are present, and the four weight shards match the pinned
+revision's exact byte counts and SHA-256 hashes in the [download
+evidence](tests/qwen3_30b_download_20261003.md). The controlled
+[30B trial](tests/qwen3_30b_minutes_trial_20261003.md) then used a separate
+settings file and clean copies of the same saved AMI and Sejm transcripts.
+It retained per-attempt raw responses through the opt-in
+`MEETING_MINUTES_DIAGNOSTICS_DIR` environment variable. AMI saved one
+source-exact brief quotation after citation repair. Sejm returned the
+same malformed JSON three times and saved no items. The trial records
+the source review, timing, memory, and preserved transcript. The
+walkthrough settings and product default still point to the 4B model;
+the 30B candidate did not meet the minutes-quality bar. After a clean
+Swift build, `mlx.metallib` had to be copied again from the compiled
+`mlx-swift_Cmlx.bundle` resource beside the release adapter. The
+diagnostic variable is for local evidence capture, not a user-facing
+minutes feature.
+
 For FR-11, stage a multilingual model before use. The tested Fluid assets
 are under `/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3` and
 the release helper is
@@ -61,81 +108,449 @@ the FLEURS references, all scores, and offline behavior. The source and
 scoring scripts are [fetch_fleurs_subset.py](../../experiments/fetch_fleurs_subset.py)
 and [benchmark_fleurs.py](../../experiments/benchmark_fleurs.py).
 
-## Working CLI instructions
+## Product Owner walkthrough — real local models
 
-Run from the repository root on macOS with Swift and jq installed. The synthetic example needs no model weights. The WAV and reference JSON are paired test files; each transcribe command prints a new UUID. The later commands print that same UUID. The test-only fixture-reference option substitutes deterministic transcript, diarization, or minutes data at the corresponding step.
+Run these commands from the repository root in one Terminal session on the
+Sprint 2 Mac. They use real local models and public, natural audio; they do
+not inject answers. The AMI English meeting has a documented weak headset.
+The Polish source is a ten-minute excerpt of an actual Sejm committee
+meeting with multiple speakers. The AMI and Sejm audio, model weights, and
+generated records live under `/private/tmp`, outside Git. The [AMI fixture
+record](ami_es2002a_fixture.md) and [Polish meeting source
+record](polish_sejm_meeting_fixture.md) give provenance. The
+[benchmark](ami_asr_benchmark.md) gives reference-based English and separate
+single-speaker language scores; a defensible whole-clip Polish meeting WER
+is not yet available. Xcode and Metal Toolchain are needed for the optional
+MLX minutes step. The corrected meeting walkthrough ran on this Mac on
+2026-10-02.
+
+The following preflight shows the concrete files used below. On this Sprint
+2 Mac they are already staged. If any path is missing, stage the AMI mix from
+its [approved source](ami_es2002a_fixture.md), stage the Polish meeting from
+the [official source](polish_sejm_meeting_fixture.md), and use the Fluid
+helper's `--download-models` and `--download-diarizer-models` commands before
+continuing. The MLX Qwen model and compiled `mlx.metallib` were staged
+separately as described in [Build, test, and environment](#build-test-and-environment);
+they are not installed by the normal package build. This is a packaging gap
+for a fresh Mac.
 
 ~~~bash
-record_id="$(swift run meeting-summarizer transcribe tests/fixtures/synthetic_meeting.wav --transcriber fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo)"
-printf 'Record: %s\n' "$record_id"
-swift run meeting-summarizer recognize "$record_id" --diarizer fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
-swift run meeting-summarizer recognize name "$record_id" speaker_2 Ada --store /private/tmp/meeting-sprint2-demo
-swift run meeting-summarizer recognize move "$record_id" turn_1 speaker_2 --store /private/tmp/meeting-sprint2-demo
-swift run meeting-summarizer summarize "$record_id" --summarizer mlx --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
+ls -lh /private/tmp/meeting-minutes-ami/ES2002a/ES2002a.Mix-Headset.wav /private/tmp/meeting-minutes-ami/ES2002a/ES2002a.Headset.120s.wav /private/tmp/meeting-polish-gor-20241016-10min.wav
+ls -ld /private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v2 /private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3 /private/tmp/meeting-minutes-models/offline-diarizer/speaker-diarization /private/tmp/meeting-minutes-models/qwen3-4b-instruct-2507-4bit
+ls -l experiments/FluidAdapter/.build/release/meeting-fluid-asr experiments/MinutesAdapter/.build/out/Products/Release/meeting-mlx-minutes experiments/MinutesAdapter/.build/out/Products/Release/mlx.metallib
 ~~~
 
-Recognize and summarize may each be skipped. To check transcript-only operation, stop after the first command; reviewItems is then empty. To generate minutes without recognizing speakers, run summarize directly after transcribe; the summary retains neutral or unknown labels. The name and move commands are chair corrections, not automatic voice identity discovery. Fluid's diarizer detects anonymous voices only.
-
-Immediately after the commands, print a concise human view of the saved JSON. This is the requested cat/jq result after CLI use:
-
-~~~bash
-cat "/private/tmp/meeting-sprint2-demo/$record_id.json" | jq -r '
-  "Meeting: \(.id)",
-  "Source: \(.sourcePath)",
-  "Backend: \(.backend) (\(.modelRevision))",
-  "Speaker names: \(.speakerNames | to_entries | map("\(.key)=\(.value)") | join(", "))",
-  "",
-  "Transcript:",
-  (.segments[] | "  [\(.range.startSeconds)-\(.range.endSeconds)s] \(.speakerID // "unknown"): \(.text)"),
-  "",
-  "Minutes and review:",
-  (.reviewItems[] | "  \(.kind): \(.text) [source: \(.sourceSegmentIDs | join(", "))]" +
-    (if .ownerSpeakerID then " [owner: \(.ownerSpeakerID)]" else "" end))
-'
-~~~
-
-In the verified flow, the result has five timed turns and four review items: one summary, the turn_3 decision, the turn_4 action owned by speaker_2, and the turn_5 open question. speakerNames maps speaker_2 to Ada. The move makes turn_1 belong to speaker_2. A new UUID is generated each time, so use the shell variable rather than a UUID copied from this document.
-
-For real Fluid transcription, --settings must point to a JSON file with fluidExecutable and fluidModelDirectory. Real recognition also needs fluidDiarizerExecutable and fluidDiarizerModelDirectory. Real MLX summary needs mlxExecutable and mlxModelDirectory and a compiled mlx.metallib beside the executable. A whisper run needs whisperExecutable and whisperModelPath and selects --transcriber whisper. All paths refer to local executable or model files. For example, after staging them:
+Create settings for the English AMI and Polish Sejm meetings, speaker labeling,
+and minutes. These are real executable and model paths on this Mac. The
+English AMI run selects the Parakeet v2 model used for the AMI benchmark;
+Polish selects multilingual Parakeet v3. Keep the same `store_dir` and shell
+session for all steps.
 
 ~~~bash
-record_id="$(swift run meeting-summarizer transcribe /absolute/path/to/meeting.wav --transcriber fluid --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store)"
-swift run meeting-summarizer recognize "$record_id" --diarizer fluid --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store
-swift run meeting-summarizer summarize "$record_id" --summarizer mlx --settings /absolute/path/to/settings.json --store /private/tmp/meeting-real-store
-cat "/private/tmp/meeting-real-store/$record_id.json" | jq '{id, segments: (.segments | length), qualityWarnings, reviewItems, processingParameters}'
-~~~
-
-The AMI benchmark is evidence of model behavior on one approved meeting, not a promise that natural minutes are accurate. Inspect each derived item against its cited source before using it.
-
-For the new language control, this is the exact shape of a real Polish
-transcription using the staged v3 model. Write the JSON settings file once,
-then run the CLI and inspect the saved transcript and provenance:
-
-~~~bash
-cat > /private/tmp/meeting-fr11-fluid-settings.json <<'JSON'
-{"transcriber":"fluid","fluidModelDirectory":"/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3","fluidModelVersion":"v3","fluidExecutable":"/Users/rstyczynski/projects/meeting_minutes/experiments/FluidAdapter/.build/release/meeting-fluid-asr"}
+project_root="$(pwd)"
+store_dir=/private/tmp/meeting-owner-demo
+mkdir -p "$store_dir"
+cat > /private/tmp/meeting-owner-english-settings.json <<JSON
+{"transcriber":"fluid","fluidModelDirectory":"/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v2","fluidModelVersion":"v2","fluidExecutable":"$project_root/experiments/FluidAdapter/.build/release/meeting-fluid-asr","fluidDiarizerModelDirectory":"/private/tmp/meeting-minutes-models/offline-diarizer/speaker-diarization","fluidDiarizerExecutable":"$project_root/experiments/FluidAdapter/.build/release/meeting-fluid-asr","mlxModelDirectory":"/private/tmp/meeting-minutes-models/qwen3-4b-instruct-2507-4bit","mlxExecutable":"$project_root/experiments/MinutesAdapter/.build/out/Products/Release/meeting-mlx-minutes"}
 JSON
-record_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-fr11-fleurs/pl_pl_0001.wav --transcriber fluid --language pl --settings /private/tmp/meeting-fr11-fluid-settings.json --store /private/tmp/meeting-fr11-demo)"
-cat "/private/tmp/meeting-fr11-demo/$record_id.json" | jq -r '"Requested: \(.processingParameters.requestedLanguage)", "Model: \(.modelRevision)", "Transcript:", (.segments[].text)'
+cat > /private/tmp/meeting-owner-polish-settings.json <<JSON
+{"transcriber":"fluid","fluidModelDirectory":"/private/tmp/meeting-minutes-models/parakeet-tdt-0.6b-v3","fluidModelVersion":"v3","fluidExecutable":"$project_root/experiments/FluidAdapter/.build/release/meeting-fluid-asr","fluidDiarizerModelDirectory":"/private/tmp/meeting-minutes-models/offline-diarizer/speaker-diarization","fluidDiarizerExecutable":"$project_root/experiments/FluidAdapter/.build/release/meeting-fluid-asr","mlxModelDirectory":"/private/tmp/meeting-minutes-models/qwen3-4b-instruct-2507-4bit","mlxExecutable":"$project_root/experiments/MinutesAdapter/.build/out/Products/Release/meeting-mlx-minutes"}
+JSON
+jq -e . /private/tmp/meeting-owner-english-settings.json /private/tmp/meeting-owner-polish-settings.json
 ~~~
 
-The expected transcript begins “Jakiekolwiek korekty lub żądania” and the
-record says `Requested: pl` and `Model: parakeet-tdt-0.6b-v3`. The tested
-Whisper alternative uses `--transcriber whisper`, a settings file with
-`whisperModelPath` and `whisperExecutable` set to the staged paths above,
-and `whisperUseGPU: false` on this Mac. `--language en` selects English;
-omitting the option defaults to English. `--language auto` requests automatic
-selection, but it failed the exploratory within-recording language switch.
+### 1. Transcribe English and Polish
+
+The first command transcribes the full AMI headset mix. The second
+transcribes the Polish committee excerpt. Each prints a new record UUID to stdout;
+SwiftPM may print build warnings to stderr. The `jq` views read the saved
+records, so the Product Owner can inspect output without opening raw logs.
+
+~~~bash
+english_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-minutes-ami/ES2002a/ES2002a.Mix-Headset.wav --transcriber fluid --language en --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir")"
+polish_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-polish-gor-20241016-10min.wav --transcriber fluid --language pl --settings /private/tmp/meeting-owner-polish-settings.json --store "$store_dir")"
+printf 'English record: %s\nPolish record: %s\n' "$english_id" "$polish_id"
+cat "$store_dir/$english_id.json" | jq -r '"English: \(.segments|length) timed segments; model \(.modelRevision); requested \(.processingParameters.requestedLanguage)", ([.segments[:12][].text] | join(" "))'
+cat "$store_dir/$polish_id.json" | jq -r '"Polish: \(.segments|length) timed segments; model \(.modelRevision); requested \(.processingParameters.requestedLanguage)", ([.segments[:120][].text] | join(" "))'
+~~~
+
+The verified runs saved 2,576 English timed segments with model
+`parakeet-tdt-0.6b-v2` and 802 Polish meeting segments with
+`parakeet-tdt-0.6b-v3`. The Polish output includes the chair discussing the
+meeting's time limit and opening the Commission sitting. Its source is a real
+multi-person meeting; the official PDF identifies the chair and other
+speakers. The English transcript has recognition errors; compare it with
+the [AMI benchmark](ami_asr_benchmark.md) rather than treating a nonempty
+transcript as an accuracy pass. The Polish written record is edited and not
+time aligned, so this run has no whole-clip WER. `--language auto` is available, but the
+exploratory English-to-Polish splice lost its English portion.
+
+### 2. Inspect low-quality audio warnings and speaker labels
+
+Run local diarization on both meeting records. It assigns anonymous IDs
+and saves warning ranges in the same JSON. On AMI the first warning links
+to source audio near 19.3 seconds. A warning is a review cue, not an
+automatic repair.
+
+~~~bash
+swift run meeting-summarizer recognize "$english_id" --diarizer fluid --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
+cat "$store_dir/$english_id.json" | jq -r '"Speaker IDs: \([.segments[].speakerID // "unknown"] | unique | join(", "))", "Warning ranges: \(.qualityWarnings|length)", (.qualityWarnings[:5][] | "  [\(.range.startSeconds|floor)-\(.range.endSeconds|floor)s] \(.speakerID // "unknown"): \(.reason)")'
+swift run meeting-summarizer recognize "$polish_id" --diarizer fluid --settings /private/tmp/meeting-owner-polish-settings.json --store "$store_dir"
+cat "$store_dir/$polish_id.json" | jq -r '"Polish speaker IDs: \([.segments[].speakerID // empty] | unique | join(", "))", "Polish warning ranges: \(.qualityWarnings|length)"'
+~~~
+
+The verified run produced `S1`, `S2`, and `S3` and 16 low-speech-level
+warnings for `S3`. The first begins at 19.32 seconds. AMI has four
+annotated participants; this diarizer merged the weak-headset participant
+with another person. The warning catches much of the affected speech but
+also includes another speaker. Do not assign a real person's name to `S3`
+from this result alone. The [benchmark's speaker analysis](ami_asr_benchmark.md#speaker-attribution-experiment)
+quantifies the merge and warning spillover.
+
+The Polish meeting run produced S1, S2, and S3 and zero weak-audio warnings.
+The official sitting record names the chair, a minister, and a later
+presenter; their turns align broadly with the three cluster starts at 108,
+222, and 582 seconds. This is evidence of multiple voices and a functioning
+labeling path, not a scored diarization-accuracy result.
+
+The optional [review player](../../Sources/MeetingReview/main.swift) can
+open this saved record by UUID and let the chair select a warning or
+transcript range to hear the original local audio. Playback starts only
+when a row is selected. It was manually opened and sought to the 19.3-second
+warning earlier in the sprint; bounded playback after the latest player
+change has not been manually replayed.
+
+### 3. Assign a name after listening
+
+`recognize name` stores a chair-entered name for an existing anonymous ID.
+The following label is deliberately a demonstration, not the identity of
+an AMI participant. Replace it with a verified name when reviewing a real
+meeting. The command persists the mapping in the same record. `recognize
+move` can correct a transcript segment assigned to the wrong speaker.
+For the Polish record, the official sitting record supports identifying
+the chair on the opening S1 turn. It does not verify every segment in S1.
+The Product Owner handover therefore keeps that entire cluster anonymous.
+
+~~~bash
+swift run meeting-summarizer recognize name "$english_id" S2 'Ada (demonstration alias)' --store "$store_dir"
+cat "$store_dir/$english_id.json" | jq -r '"Speaker names:", (.speakerNames | to_entries[] | "  \(.key) = \(.value)")'
+cat "$store_dir/$polish_id.json" | jq -r '"Polish named speakers: \(.speakerNames|length)"'
+~~~
+
+The demonstration alias was saved on AMI; the Polish meeting retains neutral
+speaker IDs. An earlier rehearsal assigned `S1 = Ryszard Petru` to the Sejm
+record based on the official opening turn, but that applied the name to
+unverified S1 segments too and is not part of this handover sequence.
+The alias is not carried into the separate minutes input. Neither command
+automatically identifies anyone by voice. The [SRS](../../docs/srs.md)
+records automatic identity suggestions as a later capability, not this
+prototype's current result.
+
+### 4. Generate and inspect minutes
+
+This step uses the 120-second AMI excerpt because it is the natural-audio
+sample on which the local MLX minutes adapter was exercised. It makes a new
+record, labels speakers, keeps names neutral, and runs the local Qwen model.
+`summarize` is optional; it can also run without `recognize`. The approved
+response gate now rejects malformed, unsupported, or uncited output after
+two repair attempts, preserving the transcript and saving no draft minutes.
+That is the expected outcome of the current 4B experiment, rather than a
+successful minutes demonstration. The full 20-minute meeting has not been
+validated for minutes quality.
+
+~~~bash
+short_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-minutes-ami/ES2002a/ES2002a.Headset.120s.wav --transcriber fluid --language en --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir")"
+swift run meeting-summarizer recognize "$short_id" --diarizer fluid --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
+swift run meeting-summarizer summarize "$short_id" --summarizer mlx --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
+cat "$store_dir/$short_id.json" | jq -r '"Transcript retained: \(.segments|length) segments", "Draft items: \(.reviewItems|length)", "Minutes source: \(.processingParameters.minutesSource // "none")"'
+~~~
+
+The current 4B trial returned a validation error and retained the saved
+transcript with zero draft items. In the earlier `minutes-v2` no-name
+rehearsal, the model saved three review items with
+`minutesSource: local-model`: a summary and two open questions. One question
+expands the source's “this thing” to a remote-control system without support
+from its cited 14.8–16.8 second range; the second adds an inferred reference
+to a previous task. The summary has no source IDs. This is a
+**content-quality failure** despite successful local inference. An earlier
+named rehearsal saved six items and repeated the invented Ada alias; that
+output is historical evidence of why demonstration aliases must not be fed
+into minutes. The
+[benchmark's minutes analysis](ami_asr_benchmark.md) explains the earlier
+natural-audio failure and why Sprint 3 must revisit the model and prompt
+before meeting minutes can be trusted.
+
+The initial `summarize` attempt on the ten-minute Polish Sejm record failed:
+the model cited speaker label `S1` as if it were a source segment ID. The
+strict validator rejected it and saved no minutes. The MLX adapter now
+separates `SOURCE_ID` from `SPEAKER` in its prompt and makes at most two
+technical repair attempts. The core also omits an action owner unless that
+speaker appears in the item's cited segments. A historical `minutes-v2`
+rerun exited 0 and saved four draft items; the active evidence-first gate
+rejects the 4B candidate's incompletely cited decision quote. Run this
+command after the preceding steps to observe the current result:
+
+~~~bash
+swift run meeting-summarizer summarize "$polish_id" --summarizer mlx --settings /private/tmp/meeting-owner-polish-settings.json --store "$store_dir"
+jq -r '"Polish transcript: \(.segments|length) segments", "Polish draft items: \(.reviewItems|length)"' "$store_dir/$polish_id.json"
+~~~
+
+The earlier draft's decision that the commission positively opined on the budget section is
+supported by the cited 540–546 second turn. The action incorrectly treats a
+request to present the next budget as a future task, and the open question
+was not asked in its cited 380–387 second source range. The summary has no
+source citations. Thus the structural error is fixed, but the generated
+minutes still fail content review and must not be published. This is a
+blocking quality issue for the Product Owner's delivery decision.
+
+The [Polish fixture record](polish_sejm_meeting_fixture.md) and
+[functional test record](sprint_2_tests.md#polish-multi-person-meeting-correction--2026-10-02)
+retain the source and failure evidence.
+
+### Longer English meeting input
+
+The structural repair and the still-open content and long-input minutes
+defects are registered in [Sprint 2 bugs](sprint_2_bugs.md). Passing CLI or
+gate runs does not close the two open defects.
+
+The Product Owner requested a longer English public meeting comparable to
+the Sejm source. A 30-minute excerpt of the [U.S. Department of Energy
+ITIAC Day 2 meeting](doe_itiac_day2_fixture.md) is staged at
+`/private/tmp/meeting-doe-itiac-day2-30min.wav`. Its official page has a
+speaker-labeled transcript; the audio and transcript are not bundled in
+Git. The direct CLI `transcribe` command used `--language en`, the existing
+English settings, and store `/private/tmp/meeting-doe-itiac-sprint2`.
+It created record `36237678-66EB-456D-897A-4687BF33F390` with 4,216
+timed Parakeet v2 segments. A direct `recognize --diarizer fluid` on that
+record saved eight anonymous IDs. The first S1, S3, and S5 turns align
+with named speakers in the official transcript. This does not establish
+whole-cluster attribution accuracy. The following view ran on the saved
+record:
+
+~~~bash
+jq -r '"DOE English: \(.segments|length) timed segments; model \(.modelRevision)", "Speaker IDs: \([.segments[].speakerID // empty]|unique|join(", "))", "Warning ranges: \(.qualityWarnings|length)", "Review items: \(.reviewItems|length)"' /private/tmp/meeting-doe-itiac-sprint2/36237678-66EB-456D-897A-4687BF33F390.json
+~~~
+
+It prints 4,216 segments, eight IDs `S1` through `S8`, zero weak-audio
+warnings, and zero review items. A local Qwen3-4B MLX `summarize` attempt
+on the entire 30 minutes returned status 2 because the model response
+could not be parsed. A separate, identical saved transcript with staged
+Qwen2.5-7B also returned status 2 on structured output. Both records
+preserved the transcript and labels. The [test record](sprint_2_tests.md#doe-30-minute-english-meeting-and-second-minutes-model--2026-10-02)
+and [benchmark](ami_asr_benchmark.md#polish-meeting-minutes-quality-check)
+give the source, exact errors, comparison basis, and limits.
+
+### Other delivered prototype behavior
+
+The CLI saves timed transcripts, model and language provenance, anonymous
+speaker IDs, chair-assigned names, segment corrections, quality-warning
+ranges, and cited review items in local JSON. `transcribe`, `recognize`, and
+`summarize` are separate commands; the latter two are optional. The review
+player reads the same record and can seek to transcript, warning, and source
+ranges. FluidAudio and whisper.cpp ASR adapters are configurable. The staged
+models ran without network access during inference. The prototype does not
+yet provide reliable speaker identity, automatic audio repair, dependable
+natural-meeting minutes, or verified mixed-language switching. The
+[functional test record](sprint_2_tests.md) contains the synthetic CLI
+contract checks and the six-gate regression evidence.
 
 A missing local WAV gives a clear error and does not create a record:
 
 ~~~bash
-swift run meeting-summarizer transcribe tests/fixtures/no-such-meeting.wav --transcriber fluid --fixture-reference tests/fixtures/synthetic_meeting_reference.json --store /private/tmp/meeting-sprint2-demo
+swift run meeting-summarizer transcribe tests/fixtures/no-such-meeting.wav --transcriber fluid --store "$store_dir"
 printf 'status=%s\n' "$?"
 ~~~
 
-The command prints Media file does not exist to stderr and exits with status 2. SwiftPM may print build progress first. The review app accepts a record UUID and the same store path; it was manually checked, but the real AMI audio preview was deliberately closed after playback became disruptive.
+This verified command printed `Media file does not exist` to stderr and
+returned status 2. SwiftPM may print build progress first.
 
 ## Remaining limitations and next checks
 
-The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. FR-11 adds a small paired read-speech check, but lacks referenced Polish meeting audio and verified speaker IDs. Its `auto` setting is unsuitable for an in-recording language switch in the exploratory check, and the multilingual Whisper Metal path failed on this host. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each child and benchmark increment and the reopened PBI-011 parent; architecture interpretation belongs to Sprint 3. No remote push has been made.
+The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. FR-11 adds a small paired read-speech check. A later real Polish Sejm excerpt has an official PDF reference: its [passage-level comparison](tests/polish_sejm_pdf_transcription_review_20261002.md) finds recognizable turns and decision content, with word, name, acronym, and numeric-unit errors. It does not provide a whole-excerpt WER or verified speaker IDs. The `auto` setting is unsuitable for an in-recording language switch in the exploratory check, and the multilingual Whisper Metal path failed on this host. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each child and benchmark increment and the reopened PBI-011 parent; architecture interpretation belongs to Sprint 3. No remote push has been made.
+
+## Model prompt ledger and response gate — 2026-10-02
+
+The response gate applies these checks in order before a minutes result can
+reach another product step:
+
+1. **Input bound.** The saved transcript must be nonempty and no longer
+   than the prototype's 600-second minutes limit. The model is not called
+   when this check fails.
+2. **Technical response shape.** The model text must be a complete JSON
+   object with a cited summary object, arrays for decisions/actions/open
+   questions, nonempty text, and one or two source IDs per item. Item counts
+   are bounded. Malformed or oversized responses are not saved.
+3. **Source integrity.** Each ID must exist in the model-facing transcript,
+   and each quotation must appear exactly in its cited chunks. After chunk
+   expansion, the core checks persisted segment IDs and time ranges again.
+4. **Meaning and identity.** Conservative rules reject a purported
+   decision without explicit agreement language, an action without a future
+   commitment, or a question absent from its cited words. An owner is
+   retained only when its speaker ID occurs in the cited segments. These
+   rules are safeguards, not proof that the transcript is correct.
+5. **Failure boundary.** A technical error gets at most two specific
+   repair prompts and full revalidation. Remaining errors leave the last
+   valid local record intact. Unsupported content is withheld from
+   `reviewItems` and counted for the operator; it cannot silently feed a
+   later product stage.
+
+The first four checks are implemented for Sprint 2 minutes. NFR-06 in the
+[SRS](../../docs/srs.md#nfr-06--validate-model-responses-before-downstream-use)
+sets the same boundary for future model-backed capabilities. Human audio
+review is still required before a draft becomes participant-facing minutes.
+
+The local minutes experiments use `ChatSession` with the staged Qwen model,
+`maxTokens: 1024`, and `temperature: 0`. Temperature zero reduces sampling
+variation but does not make a model's words or schema dependable. FluidAudio
+ASR, whisper.cpp ASR, and Fluid diarization receive configuration and
+language hints, not free-text prompts. The MLX minutes adapter is the only
+product path in this sprint that sends the text prompts below. The 4B and
+7B candidate runs use the same prompt template; the model directory differs.
+
+For the active `minutes-v3-evidence` revision, the system instruction sent
+to `ChatSession` is exactly:
+
+~~~text
+Select short, exact transcript quotations for a source-grounded draft.
+Return one JSON object with keys summary (object), decisions (array),
+actions (array), and open_questions (array). Every object must have
+text (a verbatim contiguous quotation from the cited transcript)
+and source_ids (one or two exact SOURCE_ID values). Never paraphrase.
+A SPEAKER value such as S1 is never a SOURCE_ID. For example,
+cite source_12 as ["source_12"], never ["S1"]. If a claim has no
+exact source, omit the claim.
+An action may have owner_speaker_id (canonical speaker ID, not a name) only
+if the cited text explicitly states the owner. Use supplied speaker names
+only where available. Do not invent facts, people, owners, dates, or source
+IDs. Return at most one decision, one action, and one open question.
+Keep every quotation short, ideally under 25 words. An introduction, an agenda,
+a request for someone to speak, or a transition to the next topic is not
+a decision or an action. A decision needs an explicit acceptance,
+rejection, vote, or no-objection conclusion. An action needs an explicit
+future commitment, not a request made during this meeting. Include an
+open question only when a speaker actually asked it and it remained
+unanswered; do not invent questions from agenda topics. If evidence is
+absent or uncertain, return empty arrays. The summary must be a
+short, verbatim quotation from one source chunk, with its source_id.
+Do not explain or infer what the quotation means.
+Use this exact JSON shape, replacing the example words and IDs:
+{"summary":{"text":"exact quote","source_ids":["source_1"]},
+"decisions":[{"text":"exact quote","source_ids":["source_2"]}],
+"actions":[],"open_questions":[]}
+Never put SOURCE_ID inside text. A quote spanning two source chunks
+must cite both IDs in source_ids.
+Return JSON only, without Markdown fences.
+~~~
+
+The first user message to the model is the complete bounded transcript.
+Each model-facing chunk is a separate line using this exact format, with
+actual values substituted from the saved record:
+
+~~~text
+SOURCE_ID=<source ID> | SPEAKER=<anonymous ID or anonymous ID / chair name> | TIME=<start>-<end>s | TEXT=<verbatim ASR words in this chunk>
+~~~
+
+The adapter groups up to 16 adjacent word segments from the same anonymous
+speaker and at most eight seconds per chunk. A transcript with 40 or fewer
+segments uses its persisted IDs directly. The active prototype rejects
+minutes input longer than 600 seconds before sending this message.
+
+After every response, the adapter checks complete JSON, object/array
+shape, nonempty text, one or two existing source IDs, at most one candidate
+of each type, and exact quotation containment in the cited chunks. If a
+check fails, it sends this repair prompt, substituting the current Boolean,
+invalid IDs, quote errors, and available IDs:
+
+~~~text
+Your previous response failed technical validation.
+JSON/schema valid: <true or false>. Invalid source IDs:
+<invalid IDs>. Quote/citation errors:
+<errors>. Rewrite it as valid JSON
+in this exact shape:
+{"summary":{"text":"verbatim quote","source_ids":["source_1"]},
+"decisions":[],"actions":[],"open_questions":[]}
+Each array item must be an object with text and source_ids, never
+a string. Put IDs in source_ids, never inside text. Cite every
+source chunk needed for the full verbatim quote, using at most
+two source_ids. Shorten a quotation if it spans more chunks.
+Available IDs: <all model-facing source IDs>.
+Omit unsupported items. Return only the JSON object.
+~~~
+
+The adapter sends at most two repair prompts. It validates each response
+again; a third invalid response exits with a specific error and preserves
+the prior meeting record. `MeetingCore` then independently expands
+model-facing chunk IDs to persisted transcript IDs, checks quotation and
+item-type support, and withholds unsupported candidates. A structurally
+valid answer is therefore still not automatically a sound set of minutes.
+The [response-gate tests](../../experiments/MinutesAdapter/Tests/MeetingMLXMinutesTests/ResponseValidationTests.swift)
+use controlled malformed inputs, while the [real-model test record](sprint_2_tests.md)
+reports how the two Qwen candidates behaved.
+
+The earlier `minutes-v2` system instruction, used for the saved Sejm and
+DOE experiments and some later AMI checks, was exactly:
+
+~~~text
+Produce meeting minutes from only the provided transcript. Return a JSON object
+with keys summary (string), decisions (array), actions (array), and
+open_questions (array). Each decision, action, and open question must have
+text (string) and source_ids (array of exact SOURCE_ID values).
+A SPEAKER value such as S1 is never a SOURCE_ID. For example,
+cite source_12 as ["source_12"], never ["S1"]. If a claim has no
+exact source, omit the claim.
+An action may have owner_speaker_id (canonical speaker ID, not a name) only
+if the cited text explicitly states the owner. Use supplied speaker names
+only where available. Do not invent facts, people, owners, dates, or source
+IDs. Cite at most three exact source IDs for each item. Return at most two
+decisions, two actions, and two open questions. An introduction, an agenda,
+a request for someone to speak, or a transition to the next topic is not
+a decision or an action. A decision needs an explicit acceptance,
+rejection, vote, or no-objection conclusion. An action needs an explicit
+future commitment, not a request made during this meeting. Include an
+open question only when a speaker actually asked it and it remained
+unanswered; do not invent questions from agenda topics. If evidence is
+absent or uncertain, return empty arrays. Keep the summary to two sentences.
+Return JSON only, without Markdown fences.
+~~~
+
+Its first user message used the same `SOURCE_ID=... | SPEAKER=... |
+TIME=... | TEXT=...` line format as v3. When a response cited an invalid
+source ID, v2 sent this exact repair template with values substituted:
+
+~~~text
+Your JSON used invalid source_ids: <invalid IDs>.
+Those are speaker labels or invented IDs, not SOURCE_ID values.
+Rewrite the entire JSON using only these exact SOURCE_ID values:
+<all model-facing source IDs>
+Omit any decision, action, or question that cannot be supported
+by one of those IDs. Keep the same JSON schema. Return JSON only.
+~~~
+
+The original `minutes-v1` prompt preceded source-chunk IDs. Its exact
+system instruction was:
+
+~~~text
+Produce meeting minutes from only the provided transcript. Return a JSON object
+with keys summary (string), decisions (array), actions (array), and
+open_questions (array). Each decision, action, and open question must have
+text (string) and source_ids (array of exact input segment IDs).
+An action may have owner_speaker_id (canonical speaker ID, not a name) only
+if the cited text explicitly states the owner. Use supplied speaker names
+only where available. Do not invent facts, people, owners, dates, or source
+IDs. Cite at most three exact source IDs for each item. Return at most two
+decisions, two actions, and two open questions. An introduction, an agenda,
+or a proposed goal is not a decision or an action. If evidence is absent,
+return empty arrays. Keep the summary to two sentences.
+Return JSON only, without Markdown fences.
+~~~
+
+Its first user message used one line per input segment in this exact
+format, with values substituted:
+
+~~~text
+<segment ID> [<anonymous ID or anonymous ID / chair name>, <start>-<end>s]: <verbatim ASR words>
+~~~
+
+V1 had no repair prompt. No ASR or diarization text prompts were used.
+These historical prompt templates explain the observed failures; they are
+not the current product contract.

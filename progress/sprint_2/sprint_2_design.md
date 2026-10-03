@@ -12,6 +12,132 @@ The Product Owner then added FR-11 English and Polish transcription to the
 active sprint and approved its design amendment on 2026-10-01. The earlier
 accepted design and completed English measurements remain historical evidence.
 
+## Approved minutes-quality recovery amendment — 2026-10-02
+
+**Scope:** PBI-011.5, BUG-2 and BUG-3. The Product Owner approved this
+evidence-first design on 2026-10-02. It retains the
+accepted separate `summarize` command and local MLX adapter. The [new failure
+diagnostic](tests/doe_minutes_failure_diagnosis_20261002.md) establishes
+truncated 4B JSON on the 30-minute DOE input, while the [fresh Sejm and AMI
+records](sprint_2_tests.md#product-owner-presentation-rehearsal--2026-10-02)
+show that valid JSON can still contain unsupported minutes claims.
+
+The design changes `summarize` from free-form generated assertions to
+evidence-first draft selection. The model proposes an item type and exact
+source IDs, plus a short source quotation. The core resolves the IDs to
+saved transcript segments and accepts the item only when the quotation is
+an exact normalized substring of the cited text. The saved review text is
+the transcript quotation, not a model paraphrase. Each item retains the
+source IDs and time range. An uncited summary is never saved as a review
+item; the operator instead sees selected source excerpts with citations.
+The output is explicitly a **draft for human review**, not a claim that
+the transcript or classification is correct.
+
+### Model-response validation gate
+
+Every LLM response crosses a gate before another product step can save or
+use it. The adapter checks for one complete JSON object, required fields
+and types, bounded item and citation counts, existing source IDs, and
+verbatim quotations within the cited chunks. A technical failure produces
+a repair prompt naming the failed checks and the required schema. The next
+response is validated again. At most two repair prompts are sent; a third
+invalid response causes an explicit error and leaves the prior record
+unchanged.
+
+The core independently validates expanded persisted segment IDs, source
+ranges, quotation containment, and conservative item-type signals. It
+withholds unsupported candidates even when the model's JSON is valid.
+Nothing advances to saved `reviewItems` or a later product stage merely
+because a response looks plausible. The operator sees retained cited
+drafts, a withheld-candidate count, or an explicit failure. The original
+audio still needs human review because transcript words and semantic type
+checks can be wrong.
+
+The Sprint 2 demonstration will show an invalid response being rejected
+or repaired, a supported source-linked Sejm decision if the real model
+produces one, and an unsupported action or question withheld. A clean
+transcript with no dependable summary remains a visible limitation.
+
+The first conservative type checks are intentionally asymmetric. A
+`decision` candidate must include explicit acceptance, rejection, vote,
+or no-objection language in its cited quotation. An `action` must include
+an explicit future commitment by a named or neutral participant, not an
+invitation to present the next topic. An `openQuestion` must quote an
+actual interrogative turn and must not be generated from a statement.
+Candidates that do not meet those checks are withheld and counted in a
+diagnostic result. The operator can still inspect the transcript; absence
+of an item does not assert that no decision, action, or question occurred.
+The implementation will keep the original record unchanged if generation
+or validation fails. No silent fallback to the old free-form items is
+permitted.
+
+To bound the proven output-size risk, the first supported adapter invocation
+will reject a transcript longer than ten minutes with an explicit
+`minutes input exceeds prototype limit` error before model invocation. Ten
+minutes is the longest real meeting input for which this sprint obtained
+structured output, not a demonstrated quality threshold. The existing
+30-minute DOE record must then return that explicit error and preserve its
+transcript; it must not produce empty minutes while appearing successful.
+Reliable windowed long-meeting generation remains a separate architecture
+experiment. The adapter will retain a bounded diagnostic copy of malformed
+response text under the sprint test store during experiments, with source
+media and model paths recorded. Product records will not contain raw model
+debug text. For a release design, diagnostic retention and privacy need a
+separate decision.
+
+The implementation candidate is a small new evidence validator in
+`MeetingCore` plus a narrower MLX response schema in
+`MeetingMLXMinutes`. `MeetingCore` expands model chunk IDs to persisted
+segment IDs, validates quotation containment and type signals, then writes
+only accepted draft items atomically. The adapter limits candidate count,
+response size, and source IDs; the core's deterministic checks remain the
+authority when the model ignores instructions. Existing fixture-derived
+contract behavior remains separate from real-model evaluation. The direct
+debug-binary launch difference is contained by the documented `swift run`
+path; the proposal does not assert a Metal or sandbox root cause.
+
+The proposed acceptance evidence is a clean-store run on the existing AMI
+and Sejm audio through the exact manual commands. The Sejm positive-opinion
+turn must be retained as a cited, inspectable decision. The unsupported
+Sejm action and invented question, and the AMI remote-control and inferred
+setup questions, must be withheld. Every saved item must quote its cited
+transcript text and lead to the correct range in the record. The 30-minute
+DOE record must receive the explicit size-limit error without losing ASR or
+speaker data. A focused unit set will check exact quotation containment,
+unknown IDs, false type signals, output preservation, and the ten-minute
+boundary; an integration check will exercise `summarize` through the CLI.
+After those pass, the six Sprint gates and a fresh real-model rehearsal
+must be recorded. The source-grounded output will still require Product
+Owner inspection of the audio and transcript before handover acceptance.
+
+This amendment changes the meaning of generated minutes. Its strict checks can omit legitimate
+items, particularly when ASR wording or punctuation is poor. If the Product
+Owner prefers broad abstractive minutes, that is a different quality-risk
+decision and should be made explicitly rather than inferred from a passing
+JSON schema check.
+
+### Recovery test specification
+
+**UT-11** tests quotation containment, exact source resolution, and
+type-specific rejection for decisions, actions, and questions on small
+English and Polish segment sequences. It asserts that a false question
+from a statement and an invitation to present are withheld, while an
+explicit positive-opinion turn is retained. **UT-12** tests the ten-minute
+boundary and atomic preservation of an existing record when minutes input
+is rejected. **IT-11** runs the separate CLI `summarize` operation against
+a fixture adapter response with exact citations and verifies persisted
+source ranges and neutral labels; malformed or unsupported output must
+leave the prior record usable. The existing real AMI, Sejm, and DOE inputs
+remain the model-quality experiments, not synthetic test substitutes.
+The Sprint 2 A1–A3 and B1–B3 gates are rerun after implementation.
+**UT-13** injects malformed JSON, missing fields, unknown IDs, excessive
+citations, and a quote mismatched to its cited text into the response gate.
+It checks specific reasons, a bounded repair attempt, and final rejection.
+**IT-12** checks that final model-validation failure leaves an existing
+transcript and speaker labels unchanged. Controlled adapter responses
+trigger these cases; test results do not depend on a model misbehaving on
+command.
+
 ## Approved FR-11 amendment — PBI-011.6 bilingual transcription
 
 Status: accepted by the Product Owner on 2026-10-01. PBI-011.6 is a

@@ -31,6 +31,10 @@ public struct MLXProcessMinutesGenerator: MinutesGenerating {
             throw MeetingError.missingModel("mlx")
         }
         guard !segments.isEmpty else { throw MeetingError.adapterFailure("No transcript segments") }
+        let duration = segments.map(\.range.endSeconds).max()! - segments.map(\.range.startSeconds).min()!
+        guard duration <= 600 else {
+            throw MeetingError.adapterFailure("minutes input exceeds prototype limit (600 seconds)")
+        }
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent("meeting-minutes-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -75,29 +79,79 @@ public struct MLXProcessMinutesGenerator: MinutesGenerating {
         let cleaned = content.hasPrefix("```json")
             ? String(content.dropFirst(7).dropLast(content.hasSuffix("```") ? 3 : 0))
             : content
-        let parsed = try JSONDecoder().decode(ModelMinutes.self, from: Data(cleaned.utf8))
-        guard !parsed.summary.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            throw MeetingError.adapterFailure("Minutes summary is empty")
+        let parsed: ModelMinutes
+        do {
+            parsed = try JSONDecoder().decode(ModelMinutes.self, from: Data(cleaned.utf8))
+        } catch {
+            if let directory = ProcessInfo.processInfo.environment["MEETING_MINUTES_DIAGNOSTICS_DIR"] {
+                let url = URL(fileURLWithPath: directory, isDirectory: true)
+                    .appendingPathComponent("minutes-response-\(UUID().uuidString).txt")
+                try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(),
+                                                         withIntermediateDirectories: true)
+                try? Data(cleaned.prefix(65_536).utf8).write(to: url, options: .atomic)
+            }
+            throw MeetingError.adapterFailure("Model minutes response is not valid evidence JSON")
         }
-        var items = [try MinutesValidator.item(kind: .summary, text: parsed.summary,
-                                               sourceIDs: [], segments: segments)]
+        guard let summary = try grounded(parsed.summary, kind: .summary,
+                                         through: sourceMap, segments: segments) else {
+            throw MeetingError.adapterFailure("No source-grounded minutes summary")
+        }
+        var items = [summary]
+        var withheld = 0
         for entry in parsed.decisions {
-            items.append(try MinutesValidator.item(kind: .decision, text: entry.text,
-                sourceIDs: expand(entry.sourceIDs, through: sourceMap), segments: segments))
+            if let item = try grounded(entry, kind: .decision, through: sourceMap, segments: segments) {
+                items.append(item)
+            } else { withheld += 1 }
         }
         for entry in parsed.actions {
-            let supportedOwner = entry.ownerSpeakerID.flatMap { candidate in
-                segments.contains(where: { $0.speakerID == candidate }) ? candidate : nil
-            }
-            items.append(try MinutesValidator.item(kind: .action, text: entry.text,
-                sourceIDs: expand(entry.sourceIDs, through: sourceMap),
-                owner: supportedOwner, segments: segments))
+            if let item = try grounded(entry, kind: .action, through: sourceMap, segments: segments) {
+                items.append(item)
+            } else { withheld += 1 }
         }
         for entry in parsed.openQuestions {
-            items.append(try MinutesValidator.item(kind: .openQuestion, text: entry.text,
-                sourceIDs: expand(entry.sourceIDs, through: sourceMap), segments: segments))
+            if let item = try grounded(entry, kind: .openQuestion, through: sourceMap, segments: segments) {
+                items.append(item)
+            } else { withheld += 1 }
         }
+        FileHandle.standardError.write(Data("Withheld \(withheld) unsupported minutes candidates\n".utf8))
         return items
+    }
+
+    private func grounded(_ entry: ModelMinutes.Entry, kind: ReviewKind,
+                          through map: [String: [String]],
+                          segments: [TranscriptSegment]) throws -> ReviewItem? {
+        guard (1...2).contains(entry.sourceIDs.count),
+              !entry.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        let IDs = expand(entry.sourceIDs, through: map)
+        let byID = Dictionary(uniqueKeysWithValues: segments.map { ($0.id, $0) })
+        guard IDs.allSatisfy({ byID[$0] != nil }) else { return nil }
+        let source = IDs.compactMap { byID[$0]?.text }.joined(separator: " ")
+        let quote = Self.normalized(entry.text)
+        guard Self.normalized(source).contains(quote) else { return nil }
+        let lower = quote.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+        switch kind {
+        case .summary: break
+        case .decision:
+            let signals = ["decid", "approv", "accept", "reject", "voted", "no objection",
+                           "nie slysze sprzeciwu", "pozytywnie opiniuje", "przyjeto", "zatwierdz"]
+            guard signals.contains(where: lower.contains) else { return nil }
+        case .action:
+            let signals = ["i will ", "we will ", "i shall ", "we shall ",
+                           "zobowiazuje sie", "przygotuje", "wysle", "przeslemy"]
+            let exclusions = ["please present", "poprosze", "przechodzimy", "we will now"]
+            guard signals.contains(where: lower.contains),
+                  !exclusions.contains(where: lower.contains) else { return nil }
+        case .openQuestion:
+            guard quote.contains("?") else { return nil }
+        }
+        let citedSpeakers = Set(IDs.compactMap { byID[$0]?.speakerID })
+        let owner = entry.ownerSpeakerID.flatMap { citedSpeakers.contains($0) ? $0 : nil }
+        return try MinutesValidator.item(kind: kind, text: entry.text,
+                                         sourceIDs: IDs, owner: owner, segments: segments)
+    }
+
+    private static func normalized(_ text: String) -> String {
+        text.split(whereSeparator: \.isWhitespace).joined(separator: " ")
     }
 
     private func expand(_ IDs: [String], through map: [String: [String]]) -> [String] {
@@ -132,7 +186,7 @@ private struct ModelMinutes: Decodable {
             case ownerSpeakerID = "owner_speaker_id"
         }
     }
-    let summary: String
+    let summary: Entry
     let decisions: [Entry]
     let actions: [Entry]
     let openQuestions: [Entry]

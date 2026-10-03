@@ -18,5 +18,6 @@ let package = Package(
             .product(name: "HuggingFace", package: "swift-huggingface"),
             .product(name: "Tokenizers", package: "swift-transformers"),
         ]),
+        .testTarget(name: "MeetingMLXMinutesTests", dependencies: ["MeetingMLXMinutes"]),
     ]
 )

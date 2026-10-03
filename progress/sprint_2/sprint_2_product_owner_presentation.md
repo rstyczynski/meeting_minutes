@@ -1,0 +1,104 @@
+# Sprint 2 presentation set for the Product Owner
+
+**Review state:** prepared for inspection on 2 October 2026. Sprint 2 remains
+in Progress. The Product Owner has already identified the minutes quality
+defect as a delivery blocker. The live demonstration, documentation
+approval, and sprint close have not occurred.
+
+## What this sprint promised
+
+Sprint 2 set out to build an executable local model of the meeting workflow
+(PBI-011) and compare critical technical options on common test data
+(PBI-018). A chair should be able to import a real recording, obtain a timed
+transcript, inspect speaker labels and weak-audio cues, assign a verified
+name, and request draft minutes. The benchmark should show measured quality
+and failures clearly enough to guide the Sprint 3 architecture assessment.
+
+## Presentation and live journey
+
+Open the [14-slide presentation](sprint_2_increment_demo.pptx) alongside
+the [operator manual](user_manual.md). Slides 3–8 show the real meeting
+inputs, saved transcript and warning, a speaker-label name entry, and source review
+of draft minutes. The manual supplies
+the exact runnable commands, local model and media prerequisites, readable
+`jq` checks, and recovery steps. The [handover record](sprint_2_handover.md)
+records the developer's rehearsal and the still-pending Product Owner
+walkthrough. The developer must operate the product live for handover;
+the slides and this document support that inspection.
+
+The English input is the [AMI ES2002a meeting](ami_es2002a_fixture.md) with
+a documented weak-headset participant. The Polish input is a ten-minute
+excerpt of an [official Sejm committee sitting](polish_sejm_meeting_fixture.md),
+with a published PDF record. Both are actual multi-person meetings. Their
+local audio and the model weights are staged outside Git on the Sprint 2
+Mac; the deck starts from a fresh local record store. The single-speaker
+FLEURS clips appear only in the separate language benchmark.
+
+First, `transcribe` saved 2,582 English and 801 Polish timed segments in
+the latest fresh rehearsal. The [Sejm PDF comparison](tests/polish_sejm_pdf_transcription_review_20261002.md)
+finds the main turns, several budget amounts, and the positive-opinion
+decision recognizable in the Polish transcript. It also finds errors in
+names, acronyms, words, and numerical units. The PDF is edited and not
+time aligned, so no whole-excerpt Polish meeting word error rate is claimed.
+
+Next, `recognize` adds anonymous speaker labels. The AMI rehearsal saved
+three clusters and 16 weak-audio warnings although the reference meeting
+has four participants: the poor-headset participant was merged with
+another person. The chair can then assign a name. The manual demonstrates
+an explicitly invented AMI alias to show the edit operation, while the
+Sejm clusters stay neutral. The official PDF supports naming the chair on
+specific turns but does not verify every segment in S1. The alias was not
+passed into the separate minutes input.
+
+Finally, `summarize` runs the local model and validates its response before
+saving any review items. The active gate checks JSON structure, source IDs,
+exact quotations, and evidence types, then gives the model at most two
+specific repair requests. Controlled tests pass, but the current 4B
+model's real AMI and Sejm candidates fail the strict gate; the transcript
+survives and no new minutes are saved. Earlier drafts remain source-review
+evidence: AMI contained an unsupported interpretation; Sejm contained a
+supported positive-opinion decision alongside a false action, invented
+question, and uncited summary. These are **not dependable meeting minutes**.
+The [bug record](sprint_2_bugs.md) distinguishes the repaired
+citation-format error from these open content defects.
+
+## What the benchmark establishes
+
+On the same referenced AMI headset recording, FluidAudio/Parakeet v2 had
+19.48% word error rate and whisper.cpp/Whisper base.en had 28.79%. For the
+documented poor-headset speaker, reference-linked errors were 27.78% and
+58.55%, respectively. This comparison covers one meeting and the selected
+model sizes. The [benchmark report](ami_asr_benchmark.md) also records
+runtime, footprint, offline execution, diarization limits, and a small
+English/Polish read-speech comparison. It gives the interpretation and
+limits; the [test record](sprint_2_tests.md) links raw runs and gate logs.
+
+A longer [U.S. Department of Energy advisory committee
+meeting](doe_itiac_day2_fixture.md) supplies a second real English input.
+Its 30-minute excerpt yielded 4,216 timed segments and eight anonymous
+speaker IDs. Both tested local minutes models failed to save review items
+from that transcript. This failure does not invalidate the transcription
+run, but it prevents a claim that the prototype can produce minutes for a
+long meeting.
+
+## Product Owner review position
+
+The prototype and benchmark provide inspectable architecture evidence.
+The minutes capability remains blocked by natural-meeting output that the
+new gate rejects and structured-output failure on the longer DOE input. The
+separate [30B same-input trial](tests/qwen3_30b_minutes_trial_20261003.md)
+did not clear that blocker: on AMI it saved only an exact citation of the
+meeting brief after repair, while on Sejm it repeated malformed JSON and
+left the transcript intact with no draft items. The report includes the
+source-level assessment, raw attempts, elapsed time, and memory. The
+review player also has a bounded-playback change that builds but still
+needs a manual replay check. The current handover must therefore not be
+presented as acceptance of dependable minutes or a completed Sprint 2.
+
+The next live review should show the actual saved transcript, a weak-audio
+warning, a speaker-name assignment, the earlier supported Sejm decision
+and false items as historical evidence, then the active gate's explicit
+failure and retained transcript. The Product Owner can inspect a record or
+request a repeat. Record their reaction and explicit decision in the
+[handover record](sprint_2_handover.md). The approved evidence-first repair
+still needs real-model quality verification before delivery readiness.

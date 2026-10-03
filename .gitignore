@@ -3,3 +3,4 @@ experiments/**/.build/
 .vscode/
 __pycache__/
 *.pyc
+.models/

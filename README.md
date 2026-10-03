@@ -125,6 +125,35 @@ compatibility with the first prototype tests. Copyable working commands,
 formatted `jq` output, prerequisites, and an error example are in the
 [implementation record](progress/sprint_2/sprint_2_implementation.md).
 
+For Product Owner validation, follow the [real-model walkthrough](progress/sprint_2/sprint_2_implementation.md#product-owner-walkthrough--real-local-models):
+English and Polish transcription, weak-audio warnings, manual speaker naming,
+and minutes inspection. Its commands use the assets staged on the Sprint 2
+Mac and show the observed output and current limitations. The [benchmark
+report](progress/sprint_2/ami_asr_benchmark.md) interprets model quality and
+failures against references. The separate [functional test
+record](progress/sprint_2/sprint_2_tests.md) contains the synthetic CLI
+contract check and links the gate evidence.
+
+The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives the operator's four-step path and
+recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo.pptx)
+present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
+presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
+is the concise guide to that review set. A real Polish Sejm
+committee meeting now replaces single-speaker read speech in that walkthrough.
+The [official-PDF transcription review](progress/sprint_2/tests/polish_sejm_pdf_transcription_review_20261002.md)
+finds the main turns and decision recognizable, with word, name, acronym,
+and numeric-unit errors requiring correction; no whole-meeting Polish WER
+is claimed.
+The minutes citation crash was repaired, but the resulting draft still
+contains unsupported items. A longer [Department of Energy meeting
+fixture](progress/sprint_2/doe_itiac_day2_fixture.md) produced 4,216 English
+transcript segments and eight speaker labels; both tested local minutes
+models failed to save structured output on its 30-minute excerpt. The
+Product Owner has said the increment is
+not ready for delivery; live handover acceptance and managed documentation
+approval remain pending.
+
 For a complete local Sprint 2 quality check, run
 `tests/run-sprint-gates.sh progress/sprint_2` from the repository root. It
 executes the six required smoke, unit, and integration gates and saves one
