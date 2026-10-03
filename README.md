@@ -62,7 +62,7 @@ and English benchmark were implemented and tested. The Product Owner then
 added FR-11 English and Polish transcription validation to this sprint. Its
 language-control CLI and paired multilingual model check have now run; all
 Sprint 2 implementation gates have passed, with managed documentation review
-pending.
+pending. Natural-meeting minutes quality still blocks increment delivery.
 The vision above describes the
 longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 

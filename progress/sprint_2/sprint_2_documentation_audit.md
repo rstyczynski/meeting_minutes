@@ -567,3 +567,50 @@ decision and evidence Markdown files checked 355 local links with zero
 missing targets; the same files have no narrative Markdown tables, and
 `git diff --check` passed. This audit checks document
 consistency and traceability, not model quality or Phase 5 acceptance.
+
+## Timed transcription boundary clarification — 2026-10-03
+
+The Product Owner approved describing transcription as a simple ordered
+sequence of timed text, with Swift creating the stored meeting-record JSON.
+This documents current behavior rather than changing the executable
+contract. Inspection of the FluidAudio helper showed that it converts
+available token timings to segments and falls back to one timed text
+segment when timings are absent. Inspection of the whisper.cpp adapter
+showed that it reads the engine's JSON output mode as temporary transport
+and converts offsets to `TranscriptSegment` values. MeetingCore then
+validates and persists the record. Neither ASR path receives the MLX
+minutes text prompt. The CLI currently returns a record UUID; the
+documented `jq` views expose the timed segments, with no claim of live
+caption streaming.
+
+The root [SRS](../../docs/srs.md) FR-01–03 already require a local,
+timestamped transcript, so no requirement text changed. The
+[architecture](../../docs/architecture.md), accepted
+[Sprint design](sprint_2_design.md), and
+[implementation record](sprint_2_implementation.md) now state the data
+boundary and distinguish engine transport JSON from the persistent
+MeetingCore record. The [test record](sprint_2_tests.md) already links
+the CLI transcript and storage checks; no behavior or test was changed.
+The [Sprint setup](sprint_2_setup.md) and
+[progress board](../../PROGRESS_BOARD.md) retain their accepted scope and
+`under_construction` status. The [README](../../README.md) now explicitly
+keeps the minutes-quality delivery blocker visible.
+
+The accepted [test profile](../../docs/test-profile.md) previously barred
+all real meeting transcripts from Git, while the Product Owner had
+approved public AMI, Sejm, and DOE fixtures and required inspectable
+Sprint evidence. It now distinguishes private meeting data, which remains
+barred, from approved public evidence with recorded source and rights;
+large media and weights remain outside Git. The [benchmark](ami_asr_benchmark.md)
+and [30B trial](tests/qwen3_30b_minutes_trial_20261003.md) now state that
+the long quote-only minutes prompt may confound the model comparison.
+Simplifying the minutes prompt has not been approved or implemented.
+No new product test is claimed for this documentation-only clarification;
+the prior six-gate run remains the last executable verification.
+An actual saved AMI record was read with `jq`; its first three timed
+segments start at 4.72, 4.88, and 5.28 seconds, confirming the
+documented offset/text shape. A fresh scan of the eight edited narrative
+files checked 168 local links with zero missing targets and found no
+Markdown tables. `git diff --check` passed. The unresolved dependency is
+the separate minutes prompt redesign and its managed-mode approval; this
+clarification does not advance PBI-011.5 or the Sprint status.

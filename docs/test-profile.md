@@ -78,9 +78,12 @@ including saved-state checks after each optional step.
 ## Local-only test-data policy
 
 Tests must use synthetic or explicitly approved local fixtures. They must not
-send data to the internet or depend on a network service. No real meeting
-audio, video, transcript, or metadata may be added to the repository or test
-logs.
+send meeting data to the internet or depend on a network service during
+inference. Private meeting audio, video, transcripts, and metadata must not
+be added to the repository or test logs. Approved public meeting excerpts
+may be retained as Sprint evidence when the source, rights, and Product
+Owner approval are recorded; large media and model weights stay outside
+Git. The AMI, Sejm, and DOE fixture records document those exceptions.
 
 ## Operational validation
 

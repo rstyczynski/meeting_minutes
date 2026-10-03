@@ -204,6 +204,16 @@ not set production accuracy thresholds or certify in-meeting code switching.
 Status: Accepted by the Product Owner on 2026-10-01. The Test Architect added
 SM-2, UT-7–9, and IT-7–9 skeletons before revised CLI construction.
 
+The Product Owner confirmed the transcription boundary on 2026-10-03:
+local ASR supplies an ordered sequence of text with start and end times.
+The Swift adapter converts that output into validated transcript segments,
+and MeetingCore creates the persistent meeting-record JSON. The ASR model
+is not prompted to invent JSON, source IDs, decisions, or minutes. An
+adapter may use its engine's JSON output mode as a transport format; that
+does not make JSON the user's transcript format or an LLM generation task.
+This clarifies the accepted CLI design and does not change the minutes
+prompt or its approval status.
+
 `transcribe <local.wav> --transcriber fluid|whisper` will validate local
 media, run the selected local ASR adapter, and atomically create one record
 with timed transcript segments, backend provenance, and neutral or unknown

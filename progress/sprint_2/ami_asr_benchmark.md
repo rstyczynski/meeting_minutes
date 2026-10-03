@@ -679,6 +679,13 @@ setup was captured, so a speed ranking would be unjustified.
 The 30B model improves a narrow AMI citation result but fails the Polish
 technical and content checks. Neither the 4B, 7B, nor 30B candidate has
 established dependable local minutes on this two-meeting review set.
+These runs hold a long, restrictive prompt and exact-quotation output
+contract constant; they do not isolate model capability from prompt
+design. In particular, the instruction to never paraphrase prevents a
+normal summary and may explain the brief-only AMI output. The Product
+Owner has confirmed that transcription itself should remain a simple
+timed-text stream produced by ASR, with Swift creating the stored JSON;
+the complex prompt is confined to the separate minutes experiment.
 The larger model is not promoted to the product default. Sprint 3 must
 assess the model, prompting and human-review workflow using item-level
 correctness, missed items, citation coverage, language fidelity, runtime,

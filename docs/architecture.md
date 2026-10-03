@@ -51,6 +51,14 @@ diarization, or minutes implementation. They must not expose a remote
 fallback. The local meeting store atomically persists source references and
 derived data; it must not synchronize to a cloud service.
 
+Transcription is an ordered sequence of timed text segments from the selected
+ASR engine. The adapter reads the engine's output, validates times and text,
+and creates `TranscriptSegment` values; MeetingCore serializes the meeting
+record to JSON for local storage. Engine JSON output, where used, is an
+adapter transport detail. ASR does not receive a free-text prompt asking
+it to produce the record schema or meeting minutes. Minutes generation is
+a separate, optional operation on the saved transcript.
+
 The Sprint 2 minutes failure added an explicit **model-response gate** to
 this boundary. An adapter validates response syntax, schema, size, and
 references before handing a candidate to core. Core then validates source

@@ -34,6 +34,21 @@ The Swift package has a portable MeetingCore library, a meeting-summarizer CLI, 
 
 The accepted CLI amendment gives three independent operations. Transcribe creates a transcript-only record. Recognize is optional: the local FluidAudio diarizer assigns anonymous labels, while recognize name and recognize move let a chair correct the record. Summarize is optional and works with neutral or absent speaker labels. It invokes a local MLX language model, validates its structured output and source IDs, and saves minutes to the same record. The older import command remains for compatibility with the first prototype tests.
 
+The Product Owner confirmed on 2026-10-03 that transcription should be
+treated as a simple ordered sequence of timed text. That is the implemented path:
+FluidAudio returns text and, when available, word times; whisper.cpp
+returns text and time offsets. The Swift adapters convert either result
+into validated `TranscriptSegment` values with start time, end time, and text. MeetingCore
+then writes the local meeting-record JSON. The engines' JSON files are
+temporary machine transport, not text prompts asking ASR to construct a
+meeting record. A reader can see the transcript as timed lines, for
+example `00:04.72–00:05.14  Hello`, while the saved JSON retains exact
+numeric offsets for seeking and later speaker correction. The CLI currently
+prints the record UUID; the documented `jq` views show its timed segments.
+This prototype does not stream captions live to stdout.
+No transcription model receives the long minutes prompt reproduced later
+in this implementation record.
+
 PBI-011.1, core and store: the record contract and atomic store are implemented. IT-1 starts the CLI in a separate process and reloads its output through MeetingStore. The child passed its six prescribed gates and was committed as 72fb8d4.
 
 PBI-011.2, CLI: transcribe, recognize, recognize name, recognize move, and summarize are implemented and return the same record UUID across later steps. Invalid media, unknown IDs, missing configured models, and invalid corrections produce explicit errors. A synthetic three-command flow and a real FluidAudio transcription have run. Its six prescribed gates passed after help was corrected to mention the compatible import route; the audited completion commit is 5c5a7bf.

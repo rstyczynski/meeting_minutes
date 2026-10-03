@@ -86,3 +86,7 @@ quotation/citation fidelity failed, and the English output contained only
 a brief quotation. The model is not promoted to the product default, and
 the Sprint 2 minutes delivery blocker remains. These are two examples,
 not statistical accuracy estimates or a model-family ranking.
+The trial also does not isolate model ability from the long, quote-only
+prompt: asking for a verbatim quotation can suppress the ordinary
+paraphrased summary the Product Owner expects. Transcription uses separate
+ASR models and does not receive this prompt.
