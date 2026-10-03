@@ -22,17 +22,23 @@ and [SwiftUI documentation](https://developer.apple.com/documentation/technology
 
 ## Component boundaries
 
-```mermaid
-flowchart LR
-    CLI[CLI transcribe, recognize, summarize] --> Core[MeetingCore Swift Package]
-    UI[SwiftUI macOS app] --> Core
-    Core --> Store[Local meeting store]
-    Core --> Transcript[Local transcription adapter]
-    Core --> Attribution[Local diarization adapter]
-    Core --> Minutes[Local minutes adapter]
-    CLI --> UI[Review player opens record by ID]
-    FutureCapture[Future macOS capture adapter] -. deferred .-> Core
-```
+The [editable draw.io diagram](architecture_overview.drawio) shows the
+current macOS prototype and the technology behind each implemented path.
+Dashed branches are optional operations; the minutes branch is an
+experiment whose real-meeting quality still blocks delivery.
+
+![Current Meeting Summarizer architecture](architecture_overview.png)
+
+Parakeet is a specialized speech-recognition model, not the minutes LLM.
+NVIDIA identifies [v2](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2)
+as English-only and [v3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3)
+as multilingual, including English and Polish. Both are FastConformer–TDT
+ASR models. Qwen is the separate local language-model experiment for
+optional draft minutes.
+NVIDIA also lists a [1.1B multilingual RNNT model](https://build.nvidia.com/nvidia/parakeet-1_1b-rnnt-multilingual-asr)
+with Polish among its supported languages. That model is not integrated
+or benchmarked in this prototype, so it does not appear as an active
+diagram component.
 
 `MeetingCore` owns the meeting record, timeline references, attribution
 corrections, use cases, validation, and protocol contracts. It must not import

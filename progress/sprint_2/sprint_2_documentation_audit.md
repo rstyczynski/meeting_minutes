@@ -614,3 +614,29 @@ files checked 168 local links with zero missing targets and found no
 Markdown tables. `git diff --check` passed. The unresolved dependency is
 the separate minutes prompt redesign and its managed-mode approval; this
 clarification does not advance PBI-011.5 or the Sprint status.
+
+## Draw.io architecture overview — 2026-10-03
+
+The Product Owner requested an editable high-level architecture diagram with
+the technology behind each element. The [architecture](../../docs/architecture.md)
+now embeds a rendered preview and links the editable
+[draw.io source](../../docs/architecture_overview.drawio). The diagram was
+reconciled with the Swift package, CLI, review player, local store, FluidAudio
+and whisper.cpp transcription adapters, speaker diarization, and MLX minutes
+adapter. It shows transcription as timed text that Swift stores in a meeting
+record. The optional recognition and minutes paths remain distinct.
+
+NVIDIA's model cards distinguish the English-only Parakeet v2 from the
+multilingual v3 used for the Polish Sejm transcription. NVIDIA also lists a
+Polish-capable 1.1B multilingual RNNT model, but it is neither integrated nor
+benchmarked here; the architecture text marks it as a candidate rather than
+an implemented component. The diagram and text retain the real-meeting
+minutes-quality blocker: the 30B trial improved one narrow citation result,
+but did not produce dependable minutes on the AMI and Sejm examples.
+
+The draw.io application exported the native source to a 1744×1018 PNG, and
+the preview was visually inspected. XML parsing found one diagram page,
+14 component cells, and nine connections. All local links in the edited
+architecture document resolved, and `git diff --check` passed. This was a
+documentation-only increment; no product-code test or sprint-status change
+is claimed.
