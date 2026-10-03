@@ -200,6 +200,13 @@ transcript as an accuracy pass. The Polish written record is edited and not
 time aligned, so this run has no whole-clip WER. `--language auto` is available, but the
 exploratory English-to-Polish splice lost its English portion.
 
+To read the actual saved words rather than only the counts above, open the
+[Sprint 2 meeting transcription files](tests/transcripts/README.md). They
+include the full English AMI meeting, the 120-second AMI excerpt used for
+minutes evaluation, and the ten-minute Polish Sejm excerpt, each with time
+ranges and anonymous speaker labels. These are uncorrected ASR results;
+the linked JSON retains the original segment-level evidence.
+
 ### 2. Inspect low-quality audio warnings and speaker labels
 
 Run local diarization on both meeting records. It assigns anonymous IDs

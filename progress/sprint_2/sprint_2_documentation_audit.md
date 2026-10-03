@@ -640,3 +640,23 @@ the preview was visually inspected. XML parsing found one diagram page,
 architecture document resolved, and `git diff --check` passed. This was a
 documentation-only increment; no product-code test or sprint-status change
 is claimed.
+
+## Readable meeting transcripts — 2026-10-03
+
+The Product Owner asked to see the actual transcriptions in files. The
+[transcript index](tests/transcripts/README.md) links complete rendered
+text for the full English AMI meeting, its 120-second evaluation excerpt,
+and the ten-minute Polish Sejm excerpt. Each view is generated from a
+committed saved MeetingCore JSON record, includes timed lines and anonymous
+speaker labels, and links the segment-level source. The implementation
+record now points directly to these files so the Product Owner can inspect
+ASR output without assembling it from JSON or logs. The index states that
+the DOE saved record is unavailable and separates the short FLEURS and
+mixed-language probes from real meetings.
+
+The exporter does not infer identities or correct ASR words. Verification
+compared every rendered text token with the corresponding saved segment
+sequence, checked local links and `git diff --check`, and confirmed the
+three source record counts: 2,582, 217, and 801 segments. This is an
+evidence-presentation change; it does not improve transcription accuracy
+or clear the minutes delivery blocker.
