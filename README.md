@@ -139,14 +139,14 @@ contract check and links the gate evidence.
 
 The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives individual operations and
 recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
-and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_conclusions_20261004_final.pptx)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_word_error_rate_20261004.pptx)
 present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
 presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
 is the concise guide to that review set. A real Polish Sejm
 committee meeting now replaces single-speaker read speech in that walkthrough.
 The [official-PDF transcription review](progress/sprint_2/tests/polish_sejm_pdf_transcription_review_20261002.md)
 finds the main turns and decision recognizable, with word, name, acronym,
-and numeric-unit errors requiring correction; no whole-meeting Polish WER
+and numeric-unit errors requiring correction; no whole-meeting Polish Word Error Rate
 is claimed.
 
 The approved staged-minutes experiment now preserves raw ASR, proposes
@@ -181,4 +181,4 @@ the levels and the optional log label.
 
 ### Configurable transcript reading turns
 
-The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all ten reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo_conclusions_20261004_final.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes and remove arbitrary duration/pause cuts; semantic boundary validation and operator playback acceptance remain open.
+The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all ten reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo_word_error_rate_20261004.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes and remove arbitrary duration/pause cuts; semantic boundary validation and operator playback acceptance remain open.

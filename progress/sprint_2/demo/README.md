@@ -1,7 +1,7 @@
 # Sprint 2 — Product Owner live demonstration script
 
 This is the exact running order for the Sprint 2 review. Present the
-[21-slide deck](../sprint_2_increment_demo_conclusions_20261004_final.pptx) while
+[21-slide deck](../sprint_2_increment_demo_word_error_rate_20261004.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -98,7 +98,7 @@ the reference transcripts are not injected. Segment count proves that the
 pipeline ran, not that every word is correct.” Show the official Sejm
 comparison through the linked [review](../tests/polish_sejm_pdf_transcription_review_20261002.md)
 if the Product Owner asks about Polish accuracy. The edited PDF gives a
-passage-level check, not a whole-recording WER.
+passage-level check, not a whole-recording Word Error Rate.
 
 **Slide 7, stage 2 — weak audio.** Show the AMI warning ranges from the new
 record. Say: “The first affected range is near 19 seconds. The system
@@ -158,9 +158,9 @@ it cannot establish that every paraphrase is true.
 **Slides 13–16, stage 6 — broader evidence.** Show the saved 30-minute DOE
 result: 4216 timed segments and eight anonymous speaker IDs, while both
 tested smaller minutes models saved zero review items. Show the recorded
-same-input AMI WER comparison: Parakeet v2 19.48%, Whisper base.en 28.79%.
+same-input AMI Word Error Rate comparison: Parakeet v2 19.48%, Whisper base.en 28.79%.
 For language feasibility on separate short read-speech clips, Parakeet v3
-had 11.49% English and 3.41% Polish WER, versus Whisper base on CPU at
+had 11.49% English and 3.41% Polish Word Error Rate, versus Whisper base on CPU at
 18.39% and 27.27%. Do not describe those read-speech scores as Polish
 meeting accuracy. The actual recorded benchmark, not the fresh demo run,
 produced these scores.

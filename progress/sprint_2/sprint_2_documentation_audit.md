@@ -1,5 +1,15 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Full metric name — pre-commit audit, 4 October 2026
+
+The Product Owner requests the full name “Word Error Rate” instead of metric initials. This presentation/documentation correction follows completion marker `8fa8da0` and belongs to the PBI-011/PBI-018 handover. The separate [preferences file](../../RUPStrikesBack.patch/USER_PREFERENCES.md) records the durable terminology preference.
+
+The [current deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) expands the metric in the visible DOE limitation and AMI finding, and in the bilingual and AMI speaker notes. The canonical deck matches it. The earlier presentation remains as history. README, the benchmark, implementation, handover, documentation summary, functional test record, owner brief and presenter script use the full metric name and the current presentation link. Raw evidence and machine-readable metric fields retain their recorded form.
+
+The SRS, architecture, test profile, sprint setup, accepted design/test specification and progress board were checked against the prior audit: this wording correction changes no requirement, product behavior, benchmark value, CLI command, scope or managed status. The same AMI reference comparison supports 19.48% and 28.79% Word Error Rate. Reliable minutes, manual playback and live Product Owner review remain pending. No new product inference or product-test pass is claimed.
+
+Applicable checks are final package/layout/font/chart/workbook/reimport validation, rendered-slide comparison, full-name coverage, byte preservation outside the four changed slide/note parts, local links, narrative format, demo shell syntax and `git diff --check`. Results are retained in [the terminology review](tests/presentation_word_error_rate_review_20261004.json) and [presentation validation](tests/presentation_validation_word_error_rate_20261004.json). Native PowerPoint execution is not claimed.
+
 ## Presentation conclusion correction — pre-commit audit, 4 October 2026
 
 The Product Owner accepts the parameter content but requests that the PPTX end with the substantial conclusions of the prototype. This is a presentation/documentation correction to the PBI-011/PBI-018 handover, following completion marker `87bbdcf`; no new product scope or managed status transition is introduced.

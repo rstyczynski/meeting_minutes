@@ -69,7 +69,7 @@ annotations, converted to
 `/private/tmp/meeting-minutes-ami/ES2002a/manual_words.json`. The model
 outputs are `fluid_headset.json` and `whisper_headset.json` in the same
 directory. The scoring commands and normalization are below. Those inputs
-produced the 19.48% and 28.79% WER results above. This criterion has
+produced the 19.48% and 28.79% Word Error Rate results above. This criterion has
 evidence for one meeting; representative accuracy across meetings remains
 open.
 
@@ -106,7 +106,7 @@ the reference mapping.
 validated.** The original headset WAV remains available. Separate lapel
 outputs `fluid_lapel.json` and `whisper_lapel.json` were scored against the
 same manual words, showing better speaker-A reference-linked error rates
-but worse overall WER. The SwiftUI review app loaded the real AMI record,
+but worse overall Word Error Rate. The SwiftUI review app loaded the real AMI record,
 showed 16 warnings, and sought to the first warning at 19.3 seconds and
 a transcript segment at 4.7 seconds. That manual check also found continuous
 playback disruptive, so the player was changed to pause after the selected
@@ -224,7 +224,7 @@ small source of boundary error. Overall word error rate is substitutions
 plus deletions plus insertions divided by reference tokens. Global word
 alignment assigns substitutions and deletions to the reference speaker;
 insertions remain unassigned. Thus a speaker's reported
-`reference_linked_error_rate` is not a conventional per-speaker WER and does
+`reference_linked_error_rate` is not a conventional per-speaker Word Error Rate and does
 not assess diarization.
 
 The reproducible scoring commands are:
@@ -240,20 +240,20 @@ python3 experiments/score_ami_transcript.py --reference /private/tmp/meeting-min
 
 FluidAudio produced 2,312 normalized hypothesis tokens against 2,633
 reference tokens: 132 substitutions, 351 deletions, and 30 insertions.
-Overall WER was **0.1948**. Speaker A had 234 reference tokens, 12
+Overall Word Error Rate was **0.1948**. Speaker A had 234 reference tokens, 12
 substitutions, and 53 deletions, giving a reference-linked error rate of
 **0.2778**. Speaker B's corresponding rate was 0.1280, C's 0.2317, and D's
 0.2299.
 
 whisper.cpp produced 2,333 hypothesis tokens against the same 2,633
 reference tokens: 328 substitutions, 365 deletions, and 65 insertions.
-Overall WER was **0.2879**. Speaker A had 53 substitutions and 84 deletions
+Overall Word Error Rate was **0.2879**. Speaker A had 53 substitutions and 84 deletions
 on the same 234 reference tokens, giving a reference-linked error rate of
 **0.5855**. Speaker B's rate was 0.2127, C's 0.4390, and D's 0.2398.
 
 In this first pass, both engines had more reference-linked errors on the
 documented headset-problem speaker A than on speaker B. FluidAudio had
-lower overall WER than whisper.cpp with these particular model sizes and
+lower overall Word Error Rate than whisper.cpp with these particular model sizes and
 settings. This does not by itself establish a preferred production backend:
 speaker attribution, quality warnings, minutes, packaging, and broader
 hardware repeatability still need evaluation. No prototype
@@ -263,20 +263,20 @@ validated by these ASR scores.
 ## Alternate-input result
 
 FluidAudio has also processed the mixed lapel WAV as a separate condition.
-Against the same manual annotation window, its overall WER was **0.2195**:
+Against the same manual annotation window, its overall Word Error Rate was **0.2195**:
 147 substitutions, 404 deletions, and 27 insertions on 2,633 reference
 tokens. Speaker A's reference-linked error rate was **0.2265** (17
 substitutions and 36 deletions on 234 tokens). For A, this is lower than the
-headset's 0.2778, while overall WER is higher than the headset's 0.1948.
+headset's 0.2778, while overall Word Error Rate is higher than the headset's 0.1948.
 Speaker B's rate rose from 0.1280 to 0.1806.
 
-whisper.cpp on the lapel WAV had overall WER **0.3262**: 276
+whisper.cpp on the lapel WAV had overall Word Error Rate **0.3262**: 276
 substitutions, 538 deletions, and 45 insertions. Speaker A's
 reference-linked error rate was **0.3291** (20 substitutions and 57
 deletions), compared with 0.5855 on the headset. Speaker B's rate rose
 from 0.2127 to 0.2973. For both engines, the lapel input lowered the
 reference-linked error rate for the documented affected participant but
-increased overall WER. This is an observation on one meeting, not a proven
+increased overall Word Error Rate. This is an observation on one meeting, not a proven
 recovery strategy. Neither model identified the affected speaker or warned
 about poor audio; those acceptance checks remain open. The lapel runs are
 separate input conditions, not part of the same-audio engine comparison.
@@ -415,7 +415,7 @@ speech data; do not combine its percentages with the AMI model ranking above.
 **Decision-facing result.** Both new local adapters produced English and
 Polish transcripts through the product's `transcribe --language` command.
 On the same five English FLEURS clips, Parakeet v3 made **10 errors in 87
-reference words (11.49% WER)**, versus multilingual Whisper base's **16 in
+reference words (11.49% Word Error Rate)**, versus multilingual Whisper base's **16 in
 87 (18.39%)**. On the same five Polish clips, Parakeet v3 made **3 errors in
 88 words (3.41%)**, versus Whisper's **24 in 88 (27.27%)**. Unicode character
 error rates, excluding spaces, were **2.65% versus 7.51%** for English and
@@ -479,7 +479,7 @@ calls the real product CLI, verifies input checksums, reloads each persisted
 record, and computes Levenshtein word and character error. It applies Unicode
 NFKC, casefolding, and punctuation removal while preserving Polish letters;
 CER excludes spaces. The ten references contain 87 English and 88 Polish
-words, or 453 and 571 nonspace characters. English per-clip Fluid WER values
+words, or 453 and 571 nonspace characters. English per-clip Fluid Word Error Rate values
 were 0%, 15.15%, 14.29%, 20%, and 0%; Whisper's were 6.67%, 21.21%, 0%,
 80%, and 0%. Polish Fluid values were 2.70%, 0%, 6.67%, 0%, and 11.11%;
 Whisper's were 24.32%, 20%, 33.33%, 16.67%, and 55.56%. The one high
@@ -523,7 +523,7 @@ the prototype transcribed and diarized a ten-minute excerpt from an
 Parakeet v3 saved 802 timed segments and the diarizer saved three anonymous
 speaker IDs. The official written record supports identifying the chair on
 the opening turn, but it is edited and not time aligned. Therefore this
-additional real meeting test does not add a Polish whole-meeting WER or a
+additional real meeting test does not add a Polish whole-meeting Word Error Rate or a
 speaker-attribution accuracy score to the paired benchmark. The minutes
 path initially rejected an invalid model citation. After a structural
 repair it saved draft items, but a false action and invented open question
@@ -549,7 +549,7 @@ for `Witam`, `Panie Mistrze` for `Panie ministrze`, `Polsca` for `POLSA`,
 34,662,000-thousand-złoty amount ends in a truncated ASR unit. This is
 useful but not authoritative transcription; a reviewer must correct it
 before treating it as the meeting record. The PDF is polished, omits
-pre-meeting speech, and is not time aligned, so no whole-excerpt WER or
+pre-meeting speech, and is not time aligned, so no whole-excerpt Word Error Rate or
 speaker-attribution score is claimed. This reference-backed review
 corrects the earlier overly broad statement that Polish meeting ASR
 quality had not been assessed at all.
@@ -622,7 +622,7 @@ saved transcript, both the 4B and 7B minutes attempts exited with status
 run capture](tests/doe_itiac_day2_run_20261002.json) records the exact
 errors. This tests longer real multi-person input rather than substituting
 short speech. The DOE transcript is not time aligned, so this additional
-fixture does not add a defensible whole-excerpt ASR WER. Taken together,
+fixture does not add a defensible whole-excerpt ASR Word Error Rate. Taken together,
 the Polish and English cases show that neither tested local minutes model
 is ready for a dependable default. They also expose a length-related
 structured-output risk requiring focused follow-up; the two cases alone
@@ -706,7 +706,7 @@ the measured inputs to the Sprint 3 architecture review.
 Both ASR options used the same pinned headset audio and the same manual
 reference, normalization, and scoring code. The separate lapel recording
 was labeled as a recovery condition, not mixed into that comparison.
-The four WER scores, two reference-assisted diarization scores, and two
+The four Word Error Rate scores, two reference-assisted diarization scores, and two
 timestamp diagnostics were reproduced from stored outputs during the Sprint
 2 completion check and matched this report. Repeated runtime, memory, model
 footprint, license, input hashes, executable revisions, and measurement

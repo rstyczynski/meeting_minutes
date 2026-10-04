@@ -56,7 +56,7 @@ The staged adapter checks JSON schema, IDs, coverage, exact evidence quotes, ite
 
 All six gates passed in the `cleanup_verified` run. UT-14 verifies every reading control and the two reported split regressions. IT-13 verifies persistence, changed-profile invalidation, no write on same profile or invalid input, and equality of CLI reading text/IDs and captured model input. A controlled Sejm copy produced four turns instead of 32 while preserving 802/802 source parts and every source word. Explicit alternative profiles produced 802 source-part blocks, 32 duration-capped blocks and six pause-capped blocks. The [receipt](tests/cleanup_configuration_20261004.json) provides commands and checks. These are segmentation measurements, not improved word error rate or speaker accuracy. Existing names in the active demo record remained untouched.
 
-The [updated Product Owner deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) shows this pipeline on slide 3, separates the model jobs on slide 4, and enumerates the profile on slides 17–18. Native review automation could not attach to the currently running QA app (accessibility/screenshot calls timed out), so this correction does not claim a fresh successful GUI listening check. The build and CLI behavior passed. Live operator playback and Product Owner acceptance remain pending.
+The [updated Product Owner deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) shows this pipeline on slide 3, separates the model jobs on slide 4, and enumerates the profile on slides 17–18. Native review automation could not attach to the currently running QA app (accessibility/screenshot calls timed out), so this correction does not claim a fresh successful GUI listening check. The build and CLI behavior passed. Live operator playback and Product Owner acceptance remain pending.
 
 Status: executable bilingual prototype and staged-minutes quality experiment
 measured. The minutes-content failure is an explicit prototype finding and
@@ -232,7 +232,7 @@ PBI-011.4, review player: the SwiftUI app built and opened the real AMI record b
 
 PBI-011.5, local-model integration: FluidAudio 0.17.4 with Parakeet TDT 0.6B v2, whisper.cpp with Whisper base.en, the FluidAudio offline diarizer, and MLX Swift LM 3.31.3 with locally staged Qwen3-4B-Instruct-2507 4-bit weights have all executed locally. The Fluid and whisper adapters each saved a timed synthetic transcript. Fluid transcribed the full approved AMI headset recording, and the diarizer saved labels and 16 warnings to record 87A64680-FD3C-44D4-9529-039E7071E46A. Xcode 27 with Metal Toolchain built MLX Swift's default.metallib. The MLX adapter generated and persisted source-linked minutes from the invented fixture in record 8DAAA0BB-C4A0-4863-9198-025E9FD4E643. On a natural 120-second AMI excerpt, the first word-level prompt produced truncated JSON. Source chunks made the response parseable; citations expand to original transcript IDs and an unsupported model owner is discarded. Record 4604E907-2EE9-4FE6-974A-8D22A5F9914D now contains the natural-audio minutes experiment. Its content quality failed, as explained below. The pinned adapter build, model artifact hash, local-only inference, transcript/source evidence, and all six child gates passed; the audited completion commit is b70ef21.
 
-PBI-018, benchmark technical decisions: [the decision-facing report](ami_asr_benchmark.md) includes same-input accuracy, affected-speaker errors, alternate lapel input, repeated wall time, process resident memory, model footprint, timestamp diagnostics, diarization coverage, warning coverage and spillover, disconnected-network inference, and the MLX minutes experiment. On the common headset input, FluidAudio had 19.48% WER against 28.79% for whisper.cpp. Its affected-speaker reference-linked error rate was 27.78% against 58.55%. Three 120-second runs gave median wall times of 0.73 and 1.29 seconds. The diarizer found three clusters for four reference people and merged the low-quality participant with another speaker. The stored 16 warnings are therefore useful review cues, not reliable participant identification. The natural-audio MLX minutes converted a project goal into a decision, invented two actions, and generated two questions that were not asked. This is an observed quality failure, not a recommendation to use those minutes. The benchmark scoring was reproduced from stored outputs and all six PBI-018 gates passed. Sprint 3 will analyze the measurements and select architecture changes.
+PBI-018, benchmark technical decisions: [the decision-facing report](ami_asr_benchmark.md) includes same-input accuracy, affected-speaker errors, alternate lapel input, repeated wall time, process resident memory, model footprint, timestamp diagnostics, diarization coverage, warning coverage and spillover, disconnected-network inference, and the MLX minutes experiment. On the common headset input, FluidAudio had 19.48% Word Error Rate against 28.79% for whisper.cpp. Its affected-speaker reference-linked error rate was 27.78% against 58.55%. Three 120-second runs gave median wall times of 0.73 and 1.29 seconds. The diarizer found three clusters for four reference people and merged the low-quality participant with another speaker. The stored 16 warnings are therefore useful review cues, not reliable participant identification. The natural-audio MLX minutes converted a project goal into a decision, invented two actions, and generated two questions that were not asked. This is an observed quality failure, not a recommendation to use those minutes. The benchmark scoring was reproduced from stored outputs and all six PBI-018 gates passed. Sprint 3 will analyze the measurements and select architecture changes.
 
 PBI-011.6, bilingual transcription: `transcribe` now accepts
 `--language en|pl|auto`, with `en` as the existing-command default. It saves
@@ -242,8 +242,8 @@ multilingual Whisper model accepts `pl` and `auto`, while `.en` model paths
 are rejected for them. The Fluid helper loads v3 and passes the available
 language hint. `whisperUseGPU: false` requests CPU execution after the
 multilingual model's Metal initialization failed on this Mac. On five pinned
-natural clips per language, v3 WER was 11.49% English and 3.41% Polish;
-Whisper base WER was 18.39% and 27.27%. These read-speech measurements and
+natural clips per language, v3 Word Error Rate was 11.49% English and 3.41% Polish;
+Whisper base Word Error Rate was 18.39% and 27.27%. These read-speech measurements and
 their limits are fully interpreted in the benchmark. Mixed-language `auto`
 omitted the English half of an exploratory splice for both engines.
 
@@ -317,7 +317,7 @@ generated records live under `/private/tmp`, outside Git. The [AMI fixture
 record](ami_es2002a_fixture.md) and [Polish meeting source
 record](polish_sejm_meeting_fixture.md) give provenance. The
 [benchmark](ami_asr_benchmark.md) gives reference-based English and separate
-single-speaker language scores; a defensible whole-clip Polish meeting WER
+single-speaker language scores; a defensible whole-clip Polish meeting Word Error Rate
 is not yet available. Xcode and Metal Toolchain are needed for the optional
 MLX minutes step. The corrected meeting walkthrough ran on this Mac on
 2026-10-02.
@@ -380,7 +380,7 @@ multi-person meeting; the official PDF identifies the chair and other
 speakers. The English transcript has recognition errors; compare it with
 the [AMI benchmark](ami_asr_benchmark.md) rather than treating a nonempty
 transcript as an accuracy pass. The Polish written record is edited and not
-time aligned, so this run has no whole-clip WER. `--language auto` is available, but the
+time aligned, so this run has no whole-clip Word Error Rate. `--language auto` is available, but the
 exploratory English-to-Polish splice lost its English portion.
 
 To read the actual saved words rather than only the counts above, open the
@@ -571,7 +571,7 @@ returned status 2. SwiftPM may print build progress first.
 
 ## Remaining limitations and next checks
 
-The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. FR-11 adds a small paired read-speech check. A later real Polish Sejm excerpt has an official PDF reference: its [passage-level comparison](tests/polish_sejm_pdf_transcription_review_20261002.md) finds recognizable turns and decision content, with word, name, acronym, and numeric-unit errors. It does not provide a whole-excerpt WER or verified speaker IDs. The `auto` setting is unsuitable for an in-recording language switch in the exploratory check, and the multilingual Whisper Metal path failed on this host. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each child and benchmark increment and the reopened PBI-011 parent; architecture interpretation belongs to Sprint 3. No remote push has been made.
+The synthetic fixture proves contracts and corrections, not ASR or LLM accuracy. The AMI benchmark covers one English meeting and selected model sizes on one Mac. FR-11 adds a small paired read-speech check. A later real Polish Sejm excerpt has an official PDF reference: its [passage-level comparison](tests/polish_sejm_pdf_transcription_review_20261002.md) finds recognizable turns and decision content, with word, name, acronym, and numeric-unit errors. It does not provide a whole-excerpt Word Error Rate or verified speaker IDs. The `auto` setting is unsuitable for an in-recording language switch in the exploratory check, and the multilingual Whisper Metal path failed on this host. Speaker labels are anonymous and the poor-headset speaker was merged with another person. Warnings identify ranges for review but cannot yet reliably name the affected person. The natural-audio minutes fail content quality despite valid JSON and source links; no automatic publication should rely on them. The review player's bounded playback change and MLX model packaging need later checks. The six prescribed gates passed for each child and benchmark increment and the reopened PBI-011 parent; architecture interpretation belongs to Sprint 3. No remote push has been made.
 
 ## Model prompt ledger and response gate — 2026-10-02
 
@@ -854,4 +854,4 @@ not the current product contract.
 
 ## Presentation closing correction — 4 October 2026
 
-The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

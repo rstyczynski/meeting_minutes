@@ -16,3 +16,9 @@ list is welcome when I ask for enumerated arguments or when order matters.
 Keep `PROGRESS_BOARD.md` as the RUP method's required four-column Markdown
 table. Do not reformat completed historical sprint evidence solely to apply
 this preference.
+
+## Metric terminology — 2026-10-04
+
+Use the full name “Word Error Rate” in explanations, presentations and
+project-authored narrative documents. Do not shorten this metric to initials.
+Retain machine-readable field names and historical raw test evidence.

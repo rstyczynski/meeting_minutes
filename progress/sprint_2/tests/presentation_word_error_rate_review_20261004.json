@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "slideCount": 21,
+  "changedParts": [
+    "ppt/slides/slide13.xml",
+    "ppt/notesSlides/notesSlide16.xml",
+    "ppt/slides/slide19.xml",
+    "ppt/notesSlides/notesSlide19.xml"
+  ],
+  "unchangedSlidesPixelIdentical": 19,
+  "chartsAndWorkbooksBytePreserved": true,
+  "metricWrittenInFull": true,
+  "sha256": "0683bafb3dedcf27685a3d4cbb6636aa547a098e4099092bea8a1815b36bbdad",
+  "canonicalMatches": true,
+  "localLinksChecked": 533,
+  "missingLinks": []
+}
