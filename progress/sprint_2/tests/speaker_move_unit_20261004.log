@@ -1,0 +1,58 @@
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[1 / 22] SwiftSyntaxMacroExpansion
+Build complete! (0,74 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MeetingCoreTests started.
+◇ Test testChairCorrections() started.
+✔ Test testChairCorrections() passed after 0.003 seconds.
+✔ Suite MeetingCoreTests passed after 0.003 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.003 seconds.

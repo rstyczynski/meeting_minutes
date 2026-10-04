@@ -2,6 +2,16 @@
 
 Status: all five original PBI-011 children, the initial PBI-018 English benchmark, and the original PBI-011 parent scope passed separate six-gate runs. The approved FR-11 increment added a sixth child, PBI-011.6, whose six gates passed. English meeting, Polish read-speech, and later Polish multi-person meeting model runs were measured; the paired PBI-018 extension has a separate gate run. The completed technical measurement includes explicit model-quality failures and limits. The [implementation record](sprint_2_implementation.md) gives working user commands; this record reports test intent, expected result, observed result, and limits.
 
+The [single-command Product Owner demo rehearsal](tests/po_demo_rehearsal_20261004.md)
+is a separate real-model check on the current Mac. Its preflight passed;
+its CLI stages saved fresh English and Polish transcripts, speaker labels,
+warnings, and cleanup proposals. Fresh 30B minutes generation failed the
+response gate twice and preserved both transcripts. The [live presenter
+script](demo/README.md) shows that observed result and labels the earlier
+successful 30B output as recorded comparison evidence. Operator listening,
+audio-confirmed correction, name assignment, and Product Owner review were
+not part of the automated rehearsal.
+
 ## Environment and fixtures
 
 The tests run from the repository root on macOS with Swift 6.3.3 and the pinned open-source Swift Testing 6.3.2 package. Xcode 27 is installed for the MLX Metal experiment. The synthetic WAV and reference JSON are invented and checked in. AMI ES2002a audio and annotations were approved by the Product Owner and are held outside Git with the local models. Their source, license, and hashes are in [the fixture record](ami_es2002a_fixture.md). The synthetic tests need no credentials or meeting service.

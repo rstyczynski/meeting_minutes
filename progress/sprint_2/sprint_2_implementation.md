@@ -228,6 +228,16 @@ and [benchmark_fleurs.py](../../experiments/benchmark_fleurs.py).
 
 ## Product Owner walkthrough — real local models
 
+The current handover uses the [single-command live demo and presenter
+script](demo/README.md). It builds its own settings, starts with a fresh
+store, pauses for operator review, and distinguishes fresh model output
+from the earlier successful 30B trial. A [4 October rehearsal](tests/po_demo_rehearsal_20261004.md)
+ran all noninteractive CLI stages: 2576 English and 802 Polish segments,
+then quality-gate rejection of both fresh 30B minutes responses with both
+transcripts retained. The older command sequence below documents the
+individual 4B experiments and their historical output; use the new demo
+script for the Product Owner session.
+
 Run these commands from the repository root in one Terminal session on the
 Sprint 2 Mac. They use real local models and public, natural audio; they do
 not inject answers. The AMI English meeting has a documented weak headset.

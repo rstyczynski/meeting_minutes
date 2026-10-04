@@ -17,19 +17,20 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [16-slide live-journey presentation](sprint_2_increment_demo_architecture_20261004.pptx)
-and the [three-slide quality review](sprint_2_quality_review_20261004.pptx)
-alongside
-the [operator manual](user_manual.md). Slides 2–4 establish the Sprint goal,
+Open the current [18-slide live-journey presentation](sprint_2_increment_demo_operator_20261004.pptx)
+and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
+The [operator manual](user_manual.md) documents individual commands and
+recovery. Slides 2–4 establish the Sprint goal,
 the shared Swift architecture, and the two model interfaces. ASR receives
 audio and a language setting, not a text prompt. The staged Qwen model
 receives transcript utterances and task-specific prompts; its responses go
 through Swift source checks and bounded repair. The full prompt templates
 are in the [implementation ledger](sprint_2_implementation.md#model-prompt-ledger-and-response-gate--2026-10-02).
 Slides 5–10 then show the real meeting inputs, saved transcript and warning,
-a speaker-label name entry, and source review of draft minutes. The manual supplies
-the exact runnable commands, local model and media prerequisites, readable
-`jq` checks, and recovery steps. The [handover record](sprint_2_handover.md)
+candidate cleanup, operator review, and neutral speaker labels. Slides
+11–12 show source review and response gating. The demo script supplies
+exact runnable commands, local model and media preflight, readable `jq`
+checks, and recovery steps. The [handover record](sprint_2_handover.md)
 records the developer's rehearsal and the still-pending Product Owner
 walkthrough. The developer must operate the product live for handover;
 the slides and this document support that inspection.
@@ -42,8 +43,10 @@ local audio and the model weights are staged outside Git on the Sprint 2
 Mac; the deck starts from a fresh local record store. The single-speaker
 FLEURS clips appear only in the separate language benchmark.
 
-First, `transcribe` saved 2,582 English and 801 Polish timed segments in
-the latest fresh rehearsal. The [Sejm PDF comparison](tests/polish_sejm_pdf_transcription_review_20261002.md)
+In the 4 October single-command rehearsal, `transcribe` saved 2,576
+English and 802 Polish timed segments. The older handover rehearsal had
+2,582 and 801; the live run prints its own observed counts. The
+[Sejm PDF comparison](tests/polish_sejm_pdf_transcription_review_20261002.md)
 finds the main turns, several budget amounts, and the positive-opinion
 decision recognizable in the Polish transcript. It also finds errors in
 names, acronyms, words, and numerical units. The PDF is edited and not
@@ -52,14 +55,19 @@ time aligned, so no whole-excerpt Polish meeting word error rate is claimed.
 Next, `recognize` adds anonymous speaker labels. The AMI rehearsal saved
 three clusters and 16 weak-audio warnings although the reference meeting
 has four participants: the poor-headset participant was merged with
-another person. The chair can then assign a name. The manual demonstrates
-an explicitly invented AMI alias to show the edit operation, while the
-Sejm clusters stay neutral. The official PDF supports naming the chair on
-specific turns but does not verify every segment in S1. The alias was not
-passed into the separate minutes input.
+another person. The operator can review source audio and save a reversible
+word correction. A name is entered only after listening to the whole
+cluster. The current handover does not assign a participant name; the
+historical invented AMI alias was test-only and is excluded from the live
+journey. The official Sejm PDF identifies the chair on specific turns but
+does not verify every segment in S1.
 
-Finally, `summarize` runs the local model and validates its response before
-saving any review items. The earlier evidence-first gate checked JSON
+Finally, `summarize` runs the local 30B staged model and validates its
+response before saving any review items. The fresh 4 October script run
+rejected both model responses and retained the transcripts; its result
+will be shown rather than silently replaced. An earlier controlled 30B
+run saved five AMI and four Sejm topic summaries, but strict source
+review supported only 2/5 and 2/4. The earlier evidence-first gate checked JSON
 structure, source IDs, exact quotations, and evidence types, with at most
 two specific repair requests. Controlled tests passed, but the 4B model's
 real AMI and Sejm candidates failed that strict gate; the transcript

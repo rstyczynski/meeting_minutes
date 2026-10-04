@@ -126,8 +126,9 @@ state the comparison and limits.
 
 The prior documentation approval request was superseded by the FR-11 scope
 addition. The Product Owner then introduced P9, a developer-led handover
-before Phase 5 approval. The [user manual](user_manual.md), [slide
-demonstration](sprint_2_increment_demo_architecture_20261004.pptx), and [handover
+before Phase 5 approval. The [single-command demo and presenter script](demo/README.md),
+[user manual](user_manual.md), [slide
+demonstration](sprint_2_increment_demo_operator_20261004.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
 brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
 failures. The Product Owner initially stated that the minutes defect blocked
@@ -150,7 +151,7 @@ defines the checks and bounded repair, and the [implementation
 record](sprint_2_implementation.md) includes the exact active and historical
 model prompts. The [test record](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
 links the controlled checks and six passing Sprint gates. The earlier [14-slide
-presentation](sprint_2_increment_demo.pptx) includes the response gate and
+presentation](sprint_2_increment_demo_initial_20261002.pptx) includes the response gate and
 its real Sejm failure. The [manual](user_manual.md) and [Product Owner
 brief](sprint_2_product_owner_presentation.md) now distinguish historical
 drafts from the active validator's rejected output. A passing technical gate

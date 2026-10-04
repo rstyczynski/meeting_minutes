@@ -1,0 +1,59 @@
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Computing dependencies]
+[Using on-disk description]
+[1 / 47] meeting-review-product
+Build complete! (0,83 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MultiStageTests started.
+◇ Test testAudioReviewedTextCorrectionIsReversible() started.
+✔ Test testAudioReviewedTextCorrectionIsReversible() passed after 0.001 seconds.
+✔ Suite MultiStageTests passed after 0.001 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.001 seconds.

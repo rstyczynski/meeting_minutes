@@ -127,18 +127,19 @@ compatibility with the first prototype tests. Copyable working commands,
 formatted `jq` output, prerequisites, and an error example are in the
 [implementation record](progress/sprint_2/sprint_2_implementation.md).
 
-For Product Owner validation, follow the [real-model walkthrough](progress/sprint_2/sprint_2_implementation.md#product-owner-walkthrough--real-local-models):
-English and Polish transcription, weak-audio warnings, manual speaker naming,
-and minutes inspection. Its commands use the assets staged on the Sprint 2
-Mac and show the observed output and current limitations. The [benchmark
+For Product Owner validation, follow the [single-command demo and presenter
+script](progress/sprint_2/demo/README.md): English and Polish transcription,
+weak-audio warnings, operator review, neutral speaker labels, and minutes
+inspection. The script uses the assets staged on the Sprint 2 Mac and
+shows each fresh result and its limitations. The [benchmark
 report](progress/sprint_2/ami_asr_benchmark.md) interprets model quality and
 failures against references. The separate [functional test
 record](progress/sprint_2/sprint_2_tests.md) contains the synthetic CLI
 contract check and links the gate evidence.
 
-The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives the operator's four-step path and
+The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives individual operations and
 recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
-and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_architecture_20261004.pptx)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_operator_20261004.pptx)
 present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
 presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
 is the concise guide to that review set. A real Polish Sejm

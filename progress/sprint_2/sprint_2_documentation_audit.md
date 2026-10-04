@@ -1,5 +1,77 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Product Owner single-command demonstration — 2026-10-04
+
+The Product Owner requested a script they can execute which matches the
+whole Product Owner presentation. The [one-command script](demo/run.sh),
+[presenter sequence](demo/README.md), and current
+[18-slide deck](sprint_2_increment_demo.pptx) now follow the same journey:
+goal, architecture, real English and Polish transcription, weak audio,
+operator review, neutral or verified speakers, staged 30B minutes, quality
+gate, benchmark, and decision. The previous 14-slide file was preserved as
+[dated history](sprint_2_increment_demo_initial_20261002.pptx) before the
+validated 18-slide file became the canonical P9 path. The [deck validation
+receipt](tests/presentation_validation_operator_20261004.json) confirms
+18 slides, chart values, fonts, package integrity, layout and reimport;
+rendered slide 16 was visually checked after its clipped imported labels
+were rebuilt. Slides 8–10 show operator review and its unverified live
+boundary rather than a fabricated speaker identity.
+
+Earlier dated audit sections below call natural-meeting minutes a delivery
+blocker because that was the review position when those increments were
+tested. The Product Owner subsequently directed us to present that defect
+as a prototype finding and next-work direction, without claiming correct
+minutes. The current handover gate is an honest live demonstration of the
+transcription, weak-audio, speaker/operator controls, model gate, and
+measured limitations. That direction does not make the generated minutes
+correct or close the open ASR, diarization, and human-review questions.
+
+The root [SRS](../../docs/srs.md) was checked for FR-05, FR-09/10/11 and
+NFR-06; the [architecture](../../docs/architecture.md) for separate
+model interfaces and staged response validation; the
+[test profile](../../docs/test-profile.md) for operational and manual
+checks; [Sprint setup](sprint_2_setup.md) and accepted
+[design](sprint_2_design.md) for PBI-011/PBI-018 and the operator boundary.
+No requirement, design or status was changed by this demonstration work.
+The [implementation](sprint_2_implementation.md), [functional tests](sprint_2_tests.md),
+[README](../../README.md), [user manual](user_manual.md),
+[documentation summary](sprint_2_documentation.md), [Product Owner brief](sprint_2_product_owner_presentation.md),
+and [handover](sprint_2_handover.md) were updated to point to the single
+entry point and present fresh versus historical outcomes consistently.
+The [progress board](../../PROGRESS_BOARD.md) still records the active
+Sprint 2 and PBI-011/PBI-011.5 as under construction; this script does
+not change those statuses.
+
+The [rehearsal record](tests/po_demo_rehearsal_20261004.md) documents
+`--check` passing and three complete real-model `--rehearsal` runs, including
+the final script's 0 exit status. Fresh minutes were rejected in both
+meetings, and the earlier source-audited successful 30B trial is labeled
+as recorded comparison in the script and presenter text. No synthetic
+meeting or `--fixture-reference` enters the demo. Operator playback,
+audio-reviewed real correction, verified name assignment, Product Owner
+questions, and handover decision remain pending until a person operates
+the live script. The direct native UI replay could not be observed in
+the developer's earlier rehearsal, so the document does not claim it.
+
+The verification for this handover increment is the three full CLI
+rehearsals, shell syntax and preflight, deck finalizer and slide render,
+saved-record `jq` checks, local link and narrative-format scan, and
+`git diff --check`; their final pre-commit results are recorded with this
+increment. No product code or test implementation changed, so the earlier
+PBI gate results remain separate. The managed handover decision and Phase
+5 documentation approval are not inferred from the completed script.
+
+Final pre-commit checks: `bash -n progress/sprint_2/demo/run.sh` and the
+copyable `bash progress/sprint_2/demo/run.sh --check` passed. The last
+real-model `--rehearsal` returned 0 and its per-step results are in the
+rehearsal record; the minutes generator itself returned 2 for both fresh
+meetings as shown there. A local-link scan checked 509 targets across
+README and Sprint 2 narrative files with zero missing; the current
+presenter, handover and rehearsal narrative has no Markdown tables.
+`git diff --check` passed. The canonical deck and validated operator deck
+have the same SHA-256
+`06182177dea39ab4b607ea10c0332f880498fcb7d03e7bb71f6294cd342ec4bc`.
+
 ## Architecture-first presentation reconciliation — 2026-10-04
 
 The Product Owner requested that the presentation open with Sprint goals and
@@ -389,7 +461,7 @@ documentation-approval decision, without changing PBI acceptance, board
 states, or PLAN status. The initial root `user_manual.md` explained prerequisites,
 the four supported product tasks, exact commands and expected results,
 common recovery, and current limits. The six-slide
-`sprint_2_increment_demo.pptx` maps the live path to PBI-011 and the measured
+`sprint_2_increment_demo_initial_20261002.pptx` maps the live path to PBI-011 and the measured
 comparisons to PBI-018, discloses the speaker, minutes, and language-switch
 failures, and asks for a Product Owner handover decision. The separate
 `sprint_2_handover.md` records claims, checks, limits, and pending feedback.
@@ -476,7 +548,7 @@ path is not represented as a successful minutes-quality result.
 The [manual](user_manual.md), [implementation record](sprint_2_implementation.md#product-owner-walkthrough--real-local-models),
 [test record](sprint_2_tests.md), [handover record](sprint_2_handover.md),
 [documentation review](sprint_2_documentation.md), README, and 13-slide
-[deck](sprint_2_increment_demo.pptx) now reflect the real Sejm journey and
+[deck](sprint_2_increment_demo_initial_20261002.pptx) now reflect the real Sejm journey and
 remaining blocker. At that point, the copied deck SHA-256 was
 `000ef7f4bda0e89b499b0e73a972ade07acbc55c07d27f6da0604d9db3d1d39f`;
 package, layout, native-chart, font, and import validation passed. All 13
@@ -535,7 +607,7 @@ passed. Minutes quality remains blocked independently of this ASR review.
 ## Product Owner presentation set and final consistency check — 2026-10-02
 
 The [presentation brief](sprint_2_product_owner_presentation.md),
-[13-slide deck](sprint_2_increment_demo.pptx), [manual](user_manual.md),
+[13-slide deck](sprint_2_increment_demo_initial_20261002.pptx), [manual](user_manual.md),
 and [handover record](sprint_2_handover.md) now form one review set. The deck
 shows real AMI and Sejm inputs, actual saved transcript and warning output,
 the deliberately invented AMI alias, neutral Sejm speakers, the supported
@@ -594,7 +666,7 @@ links each retained log.
 
 The Product Owner manual, presentation brief, documentation summary, and
 handover now distinguish old `minutes-v2` saved drafts from the current
-evidence-first gate. The 14-slide [deck](sprint_2_increment_demo.pptx)
+evidence-first gate. The 14-slide [deck](sprint_2_increment_demo_initial_20261002.pptx)
 contains a gate slide that states the real Sejm draft still fails. Package
 and layout validation found 14 slides and zero layout findings; all slides
 were rendered and the new slide was visually inspected. The Sprint and both
@@ -827,10 +899,11 @@ targets. `swift run meeting-summarizer inspect-cleanup` on the staged
 Sejm record returned 16 proposals and 32 reading utterances; the
 manual's `jq` inspection shape was also executed. The trial runner passed
 Python compilation, the editable draw.io file parsed as two pages, and
-`git diff --check` passed. The commands in the existing real-model walkthrough have not
-yet been rerun as one fresh 30B live handover journey; that rehearsal,
-operator audio review, and Product Owner handover decision remain
-pending. The current candidate is an architecture result, not a
+`git diff --check` passed. At the time of this experiment audit, the
+commands had not yet been rerun as one fresh 30B handover journey. The
+later single-command rehearsal at the top of this file completed that
+CLI run; operator audio review and the Product Owner handover decision
+remain pending. The current candidate is an architecture result, not a
 participant-ready minutes capability.
 
 The bounded staged-minutes experiment is ready for an evidence commit.

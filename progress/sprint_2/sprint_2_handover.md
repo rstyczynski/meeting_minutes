@@ -9,13 +9,15 @@ pending. Sprint 2 remains `Progress` in
 ## Purpose and review material
 
 The Product Owner asked for a developer-led handover under P9 of the local
-RUP patch. The [user manual](user_manual.md) gives prerequisites, runnable
-commands, expected results, and recovery. The current [16-slide demonstration
-deck](sprint_2_increment_demo_architecture_20261004.pptx) starts with the
+RUP patch. The [single-command demo and presenter script](demo/README.md)
+is the exact live order; the [user manual](user_manual.md) gives individual
+operations and recovery. The current [18-slide demonstration
+deck](sprint_2_increment_demo_operator_20261004.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
-interfaces before the real-meeting journey. It includes concise excerpts
+interfaces before the real-meeting journey, then shows operator review,
+response validation and benchmark evidence. It includes concise excerpts
 of the staged prompts; the [implementation prompt ledger](sprint_2_implementation.md#model-prompt-ledger-and-response-gate--2026-10-02)
-holds their full text. The earlier [14-slide deck](sprint_2_increment_demo.pptx)
+holds their full text. The earlier [14-slide deck](sprint_2_increment_demo_initial_20261002.pptx)
 is retained as historical presentation evidence. The [quality review slides](sprint_2_quality_review_20261004.pptx)
 show the staged control architecture, measured coverage, and source-audit
 failures. The [Product Owner presentation
@@ -26,6 +28,16 @@ evidence. The [benchmark](ami_asr_benchmark.md) interprets model measurements.
 The [documentation audit](sprint_2_documentation_audit.md) tracks consistency.
 The Product Owner must see the actual product operated live and be able to
 inspect or challenge a step before an acceptance decision is requested.
+
+The [4 October single-command rehearsal](tests/po_demo_rehearsal_20261004.md)
+executed real English and Polish transcription, diarization, cleanup and
+fresh multi-stage 30B calls. Both fresh minutes calls were rejected by
+the validator; both transcripts were retained. The demo therefore prints
+the fresh failure and explicitly labels the earlier successful staged
+run as recorded evidence. Operator playback, audio-reviewed correction,
+verified name entry and a Product Owner decision still require the live
+session. The earlier [16-slide deck](sprint_2_increment_demo_architecture_20261004.pptx)
+remains the pre-operator revision.
 
 The 4 October staged 30B experiment is documented in the
 [controlled trial report](tests/multistage_minutes_trial_20261004.md).
@@ -49,7 +61,7 @@ are used in the real-model journey.
 
 ## Fresh presentation rehearsal — 2026-10-02
 
-The final presentation uses a fresh store under
+The 2 October rehearsal used a fresh store under
 `/private/tmp/meeting-sprint2-po-rehearsal.wFIPLx`. The [full AMI
 record](tests/43CE873A-603C-473F-9B23-A785A0689456.json) contains 2,582
 timed segments, three anonymous speaker clusters, and 16 weak-audio warnings.

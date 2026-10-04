@@ -4,6 +4,14 @@ Status: Sprint 2 architectural prototype. The handover and Product Owner
 documentation approval are pending. These instructions describe behavior
 that ran locally on the Sprint 2 Mac; this is not a release guide.
 
+For the Product Owner review, use the [single-command live demo and its
+slide-by-slide presenter script](demo/README.md). Run `bash
+progress/sprint_2/demo/run.sh --check` first, then `bash
+progress/sprint_2/demo/run.sh` from the repository root. That script creates
+the settings files and fresh result store itself, prints each saved result,
+and pauses for operator audio review. The longer commands below document
+individual operations; they are not the current presentation sequence.
+
 ## What the prototype does
 
 The macOS CLI creates a timed transcript from a local WAV recording and saves
@@ -108,27 +116,34 @@ change has build coverage but has not been manually replayed.
 The Polish meeting saved S1, S2, and S3 and no weak-audio warnings. These
 are speaker clusters, not verified identities or an accuracy score.
 
-## 3. Demonstrate a manual name entry
+## 3. Review audio before naming or moving a speaker
 
-The chair must establish an identity by listening or using meeting context.
-This example saves a deliberately invented demonstration alias for S2; it
-does not assert the identity of an AMI participant. The Polish S1 label is
-left neutral: the official PDF identifies the chair on particular turns,
-but the complete S1 cluster has not been verified.
+The chair must establish an identity by listening and checking the full
+cluster, not by naming one introduction. The AMI run merged four reference
+people into three clusters, so no AMI cluster receives a participant name
+in the current live journey. The official Sejm PDF identifies its chair on
+particular turns but does not verify every segment of S1. That cluster
+also remains neutral. The earlier `S2 = Ada (demonstration alias)` run
+showed that the CLI can save a name; it was a test alias and is excluded
+from the current identity demonstration.
+
+Open the Sejm record in a separate Terminal window so the review app can
+remain visible while the CLI is used. Select the source range near
+565–569 seconds, play the short range, and pause or close the app after
+listening. Its latest bounded-stop behavior still needs a human replay
+check. The developer could build and start the app but could not attach
+to its window in the 4 October rehearsal, so no successful listening is
+claimed there.
 
 ~~~bash
-swift run meeting-summarizer recognize name "$english_id" S2 'Ada (demonstration alias)' --store "$store_dir"
-cat "$store_dir/$english_id.json" | jq -r '.speakerNames | to_entries[] | "\(.key) = \(.value)"'
-cat "$store_dir/$polish_id.json" | jq -r '"Polish named speakers: \(.speakerNames|length)"'
+swift run meeting-review "$polish_id" --store "$store_dir"
 ~~~
 
-The fresh handover record says `S2 = Ada (demonstration alias)` on AMI and zero named
-speakers on the neutral Sejm record. An earlier rehearsal named Sejm S1
-from the opening turn, but that name applied to the full unverified
-cluster, so that operation was removed from the live journey. In an actual meeting,
-enter only a name the chair has verified. `recognize move` can reassign a
-wrongly labeled transcript segment to an existing speaker ID. The prototype
-does not automatically identify people from their voices.
+Only after checking the audio should the chair use `recognize name` for a
+verified cluster, or `recognize move` for a segment that belongs to an
+already existing speaker ID. The latter cannot create a fourth cluster
+to repair the AMI merge. The [operator-review rehearsal](tests/operator_review_rehearsal_20261004.md)
+separates tested edit contracts from the still-pending real-audio action.
 
 ## Review and correct transcript words
 
@@ -142,16 +157,26 @@ raw transcript.
 swift run meeting-summarizer inspect-cleanup "$polish_id" --store "$store_dir" | jq '{candidates: .candidates, utterances: [.utterances[] | {id, speakerID, text, sourceSegmentIDs}]}'
 ~~~
 
-The staged Sejm experiment proposed joining the short unassigned
-“przedstawienie tej tego budżetu” continuation with the chair's preceding
-turn. That is a proposal from timing and neighboring labels; confirm it
-against audio before trusting the speaker attribution. If a word is
-wrong, `transcribe correct` takes the meeting ID, exact segment ID, and
-audio-checked replacement text, followed by `--audio-reviewed yes`,
-`--store`, and an optional note. It saves an audit entry and leaves the
-original ASR segment untouched. A later correction can restore the
-original words. Every correction clears older draft minutes so the
-operator must regenerate them from the current reading view. The
+The saved real Sejm record yields 16 join proposals and 32 reading
+utterances. Raw `segment_758` through `segment_761` are unassigned from
+565.36 to 569.04 seconds, with the words “przedstawienie tej tego
+budżetu.” The reading view places them with the preceding S1 turn as
+`utt_30`. That is a proposal from timing and neighboring labels; confirm
+it against audio before trusting the speaker attribution. The [saved CLI
+output](tests/operator_cleanup_rehearsal_20261004.json) contains the
+original IDs and proposal reasons.
+
+If a word is wrong, `transcribe correct` takes the meeting ID, exact
+segment ID, and audio-checked replacement text, followed by
+`--audio-reviewed yes`, `--store`, and an optional note. It saves an audit
+entry and leaves the original ASR segment untouched. A later correction
+can restore the original words; both entries remain in the record. Every
+correction clears older draft minutes so the operator must regenerate
+them from the current reading view. The CLI rejects a correction without
+the audio-reviewed flag and leaves the record unchanged, as the
+[rehearsal](tests/operator_review_rehearsal_20261004.md) shows. The
+positive before/after and undo path has passing controlled tests, but has
+not been exercised against an audio-verified real meeting. The
 [implementation record](sprint_2_implementation.md#prototype-conclusion-what-the-minutes-experiment-teaches-us)
 explains why this review is needed.
 
