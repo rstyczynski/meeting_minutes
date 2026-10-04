@@ -1,5 +1,11 @@
 # Sprint 2 — Product Owner presentation narrative
 
+## Slide 9: synchronized review before correction
+
+The accepted refinement adds two visible directions. Play or drag **Audio position** to show yellow timed text and follow it; select a phrase to pause and seek to its source start. Explicit Play resumes, while native correction selection remains separate. Show the Sejm 148.40–181.68 s gap with no source mark. Show the timing limit using an already corrected paragraph: its replacement is one source span, so selection inside it seeks to the span's earliest start. Do not claim new replacement-word timestamps.
+
+Then choose Correct selection, play with before/after context, verify a real error and save. Restore and history retain the earlier correction behavior. [Presenter steps](demo/README.md#bidirectional-synchronization-on-slide-9), [manual](user_manual.md#synchronize-audio-and-transcript-text) and [test receipt](tests/transcript_audio_sync_review_20261004.json) cover the same behavior. Automated mapping/build evidence is not a completed native listening or scrolling rehearsal. Those checks and the Product Owner handover decision remain pending.
+
 ## Latest operator feedback: long silence and audio position
 
 The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.

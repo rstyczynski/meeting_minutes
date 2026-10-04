@@ -4,28 +4,29 @@ import SwiftUI
 struct ReviewAudioTimeline: View {
     @ObservedObject var playback: ReviewPlayback
     @State private var scrubbing = false
-    @State private var target = 0.0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Slider(value: Binding(get: {
-                scrubbing ? target : min(playback.positionSeconds, max(playback.durationSeconds, 0.001))
-            }, set: { target = $0 }), in: 0...max(playback.durationSeconds, 0.001)) { editing in
+                min(playback.displayPositionSeconds, max(playback.durationSeconds, 0.001))
+            }, set: { value in
+                if scrubbing { playback.preview(to: value) }
+                else { playback.seek(to: value) } // Keyboard and accessibility adjustments also seek.
+            }), in: 0...max(playback.durationSeconds, 0.001)) { editing in
                 if editing {
-                    target = playback.positionSeconds
                     scrubbing = true
-                    playback.pause()
+                    playback.beginScrubbing()
                 } else {
                     scrubbing = false
-                    playback.seek(to: target)
+                    playback.finishScrubbing()
                 }
             }
             .disabled(playback.durationSeconds <= 0)
             .accessibilityLabel("Audio position")
             .accessibilityIdentifier("audioPosition")
-            Text(String(format: "%.2f / %.2f s", scrubbing ? target : playback.positionSeconds, playback.durationSeconds))
+            Text(String(format: "%.2f / %.2f s", playback.displayPositionSeconds, playback.durationSeconds))
                 .font(.caption.monospacedDigit())
-            Text("Drag to seek and pause. Play continues from that position.")
+            Text("Drag to mark transcript text and seek. Selecting text also seeks and pauses. Play resumes.")
                 .font(.caption).foregroundStyle(.secondary)
         }
     }

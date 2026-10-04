@@ -21,6 +21,8 @@ private struct ReviewScreen: View {
     private let store: MeetingStore
     @State private var readingView: TranscriptCleanupResult?
     @State private var readingError: String?
+    @State private var audioIndex: TranscriptAudioIndex?
+    @State private var followedUtteranceID: String?
     @StateObject private var playback: ReviewPlayback
     @State private var selectedText: TranscriptSelection?
     @State private var selectionError: String?
@@ -37,9 +39,12 @@ private struct ReviewScreen: View {
         self.store = store
         _playback = StateObject(wrappedValue: ReviewPlayback(url: URL(fileURLWithPath: record.sourcePath)))
         do {
-            _readingView = State(initialValue: try record.readableTranscript())
+            let index = try TranscriptAudioIndex(record: record)
+            _audioIndex = State(initialValue: index)
+            _readingView = State(initialValue: index.reading)
             _readingError = State(initialValue: nil)
         } catch {
+            _audioIndex = State(initialValue: nil)
             _readingView = State(initialValue: nil)
             _readingError = State(initialValue: error.localizedDescription)
         }
@@ -61,8 +66,11 @@ private struct ReviewScreen: View {
         }
         do {
             let selection = try record.transcriptSelection(utteranceID: utterance.id, range: range)
+            guard let audioIndex else { throw MeetingError.adapterFailure("Transcript audio mapping is unavailable") }
+            let start = try audioIndex.sourceStart(utteranceID: utterance.id, range: selection.displayRange)
             selectedText = selection
             selectionError = nil
+            playback.seek(to: start)
             return selection.displayRange
         } catch {
             selectedText = nil
@@ -84,7 +92,9 @@ private struct ReviewScreen: View {
             let updated = try store.correctTranscript(record.id, selection: selection,
                 to: correctionText, audioReviewed: audioReviewed, restore: restore)
             record = updated
-            readingView = try updated.readableTranscript()
+            let index = try TranscriptAudioIndex(record: updated)
+            audioIndex = index
+            readingView = index.reading
             readingError = nil
             correctionNotice = "Correction saved. Original words retained; regenerate draft minutes."
             selectedText = nil
@@ -152,6 +162,10 @@ private struct ReviewScreen: View {
         .onDisappear { playback.pause() }
     }
 
+    private var highlights: [TranscriptAudioSpan] {
+        (try? audioIndex?.highlights(at: playback.displayPositionSeconds)) ?? []
+    }
+
     var body: some View {
         HStack(spacing: 18) {
             VStack(alignment: .leading, spacing: 8) {
@@ -167,6 +181,7 @@ private struct ReviewScreen: View {
                         default: nil
                         }
                     })
+                    ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             ForEach(readingView.utterances) { utterance in
@@ -187,7 +202,8 @@ private struct ReviewScreen: View {
                                     if let reason = utterance.boundaryReason {
                                         Text(reason).font(.caption).foregroundStyle(.secondary)
                                     }
-                                    SelectableTranscriptText(text: utterance.text, identifier: "transcript-\(utterance.id)") { range in
+                                    SelectableTranscriptText(text: utterance.text, identifier: "transcript-\(utterance.id)",
+                                        playbackRanges: highlights.filter { $0.utteranceID == utterance.id }.map(\.displayRange)) { range in
                                         selectText(range, utterance: utterance)
                                     }
                                     if proposed {
@@ -233,8 +249,15 @@ private struct ReviewScreen: View {
                                 .padding(12)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
+                                .id(utterance.id)
                             }
                         }
+                    }
+                    .onChange(of: highlights.first?.utteranceID) { _, id in
+                        guard let id, id != followedUtteranceID else { return }
+                        followedUtteranceID = id
+                        proxy.scrollTo(id, anchor: .top)
+                    }
                     }
                 } else {
                     Text("Unable to prepare readable transcript: \(readingError ?? "Unknown error")")
@@ -255,6 +278,11 @@ private struct ReviewScreen: View {
                 }
                 ReviewAudioTimeline(playback: playback)
                 Text(playback.message).font(.caption)
+                Text(highlights.isEmpty ? "No timed transcript text at this position" :
+                    (highlights.contains { $0.precision == .correctedRange }
+                        ? "Yellow: corrected source range; replacement words have no individual times"
+                        : "Yellow: current timed source text"))
+                    .font(.caption).foregroundStyle(.secondary)
                 Text("Meeting \(record.id.uuidString)").font(.headline)
                 ScrollView {
                   LazyVStack(alignment: .leading) {

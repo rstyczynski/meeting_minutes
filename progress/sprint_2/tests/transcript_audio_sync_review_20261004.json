@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-04",
+  "scope": "Accepted PBI-011.4/011.5 FR-06 bidirectional transcript/audio synchronization",
+  "designApproval": "Product Owner: accepted",
+  "baselineCommit": "b57b66d",
+  "testCommand": "tests/run-sprint-gates.sh progress/sprint_2 transcript_sync_fixed",
+  "gates": [
+    {
+      "gate": "A1_smoke",
+      "log": "test_run_transcript_sync_fixed_A1_smoke_20261004_234203.log",
+      "result": "PASS"
+    },
+    {
+      "gate": "A2_unit",
+      "log": "test_run_transcript_sync_fixed_A2_unit_20261004_234203.log",
+      "result": "PASS"
+    },
+    {
+      "gate": "A3_integration",
+      "log": "test_run_transcript_sync_fixed_A3_integration_20261004_234203.log",
+      "result": "PASS"
+    },
+    {
+      "gate": "B1_smoke",
+      "log": "test_run_transcript_sync_fixed_B1_smoke_20261004_234203.log",
+      "result": "PASS"
+    },
+    {
+      "gate": "B2_unit",
+      "log": "test_run_transcript_sync_fixed_B2_unit_20261004_234203.log",
+      "result": "PASS"
+    },
+    {
+      "gate": "B3_integration",
+      "log": "test_run_transcript_sync_fixed_B3_integration_20261004_234203.log",
+      "result": "PASS"
+    }
+  ],
+  "verifiedByAutomatedAssertions": {
+    "unit": "UT-22 / MultiStageTests.testTranscriptAudioSynchronization",
+    "integration": "IT-17 / MeetingIntegrationTests.testSavedTranscriptAudioSynchronization",
+    "sourceFixture": "tests/fixtures/long_silence_saved_record.json",
+    "fixtureSourceParts": 38,
+    "sejmGapSeconds": 33.28,
+    "noHighlightSampleTimes": [
+      148.4,
+      150,
+      170,
+      181.679
+    ],
+    "postGapSourceStartSeconds": 181.68,
+    "earlierCorrectedParagraphSeekSeconds": 134.88,
+    "coveredCases": [
+      "start-inclusive/end-exclusive intervals",
+      "repeated Polish phrases by source identity and UTF-16 position",
+      "emoji/grapheme validation",
+      "multiword source precision",
+      "corrected-range granularity and internal untimed gap",
+      "restore original",
+      "overlapping speech retains multiple hits",
+      "read-only query leaves store bytes unchanged",
+      "save/reload rebuild retains raw sources/history"
+    ]
+  },
+  "nativeBuild": "PASS in A1/B1, compiles Meeting Review without launching it",
+  "nativeVerification": {
+    "status": "PENDING",
+    "checks": [
+      "audible word/highlight alignment",
+      "mouse and keyboard selection seek/pause",
+      "slider preview/release",
+      "off-screen following",
+      "highlight does not trigger seek or replace selection",
+      "correction Save/Restore/Cancel/restart"
+    ],
+    "reason": "Earlier QA-window launch was declined; no new native app launch performed."
+  },
+  "qualityClaim": "No ASR/LLM rerun or transcription accuracy improvement.",
+  "failureHistory": [
+    {
+      "attempt": "transcript_sync_red_20261004_233441",
+      "outcome": "A1 pass; A2 red because new TranscriptAudioIndex API absent."
+    },
+    {
+      "attempt": "transcript_sync_20261004_234042",
+      "outcome": "A1 blocked by nested SwiftPM sandbox; no tests executed."
+    },
+    {
+      "attempt": "transcript_sync_verified_20261004_234125",
+      "outcome": "A1 compile failed: initialization closure captured self before all let fields initialized; user reported the same error. Fixed using a local source dictionary."
+    }
+  ]
+}

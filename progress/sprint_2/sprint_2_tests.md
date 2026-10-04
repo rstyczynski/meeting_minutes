@@ -1,5 +1,42 @@
 # Sprint 2 — Functional test record
 
+## Bidirectional audio/text synchronization — 4 October 2026
+
+All six gates passed at `20261004_234203` through the single entry point below. A1/B1 build Meeting Review, A2/B2 include UT-22, and A3/B3 include IT-17. The [receipt](tests/transcript_audio_sync_review_20261004.json) identifies each result, scope and native verification limit.
+
+```bash
+tests/run-sprint-gates.sh progress/sprint_2 transcript_sync_fixed
+```
+
+Expected final output: `All six Sprint gates passed; log stamp: <current run stamp>`. A rerun writes new timestamps. UT-22 validates both mappings, start/end transitions, repeated Polish phrases, Unicode boundaries, coarse source/replacement spans, restoration, overlaps, gaps and rejected selections/positions. IT-17 loads the persisted corrected Sejm excerpt, proves queries do not write to the store, then saves/reloads a correction and rebuilds its display mapping while retaining source text/history. These are mapping/storage checks using a text-only fixture, not fresh ASR, LLM or human-listening evidence.
+
+The known 148.40–181.68 s gap returns no highlight at 148.40, 150, 170 and 181.679 s; 181.68 s resolves to segment_105 in the next S1 card. The earlier corrected paragraph highlights as a range and selecting “sygnał” resolves to 134.88 s. A corrected synthetic range with a gap between its source parts also stays unmarked inside that gap. Overlapping speaker sources remain separate hits; repeated “Tak” selects the correct second source by character position.
+
+The initial red run passed A1 then failed A2 because the new API did not exist. A subsequent unprivileged run failed before building because SwiftPM's nested sandbox was blocked. The first implementation build failed on a Swift initializer closure capturing self before all stored properties were initialized; this is the same error the Product Owner pasted. A local source dictionary fixed it, and the final run passed all six gates. Retained failed logs are failure evidence, not a pass.
+
+Native review remains PENDING: actual audio/highlight correspondence, slider preview/release, mouse/keyboard reverse selection, scrolling, lack of selection feedback and correction controls need the live operator check. No new QA window was launched after the earlier decline, and no listening confirmation was simulated. Build/core tests do not close that requirement or accept the sprint.
+
+[test_run_transcript_sync_A1_smoke_20261004_234042.log](tests/test_run_transcript_sync_A1_smoke_20261004_234042.log)
+
+[test_run_transcript_sync_fixed_A1_smoke_20261004_234203.log](tests/test_run_transcript_sync_fixed_A1_smoke_20261004_234203.log)
+
+[test_run_transcript_sync_fixed_A2_unit_20261004_234203.log](tests/test_run_transcript_sync_fixed_A2_unit_20261004_234203.log)
+
+[test_run_transcript_sync_fixed_A3_integration_20261004_234203.log](tests/test_run_transcript_sync_fixed_A3_integration_20261004_234203.log)
+
+[test_run_transcript_sync_fixed_B1_smoke_20261004_234203.log](tests/test_run_transcript_sync_fixed_B1_smoke_20261004_234203.log)
+
+[test_run_transcript_sync_fixed_B2_unit_20261004_234203.log](tests/test_run_transcript_sync_fixed_B2_unit_20261004_234203.log)
+
+[test_run_transcript_sync_fixed_B3_integration_20261004_234203.log](tests/test_run_transcript_sync_fixed_B3_integration_20261004_234203.log)
+
+[test_run_transcript_sync_red_A1_smoke_20261004_233441.log](tests/test_run_transcript_sync_red_A1_smoke_20261004_233441.log)
+
+[test_run_transcript_sync_red_A2_unit_20261004_233441.log](tests/test_run_transcript_sync_red_A2_unit_20261004_233441.log)
+
+[test_run_transcript_sync_verified_A1_smoke_20261004_234125.log](tests/test_run_transcript_sync_verified_A1_smoke_20261004_234125.log)
+
+
 ## Long-silence and audio-slider verification — 4 October 2026
 
 The directed BUG-8 repair adds UT-21 and IT-16. UT-21 checks the actual 33.28-second same-S1 gap, exact threshold equality, a threshold above the gap, old/missing/null settings, invalid/nonfinite limits and source conservation. IT-16 decodes a text-only copied Sejm range with both corrections, verifies two S1 utterances separated at 148.40/181.68 s, compares CLI inspection, persists a 60-second variant that joins them, and rejects a zero limit without altering the saved file. Earlier short-pause and continuous >15-second regressions remain covered by UT-14.

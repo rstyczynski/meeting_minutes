@@ -202,6 +202,17 @@ explicitly resumes from the selected position. The Product Owner directed
 this refinement during Sprint 2 after a long same-speaker silence was hidden
 inside one reading segment.
 
+Audio playback and slider movement shall highlight the corresponding timed
+transcript text and follow it into view. A position without a timed source
+part shall highlight no text, including silence inside a corrected range.
+Selecting a nonempty continuous text fragment in one reading turn shall pause
+and seek to its earliest mapped source start; explicit Play resumes.
+Playback highlighting shall remain independent of the selection used for
+correction. Precision shall follow available source timestamps: a multiword
+source part or saved range replacement is highlighted as a whole mapped
+span, without invented replacement-word times. The Product Owner accepted
+this bidirectional synchronization during Sprint 2.
+
 #### FR-07 — Independent CLI capabilities
 
 The CLI shall expose transcribe, recognize, and summarize as separately

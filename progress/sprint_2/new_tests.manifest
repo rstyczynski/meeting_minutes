@@ -37,3 +37,5 @@ unit:test_core.sh:test_UT20_playback_context
 integration:test_meeting_flow.sh:test_IT15_range_store_correction
 unit:test_core.sh:test_UT21_long_silence
 integration:test_meeting_flow.sh:test_IT16_long_silence_record
+unit:test_core.sh:test_UT22_transcript_audio_sync
+integration:test_meeting_flow.sh:test_IT17_saved_audio_sync

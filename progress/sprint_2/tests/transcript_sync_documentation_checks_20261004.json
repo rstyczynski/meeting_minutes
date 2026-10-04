@@ -1,0 +1,14 @@
+{
+  "initialCheckNote": "The first link pass encountered its own not-yet-created receipt; this rerun checks that materialized receipt.",
+  "date": "2026-10-04",
+  "status": "PASS",
+  "markdownFilesChecked": 34,
+  "localLinksChecked": 776,
+  "shellBlocksSyntaxChecked": 6,
+  "traceabilityLinksChecked": 70,
+  "newAnchorsChecked": 3,
+  "singlePairedDeck": true,
+  "sourceWhitespace": "PASS",
+  "nativeLaunchCommand": "syntax and actual session/media existence only; not launched",
+  "issues": []
+}

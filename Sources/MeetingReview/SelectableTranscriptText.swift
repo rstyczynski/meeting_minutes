@@ -5,11 +5,13 @@ import SwiftUI
 struct SelectableTranscriptText: NSViewRepresentable {
     let text: String
     let identifier: String
+    var playbackRanges: [NSRange] = []
     let onSelection: (NSRange) -> NSRange?
 
     final class Coordinator: NSObject, NSTextViewDelegate {
         var parent: SelectableTranscriptText
         var updating = false
+        var markedRanges: [NSRange] = []
         init(_ parent: SelectableTranscriptText) { self.parent = parent }
         func textViewDidChangeSelection(_ notification: Notification) {
             guard !updating, let view = notification.object as? NSTextView else { return }
@@ -49,8 +51,23 @@ struct SelectableTranscriptText: NSViewRepresentable {
         if view.string != text {
             context.coordinator.updating = true
             view.string = text
+            context.coordinator.markedRanges = []
             view.setSelectedRange(NSRange(location: 0, length: 0))
             context.coordinator.updating = false
+        }
+        let ranges = playbackRanges.filter { $0.location >= 0 && $0.location != NSNotFound
+            && $0.length > 0 && $0.location <= (text as NSString).length
+            && $0.length <= (text as NSString).length - $0.location }
+        guard ranges != context.coordinator.markedRanges, let manager = view.layoutManager else { return }
+        manager.removeTemporaryAttribute(.backgroundColor, forCharacterRange: NSRange(location: 0, length: (text as NSString).length))
+        for range in ranges {
+            manager.addTemporaryAttribute(.backgroundColor, value: NSColor.systemYellow.withAlphaComponent(0.35),
+                                          forCharacterRange: range)
+        }
+        context.coordinator.markedRanges = ranges
+        // Temporary layout attributes never alter selectedRanges or trigger the selection delegate.
+        if let first = ranges.first {
+            DispatchQueue.main.async { view.scrollRangeToVisible(first) }
         }
     }
     func sizeThatFits(_ proposal: ProposedViewSize, nsView: NSTextView, context: Context) -> CGSize? {

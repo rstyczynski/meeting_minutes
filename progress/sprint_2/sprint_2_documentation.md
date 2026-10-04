@@ -1,5 +1,9 @@
 # Sprint 2 — Documentation review
 
+## Synchronization increment documentation
+
+FR-06, architecture, test profile, accepted design, implementation, manual, slide 9/narrative and demo now explain audio-to-text marking and text-to-paused-seek behavior. Source granularity and corrected-range limits are exposed to the operator. The new mapping/store tests are UT-22/IT-17; native audio/highlight and scrolling checks remain pending. This review uses [the pre-commit audit](sprint_2_documentation_audit.md) and [synchronization evidence](tests/transcript_audio_sync_review_20261004.json). The accepted feature does not close the broader minutes defects or the managed handover.
+
 ## Latest operator feedback: long silence and audio position
 
 The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.

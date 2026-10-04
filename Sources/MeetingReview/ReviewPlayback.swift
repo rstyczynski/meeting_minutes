@@ -7,6 +7,10 @@ final class ReviewPlayback: ObservableObject {
     @Published private(set) var message = "Ready to play local audio"
     @Published private(set) var positionSeconds = 0.0
     @Published private(set) var durationSeconds = 0.0
+    @Published private(set) var previewPositionSeconds: Double?
+    var displayPositionSeconds: Double { previewPositionSeconds ?? positionSeconds }
+    private var seekingTarget: Double?
+    private var resumeAfterSeek = false
     private let player: AVPlayer
     private var positionObserver: Any?
     private var request: Task<Void, Never>?
@@ -31,6 +35,21 @@ final class ReviewPlayback: ObservableObject {
         }
     }
 
+    func beginScrubbing() {
+        pause()
+        previewPositionSeconds = positionSeconds
+    }
+
+    func preview(to seconds: Double) {
+        guard seconds.isFinite, durationSeconds > 0 else { return }
+        previewPositionSeconds = min(durationSeconds, max(0, seconds))
+    }
+
+    func finishScrubbing() {
+        let target = displayPositionSeconds
+        seek(to: target)
+    }
+
     func seek(to seconds: Double) {
         pause()
         guard seconds.isFinite, durationSeconds > 0 else {
@@ -38,20 +57,33 @@ final class ReviewPlayback: ObservableObject {
             return
         }
         let target = min(durationSeconds, max(0, seconds))
+        seekingTarget = target
+        previewPositionSeconds = target
         let current = token
         player.seek(to: CMTime(seconds: target, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] success in
             Task { @MainActor in
                 guard let self, self.token == current else { return }
+                self.seekingTarget = nil
+                self.previewPositionSeconds = nil
                 if success {
                     self.positionSeconds = target
-                    self.message = String(format: "Paused at %.2f s · press Play to continue", target)
+                    if self.resumeAfterSeek {
+                        self.player.play()
+                        self.message = "Playing local audio"
+                    } else {
+                        self.message = String(format: "Paused at %.2f s · press Play to continue", target)
+                    }
                 } else { self.message = "Unable to seek to audio position" }
+                self.resumeAfterSeek = false
             }
         }
     }
 
     func pause() {
         token = UUID()
+        seekingTarget = nil
+        resumeAfterSeek = false
+        previewPositionSeconds = nil
         request?.cancel(); request = nil
         player.currentItem?.cancelPendingSeeks()
         player.pause()
@@ -60,6 +92,8 @@ final class ReviewPlayback: ObservableObject {
         message = "Paused"
     }
     func playAll() {
+        // Explicit Play while seeking resumes only after the latest target is reached.
+        if seekingTarget != nil { resumeAfterSeek = true; return }
         pause()
         player.play()
         message = "Playing local audio"

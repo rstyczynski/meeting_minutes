@@ -21,6 +21,8 @@ test_IT15_range_store_correction() { swift test --filter 'MeetingIntegrationTest
 
 test_IT16_long_silence_record() { swift test --filter 'MeetingIntegrationTests/testLongSilenceSavedRecord'; }
 
+test_IT17_saved_audio_sync() { swift test --filter 'MeetingIntegrationTests/testSavedTranscriptAudioSynchronization'; }
+
 if [[ -n "${1:-}" ]]; then
   "$1"
 else
@@ -40,4 +42,5 @@ else
   test_IT14_review_store_correction
   test_IT15_range_store_correction
   test_IT16_long_silence_record
+  test_IT17_saved_audio_sync
 fi

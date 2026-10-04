@@ -26,6 +26,8 @@ test_UT20_playback_context() { swift test --filter 'MultiStageTests/testPlayback
 
 test_UT21_long_silence() { swift test --filter 'MultiStageTests/testLongSilenceBoundary'; }
 
+test_UT22_transcript_audio_sync() { swift test --filter 'MultiStageTests/testTranscriptAudioSynchronization'; }
+
 if [[ -n "${1:-}" ]]; then
   "$1"
 else
@@ -50,4 +52,5 @@ else
   test_UT19_selected_text
   test_UT20_playback_context
   test_UT21_long_silence
+  test_UT22_transcript_audio_sync
 fi

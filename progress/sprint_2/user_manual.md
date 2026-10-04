@@ -1,5 +1,22 @@
 # Meeting Summarizer user manual
 
+## Synchronize audio and transcript text
+
+Close the old Meeting Review window so it releases its previous executable, then relaunch the updated build for the current session. This command opens the application; it does not start sound. The temporary store and original audio must still exist on this Mac.
+
+```bash
+cd /Users/rstyczynski/projects/meeting_minutes
+swift run meeting-review 5C00CCF3-A242-4FB0-845D-92C6D30D7633 --store /private/tmp/meeting-sprint2-po-demo.Ry3oFz
+```
+
+Drag **Audio position**: the position previews matching transcript text in yellow and follows it into view. Release to commit the paused seek, then press **Play**. The mark advances with the media clock. Native blue text selection remains available separately for correction; playback does not replace it.
+
+Try the known Sejm pause: at 150–170 s there should be no yellow source text. The preceding S1 card ends at 148.40 s; the next begins at 181.68 s with “Witwa serdecznie” in the uncorrected source. At 181.68 s its source part should be marked. Select that word or a phrase in the second card: audio pauses and the slider moves to the first selected source start. There is no autoplay. You can then Play, or choose **Correct selection** and use contextual playback before saving a verified correction.
+
+Precision follows the stored source. Original Parakeet word parts can be marked individually; a multiword ASR fragment marks together. An already corrected range marks as one span: selecting “sygnał” in the earlier corrected paragraph seeks to its available source start, 134.88 s. The product cannot recover new timestamps for replacement words. The sidebar explains this coarser timing; gaps without source parts stay unmarked. Overlapping source speech can produce more than one mark.
+
+Empty selections do not seek. Invalid/whitespace-only selections show an error; unavailable duration disables the slider. A failed seek reports its error and does not change transcript storage. Save rebuilds the mapping for the updated reading; external CLI edits still require reopening the app. Automated mapping/storage tests cover these rules; real sound/highlight alignment, native selection and scrolling remain pending live verification. [Evidence and limits](tests/transcript_audio_sync_review_20261004.json) are separate from sprint acceptance.
+
 ## Selected-text correction and remaining live check
 
 The Product Owner rejected the first word-sized editor because its audio was too brief to hear. The approved repair now offers phrase selection and configurable audio context. Automated mapping, storage and regression tests cover this implementation. The owner session now contains a successful crossing edit ([receipt](tests/selection_owner_session_20261004.json)). Slider seeking, actual audible bounds, keyboard selection, Restore/Cancel and restart still need a live check: the separate QA-window launch was declined, so no new native-UI pass is claimed. [BUG-6](sprint_2_bugs.md#bug-6-word-sized-correction-playback-is-too-short-for-operator-review) remains open for this verification.

@@ -127,6 +127,8 @@ printf 'Kontrola na kopii realnego rekordu: brak --audio-reviewed yes → status
 if [[ "$mode" == live ]]; then
   printf '\nOtwórz drugie okno Terminala i uruchom dokładnie:\n'
   printf 'cd %q && swift run meeting-review %q --store %q\n' "$root" "$polish_id" "$store"
+  printf '%s\n' 'Synchronizacja: Play przesuwa żółte podświetlenie tekstu; suwak pokazuje tekst dla wybranej pozycji. W ciszy nie ma podświetlenia.'
+  printf '%s\n' 'Zaznaczenie frazy ustawia pozycję audio i pauzuje; Play wznawia. Korekta zakresowa ma wspólny czas źródła, bez nowych czasów słów.'
   printf '%s\n' 'W Meeting Review zaznacz frazę w transkrypcji i kliknij Correct selection. Ustaw Audio before/after (domyślnie po 2 s), użyj Play selection with context.'
   printf '%s\n' 'Suwak Audio position jest w widoku i edytorze. Przesunięcie zatrzymuje fragment; Play/Play from position wznawia. Pauza >= longSilenceBoundarySeconds (domyślnie 10 s) rozpoczyna nowy segment, nawet dla S1.'
   printf '%s\n' 'Po odsłuchu wpisz poprawione słowa, zaznacz I listened to this source audio i kliknij Save correction. Widok odświeży się od razu.'

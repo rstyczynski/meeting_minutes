@@ -1,5 +1,9 @@
 # Meeting Summarizer
 
+## Current increment: audio and transcript synchronization
+
+The accepted Meeting Review refinement highlights current timed text during playback or slider movement. Selecting a phrase pauses and seeks to its mapped start; Play resumes. Silence has no source highlight, and corrected ranges retain their original timing precision. The [operator steps](progress/sprint_2/user_manual.md#synchronize-audio-and-transcript-text) include the existing-session command. Automated mapping/store validation is recorded in [Sprint tests](progress/sprint_2/sprint_2_tests.md); native audio/highlight interaction and handover acceptance remain pending. This changes operator review, not ASR/LLM quality.
+
 ## Latest operator feedback: long silence and audio position
 
 The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.

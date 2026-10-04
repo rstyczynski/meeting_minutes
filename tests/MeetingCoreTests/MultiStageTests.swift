@@ -10,6 +10,60 @@ struct MultiStageTests {
             speakerID: speaker, text: text)
     }
 
+    @Test func testTranscriptAudioSynchronization() throws {
+        let parts = [try segment("a", 1, 2, "S1", "Tak"),
+                     try segment("b", 3, 4, "S1", "Tak"),
+                     try segment("c", 4, 5, "S1", "🧑‍💻 zażółć gęślą")]
+        var record = MeetingRecord(sourcePath: "/tmp/test.wav", segments: parts,
+                                   backend: "fixture", modelRevision: "test")
+        var index = try TranscriptAudioIndex(record: record)
+        #expect(try index.highlights(at: 0).isEmpty)
+        #expect(try index.highlights(at: 1).map(\.sourceSegmentIDs) == [["a"]])
+        #expect(try index.highlights(at: 2).isEmpty)
+        #expect(try index.highlights(at: 4).map(\.sourceSegmentIDs) == [["c"]])
+        #expect(try index.highlights(at: 5).isEmpty)
+        let text = index.reading.utterances[0].text as NSString
+        let second = text.range(of: "Tak", options: .backwards)
+        #expect(try index.sourceStart(utteranceID: "utt_1", range: second) == 3)
+        let partial = text.range(of: "gęślą")
+        #expect(try index.sourceStart(utteranceID: "utt_1", range: partial) == 4)
+        for range in [NSRange(location: 0, length: 0), NSRange(location: 3, length: 1),
+                      NSRange(location: 9, length: 1), NSRange(location: NSNotFound, length: 1),
+                      NSRange(location: 0, length: text.length + 1)] {
+            #expect(throws: Error.self) { try index.sourceStart(utteranceID: "utt_1", range: range) }
+        }
+        for time in [-1.0, Double.nan, Double.infinity] {
+            #expect(throws: Error.self) { try index.highlights(at: time) }
+        }
+        #expect(throws: Error.self) { try index.sourceStart(utteranceID: "missing", range: second) }
+        let selected = try record.transcriptSelection(utteranceID: "utt_1",
+            range: NSRange(location: 0, length: 7))
+        try record.correctTranscript(selected, to: "Potwierdzono.", audioReviewed: true)
+        index = try TranscriptAudioIndex(record: record)
+        let corrected = try index.highlights(at: 3.5)
+        #expect(try index.highlights(at: 2.5).isEmpty)
+        #expect(corrected.count == 1 && corrected[0].precision == .correctedRange)
+        #expect(corrected[0].sourceSegmentIDs == ["a", "b"])
+        #expect(try index.sourceStart(utteranceID: "utt_1", range: NSRange(location: 2, length: 4)) == 1)
+        let restore = try record.transcriptSelection(utteranceID: "utt_1", range: NSRange(location: 0, length: 2))
+        try record.correctTranscript(restore, to: restore.originalText, audioReviewed: true, restore: true)
+        index = try TranscriptAudioIndex(record: record)
+        #expect(try index.highlights(at: 3.5).map(\.sourceSegmentIDs) == [["b"]])
+        #expect(record.segments == parts)
+        let overlapping = MeetingRecord(sourcePath: "/tmp/overlap.wav",
+            segments: [try segment("x", 1, 3, "S1", "One"), try segment("y", 2, 4, "S2", "Two")],
+            backend: "fixture", modelRevision: "test")
+        let overlapIndex = try TranscriptAudioIndex(record: overlapping)
+        #expect(try overlapIndex.highlights(at: 2.5).map(\.sourceSegmentIDs) == [["x"], ["y"]])
+        #expect(try overlapIndex.highlights(at: 3).map(\.sourceSegmentIDs) == [["y"]])
+        let sejm = try JSONDecoder().decode(MeetingRecord.self, from: Data(contentsOf:
+            URL(fileURLWithPath: "tests/fixtures/long_silence_saved_record.json")))
+        let realIndex = try TranscriptAudioIndex(record: sejm)
+        #expect(try realIndex.highlights(at: 148.39).first?.precision == .correctedRange)
+        for time in [148.4, 150, 170, 181.679] { #expect(try realIndex.highlights(at: time).isEmpty) }
+        #expect(try realIndex.highlights(at: 181.68).map(\.sourceSegmentIDs) == [["segment_105"]])
+    }
+
     @Test func testSelectedTextCorrection() throws {
         let raw = [try segment("a", 1, 1.2, "S1", "Zażółć"),
                    try segment("b", 1.2, 1.4, "S1", "gęślą"),

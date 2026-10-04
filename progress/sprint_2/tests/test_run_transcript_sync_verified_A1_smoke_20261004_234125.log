@@ -1,0 +1,65 @@
+Started: 2026-10-04T21:41:25Z
+Command: tests/run.sh --smoke --new-only progress/sprint_2/new_tests.manifest
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+warning: PIF: Ignoring settings assignments for unknown platform 'DoesNotExist'
+Building for debugging...
+[Pre-planning 1 / 124]
+[Planning deferred tasks]
+[1 / 14]
+[2 / 15] MeetingCore
+error: SwiftCompile normal arm64 /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptAudioIndex.swift failed with a nonzero exit code. Command line:     cd /Users/rstyczynski/projects
+    builtin-SwiftPerFileCompile TranscriptAudioIndex.swift
+/Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptAudioIndex.swift:46:47: error: constant 'self.spans' captured by a closure before being initialized
+44 |                                      + [(projection.text as NSString).length])
+45 |             for span in projection.spans where span.display.length > 0 {
+46 |                 let ranges = try span.ids.map { id -> SourceRange in
+   |                                               `- error: constant 'self.spans' captured by a closure before being initialized
+47 |                     guard let range = sourceRanges[id] else {
+48 |                         throw MeetingError.adapterFailure("Audio mapping has an unknown source part")
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Configuration.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Import.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/MultiStageMinutes.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/ProcessTranscribers.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Recognition.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Record.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Store.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/Summarization.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TopicCoverage.swift -primary-file /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptAudioIndex.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptCleanup.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptCleanupPolicy.swift /Users/rstyczynski/projects/meeting_minutes/Sources/MeetingCore/TranscriptSelection.swift -emit-dependencies-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.d -emit-const-values-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.swiftconstvalues -emit-reference-dependencies-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.swiftdeps -serialize-diagnostics-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.dia -target arm64-apple-macos14.0 -disable-cross-import-overlay-search -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/MeetingCore-dependencies-1.json -Xllvm -aarch64-use-tbi -enable-objc-interop -stack-check -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk -I /Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib -F /Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug -F /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -module-cache-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/SwiftExplicitPrecompiledModules -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -swift-version 6 -Onone -D SWIFT_PACKAGE -D DEBUG -D SWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE -D Xcode -serialize-debugging-options -enable-experimental-feature DebugDescriptionMacro -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/rstyczynski/projects/meeting_minutes/.build/out/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/rstyczynski/projects -enable-anonymous-context-mangled-names -file-compilation-dir /Users/rstyczynski/projects -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/rstyczynski/projects/meeting_minutes/.build/out/SDKStatCaches.noindex/macosx27.0-26A425-80c5bbf1d171475443272936d42f90a37231f6df4def33e022ae2eb8f782df1a.sdkstatcache -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -Xcc -I/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/include -Xcc -I/Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/DerivedSources-normal/arm64 -Xcc -I/Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/DerivedSources/arm64 -Xcc -I/Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/DerivedSources -Xcc -DSWIFT_PACKAGE -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name MeetingCore -package-name meeting_minutes -const-gather-protocols-file /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/MeetingCore_const_extract_protocols.json -disable-clang-spi -clang-target arm64-apple-macos27.0 -target-sdk-version 27.0 -target-sdk-name macosx27.0 -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -parse-as-library -o /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.o -debug-module-path /Users/rstyczynski/projects/meeting_minutes/.build/out/Intermediates.noindex/MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/MeetingCore.swiftmodule -index-unit-output-path /MeetingSummarizer.build/Debug/MeetingCore-t.build/Objects-normal/arm64/TranscriptAudioIndex.o -index-store-path /Users/rstyczynski/projects/meeting_minutes/.build/out -index-system-modules
+error: Build failed
+smoke: 1 failed test script(s)
+Finished: 2026-10-04T21:41:28Z (FAIL 1)

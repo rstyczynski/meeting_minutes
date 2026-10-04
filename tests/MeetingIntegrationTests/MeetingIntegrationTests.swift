@@ -3,6 +3,40 @@ import Testing
 @testable import MeetingCore
 
 struct MeetingIntegrationTests {
+    @Test func testSavedTranscriptAudioSynchronization() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let record = try JSONDecoder().decode(MeetingRecord.self, from: Data(contentsOf:
+            URL(fileURLWithPath: "tests/fixtures/long_silence_saved_record.json")))
+        let store = MeetingStore(directory: root)
+        try store.save(record)
+        let path = root.appendingPathComponent("\(record.id.uuidString).json")
+        let before = try Data(contentsOf: path)
+        let index = try TranscriptAudioIndex(record: store.load(record.id))
+        #expect(try index.reading == record.readableTranscript())
+        let first = try index.highlights(at: 147).first!
+        #expect(first.utteranceID == "utt_1" && first.precision == .correctedRange)
+        #expect(try index.sourceStart(utteranceID: "utt_1",
+            range: (index.reading.utterances[0].text as NSString).range(of: "sygnał")) == 134.88)
+        #expect(try index.highlights(at: 170).isEmpty)
+        let second = try index.highlights(at: 181.68).first!
+        #expect(second.utteranceID == "utt_2" && second.sourceSegmentIDs == ["segment_105"])
+        #expect(try index.sourceStart(utteranceID: second.utteranceID, range: second.displayRange) == 181.68)
+        #expect(Set(index.spans.flatMap(\.sourceSegmentIDs)) == Set(record.segments.map(\.id)))
+        #expect(try Data(contentsOf: path) == before)
+        let chosen = try record.transcriptSelection(utteranceID: "utt_2", range: second.displayRange)
+        let corrected = try store.correctTranscript(record.id, selection: chosen, to: "Witam", audioReviewed: true)
+        let rebuilt = try TranscriptAudioIndex(record: store.load(record.id))
+        #expect(try rebuilt.reading == corrected.readableTranscript())
+        #expect(rebuilt.reading.utterances[1].text.hasPrefix("Witam serdecznie"))
+        let updated = try rebuilt.highlights(at: 181.68).first!
+        #expect(updated.sourceSegmentIDs == ["segment_105"] && updated.precision == .correctedRange)
+        #expect(try rebuilt.sourceStart(utteranceID: "utt_2", range: updated.displayRange) == 181.68)
+        #expect(corrected.segments == record.segments)
+        #expect(corrected.transcriptRangeCorrections?.count == 3)
+        #expect(try rebuilt.highlights(at: 170).isEmpty)
+    }
+
     @Test func testLongSilenceSavedRecord() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: root) }
