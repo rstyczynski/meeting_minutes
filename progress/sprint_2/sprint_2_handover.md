@@ -1,7 +1,8 @@
 # Sprint 2 increment handover
 
-Status: rehearsal found a blocking minutes-quality defect; increment is not
-ready for Product Owner delivery. Live walkthrough and handover decision are
+Status: the Product Owner directed that the minutes-content defect be recorded
+as a prototype result and a direction for further work. The generated minutes
+are not accepted as correct. Live walkthrough and handover decision are
 pending. Sprint 2 remains `Progress` in
 `PLAN.md`. This record does not claim Phase 5 documentation approval.
 
@@ -151,6 +152,33 @@ manual replay.
 
 ## What Sprint 2 establishes and does not establish
 
+The prototype met its architectural learning purpose in one important
+respect: the staged minutes path preserved all 217/217 AMI and 801/801 Sejm
+raw segments, assigned all 21/21 and 32/32 reading utterances to proposed
+topics, and produced inspectable drafts. The preceding one-call 30B design
+produced only one quoted AMI brief and no Sejm minutes. However, the
+source-support audit passed only 2/5 AMI and 2/4 Sejm topic summaries. A
+room-equipment discussion was merged with the designed remote-control
+topic, and some Polish budget and PKN claims lacked sufficient cited words.
+These are semantic failures, not speaker-label mistakes or JSON-format
+failures. The [controlled trial](tests/multistage_minutes_trial_20261004.md)
+preserves the source-linked comparison and raw attempts. The Product Owner
+directed us to treat the failure as useful prototype learning, without
+accepting the draft minutes or completing the sprint review.
+
+The next evidence step is to build human-reviewed reference topics and
+claim-level judgments on representative English and Polish meetings,
+measure decision and task precision and recall, and compare untouched ASR
+with audio-reviewed operator corrections. The operator must be able to
+inspect each uncertain timed range, correct words reversibly, and verify
+speaker identity from audio before applying a name to an entire cluster.
+The current AMI diarizer produces three clusters for four reference people;
+the low-quality participant is merged, so a single name cannot safely be
+applied to that cluster. The Sejm PDF supports passage-level review but
+does not supply a time-aligned whole-meeting Polish WER or speaker score.
+Those limits remain visible in the [benchmark](ami_asr_benchmark.md) and
+[Polish source review](tests/polish_sejm_pdf_transcription_review_20261002.md).
+
 PBI-011 delivered a local Swift prototype with separate transcription,
 speaker labeling and name assignment, optional draft minutes, a persistent
 JSON record, configurable local adapters, and a review player. The English
@@ -184,7 +212,11 @@ source. These corrections are preparation, not handover acceptance. The
 Product Owner then identified the Polish minutes defect as blocking and
 explicitly said the increment is not ready for delivery. The developer
 repaired the structural citation and owner handling, but the model's
-remaining content errors still block a credible minutes demonstration.
+remaining content errors still blocked a credible minutes demonstration at
+that point. The Product Owner subsequently directed us to present those
+errors as measured prototype findings and a guide to further work. This
+supersedes the earlier conclusion that minutes quality alone blocks the
+Sprint 2 prototype handover; it does not approve the draft minutes.
 
 The revised deck, brief, and manual are prepared for a live Product Owner
 walkthrough of the actual inputs and outputs, including the known failures.
@@ -192,7 +224,7 @@ The Product Owner must be invited to
 inspect a transcript, warning, speaker mapping, or minutes failure and to
 request a repeat. Questions and reaction to that walkthrough, followed by
 an explicit accept-or-correct decision, remain to be recorded here. The
-open minutes defects still prevent delivery acceptance. No
+open minutes defects prevent acceptance of dependable minutes. No
 commit, Phase 5 documentation completion, sprint closure, or remote push
 is inferred from rehearsal results.
 
@@ -213,8 +245,8 @@ It defines evidence-first draft items, a technical response-validation
 gate with bounded repair, and an explicit ten-minute prototype limit.
 The test skeleton and implementation now exercise those contracts, but
 the first real-model trials still fail to produce useful, fully cited
-minutes. The current presentation records that blocker; it is not a
-delivery acceptance demo.
+minutes. The current presentation records that historical failure; it is
+not a live handover or an acceptance of minutes quality.
 
 ## Larger local model check — 2026-10-03
 
@@ -227,5 +259,5 @@ repair but saved only a quotation of the design brief. Sejm repeated
 malformed JSON through both repair requests, so no minutes were saved;
 its proposed decision also omitted a required source chunk. The model
 remains an evaluated alternative, not the default. This check does not
-remove the Product Owner's minutes-quality delivery blocker or complete
+establish usable minutes or complete
 the live handover.

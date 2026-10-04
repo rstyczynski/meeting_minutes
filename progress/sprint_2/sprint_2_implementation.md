@@ -1,7 +1,8 @@
 # Sprint 2 — Implementation record
 
 Status: executable bilingual prototype and staged-minutes quality experiment
-measured; dependable natural-meeting minutes remain a delivery blocker.
+measured. The minutes-content failure is an explicit prototype finding and
+direction for further work; the generated drafts are not accepted minutes.
 This is the Product Owner's account of what the prototype does, what was
 measured, and what still limits an architecture decision. The accepted
 [design](sprint_2_design.md), [functional test record](sprint_2_tests.md),
@@ -119,9 +120,16 @@ The architecture decision from this prototype is to keep deterministic
 segment preservation and source gates around a replaceable local minutes
 model, to evaluate topic correctness and claim support against human
 references, and to provide audio-backed operator corrections before
-participant use. The currently tested candidate is an experiment, and
-natural-meeting content quality remains a delivery criterion rather than
-something inferred from passing unit tests.
+participant use. The staged pipeline is a useful direction because it
+preserved the raw transcript, covered every reading utterance with a topic,
+and produced inspectable drafts where the one-call approach often produced
+none. It has not solved semantic accuracy: only 2/5 AMI and 2/4 Sejm topic
+summaries passed the strict source-support audit. The next increment must
+test topic boundaries, claim-level support, decision and task recall, and
+the effect of operator corrections on actual meeting audio. Passing schema,
+citation, and unit checks cannot substitute for these evaluations. This is
+the Sprint 2 prototype conclusion, not acceptance of the generated minutes
+or an assertion that the sprint handover has occurred.
 
 ## Implementation and design compliance
 

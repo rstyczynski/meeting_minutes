@@ -1,6 +1,6 @@
 # Sprint 2 — Documentation review
 
-Status: presentation set prepared for Product Owner inspection in managed mode; documentation approval and sprint completion remain pending. The reopened FR-11 implementation, bilingual benchmark, and corrected parent quality gates have passed, while the natural-meeting minutes defect remains a delivery blocker. The root plan keeps Sprint 2 in Progress.
+Status: presentation set prepared for Product Owner inspection in managed mode; documentation approval and sprint completion remain pending. The reopened FR-11 implementation, bilingual benchmark, and corrected parent quality gates have passed. The natural-meeting minutes defect is a documented prototype finding, and the generated drafts are not accepted as correct. The root plan keeps Sprint 2 in Progress.
 
 ## Purpose of this review
 
@@ -130,8 +130,11 @@ before Phase 5 approval. The [user manual](user_manual.md), [slide
 demonstration](sprint_2_increment_demo.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
 brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
-failures. The Product Owner stated that the minutes defect blocks delivery;
-the structural crash is fixed, but the content-quality blocker remains.
+failures. The Product Owner initially stated that the minutes defect blocked
+delivery. The structural crash was fixed, and the later staged trial
+measured the remaining content failures. The Product Owner subsequently
+directed that these failures be presented as prototype conclusions and
+next-work evidence, without accepting the draft minutes as correct.
 The handover decision has not yet been recorded. In managed mode,
 the Product Owner must explicitly review that package before the Documentor
 may seek final documentation approval or close the sprint. No further
@@ -152,7 +155,7 @@ its real Sejm failure. The [manual](user_manual.md) and [Product Owner
 brief](sprint_2_product_owner_presentation.md) now distinguish historical
 drafts from the active validator's rejected output. A passing technical gate
 does not establish useful minutes; current 4B and 7B real-meeting trials
-still block delivery acceptance.
+still prevent acceptance of dependable minutes.
 
 ## Larger local model trial — 2026-10-03
 
@@ -166,4 +169,4 @@ repair; Sejm repeated malformed JSON and left zero draft items. The
 [tests](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02),
 [implementation](sprint_2_implementation.md), and [handover](sprint_2_handover.md)
 now give the same outcome. The 30B trial does not change the product
-default, minutes delivery blocker, or pending Product Owner walkthrough.
+default, the unvalidated minutes quality, or pending Product Owner walkthrough.

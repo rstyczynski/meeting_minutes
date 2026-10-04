@@ -62,7 +62,9 @@ and English benchmark were implemented and tested. The Product Owner then
 added FR-11 English and Polish transcription validation to this sprint. Its
 language-control CLI and paired multilingual model check have now run; all
 Sprint 2 implementation gates have passed, with managed documentation review
-pending. Natural-meeting minutes quality still blocks increment delivery.
+pending. The natural-meeting minutes failure is a documented prototype result;
+those drafts are not accepted as correct minutes.
+
 The vision above describes the
 longer-term product; the [SRS](docs/srs.md) states the current MVP boundary.
 
@@ -152,7 +154,9 @@ corrections, assigns each reading utterance to a topic, and validates
 model responses before saving draft minutes. On the same saved real
 meeting transcripts, it covered 21/21 AMI and 32/32 Sejm reading
 utterances. A strict source audit accepted only 2/5 AMI and 2/4 Sejm
-topic summaries, so natural-meeting minutes remain a delivery blocker.
+topic summaries. This is a measured direction for the next validation work,
+not a quality pass for generated minutes.
+
 The [trial report](progress/sprint_2/tests/multistage_minutes_trial_20261004.md)
 gives measured runtime, memory, cited examples, and preserved failed
 runs; the [quality review slides](progress/sprint_2/sprint_2_quality_review_20261004.pptx)
@@ -164,9 +168,9 @@ contains unsupported items. A longer [Department of Energy meeting
 fixture](progress/sprint_2/doe_itiac_day2_fixture.md) produced 4,216 English
 transcript segments and eight speaker labels; both tested local minutes
 models failed to save structured output on its 30-minute excerpt. The
-Product Owner has said the increment is
-not ready for delivery; live handover acceptance and managed documentation
-approval remain pending.
+Product Owner has directed that the minutes failure be shown as a prototype
+finding. Live handover acceptance and managed documentation approval remain
+pending.
 
 For a complete local Sprint 2 quality check, run
 `tests/run-sprint-gates.sh progress/sprint_2` from the repository root. It

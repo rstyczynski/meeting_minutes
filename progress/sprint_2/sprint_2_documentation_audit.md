@@ -1,5 +1,39 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Prototype-conclusion reconciliation — 2026-10-04
+
+The Product Owner directed that the minutes-content failure be documented as
+an explicit Sprint 2 prototype result and direction for later validation,
+without accepting the generated minutes or declaring the sprint complete.
+The implementation conclusion, handover, Product Owner presentation brief,
+documentation review, and README now state that distinction consistently.
+The older one-call failure and the staged trial remain visible; the
+[controlled trial](tests/multistage_minutes_trial_20261004.md) supports the
+217/217 and 801/801 raw-segment preservation, 21/21 and 32/32 utterance
+coverage, 2/5 and 2/4 source-supported topic summaries, and the specific
+topic errors cited in the revised narrative.
+
+For this documentation-only reconciliation, the SRS, candidate
+architecture, test profile, Sprint 2 setup, accepted design, functional test
+record, benchmark, and progress board were checked against the recorded
+decision and measured behavior. None requires a requirement, architecture,
+test-command, or status change to state the prototype conclusion. The board
+still marks Sprint 2 and PBI-011/PBI-011.5 under construction. The live
+Product Owner demonstration, minutes quality validation, Phase 5 approval,
+and sprint closure remain pending. No new code, model inference, or copyable
+command was added by this documentation change; the checks for this edit
+are local links, factual source references, narrative format, and
+`git diff --check`.
+
+The six changed narrative files contain no Markdown table rows. A local-link
+scan checked 245 local targets across them and found none missing. The AMI
+and Sejm metrics files confirm 217 and 801 raw segments, respectively; the
+controlled trial supplies the utterance coverage and manual source-audit
+denominators. `git diff --check` passed. The historical blocker wording in
+the handover is explicitly dated and followed by the later Product Owner
+direction. No executable example changed, so the code and six test gates
+were not rerun for this documentation-only reconciliation.
+
 Status: PBI-011.1 through PBI-011.5 and PBI-018 passed their individual audits and local completion commits. This records the PBI-011 parent reconciliation required by P8 of the local RUP patch. The board marks all Sprint 2 items tested and the sprint implemented; the final sprint documentation review remains open.
 
 The Product Owner's durable [preferences](../../RUPStrikesBack.patch/USER_PREFERENCES.md) require narrative paragraphs rather than Markdown tables; the method-defined [progress board](../../PROGRESS_BOARD.md) remains a four-column table. Each sprint-tracked child PBI receives its own verification, reconciliation, and local completion commit. No remote push is authorized.

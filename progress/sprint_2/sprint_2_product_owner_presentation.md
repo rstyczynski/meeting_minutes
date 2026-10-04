@@ -1,8 +1,9 @@
 # Sprint 2 presentation set for the Product Owner
 
 **Review state:** updated with measured staged-minutes findings on 4 October 2026. Sprint 2 remains
-in Progress. The Product Owner has already identified the minutes quality
-defect as a delivery blocker. The live demonstration, documentation
+in Progress. The Product Owner directed that the minutes quality failure be
+presented as a prototype conclusion and next-work direction; the draft
+minutes are not accepted as correct. The live demonstration, documentation
 approval, and sprint close have not occurred.
 
 ## What this sprint promised
@@ -142,10 +143,10 @@ acceptance claim. No natural-meeting acceptance claim follows from the
 passing technical gates alone.
 
 The prototype and benchmark provide inspectable architecture evidence.
-The minutes capability remains blocked by factual and topic errors in
+The minutes capability remains unvalidated because of factual and topic errors in
 natural-meeting drafts and structured-output failure on the longer DOE input. The
 separate [30B same-input trial](tests/qwen3_30b_minutes_trial_20261003.md)
-did not clear that blocker: on AMI it saved only an exact citation of the
+did not establish reliable minutes: on AMI it saved only an exact citation of the
 meeting brief after repair, while on Sejm it repeated malformed JSON and
 left the transcript intact with no draft items. The report includes the
 source-level assessment, raw attempts, elapsed time, and memory. The
@@ -161,4 +162,4 @@ then compare with the earlier one-call failure. The Product Owner can
 inspect a record or request a repeat. Record their reaction and explicit decision in the
 [handover record](sprint_2_handover.md). The measured staged candidate
 still fails content quality and requires a corrected, human-reviewed
-validation set before delivery readiness.
+validation set before any minutes-quality acceptance.
