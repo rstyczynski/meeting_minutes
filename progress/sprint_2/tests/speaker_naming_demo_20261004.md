@@ -45,3 +45,28 @@ code or model prompts; ASR and minutes benchmarks were not rerun.
 
 Human listening, real identity verification, the name's display after app
 reopening, and the Product Owner handover decision remain live checks.
+
+## Correction: standalone copyable command
+
+The Product Owner rejected slide 10's use of pre-existing `$polish_id` and
+`$store` variables: it did not provide an independently runnable command.
+The [corrected deck](../sprint_2_increment_demo_cli_ready_20261004.pptx)
+and [presenter script](../demo/README.md#standalone-speaker-naming-for-the-currently-open-record)
+now include the actual current record UUID, store, working directory and
+an input prompt for the name inside one `bash -c` block. Only the name is
+entered by the operator; the block defines that variable itself.
+
+The complete block was executed with the contract-check label, changing
+only its store path to a fresh disposable copy. The first attempt was
+blocked by SwiftPM's nested sandbox before product execution. The approved
+outside-sandbox retry returned 0, printed the UUID and saved the S2 map.
+Raw segments and the active record were unchanged. The
+[execution receipt](speaker_naming_copyable_command_20261004.json) preserves
+the exact tested block and results. No real identity or reopened UI
+display was asserted.
+
+The [deck receipt](presentation_validation_cli_ready_20261004.json) confirms
+18 slides, native chart/workbook checks, fonts, package and reimport.
+All final slides were rendered and the changed slide inspected. The
+source package was preserved byte for byte except for slide 10 and its
+speaker notes; existing chart data and workbooks were retained.

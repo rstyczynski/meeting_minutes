@@ -17,7 +17,7 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [18-slide live-journey presentation](sprint_2_increment_demo_naming_20261004.pptx)
+Open the current [18-slide live-journey presentation](sprint_2_increment_demo_cli_ready_20261004.pptx)
 and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
 The [operator manual](user_manual.md) documents individual commands and
 recovery. Slides 2–4 establish the Sprint goal,
@@ -67,6 +67,9 @@ enters the verified name; the script prints the complete `recognize name`
 command using the live meeting ID and store, runs it and displays the saved
 map. The name applies to all utterances in the chosen cluster. Close and
 reopen Meeting Review with the printed command to see the saved name.
+The slide also includes a complete Terminal block for the actual currently
+open Sejm record, with its UUID and store, and an input prompt for the name.
+It can be pasted independently of the demo's shell variables.
 The [focused CLI check](tests/speaker_naming_demo_20261004.md) confirms
 persistence on a disposable copy without changing the active demo record.
 It does not establish a real participant identity.

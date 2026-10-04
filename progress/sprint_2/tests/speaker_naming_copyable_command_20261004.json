@@ -1,0 +1,12 @@
+{
+  "exitCode": 0,
+  "stdout": "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+  "temporaryStore": "/private/tmp/meeting-po-naming-command-qtyzgumx",
+  "suppliedLabel": "CLI naming contract check",
+  "namePersisted": true,
+  "rawSegmentsUnchanged": true,
+  "activeRecordUnchanged": true,
+  "activeRecordSha256": "bd53c182ba59745d835d8a68f866a02818a9352e6eb5d5f38d5f38bb19197510",
+  "testedCommand": "bash -c '\ncd /Users/rstyczynski/projects/meeting_minutes\nread -r -p \"Name for S2: \" speaker_name\nswift run meeting-summarizer recognize name \\\n  5C00CCF3-A242-4FB0-845D-92C6D30D7633 S2 \"$speaker_name\" \\\n  --store /private/tmp/meeting-po-naming-command-qtyzgumx\n'\n",
+  "boundary": "Temporary-copy CLI test; no real identity or UI display assertion."
+}

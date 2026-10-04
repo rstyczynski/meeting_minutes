@@ -1,7 +1,7 @@
 # Sprint 2 — Product Owner live demonstration script
 
 This is the exact running order for the Sprint 2 review. Present the
-[18-slide deck](../sprint_2_increment_demo_naming_20261004.pptx) while
+[18-slide deck](../sprint_2_increment_demo_cli_ready_20261004.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -52,6 +52,32 @@ the retained record; do not replace the live result with a prior file
 without naming it as historical evidence.
 
 ## Presenter sequence
+
+### Standalone speaker naming for the currently open record
+
+Slide 10 gives this complete block for the Sejm record currently open on
+the Sprint 2 Mac. Paste the whole block into Terminal and enter the name
+only after verifying the S2 cluster by listening. All required values are
+included; the name is read inside the command itself.
+
+```bash
+bash -c '
+cd /Users/rstyczynski/projects/meeting_minutes
+read -r -p "Name for S2: " speaker_name
+swift run meeting-summarizer recognize name \
+  5C00CCF3-A242-4FB0-845D-92C6D30D7633 S2 "$speaker_name" \
+  --store /private/tmp/meeting-sprint2-po-demo.Ry3oFz
+'
+```
+
+Expected: the same meeting UUID is printed and the entered name is saved
+for every S2 segment. Close and reopen Meeting Review to load it. This is
+a specific current local record; a new demo creates a different UUID and
+store and prints its own complete naming command at stage 4. The
+[copyable-command check](../tests/speaker_naming_copyable_command_20261004.json)
+executed this block on a temporary copy, changing only the store path.
+
+### Slide-by-slide narration
 
 **Slides 1–4, stage 0 — goal and architecture.** Say: “We wanted a local,
 reviewable record from a meeting. Swift owns the durable record and three

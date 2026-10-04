@@ -19,6 +19,11 @@ show the saved map, explain its whole-cluster scope, and give the exact
 command to reopen Meeting Review after the edit. The
 [focused CLI check](tests/speaker_naming_demo_20261004.md) passed on a copy
 of the real Sejm record; a verified identity still requires source listening.
+The corrected slide and presenter script also give a standalone command
+block for the currently open Sejm record, including its actual UUID and
+store, and a prompt to enter the name. The
+[full-block test](tests/speaker_naming_copyable_command_20261004.json) passed
+on a temporary copy without changing the active record.
 
 Follow the [four-step real-model walkthrough](#product-owner-walkthrough--real-local-models)
 to transcribe English and Polish, inspect poor-audio warning ranges, assign a

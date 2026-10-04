@@ -1,5 +1,48 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Copyable naming command correction — 2026-10-04
+
+The Product Owner rejected the previous speaker-name slide because it used
+uninitialized record/store variables and could not be executed on its own.
+The current [deck](sprint_2_increment_demo_cli_ready_20261004.pptx) gives
+the actual open Sejm record UUID, store and working directory on slide 10.
+Its `bash -c` block asks for the verified name, then runs `recognize name`.
+The presenter script contains the same block. README, handover, Product
+Owner brief, implementation, functional test record and documentation
+summary now point to this revision. The canonical deck is its exact copy;
+the prior variable-based slide remains dated history.
+
+The SRS FR-04/05, shared-store architecture, test profile, Sprint setup,
+accepted CLI design/test specification, and progress board remain as
+checked in the preceding audit: this changes the example, not the product
+contract or status. The [focused test record](tests/speaker_naming_demo_20261004.md)
+and [full-command receipt](tests/speaker_naming_copyable_command_20261004.json)
+show the exact block executed on a disposable copy, with only the store
+changed. The supplied name persisted, raw segments were unchanged, and
+the active record remained byte-identical. The first attempt was blocked
+by SwiftPM's nested sandbox before execution; the approved retry passed.
+Human identity and reopened-player display remain live checks.
+
+The slide was authored with Artifact Tool and merged into the original
+package to preserve unrelated slides, native charts and their workbooks.
+Only slide 10 and its notes changed. The
+[finalization receipt](tests/presentation_validation_cli_ready_20261004.json)
+records 18 slides and package, font, native chart data/workbook and reimport
+passes. All slides were rendered; the changed slide was visually checked.
+The canonical and dated files have SHA-256
+`9ff706fe4b204c9eb979fb64f8685889f62820b1e604d77c2f503c9fe2ca2028`.
+Applicable checks are the full-command test, shell syntax, local links,
+narrative format, source-part comparison and `git diff --check`. No product
+code or model prompts change in this presentation increment. Shared review
+UI and user-manual edits remain outside this commit.
+
+Final checks passed: full-command execution on the disposable record,
+`bash -n` for the exact command block, 529 local links with zero missing,
+no Markdown tables in revised narrative documents, and `git diff --check`.
+Package comparison found only slide 10 and its notes changed. All 17
+unchanged slides rendered pixel-identically to the source revision; the
+changed slide was inspected at full size.
+
 ## Speaker naming in the Product Owner presentation — 2026-10-04
 
 The Product Owner requested that the CLI naming explanation be included in

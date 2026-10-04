@@ -16,7 +16,12 @@ The subsequent [speaker-naming presentation check](tests/speaker_naming_demo_202
 saved a label for S2 on a disposable copy of the real Sejm record and
 confirmed unchanged raw segments and unchanged active-record names. This
 is CLI persistence evidence; human identity verification and the reopened
-player's display remain live checks.
+player's display remain live checks. The subsequent
+[full-block check](tests/speaker_naming_copyable_command_20261004.json)
+passed after the Product Owner requested a standalone command without
+pre-existing record/store variables; only the store was changed to a
+temporary copy for execution. The first sandboxed attempt was blocked by
+SwiftPM before product execution; its outside-sandbox retry passed.
 
 ## Environment and fixtures
 

@@ -12,7 +12,7 @@ The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [single-command demo and presenter script](demo/README.md)
 is the exact live order; the [user manual](user_manual.md) gives individual
 operations and recovery. The current [18-slide demonstration
-deck](sprint_2_increment_demo_naming_20261004.pptx) starts with the
+deck](sprint_2_increment_demo_cli_ready_20261004.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
 interfaces before the real-meeting journey, then shows operator review,
 response validation and benchmark evidence. It includes concise excerpts
@@ -37,6 +37,11 @@ passed on a disposable copy of the real Sejm record; real identity and UI
 display remain live operator checks. The prior
 [operator deck](sprint_2_increment_demo_operator_20261004.pptx) is retained
 as presentation history.
+
+The corrected slide also contains a standalone copyable block with the
+actual open record UUID and store. It asks for the name itself and needs
+no pre-existing shell variables. The [full-block check](tests/speaker_naming_copyable_command_20261004.json)
+passed on a disposable copy; the active record remained unchanged.
 
 The [4 October single-command rehearsal](tests/po_demo_rehearsal_20261004.md)
 executed real English and Polish transcription, diarization, cleanup and
