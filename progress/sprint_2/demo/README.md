@@ -1,7 +1,7 @@
 # Sprint 2 — Product Owner live demonstration script
 
 This is the exact running order for the Sprint 2 review. Present the
-[20-slide deck](../sprint_2_increment_demo_pipeline_20261004_v2.pptx) while
+[21-slide deck](../sprint_2_increment_demo_conclusions_20261004_final.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -165,7 +165,7 @@ had 11.49% English and 3.41% Polish WER, versus Whisper base on CPU at
 meeting accuracy. The actual recorded benchmark, not the fresh demo run,
 produced these scores.
 
-**Slides 17–18 — decision.** Say: “The increment is an executable local
+**Slides 19–21 — findings, limits and conclusions.** Say: “The measured results support an executable local
 architecture experiment. It preserves timed source text, supports
 operator review and reversible edits, and rejects some invalid model
 output. Speaker identity and natural-meeting minutes still fail the
@@ -191,6 +191,13 @@ person at the Mac.
 
 ### Pipeline and configurable reading rules during the live review
 
-On slide 3 follow the numbered processing steps, then on slide 4 explicitly distinguish the ASR, FluidAudio diarizer and Qwen LLM. At stage 3, before listening, show appendix slides 19–20 and the [complete segmentation profile](segmentation-settings.json). The [operator guide](../transcript_segmentation.md) lists every field and a standalone CLI example for the existing demo record. For the new live store, apply the same profile with the fresh UUID; the script already uses resolved defaults saved at transcription.
+On slide 3 follow the numbered processing steps, then on slide 4 explicitly distinguish the ASR, FluidAudio diarizer and Qwen LLM. At stage 3, before listening, show parameter slides 17–18 and the [complete segmentation profile](segmentation-settings.json). The [operator guide](../transcript_segmentation.md) lists every field and a standalone CLI example for the existing demo record. For the new live store, apply the same profile with the fresh UUID; the script already uses resolved defaults saved at transcription.
 
 Explain: speaker changes form boundaries, same-speaker speech joins without a time or silence cap, and unassigned joins are proposals. A changed saved profile invalidates derived minutes. The archived Sejm configuration check gives four turns preserving 802 parts; fresh diarization can produce different labels and block counts. Do not substitute that recorded result for the live output.
+
+
+### Closing narrative
+
+After the benchmark, show parameter slides 17–18 if they were not already used at the operator stage. Always finish with slides 19–21. On slide 19 summarize the working local transcription/review path, same-input ASR comparison, four-turn reading correction with source conservation, reversible controls and measured 30B memory cost. On slide 20 separate speaker clustering, transcript errors, LLM meaning failures, long-input limits and pending manual playback. On slide 21 explain the validation directions implied by those findings: operator review, human topic/item references, semantic and voice boundary checks, and comparative long-meeting/resource experiments.
+
+The conclusion is that Sprint 2 provides useful architecture evidence while dependable minutes remain unvalidated. These directions inform the already planned Sprint 3 evidence assessment; they do not assign new PBIs or imply Product Owner acceptance. Invite the Product Owner's actual reaction and record it in the handover, then end the presentation. Do not return to parameter slides after the conclusion.

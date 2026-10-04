@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "localLinksChecked": 584,
+  "missingLinks": [],
+  "slideCount": 21,
+  "conclusionTitles": [
+    "Prototype findings supported by evidence",
+    "Quality limits exposed by the prototype",
+    "Conclusions and next validation priorities"
+  ],
+  "preservedSlidesPixelIdentical": 17,
+  "chartWorkbooksPreserved": true,
+  "sha256": "031daace1c9719db644052f62723acf22f533ac00c76a5345488c68077eedc37",
+  "canonicalMatches": true
+}

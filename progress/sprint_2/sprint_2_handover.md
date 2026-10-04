@@ -11,8 +11,8 @@ pending. Sprint 2 remains `Progress` in
 The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [single-command demo and presenter script](demo/README.md)
 is the exact live order; the [user manual](user_manual.md) gives individual
-operations and recovery. The current [20-slide demonstration
-deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) starts with the
+operations and recovery. The current [21-slide demonstration
+deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
 interfaces before the real-meeting journey, then shows operator review,
 response validation and benchmark evidence. It includes concise excerpts
@@ -295,6 +295,11 @@ the live handover.
 
 ## Pipeline and segmentation correction for the review
 
-Use the [current 20-slide deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx). Slide 3 shows the actual processing order and technologies; slide 4 separates ASR, FluidAudio diarization and the Qwen LLM. Slides 19–20 enumerate the complete reading profile. Use those appendix slides during the operator-review stage. The [implementation record](sprint_2_implementation.md) explains each input, output and quality gate, and the [segmentation guide](transcript_segmentation.md) supplies the executable command and expected reading result.
+Use the [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx). Slide 3 shows the actual processing order and technologies; slide 4 separates ASR, FluidAudio diarization and the Qwen LLM. Slides 17–18 enumerate the complete reading profile. Use those parameter slides during the operator-review stage. The [implementation record](sprint_2_implementation.md) explains each input, output and quality gate, and the [segmentation guide](transcript_segmentation.md) supplies the executable command and expected reading result.
 
 Show the same-speaker amount continuation and S3 phrase without arbitrary time cuts, then point out that an explicit S1/S2 change remains a boundary. The controlled Sejm copy preserved 802 source parts while reducing 32 reading blocks to four. Technical configuration tests passed; semantic boundary checks and independent voice reassessment remain open. The existing running QA window could not be attached by automation during this correction, so perform the paused-player and bounded-playback checks live. This update does not close the sprint or accept minutes quality.
+
+
+## Presentation closing correction — 4 October 2026
+
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

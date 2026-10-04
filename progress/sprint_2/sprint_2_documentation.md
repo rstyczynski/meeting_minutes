@@ -128,7 +128,7 @@ The prior documentation approval request was superseded by the FR-11 scope
 addition. The Product Owner then introduced P9, a developer-led handover
 before Phase 5 approval. The [single-command demo and presenter script](demo/README.md),
 [user manual](user_manual.md), [slide
-demonstration](sprint_2_increment_demo_pipeline_20261004_v2.pptx), and [handover
+demonstration](sprint_2_increment_demo_conclusions_20261004_final.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
 brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
 failures. The Product Owner initially stated that the minutes defect blocked
@@ -174,4 +174,9 @@ default, the unvalidated minutes quality, or pending Product Owner walkthrough.
 
 ## Current reading-policy handover correction
 
-The [current pipeline deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx), [implementation pipeline](sprint_2_implementation.md) and [segmentation guide](transcript_segmentation.md) explicitly separate ASR, diarization, Swift grouping and LLM minutes. The guide enumerates every implemented reading control, its default and validation rules. The CLI example was exercised on a copy of the real record and retains the active record unchanged. The [test record](sprint_2_tests.md) distinguishes passing configuration/source checks from pending native playback and unimplemented semantic/acoustic reassessment. Earlier deck versions and model evidence remain historical.
+The [current pipeline deck](sprint_2_increment_demo_conclusions_20261004_final.pptx), [implementation pipeline](sprint_2_implementation.md) and [segmentation guide](transcript_segmentation.md) explicitly separate ASR, diarization, Swift grouping and LLM minutes. The guide enumerates every implemented reading control, its default and validation rules. The CLI example was exercised on a copy of the real record and retains the active record unchanged. The [test record](sprint_2_tests.md) distinguishes passing configuration/source checks from pending native playback and unimplemented semantic/acoustic reassessment. Earlier deck versions and model evidence remain historical.
+
+
+## Presentation closing correction — 4 October 2026
+
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

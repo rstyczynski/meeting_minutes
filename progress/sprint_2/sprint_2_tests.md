@@ -678,3 +678,8 @@ and [B3 integration](tests/test_run_staged_minutes_final_B3_integration_20261004
 The tests verify implementation contracts and non-destructive failure
 behavior; they do not establish factual minutes quality or Product Owner
 acceptance. The quality blocker remains open.
+
+
+## Presentation closing check — 4 October 2026
+
+The [21-slide conclusion deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) passed the [package/layout/font/chart/reimport checks](tests/presentation_validation_conclusions_20261004.json) and [content/preservation review](tests/presentation_conclusions_review_20261004.json). Parameter slides moved unchanged to 17–18. Supported findings, quality limits and next validation priorities now end the presentation at 19–21. Fifteen earlier slides and two moved parameter slides render identically to the source; chart and embedded workbook bytes remain unchanged. Every final slide was rendered and the new closing slides were inspected individually. The source figures were checked against the existing benchmark, PDF review, staged-trial report and configuration receipt. Product code and test contracts are unchanged, so no repeat ASR/LLM run or fresh product gate is implied. Native playback and Product Owner acceptance remain pending.

@@ -139,7 +139,7 @@ contract check and links the gate evidence.
 
 The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives individual operations and
 recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
-and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_pipeline_20261004_v2.pptx)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_conclusions_20261004_final.pptx)
 present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
 presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
 is the concise guide to that review set. A real Polish Sejm
@@ -181,4 +181,4 @@ the levels and the optional log label.
 
 ### Configurable transcript reading turns
 
-The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all ten reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo_pipeline_20261004_v2.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes and remove arbitrary duration/pause cuts; semantic boundary validation and operator playback acceptance remain open.
+The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all ten reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo_conclusions_20261004_final.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes and remove arbitrary duration/pause cuts; semantic boundary validation and operator playback acceptance remain open.

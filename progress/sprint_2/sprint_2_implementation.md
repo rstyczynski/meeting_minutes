@@ -56,7 +56,7 @@ The staged adapter checks JSON schema, IDs, coverage, exact evidence quotes, ite
 
 All six gates passed in the `cleanup_verified` run. UT-14 verifies every reading control and the two reported split regressions. IT-13 verifies persistence, changed-profile invalidation, no write on same profile or invalid input, and equality of CLI reading text/IDs and captured model input. A controlled Sejm copy produced four turns instead of 32 while preserving 802/802 source parts and every source word. Explicit alternative profiles produced 802 source-part blocks, 32 duration-capped blocks and six pause-capped blocks. The [receipt](tests/cleanup_configuration_20261004.json) provides commands and checks. These are segmentation measurements, not improved word error rate or speaker accuracy. Existing names in the active demo record remained untouched.
 
-The [updated Product Owner deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) shows this pipeline on slide 3, separates the model jobs on slide 4, and enumerates the profile on slides 19–20. Native review automation could not attach to the currently running QA app (accessibility/screenshot calls timed out), so this correction does not claim a fresh successful GUI listening check. The build and CLI behavior passed. Live operator playback and Product Owner acceptance remain pending.
+The [updated Product Owner deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) shows this pipeline on slide 3, separates the model jobs on slide 4, and enumerates the profile on slides 17–18. Native review automation could not attach to the currently running QA app (accessibility/screenshot calls timed out), so this correction does not claim a fresh successful GUI listening check. The build and CLI behavior passed. Live operator playback and Product Owner acceptance remain pending.
 
 Status: executable bilingual prototype and staged-minutes quality experiment
 measured. The minutes-content failure is an explicit prototype finding and
@@ -850,3 +850,8 @@ format, with values substituted:
 V1 had no repair prompt. No ASR or diarization text prompts were used.
 These historical prompt templates explain the observed failures; they are
 not the current product contract.
+
+
+## Presentation closing correction — 4 October 2026
+
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

@@ -17,11 +17,11 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [20-slide live-journey presentation](sprint_2_increment_demo_pipeline_20261004_v2.pptx)
+Open the current [21-slide live-journey presentation](sprint_2_increment_demo_conclusions_20261004_final.pptx)
 and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
 The [operator manual](user_manual.md) documents individual commands and
 recovery. Slides 2–4 establish the Sprint goal,
-the shared Swift architecture, and the two model interfaces. ASR receives
+the shared Swift architecture, and the distinct ASR, diarizer and LLM roles. ASR receives
 audio and a language setting, not a text prompt. The staged Qwen model
 receives transcript utterances and task-specific prompts; its responses go
 through Swift source checks and bounded repair. The full prompt templates
@@ -192,6 +192,15 @@ validation set before any minutes-quality acceptance.
 
 ## Reading pipeline and rule clarification — 4 October 2026
 
-Start with goals, then use slide 3 of the [current deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) to follow audio through ASR, optional diarization, Swift reading turns, operator review, optional Qwen minutes and output validation. On slide 4, state clearly that the separate FluidAudio diarizer, not Parakeet/Whisper or Qwen, detects anonymous voice turns. Swift aligns them to timed text by overlap and groups the resulting parts.
+Start with goals, then use slide 3 of the [current deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) to follow audio through ASR, optional diarization, Swift reading turns, operator review, optional Qwen minutes and output validation. On slide 4, state clearly that the separate FluidAudio diarizer, not Parakeet/Whisper or Qwen, detects anonymous voice turns. Swift aligns them to timed text by overlap and groups the resulting parts.
 
-During the operator stage show slides 19–20 with every profile field and its default. Demonstrate the [documented CLI profile](transcript_segmentation.md). Explain why a labeled speaker change ends a turn while a same-speaker pause does not, and show the number `35 779` staying together. Report 32-to-four reading blocks with 802/802 parts conserved as grouping evidence only. Use the preserved raw sources to inspect proposed unassigned joins. Meaning-based boundaries and rechecking the actual voice remain open. Reapplying a profile must not silently retain stale minutes when it changes.
+During the operator stage show slides 17–18 with every profile field and its default. Demonstrate the [documented CLI profile](transcript_segmentation.md). Explain why a labeled speaker change ends a turn while a same-speaker pause does not, and show the number `35 779` staying together. Report 32-to-four reading blocks with 802/802 parts conserved as grouping evidence only. Use the preserved raw sources to inspect proposed unassigned joins. Meaning-based boundaries and rechecking the actual voice remain open. Reapplying a profile must not silently retain stale minutes when it changes.
+
+
+## Closing conclusions from Sprint 2 evidence
+
+The presentation now ends with findings, limits and next validation priorities on slides 19–21; the complete parameter profile precedes them on slides 17–18. The local transcription/review path and reversible source controls are executable. The AMI headset benchmark differentiates the selected ASR models (19.48% versus 28.79% WER), and the Sejm reading correction removes artificial cuts while conserving 802 source parts. Neither result establishes perfect transcription or speaker detection.
+
+The separate diarizer merged four AMI reference speakers into three clusters, and warning ranges did not isolate the poor-audio participant reliably. The Polish source comparison identified name, acronym and unit errors. Qwen 30B staged trials improved the shape and coverage of the draft but only 2/5 AMI and 2/4 Sejm summaries passed strict support review. Recorded peak child-process RSS reached 16.01 and 17.34 GB in those single runs. Fresh demo calls failed their gates, and the longer DOE minutes trial failed. A larger model therefore has not resolved the content-quality problem.
+
+The implications are concrete: keep source review as a product capability; establish human topic and item references; measure semantic support and decision/task precision and recall; assess ambiguous text/voice boundaries; evaluate long-input decomposition and resource cost on common meeting inputs. These are directions for the planned Sprint 3 assessment, not newly accepted scope. The closing position is useful, inspectable prototype evidence with dependable minutes still unvalidated and live Product Owner review pending. The benchmark, staged-trial report, PDF review and configuration receipt already linked above support each conclusion; slide notes name the direct evidence.
