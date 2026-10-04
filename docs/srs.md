@@ -166,6 +166,16 @@ unassigned. A suspected audio/ASR artifact can be excluded from the
 minutes input only with recorded evidence or operator review; unresolved
 cases remain visible.
 
+The reading-layer segmentation and neighbor-join parameters shall be
+configurable through a documented profile shared by CLI inspection, operator
+review and multi-stage minutes preparation. The saved record shall retain
+the resolved profile. Default grouping shall preserve explicit speaker
+changes and shall not split same-speaker speech by duration or pause alone.
+A changed profile shall preserve source parts and operator corrections and
+invalidate dependent minutes. Existing diarization labels provide boundary
+evidence; semantic continuity and independent acoustic checks of uncertain
+joins remain validation work identified by the prototype.
+
 For a complete minutes draft, the system shall identify meeting topics and
 assign every substantive utterance to one or more topics. It shall account
 for every raw text-bearing segment in a corrected utterance or an explicitly

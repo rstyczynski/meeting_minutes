@@ -170,6 +170,44 @@ the existing evidence does not isolate their individual effects.
 
 ### Transcription correction method
 
+#### Reading-block correction — Product Owner request, 2026-10-04
+
+The Product Owner requested removal of the arbitrary 15-second block limit
+after seeing one continuous S3 sentence split at 597.04 seconds. This limit
+was an implementation heuristic without a requirement or accepted design
+justification. It is removed from the cleaned reading view. Consecutive
+segments with the same effective speaker and gaps no greater than 1.5
+seconds form one continuous reading block regardless of total duration.
+Speaker changes and longer gaps still begin another block. This is a
+continuity heuristic, not sentence or topic detection; no semantic boundary
+claim follows from it. Any future model input budgeting must be separate
+from these displayed boundaries.
+
+UT-14's existing transcript-cleaning contract is extended with a continuous
+17.52-second S3 turn crossing the old boundary, followed by a different
+speaker and a pause longer than 1.5 seconds. It must produce one complete
+S3 block and retain both genuine boundaries, preserving every source ID.
+The real saved Sejm record must join `segment_763` through `segment_802`
+into one block at 582.24–599.76 seconds without modifying raw words,
+speaker labels or stored data. The review application must be rebuilt and
+reopened before the Product Owner inspects this change. Historical model
+trials retain their recorded reading IDs/counts; their results are not
+reinterpreted as fresh trials of the corrected cleaner.
+
+The next live Product Owner inspection exposed the remaining pause cutoff:
+the S2 amount was split between “35” ending at 263.12 seconds and “779”
+starting at 264.72 seconds. A 1.6-second gap is not evidence of a new speaker
+turn or a complete numerical expression. This further correction supersedes
+the pause-based reading boundary above: consecutive segments with the same
+effective speaker are grouped regardless of elapsed duration or pause.
+Speaker changes still start another block. Source ranges retain every pause
+for replay; the block is a same-speaker reading turn, not a detected sentence
+or topic. The separate 1.5-second proximity checks for proposing attribution
+of unknown/isolated tokens remain in place; they do not cut an already
+labeled turn. This restores the accepted coherent reading-view intent.
+UT-14 additionally must retain a same-speaker “35 779…” expression across
+the actual 1.6-second gap and preserve all its source IDs.
+
 This is a separate, required preparation step before topic discovery. The
 saved ASR transcript remains immutable. The correction layer contains
 cleaned utterances and a change record for each merge, speaker-continuity
@@ -1041,3 +1079,21 @@ quality gates.
 
 Design approval status: Accepted by the Product Owner on 2026-10-01, including
 the PBI-011 child breakdown. Construction may proceed.
+
+
+## Accepted correction: configurable transcript segmentation — 2026-10-04
+
+The Product Owner explicitly requires every parameter of the transcript reading segmentation and neighbor-join heuristics to be configurable. This correction belongs to PBI-011.5 and supports the PBI-011.4 operator review. It does not change sprint or backlog status. The preceding failed duration and pause designs remain above as evidence of the correction.
+
+A shared `transcriptCleanup` JSON profile controls grouping (`speakerTurns` or `sourceParts`), grouping of unassigned parts, whether neighbor speaker proposals are enabled, the maximum candidate word count, maximum neighbor gap, allowed overlap, maximum one-sided join gap, and optional reading block duration and gap limits. Defaults retain continuous same-speaker turns without a duration or silence cutoff. Optional limits remain disabled unless explicitly configured. Unique source IDs, valid time ranges, nonempty text and source conservation are validation invariants, not adjustable quality thresholds.
+
+New transcription records persist the complete resolved profile. `configure-cleanup <record-id> --settings <file>` atomically applies it to existing records, preserving raw ASR parts, operator corrections and speaker names, while invalidating derived minutes and topic coverage when the profile changes. CLI inspection, the review application and multi-stage minutes input all use that saved profile. Older records without a profile use documented defaults until configured. Partial profiles inherit defaults; unknown profile keys, invalid enum values, nonfinite or negative limits, and a one-sided gap greater than the neighbor gap are rejected before writing a record. A positive duration limit may split between source parts but never truncate a single source part.
+
+UT-14 will cover each profile control against contrasting input, invalid configurations and the continuous S3 turn and split amount regressions. IT-13 will cover CLI profile application, persistence, invalidation and nonmutation on failure, and compare captured model input with CLI inspection for the same saved profile. The six sprint and regression gates remain mandatory. Real Sejm inspection will report source conservation and reading block counts separately from ASR accuracy.
+
+Meaning and acoustic voice change are still missing boundary checks in this prototype. Time proximity and existing diarization labels are only hypotheses; configuration does not validate sentence meaning or reassess the audio. The future boundary validator must examine both adjacent text and voice evidence and expose uncertain decisions for operator review. The current correction makes the existing heuristics explicit and controllable; it does not claim this additional validator is implemented.
+
+
+### Clarification: use diarization speaker changes now — 2026-10-04
+
+The Product Owner clarifies that existing anonymous speaker labels are usable boundary evidence now; automatic name discovery is unnecessary for this decision. By default `preserveSpeakerChanges: true` prevents the neighbor heuristic from overriding an explicit nonempty speaker label, including a one-word S2 turn between S1 parts. A change of effective speaker creates a reading boundary. Same-speaker parts join without duration or pause limits by default. Unassigned parts may still receive recorded neighbor proposals. Setting `preserveSpeakerChanges: false` explicitly enables the older brief-switch proposal experiment. UT-14 checks both modes. This uses existing diarization evidence; it does not claim to correct a wrongly merged voice cluster.

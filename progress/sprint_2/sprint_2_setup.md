@@ -170,3 +170,7 @@ amendment](sprint_2_design.md) defines a reviewable path and test evidence.
 Production thresholds and code-switching policy still belong to later
 requirements refinement. The earlier Sprint 2 documentation approval
 request is superseded until this new work is completed and reconciled.
+
+## Setup reconciliation — reading profile correction, 4 October 2026
+
+The Product Owner requested every reading segmentation parameter to be configurable and clarified that existing diarization labels can identify speaker boundaries now. The accepted correction belongs to PBI-011.5 with PBI-011.4 review integration. The [profile contract](transcript_segmentation.md) and [latest implementation](sprint_2_implementation.md) describe the actual behavior; earlier model measurements keep their original profiles. The active Sprint 2 and board statuses are unchanged. No new backlog item or acceptance claim is introduced.

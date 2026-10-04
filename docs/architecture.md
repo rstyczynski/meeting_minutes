@@ -155,3 +155,9 @@ its own UI and permitted-input adapters rather than reuse the macOS capture UI.
 - Exact input-media codecs and whether any conversion is needed.
 - Local storage encryption and lifecycle policy.
 - The future live-capture consent/permission path.
+
+## Reading pipeline correction — 4 October 2026
+
+Parakeet/Whisper ASR produces timed text. FluidAudio `OfflineDiarizerManager` separately analyzes audio to produce anonymous voice turns; Swift assigns ASR-part labels by greatest positive temporal overlap. Swift `TranscriptCleaner` then groups those parts using a saved `TranscriptCleanupPolicy`. The LLM enters later, for topic assignment, per-topic summaries and explicit minutes items. Operator review can occur before generation or return to the source after it.
+
+The [Sprint 2 segmentation contract](../progress/sprint_2/transcript_segmentation.md) exposes all ten reading-layer controls. By default, explicit speaker changes create boundaries and same-speaker parts join without a duration or silence cutoff. CLI inspection, the SwiftUI review app and multi-stage minutes use the same saved policy. Changed profiles invalidate dependent results while preserving original text, names and corrections. This correction removes the arbitrary 15-second reading cut and the separate 1.5-second reading gap cutoff; a 1.5-second neighbor-proposal threshold remains independently configurable. Semantic boundary validation and independent voice reassessment remain unimplemented. Speaker clusters can still merge people incorrectly. The [current presentation](../progress/sprint_2/sprint_2_increment_demo_pipeline_20261004_v2.pptx) separates these responsibilities explicitly.

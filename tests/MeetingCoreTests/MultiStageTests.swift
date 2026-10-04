@@ -29,6 +29,106 @@ struct MultiStageTests {
         #expect(cleaned.utterances.contains { $0.sourceSegmentIDs == ["d", "e", "f", "g"] })
         #expect(cleaned.utterances.flatMap(\.sourceSegmentIDs).sorted() == source.map(\.id).sorted())
         #expect(source[1].speakerID == nil)
+
+        // A continuous speaker turn must survive the former 15-second cut.
+        // Speaker changes still create separate blocks.
+        let longerTurn = [
+            try segment("long_a", 582.24, 589.68, "S3", "Bardzo dziękuję."),
+            try segment("long_b", 589.68, 597.04, "S3", "Zadania związane z"),
+            try segment("long_c", 597.04, 599.76, "S3", "organizacją i nadzorowaniem prac normalizacyjnych w kraju."),
+            try segment("other_speaker", 600.0, 601.0, "S2", "Dziękuję."),
+            try segment("after_pause", 603.0, 604.0, "S1", "Następny punkt."),
+        ]
+        let continuous = try TranscriptCleaner.prepare(longerTurn)
+        #expect(continuous.utterances.count == 3)
+        #expect(continuous.utterances[0].sourceSegmentIDs == ["long_a", "long_b", "long_c"])
+        #expect(continuous.utterances[0].range.startSeconds == 582.24)
+        #expect(continuous.utterances[0].range.endSeconds == 599.76)
+        #expect(continuous.utterances[0].text == longerTurn.prefix(3).map(\.text).joined(separator: " "))
+        #expect(continuous.utterances[1].sourceSegmentIDs == ["other_speaker"])
+        #expect(continuous.utterances[2].sourceSegmentIDs == ["after_pause"])
+        #expect(continuous.utterances.flatMap(\.sourceSegmentIDs) == longerTurn.map(\.id))
+
+        let amountAcrossPause = [
+            try segment("amount_a", 262.8, 263.12, "S2", "35"),
+            try segment("amount_b", 264.72, 265.92, "S2", "779 milionów"),
+        ]
+        let amount = try TranscriptCleaner.prepare(amountAcrossPause)
+        #expect(amount.utterances.count == 1)
+        #expect(amount.utterances[0].text == "35 779 milionów")
+        #expect(amount.utterances[0].sourceSegmentIDs == ["amount_a", "amount_b"])
+
+        var policy = TranscriptCleanupPolicy()
+        policy.maximumReadingGapSeconds = 1.5
+        #expect(try TranscriptCleaner.prepare(amountAcrossPause, policy: policy).utterances.count == 2)
+        policy = TranscriptCleanupPolicy()
+        policy.maximumReadingBlockSeconds = 15
+        #expect(try TranscriptCleaner.prepare(longerTurn, policy: policy).utterances.count == 4)
+        policy = TranscriptCleanupPolicy()
+        policy.grouping = .sourceParts
+        #expect(try TranscriptCleaner.prepare(source, policy: policy).utterances.count == source.count)
+        policy = TranscriptCleanupPolicy()
+        policy.proposeNeighborSpeakers = false
+        #expect(try TranscriptCleaner.prepare(source, policy: policy).candidates.isEmpty)
+        let unknown = [try segment("u1", 1, 2, nil, "one"),
+                       try segment("u2", 2, 3, nil, "two")]
+        #expect(try TranscriptCleaner.prepare(unknown).utterances.count == 1)
+        policy.mergeUnassignedSegments = false
+        #expect(try TranscriptCleaner.prepare(unknown, policy: policy).utterances.count == 2)
+
+        // Neighbor decisions change with each threshold; source parts always survive.
+        let twoWords = [try segment("w1", 1, 2, "S1", "We"),
+                        try segment("w2", 2, 2.2, "S2", "the new"),
+                        try segment("w3", 2.2, 3, "S1", "budget")]
+        policy = TranscriptCleanupPolicy()
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).candidates.isEmpty)
+        policy.preserveSpeakerChanges = false
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).candidates.isEmpty)
+        policy.maximumCandidateWords = 2
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).candidates.first?.disposition == .bridge)
+        policy.preserveSpeakerChanges = true
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).utterances.count == 3)
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).candidates.isEmpty)
+        policy.preserveSpeakerChanges = false
+        #expect(try TranscriptCleaner.prepare(twoWords, policy: policy).candidates.first?.disposition == .bridge)
+        let oneWordTurn = [try segment("voice_a", 1, 2, "S1", "Budget"),
+                           try segment("voice_b", 2, 2.2, "S2", "Yes"),
+                           try segment("voice_c", 2.2, 3, "S1", "Schedule")]
+        #expect(try TranscriptCleaner.prepare(oneWordTurn).utterances.count == 3)
+        #expect(try TranscriptCleaner.prepare(oneWordTurn).candidates.isEmpty)
+        let distant = [try segment("g1", 1, 2, "S1", "We"),
+                       try segment("g2", 4, 4.2, nil, "the"),
+                       try segment("g3", 6.2, 7, "S1", "budget")]
+        policy = TranscriptCleanupPolicy()
+        #expect(try TranscriptCleaner.prepare(distant, policy: policy).candidates.first?.disposition == .retainIndependent)
+        policy.maximumNeighborGapSeconds = 2.1
+        #expect(try TranscriptCleaner.prepare(distant, policy: policy).candidates.first?.disposition == .bridge)
+        let overlapping = [try segment("o1", 1, 2, "S1", "We"),
+                           try segment("o2", 1.8, 2.2, "S2", "the"),
+                           try segment("o3", 2.2, 3, "S1", "budget")]
+        policy = TranscriptCleanupPolicy()
+        policy.preserveSpeakerChanges = false
+        #expect(try TranscriptCleaner.prepare(overlapping, policy: policy).candidates.isEmpty)
+        policy.maximumOverlapSeconds = 0.25
+        #expect(try TranscriptCleaner.prepare(overlapping, policy: policy).candidates.first?.disposition == .bridge)
+        let oneSided = [try segment("s1", 1, 2, "S1", "We approved"),
+                        try segment("s2", 2.7, 3, nil, "the budget.")]
+        policy = TranscriptCleanupPolicy()
+        #expect(try TranscriptCleaner.prepare(oneSided, policy: policy).candidates.first?.disposition == .unresolved)
+        policy.maximumOneSidedGapSeconds = 0.8
+        #expect(try TranscriptCleaner.prepare(oneSided, policy: policy).candidates.first?.disposition == .joinPrevious)
+        #expect(try TranscriptCleaner.prepare(oneSided, policy: policy).utterances.flatMap(\.sourceSegmentIDs) == ["s1", "s2"])
+        for json in ["{\"maximumCandidateWords\":0}", "{\"maximumOverlapSeconds\":-1}",
+                     "{\"maximumReadingBlockSeconds\":0}", "{\"maximumReadingGapSeconds\":-1}",
+                     "{\"maximumOneSidedGapSeconds\":2}", "{\"grouping\":\"typo\"}",
+                     "{\"maximumNeigborGapSeconds\":1}"] {
+            #expect(throws: Error.self) {
+                try JSONDecoder().decode(TranscriptCleanupPolicy.self, from: Data(json.utf8))
+            }
+        }
+        policy.maximumOverlapSeconds = .infinity
+        #expect(throws: Error.self) { try TranscriptCleaner.prepare(source, policy: policy) }
+        #expect(try JSONDecoder().decode(TranscriptCleanupPolicy.self, from: Data("{}".utf8)) == TranscriptCleanupPolicy())
     }
 
     @Test func testTopicCoverage() throws {

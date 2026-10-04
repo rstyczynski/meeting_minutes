@@ -128,12 +128,15 @@ showed that the CLI can save a name; it was a test alias and is excluded
 from the current identity demonstration.
 
 Open the Sejm record in a separate Terminal window so the review app can
-remain visible while the CLI is used. Select the source range near
-565–569 seconds, play the short range, and pause or close the app after
-listening. Its latest bounded-stop behavior still needs a human replay
-check. The developer could build and start the app but could not attach
-to its window in the 4 October rehearsal, so no successful listening is
-claimed there.
+remain visible while the CLI is used. The Transcript pane groups the raw
+word-timed source parts into readable utterances. Expand **Source words and
+correction IDs** on an utterance to inspect or play a precise word range for
+an operator correction. A displayed speaker join is a proposal until checked
+against audio. Select the source range near 565–569 seconds, play the short
+range, and pause or close the app after listening. Its latest bounded-stop
+behavior still needs a human replay check. The developer could build and
+start the app but could not attach to its window in the 4 October rehearsal,
+so no successful listening is claimed there.
 
 ~~~bash
 swift run meeting-review "$polish_id" --store "$store_dir"
@@ -248,3 +251,7 @@ record](sprint_2_tests.md) contains synthetic contract
 tests separately from the real-model evidence. The [handover
 record](sprint_2_handover.md) records the demonstration
 checks and Product Owner decision.
+
+## Configure how transcript parts form readable turns
+
+[Transcript segmentation](transcript_segmentation.md) gives a complete copy-paste command for the current Sejm record and enumerates all ten JSON controls. `configure-cleanup` stores the profile for CLI inspection, Meeting Review and multi-stage minutes. By default, a labeled speaker change starts a new turn; a same-speaker pause or elapsed duration does not. Unassigned neighbor joins remain proposals to verify against audio. Restart the review app after a configuration change. A changed profile clears derived minutes so that old utterance IDs cannot be mistaken for current ones.

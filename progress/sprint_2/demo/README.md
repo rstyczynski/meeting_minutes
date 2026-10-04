@@ -1,7 +1,7 @@
 # Sprint 2 — Product Owner live demonstration script
 
 This is the exact running order for the Sprint 2 review. Present the
-[18-slide deck](../sprint_2_increment_demo_cli_ready_20261004.pptx) while
+[20-slide deck](../sprint_2_increment_demo_pipeline_20261004_v2.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -82,9 +82,10 @@ executed this block on a temporary copy, changing only the store path.
 **Slides 1–4, stage 0 — goal and architecture.** Say: “We wanted a local,
 reviewable record from a meeting. Swift owns the durable record and three
 separate actions: transcription, optional speaker recognition, and optional
-minutes. FluidAudio with Parakeet or Whisper recognizes speech;
-FluidAudio's diarizer proposes anonymous speakers; MLX/Qwen proposes
-minutes. The application checks model responses before using them.” Point
+minutes. Parakeet through FluidAudio or Whisper through whisper.cpp recognizes speech.
+A separate FluidAudio diarizer analyzes audio to label anonymous voices.
+Swift groups the resulting timed parts. MLX/Qwen generates topics and draft
+minutes later. The application checks model responses before using them.” Point
 out that ASR receives audio and a language selection, whereas the minutes
 model receives transcript text and source IDs. Neither output is assumed
 correct just because it has valid syntax.
@@ -187,3 +188,9 @@ remaining transcript and continues to the recorded comparison. The
 [rehearsal record](../tests/po_demo_rehearsal_20261004.md) identifies which
 steps were actually executed and which operator actions still require a
 person at the Mac.
+
+### Pipeline and configurable reading rules during the live review
+
+On slide 3 follow the numbered processing steps, then on slide 4 explicitly distinguish the ASR, FluidAudio diarizer and Qwen LLM. At stage 3, before listening, show appendix slides 19–20 and the [complete segmentation profile](segmentation-settings.json). The [operator guide](../transcript_segmentation.md) lists every field and a standalone CLI example for the existing demo record. For the new live store, apply the same profile with the fresh UUID; the script already uses resolved defaults saved at transcription.
+
+Explain: speaker changes form boundaries, same-speaker speech joins without a time or silence cap, and unassigned joins are proposals. A changed saved profile invalidates derived minutes. The archived Sejm configuration check gives four turns preserving 802 parts; fresh diarization can produce different labels and block counts. Do not substitute that recorded result for the live output.

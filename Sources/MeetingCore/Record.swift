@@ -127,6 +127,7 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
     public let backend: String
     public let modelRevision: String
     public var processingParameters: [String: String]
+    public var transcriptCleanupPolicy: TranscriptCleanupPolicy?
     public var cleanedTranscript: TranscriptCleanupResult?
     public var topics: [MeetingTopic]?
     public var topicAssignments: [TopicAssignment]?
@@ -136,7 +137,8 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
                 segments: [TranscriptSegment], speakerNames: [String: String] = [:],
                 reviewItems: [ReviewItem] = [], qualityWarnings: [QualityWarning]? = nil,
                 backend: String,
-                modelRevision: String, processingParameters: [String: String] = [:]) {
+                modelRevision: String, processingParameters: [String: String] = [:],
+                transcriptCleanupPolicy: TranscriptCleanupPolicy? = nil) {
         self.id = id
         self.sourcePath = sourcePath
         self.segments = segments
@@ -146,10 +148,24 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
         self.backend = backend
         self.modelRevision = modelRevision
         self.processingParameters = processingParameters
+        self.transcriptCleanupPolicy = transcriptCleanupPolicy
         self.cleanedTranscript = nil
         self.topics = nil
         self.topicAssignments = nil
         self.transcriptCorrections = nil
+    }
+
+    public mutating func configureCleanup(_ policy: TranscriptCleanupPolicy) throws {
+        try policy.validate()
+        guard transcriptCleanupPolicy != policy else { return }
+        transcriptCleanupPolicy = policy
+        reviewItems = []
+        cleanedTranscript = nil
+        topics = nil
+        topicAssignments = nil
+        for key in ["topicCoverage", "minutesModelRevision", "minutesSource", "minutesPipeline"] {
+            processingParameters.removeValue(forKey: key)
+        }
     }
 
     public mutating func renameSpeaker(_ id: String, to name: String) {

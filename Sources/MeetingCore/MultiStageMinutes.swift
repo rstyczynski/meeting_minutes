@@ -170,17 +170,21 @@ public struct MLXMultiStageMinutesGenerator {
     public let executable: String
     public let modelDirectory: String
     public let speakerNames: [String: String]
+    public let cleanupPolicy: TranscriptCleanupPolicy
     public let corrections: [TranscriptCorrection]
 
     public init(executable: String, modelDirectory: String,
-                speakerNames: [String: String], corrections: [TranscriptCorrection] = []) {
+                speakerNames: [String: String], corrections: [TranscriptCorrection] = [],
+                cleanupPolicy: TranscriptCleanupPolicy = TranscriptCleanupPolicy()) {
         self.executable = executable
         self.modelDirectory = modelDirectory
         self.speakerNames = speakerNames
         self.corrections = corrections
+        self.cleanupPolicy = cleanupPolicy
     }
 
-    public func generate(from segments: [TranscriptSegment]) throws -> MultiStageDraft {
+    public func generate(from segments: [TranscriptSegment],
+                         savedPolicy: TranscriptCleanupPolicy? = nil) throws -> MultiStageDraft {
         guard FileManager.default.fileExists(atPath: modelDirectory) else {
             throw MeetingError.missingModel("mlx")
         }
@@ -189,7 +193,7 @@ public struct MLXMultiStageMinutesGenerator {
         guard duration <= 600 else {
             throw MeetingError.adapterFailure("minutes input exceeds prototype limit (600 seconds)")
         }
-        let cleanup = try TranscriptCleaner.prepare(segments, corrections: corrections)
+        let cleanup = try TranscriptCleaner.prepare(segments, corrections: corrections, policy: savedPolicy ?? cleanupPolicy)
         guard !cleanup.hasUnresolvedCandidates else {
             throw MeetingError.adapterFailure("Transcript cleanup needs review of unresolved candidates")
         }
@@ -237,7 +241,8 @@ extension MeetingSummarizer {
     public func summarize(_ id: UUID, generator: MLXMultiStageMinutesGenerator,
                           modelRevision: String) throws -> MeetingRecord {
         var record = try store.load(id)
-        let draft = try generator.generate(from: record.segments)
+        let draft = try generator.generate(from: record.segments,
+                                           savedPolicy: record.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
         record.reviewItems = draft.reviewItems
         record.cleanedTranscript = draft.cleanup
         record.topics = draft.topics

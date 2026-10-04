@@ -13,6 +13,7 @@ public enum FluidModelVersion: String, Codable, Sendable {
 }
 
 public struct MeetingConfiguration: Codable, Sendable {
+    public var transcriptCleanup: TranscriptCleanupPolicy?
     public var transcriber: String
     public var fluidModelDirectory: String?
     public var fluidModelVersion: String?
@@ -33,7 +34,8 @@ public struct MeetingConfiguration: Codable, Sendable {
                 fluidDiarizerExecutable: String? = nil,
                 mlxModelDirectory: String? = nil, mlxExecutable: String? = nil,
                 storeDirectory: String? = nil, fluidModelVersion: String? = nil,
-                whisperUseGPU: Bool? = nil) {
+                whisperUseGPU: Bool? = nil, transcriptCleanup: TranscriptCleanupPolicy? = nil) {
+        self.transcriptCleanup = transcriptCleanup
         self.transcriber = transcriber
         self.fluidModelDirectory = fluidModelDirectory
         self.fluidModelVersion = fluidModelVersion

@@ -1,5 +1,63 @@
 # Sprint 2 — Implementation record
 
+## Current processing pipeline and configurable reading turns — 4 October 2026
+
+This PBI-011.5 correction supports PBI-011.4 operator review. The Product Owner requested removal of arbitrary 15-second and 1.5-second reading boundaries, explicit use of speaker changes, and configuration of every reading segmentation parameter. The accepted correction remains in the design record alongside the superseded attempts.
+
+### 1. Audio to timed text: ASR
+
+`transcribe` sends the local WAV and selected language to Parakeet through FluidAudio, or to Whisper through whisper.cpp. Parakeet produces token timings that our adapter converts into timed word parts; Whisper supplies timed fragments that may contain several words. Swift validates and saves these source parts in one local meeting record. Storage JSON comes from Swift. ASR receives no instruction to write JSON or discover topics.
+
+### 2. Audio to anonymous speakers: separate diarization
+
+Optional `recognize` calls FluidAudio's `OfflineDiarizerManager`, using local speech-segmentation and speaker-embedding models on the recording. It returns voice turns S1/S2/S3. Swift aligns each timed ASR part with the diarization turn having the greatest positive time overlap and saves the label. Neither the ASR model nor the minutes LLM performs this diarization. The weak-audio heuristic measures speech levels over those turns and records warnings. An anonymous label distinguishes a predicted voice cluster; the operator assigns a name separately with `recognize name`.
+
+### 3. Source parts to reading turns: configurable Swift rules
+
+`TranscriptCleaner` uses source text, times, speaker labels and any recorded operator text corrections. By default a change from S1 to S2 creates a boundary, and consecutive parts with the same effective speaker join without an elapsed-duration or pause cutoff. An explicitly labeled short turn keeps its label (`preserveSpeakerChanges: true`). The algorithm checks unassigned candidates against both neighbors and records a proposed bridge or one-sided join when configured proximity limits permit it. This proposal changes only the reading layer, preserving raw parts and labels. Setting `preserveSpeakerChanges: false` explicitly enables the prior brief-switch experiment.
+
+All ten controls are configurable through this complete profile:
+
+```json
+{
+  "transcriber": "fluid",
+  "transcriptCleanup": {
+    "grouping": "speakerTurns",
+    "mergeUnassignedSegments": true,
+    "proposeNeighborSpeakers": true,
+    "preserveSpeakerChanges": true,
+    "maximumCandidateWords": 1,
+    "maximumNeighborGapSeconds": 1.5,
+    "maximumOverlapSeconds": 0.15,
+    "maximumOneSidedGapSeconds": 0.5,
+    "maximumReadingBlockSeconds": null,
+    "maximumReadingGapSeconds": null
+  }
+}
+```
+
+`grouping` selects speaker turns or source parts. `mergeUnassignedSegments` controls grouping of remaining unknown parts. `proposeNeighborSpeakers` enables neighbor proposals; `preserveSpeakerChanges` protects explicit diarization transitions. `maximumCandidateWords` controls brief-candidate size. The three neighbor/overlap/one-sided limits govern assignment proposals in seconds. The two optional reading limits are disabled by default; configuring them explicitly requests duration or gap boundaries. The [operator segmentation guide](transcript_segmentation.md) enumerates each control, its units, range, behavior, and a complete executable command with readable output. Mandatory source conservation and input validity checks cannot be disabled.
+
+New transcription records save the resolved profile. `configure-cleanup` applies a profile to an existing record atomically. A changed profile invalidates derived minutes, topics and coverage while preserving source parts, names and corrections. Reapplying the same profile makes no write. Invalid configuration returns exit 2 and leaves the saved record byte-identical. CLI inspection, Meeting Review and multi-stage minutes use the same saved profile. Older records without a profile use current defaults. This profile does not reconfigure ASR decoding or FluidAudio's internal diarization model parameters.
+
+### 4. Operator review and correction
+
+Meeting Review displays the reading turns and offers source-part disclosure and bounded range playback. The operator can listen, correct text or speaker labels through the CLI and assign names. The application loads the saved profile when opened; restart it after applying a CLI change. Listening and semantic judgment remain human activities. Automated source conservation does not verify a voice or sentence meaning.
+
+### 5. Prepared text to draft minutes: optional Qwen LLM
+
+Multi-stage `summarize` prepares exactly the reading view selected by the saved profile. Qwen through MLX receives utterance IDs, text, times and available names. It discovers topics, assigns utterances to topics, checks coverage, summarizes each topic and extracts explicit items. The exact prompt documentation and historical failures below remain intact. The legacy single-pass experiment does not use this reading layer.
+
+### 6. Quality gates before downstream use
+
+The staged adapter checks JSON schema, IDs, coverage, exact evidence quotes, item structure and supported extraction. It sends bounded repair prompts when model output fails technical validation and rejects unresolved output instead of overwriting a saved record. These technical gates do not establish that every claim is semantically correct. Independent semantic boundary checks and acoustic reassessment of a proposed join remain open design work.
+
+### Verification and interpretation
+
+All six gates passed in the `cleanup_verified` run. UT-14 verifies every reading control and the two reported split regressions. IT-13 verifies persistence, changed-profile invalidation, no write on same profile or invalid input, and equality of CLI reading text/IDs and captured model input. A controlled Sejm copy produced four turns instead of 32 while preserving 802/802 source parts and every source word. Explicit alternative profiles produced 802 source-part blocks, 32 duration-capped blocks and six pause-capped blocks. The [receipt](tests/cleanup_configuration_20261004.json) provides commands and checks. These are segmentation measurements, not improved word error rate or speaker accuracy. Existing names in the active demo record remained untouched.
+
+The [updated Product Owner deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) shows this pipeline on slide 3, separates the model jobs on slide 4, and enumerates the profile on slides 19–20. Native review automation could not attach to the currently running QA app (accessibility/screenshot calls timed out), so this correction does not claim a fresh successful GUI listening check. The build and CLI behavior passed. Live operator playback and Product Owner acceptance remain pending.
+
 Status: executable bilingual prototype and staged-minutes quality experiment
 measured. The minutes-content failure is an explicit prototype finding and
 direction for further work; the generated drafts are not accepted minutes.

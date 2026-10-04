@@ -101,3 +101,7 @@ The PBI-009 acceptance gate selected Swift, Swift Testing, and local fixtures.
 The current profile records the working runner commands. Sprint 2's accepted
 CLI revision has corresponding smoke, unit, integration, and manual checks;
 their outcomes are recorded in the [Sprint 2 test record](../progress/sprint_2/sprint_2_tests.md).
+
+## Reading-policy correction coverage — 4 October 2026
+
+The existing UT-14 transcript-cleaning case exercises every configurable reading control and protects continuous same-speaker speech across the former duration and pause cuts. The existing IT-13 multi-stage CLI case checks saved-profile application and propagation into captured model input, source/name preservation, stale-result invalidation and byte-preserving rejection/no-op behavior. Both remain selected in the Sprint 2 manifest; the six-gate wrapper command is unchanged. Native playback requires a human check and is not implied by these automated gates.

@@ -128,7 +128,7 @@ The prior documentation approval request was superseded by the FR-11 scope
 addition. The Product Owner then introduced P9, a developer-led handover
 before Phase 5 approval. The [single-command demo and presenter script](demo/README.md),
 [user manual](user_manual.md), [slide
-demonstration](sprint_2_increment_demo_cli_ready_20261004.pptx), and [handover
+demonstration](sprint_2_increment_demo_pipeline_20261004_v2.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
 brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
 failures. The Product Owner initially stated that the minutes defect blocked
@@ -171,3 +171,7 @@ repair; Sejm repeated malformed JSON and left zero draft items. The
 [implementation](sprint_2_implementation.md), and [handover](sprint_2_handover.md)
 now give the same outcome. The 30B trial does not change the product
 default, the unvalidated minutes quality, or pending Product Owner walkthrough.
+
+## Current reading-policy handover correction
+
+The [current pipeline deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx), [implementation pipeline](sprint_2_implementation.md) and [segmentation guide](transcript_segmentation.md) explicitly separate ASR, diarization, Swift grouping and LLM minutes. The guide enumerates every implemented reading control, its default and validation rules. The CLI example was exercised on a copy of the real record and retains the active record unchanged. The [test record](sprint_2_tests.md) distinguishes passing configuration/source checks from pending native playback and unimplemented semantic/acoustic reassessment. Earlier deck versions and model evidence remain historical.

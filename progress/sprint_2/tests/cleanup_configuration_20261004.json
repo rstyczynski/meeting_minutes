@@ -1,0 +1,157 @@
+{
+  "recordID": "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+  "testStore": "/private/tmp/meeting-cleanup-config-jh8b0e8y",
+  "activeRecordUnchanged": true,
+  "activeRecordSha256": "bd53c182ba59745d835d8a68f866a02818a9352e6eb5d5f38d5f38bb19197510",
+  "originalReadingBlocks": 32,
+  "configuredReadingBlocks": 4,
+  "sourcePartsConserved": 802,
+  "sourceWordsUnchanged": true,
+  "speakerNamesUnchanged": true,
+  "sameProfileByteUnchanged": true,
+  "invalidProfileByteUnchanged": true,
+  "candidateCount": 17,
+  "variantBlockCounts": {
+    "sourceParts": 802,
+    "duration15": 32,
+    "gap1.5": 6
+  },
+  "commands": [
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/Users/rstyczynski/projects/meeting_minutes/progress/sprint_2/demo/segmentation-settings.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "inspect-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/Users/rstyczynski/projects/meeting_minutes/progress/sprint_2/demo/segmentation-settings.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y/sourceParts.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "inspect-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y/duration15.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "inspect-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y/gap1.5.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "inspect-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/Users/rstyczynski/projects/meeting_minutes/progress/sprint_2/demo/segmentation-settings.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 0,
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/Users/rstyczynski/projects/meeting_minutes/.build/out/Products/Debug/meeting-summarizer",
+        "configure-cleanup",
+        "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+        "--settings",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y/invalid.json",
+        "--store",
+        "/private/tmp/meeting-cleanup-config-jh8b0e8y"
+      ],
+      "status": 2,
+      "stderr": "Adapter failed: Invalid transcriptCleanup limits: use finite nonnegative gaps, positive block duration and candidate word count; one-sided gap must not exceed neighbor gap\n"
+    }
+  ],
+  "qualityBoundary": "Reading-layer grouping only. No new ASR, diarization or LLM inference."
+}

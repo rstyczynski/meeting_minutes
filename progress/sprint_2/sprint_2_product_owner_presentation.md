@@ -17,7 +17,7 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [18-slide live-journey presentation](sprint_2_increment_demo_cli_ready_20261004.pptx)
+Open the current [20-slide live-journey presentation](sprint_2_increment_demo_pipeline_20261004_v2.pptx)
 and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
 The [operator manual](user_manual.md) documents individual commands and
 recovery. Slides 2–4 establish the Sprint goal,
@@ -189,3 +189,9 @@ inspect a record or request a repeat. Record their reaction and explicit decisio
 [handover record](sprint_2_handover.md). The measured staged candidate
 still fails content quality and requires a corrected, human-reviewed
 validation set before any minutes-quality acceptance.
+
+## Reading pipeline and rule clarification — 4 October 2026
+
+Start with goals, then use slide 3 of the [current deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) to follow audio through ASR, optional diarization, Swift reading turns, operator review, optional Qwen minutes and output validation. On slide 4, state clearly that the separate FluidAudio diarizer, not Parakeet/Whisper or Qwen, detects anonymous voice turns. Swift aligns them to timed text by overlap and groups the resulting parts.
+
+During the operator stage show slides 19–20 with every profile field and its default. Demonstrate the [documented CLI profile](transcript_segmentation.md). Explain why a labeled speaker change ends a turn while a same-speaker pause does not, and show the number `35 779` staying together. Report 32-to-four reading blocks with 802/802 parts conserved as grouping evidence only. Use the preserved raw sources to inspect proposed unassigned joins. Meaning-based boundaries and rechecking the actual voice remain open. Reapplying a profile must not silently retain stale minutes when it changes.

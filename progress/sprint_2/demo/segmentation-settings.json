@@ -1,0 +1,15 @@
+{
+  "transcriber": "fluid",
+  "transcriptCleanup": {
+    "grouping": "speakerTurns",
+    "mergeUnassignedSegments": true,
+    "proposeNeighborSpeakers": true,
+    "preserveSpeakerChanges": true,
+    "maximumCandidateWords": 1,
+    "maximumNeighborGapSeconds": 1.5,
+    "maximumOverlapSeconds": 0.15,
+    "maximumOneSidedGapSeconds": 0.5,
+    "maximumReadingBlockSeconds": null,
+    "maximumReadingGapSeconds": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "recordID": "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+  "originalReadingBlocks": 32,
+  "afterDurationFixBlocks": 6,
+  "finalReadingBlocks": 4,
+  "sourceSegments": 802,
+  "retainedSourceSegments": 802,
+  "candidateCount": 17,
+  "candidateDecisionsUnchanged": true,
+  "readingWordsUnchanged": true,
+  "recordUnchanged": true,
+  "recordSha256": "bd53c182ba59745d835d8a68f866a02818a9352e6eb5d5f38d5f38bb19197510",
+  "s3Range": {
+    "endSeconds": 599.7600000000001,
+    "startSeconds": 582.24
+  },
+  "s3SourceParts": 40,
+  "amountBoundary": {
+    "leftID": "segment_245",
+    "rightID": "segment_246",
+    "gapSeconds": 1.6000000000000227,
+    "joined": true
+  },
+  "boundary": "Reading segmentation check; no ASR, diarization, identity or minutes accuracy claim."
+}

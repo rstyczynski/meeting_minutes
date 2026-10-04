@@ -14,6 +14,7 @@ meeting-summarizer recognize move <record-id> <segment-id> <speaker-id> [--store
 meeting-summarizer summarize <record-id> --summarizer mlx
   [--pipeline multi-stage|legacy] [--settings settings.json] [--store directory]
   [--fixture-reference reference.json]
+meeting-summarizer configure-cleanup <record-id> --settings settings.json [--store directory]
 meeting-summarizer inspect-cleanup <record-id> [--store directory]
 
 Transcribe creates a transcript-only record. Recognize and summarize are
@@ -48,6 +49,7 @@ struct MeetingCLI {
         case "import": try transcribe(Array(args.dropFirst()), legacyImport: true)
         case "recognize": try recognize(Array(args.dropFirst()))
         case "summarize": try summarize(Array(args.dropFirst()))
+        case "configure-cleanup": try configureCleanup(Array(args.dropFirst()))
         case "inspect-cleanup": try inspectCleanup(Array(args.dropFirst()))
         default: throw MeetingError.adapterFailure("Usage: \(help)")
         }
@@ -128,7 +130,7 @@ struct MeetingCLI {
             ? FixtureMinutesGenerator(reference: fixture!) : EmptyMinutesGenerator()
         let record = try MeetingImporter(store: store).importMedia(
             media, backend: backend, transcriber: transcriber, minutes: minutes,
-            requestedLanguage: language)
+            requestedLanguage: language, cleanupPolicy: config.transcriptCleanup ?? TranscriptCleanupPolicy())
         print(record.id.uuidString)
     }
 
@@ -205,7 +207,8 @@ struct MeetingCLI {
             }
             let generator = MLXMultiStageMinutesGenerator(executable: executable,
                 modelDirectory: model, speakerNames: existing.speakerNames,
-                corrections: existing.transcriptCorrections ?? [])
+                corrections: existing.transcriptCorrections ?? [],
+                cleanupPolicy: existing.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
             _ = try MeetingSummarizer(store: store).summarize(id, generator: generator,
                 modelRevision: URL(fileURLWithPath: model).lastPathComponent)
             print(id.uuidString)
@@ -230,13 +233,28 @@ struct MeetingCLI {
         print(id.uuidString)
     }
 
+    private static func configureCleanup(_ args: [String]) throws {
+        let (parts, values) = try options(args, positional: 1, allowed: ["--settings", "--store"])
+        let (config, store) = try context(values)
+        guard values["--settings"] != nil, let policy = config.transcriptCleanup else {
+            throw MeetingError.adapterFailure("configure-cleanup requires --settings with a transcriptCleanup profile")
+        }
+        var record = try store.load(try recordID(parts[0]))
+        if record.transcriptCleanupPolicy != policy {
+            try record.configureCleanup(policy)
+            try store.save(record)
+        }
+        print(record.id.uuidString)
+    }
+
     private static func inspectCleanup(_ args: [String]) throws {
         let (parts, values) = try options(args, positional: 1,
                                            allowed: ["--settings", "--store"])
         let (_, store) = try context(values)
         let record = try store.load(try recordID(parts[0]))
         let cleanup = try TranscriptCleaner.prepare(record.segments,
-                                                    corrections: record.transcriptCorrections ?? [])
+                                                    corrections: record.transcriptCorrections ?? [],
+                                                    policy: record.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let json = try encoder.encode(cleanup)

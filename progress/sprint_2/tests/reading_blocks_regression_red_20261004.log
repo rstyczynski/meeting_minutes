@@ -1,0 +1,37 @@
+Command: swift test --filter MultiStageTests/testTranscriptCleaning
+State: extended UT-14, before removal of the 15-second limit.
+Captured completion output (initial compiler warnings are omitted):
+Building for debugging...
+[Computing dependencies]
+[Provisioning 32 / 37]
+[2 / 21] MeetingCore
+[4 / 22] MeetingCore
+[13 / 25] meeting-summarizer-product
+[20 / 28] meeting-summarizer-product
+[24 / 31] meeting-review-product
+[29 / 36] MeetingCoreTests-product
+[32 / 37] meeting-review-product
+[33 / 37] MeetingCoreTests-product
+[35 / 37] MeetingCoreTests-product
+Build complete! (2,60 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MultiStageTests started.
+◇ Test testTranscriptCleaning() started.
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:43:9: Expectation failed: (continuous.utterances.count → 4) == 3
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:44:9: Expectation failed: (continuous.utterances[0].sourceSegmentIDs → ["long_a", "long_b"]) == ["long_a", "long_b", "long_c"]
+± removed ["long_c"]
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:46:9: Expectation failed: (continuous.utterances[0].range.endSeconds → 597.04) == 599.76
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:47:9: Expectation failed: (continuous.utterances[0].text → "Bardzo dziękuję. Zadania związane z") == (longerTurn.prefix(3).map(\.text).joined(separator: " ") → "Bardzo dziękuję. Zadania związane z organizacją i nadzorowaniem prac normalizacyjnych w kraju.")
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:48:9: Expectation failed: (continuous.utterances[1].sourceSegmentIDs → ["long_c"]) == ["other_speaker"]
+± inserted ["long_c"], removed ["other_speaker"]
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:49:9: Expectation failed: (continuous.utterances[2].sourceSegmentIDs → ["other_speaker"]) == ["after_pause"]
+± inserted ["other_speaker"], removed ["after_pause"]
+✘ Test testTranscriptCleaning() failed after 0.001 seconds with 6 issues.
+✘ Suite MultiStageTests failed after 0.001 seconds with 6 issues.
+✘ Test run with 1 test in 1 suite failed after 0.001 seconds with 6 issues.
+Note: Some test targets reported failures:
+  - MeetingCoreTests (Swift Testing)

@@ -56,3 +56,10 @@ raw run captures are test evidence, not the decision report.
 - **Root cause:** Not established. The different launch context is material; a specific Metal, entitlement, or sandbox cause has not been proven.
 - **Containment:** The Elaboration manual and handover use `swift run` for the live journey, as the Product Owner allowed. No standalone-binary minutes support is claimed.
 - **Verification:** The [reproduction record](tests/doe_minutes_failure_diagnosis_20261002.md#direct-cli-launch-check) gives the same-record commands and results. A standalone release path still needs a separate supported-environment check.
+
+
+## BUG-5: Arbitrary reading cuts split a continuous utterance
+
+The Product Owner observed S3 split at 597.0 seconds because the reading layer capped blocks at 15 seconds, and S2 split between `35` and `779` because a 1.6-second pause exceeded a separate 1.5-second reading gap limit. Neither boundary had semantic justification. The defects are in Swift reading segmentation, not proof of an ASR or diarization failure.
+
+Status: reading-rule correction implemented and covered by UT-14 and IT-13; live operator acceptance remains pending. The default profile now disables both cuts, preserves labeled speaker changes and exposes all ten controls. The [configuration receipt](tests/cleanup_configuration_20261004.json) shows 32-to-four reading blocks with 802/802 source parts conserved. An early configuration test additionally caught a no-op profile application rewriting JSON; the CLI now skips that save. Semantic boundary validation and independent voice reassessment remain separate open work. See the [implementation](sprint_2_implementation.md) and [segmentation contract](transcript_segmentation.md).

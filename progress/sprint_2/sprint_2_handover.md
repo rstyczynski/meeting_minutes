@@ -11,8 +11,8 @@ pending. Sprint 2 remains `Progress` in
 The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [single-command demo and presenter script](demo/README.md)
 is the exact live order; the [user manual](user_manual.md) gives individual
-operations and recovery. The current [18-slide demonstration
-deck](sprint_2_increment_demo_cli_ready_20261004.pptx) starts with the
+operations and recovery. The current [20-slide demonstration
+deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
 interfaces before the real-meeting journey, then shows operator review,
 response validation and benchmark evidence. It includes concise excerpts
@@ -292,3 +292,9 @@ its proposed decision also omitted a required source chunk. The model
 remains an evaluated alternative, not the default. This check does not
 establish usable minutes or complete
 the live handover.
+
+## Pipeline and segmentation correction for the review
+
+Use the [current 20-slide deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx). Slide 3 shows the actual processing order and technologies; slide 4 separates ASR, FluidAudio diarization and the Qwen LLM. Slides 19–20 enumerate the complete reading profile. Use those appendix slides during the operator-review stage. The [implementation record](sprint_2_implementation.md) explains each input, output and quality gate, and the [segmentation guide](transcript_segmentation.md) supplies the executable command and expected reading result.
+
+Show the same-speaker amount continuation and S3 phrase without arbitrary time cuts, then point out that an explicit S1/S2 change remains a boundary. The controlled Sejm copy preserved 802 source parts while reducing 32 reading blocks to four. Technical configuration tests passed; semantic boundary checks and independent voice reassessment remain open. The existing running QA window could not be attached by automation during this correction, so perform the paused-player and bounded-playback checks live. This update does not close the sprint or accept minutes quality.

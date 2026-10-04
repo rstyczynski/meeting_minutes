@@ -17,7 +17,7 @@ struct MeetingIntegrationTests {
         try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
         let responseFile = root.appendingPathComponent("response.json")
         let helper = root.appendingPathComponent("model-helper.sh")
-        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: helper,
+        try "#!/bin/sh\ncp \"$2\" '\(root.appendingPathComponent("captured-input.json").path)'\ncp '\(responseFile.path)' \"$3\"\n".write(to: helper,
             atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: helper.path)
         let settings = root.appendingPathComponent("settings.json")
@@ -63,6 +63,58 @@ struct MeetingIntegrationTests {
         #expect(afterCorrection.reviewItems.isEmpty)
         #expect(afterCorrection.transcriptCorrections?.last?.correctedText ==
                 "We approved the revised budget.")
+
+        let second = try TranscriptSegment(id: "d2", range: SourceRange(startSeconds: 7, endSeconds: 8),
+                                           speakerID: "S1", text: "Discussion ended.")
+        var configurable = MeetingRecord(sourcePath: record.sourcePath,
+            segments: [TranscriptSegment(id: source.id, range: source.range,
+                                         speakerID: "S1", text: source.text), second],
+            speakerNames: ["S1": "Chair"], reviewItems: completed.reviewItems,
+            backend: "fluid", modelRevision: "test")
+        configurable.cleanedTranscript = try TranscriptCleaner.prepare(configurable.segments)
+        configurable.topics = completed.topics
+        configurable.topicAssignments = completed.topicAssignments
+        configurable.processingParameters["topicCoverage"] = "1/1"
+        try store.save(configurable)
+        let profile = root.appendingPathComponent("profile.json")
+        try Data("{\"transcriber\":\"fluid\",\"transcriptCleanup\":{\"grouping\":\"sourceParts\"}}".utf8).write(to: profile)
+        let configure = ["configure-cleanup", configurable.id.uuidString,
+                         "--settings", profile.path, "--store", root.path]
+        #expect(try cli(configure).0 == 0)
+        let configured = try store.load(configurable.id)
+        #expect(configured.transcriptCleanupPolicy?.grouping == .sourceParts)
+        #expect(configured.segments == configurable.segments)
+        #expect(configured.speakerNames == configurable.speakerNames)
+        #expect(configured.reviewItems.isEmpty && configured.cleanedTranscript == nil)
+        #expect(configured.topics == nil && configured.topicAssignments == nil)
+        #expect(configured.processingParameters["topicCoverage"] == nil)
+        let inspection = try cli(["inspect-cleanup", configured.id.uuidString, "--store", root.path])
+        #expect(inspection.0 == 0)
+        let inspected = try JSONDecoder().decode(TranscriptCleanupResult.self, from: Data(inspection.1.utf8))
+        #expect(inspected.utterances.count == 2)
+        var twoParts = valid
+        twoParts["topics"] = [["id": "t1", "title": "Budget", "sourceUtteranceIDs": ["utt_1", "utt_2"]]]
+        twoParts["assignments"] = [["utteranceID": "utt_1", "topicIDs": ["t1"]],
+                                   ["utteranceID": "utt_2", "topicIDs": ["t1"]]]
+        try JSONSerialization.data(withJSONObject: twoParts).write(to: responseFile)
+        var configuredArguments = arguments
+        configuredArguments[1] = configured.id.uuidString
+        #expect(try cli(configuredArguments).0 == 0)
+        let input = try JSONSerialization.jsonObject(with: Data(contentsOf:
+            root.appendingPathComponent("captured-input.json"))) as! [String: Any]
+        let utterances = input["utterances"] as! [[String: Any]]
+        #expect(utterances.map { $0["text"] as! String } == inspected.utterances.map(\.text))
+        #expect(utterances.map { $0["id"] as! String } == inspected.utterances.map(\.id))
+        #expect(utterances.allSatisfy { $0["speakerName"] as? String == "Chair" })
+        #expect(try store.load(configured.id).cleanedTranscript == inspected)
+        let configuredFile = root.appendingPathComponent("\(configured.id.uuidString).json")
+        let savedConfigured = try Data(contentsOf: configuredFile)
+        // Reapplying the same profile retains current derived minutes.
+        #expect(try cli(configure).0 == 0)
+        #expect(try Data(contentsOf: configuredFile) == savedConfigured)
+        try Data("{\"transcriber\":\"fluid\",\"transcriptCleanup\":{\"maximumOverlapSeconds\":-1}}".utf8).write(to: profile)
+        #expect(try cli(configure).0 != 0)
+        #expect(try Data(contentsOf: configuredFile) == savedConfigured)
     }
 
     @Test func testEvidenceFirstCLI() throws {

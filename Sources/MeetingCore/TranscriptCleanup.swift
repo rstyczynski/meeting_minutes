@@ -36,7 +36,9 @@ public struct TranscriptCleanupResult: Codable, Sendable, Equatable {
 /// word is rewritten, and suspected artifacts are never discarded by rule.
 public enum TranscriptCleaner {
     public static func prepare(_ segments: [TranscriptSegment],
-                               corrections: [TranscriptCorrection] = []) throws -> TranscriptCleanupResult {
+                               corrections: [TranscriptCorrection] = [],
+                               policy: TranscriptCleanupPolicy = TranscriptCleanupPolicy()) throws -> TranscriptCleanupResult {
+        try policy.validate()
         guard !segments.isEmpty else { throw MeetingError.adapterFailure("No transcript segments") }
         let ordered = segments.enumerated().sorted {
             if $0.element.range.startSeconds == $1.element.range.startSeconds {
@@ -63,7 +65,7 @@ public enum TranscriptCleaner {
 
         var effectiveSpeakers = ordered.map(\.speakerID)
         var candidates: [CleanupCandidate] = []
-        for index in ordered.indices {
+        for index in ordered.indices where policy.proposeNeighborSpeakers {
             let segment = ordered[index]
             let previous = index > 0 ? ordered[index - 1] : nil
             let next = index + 1 < ordered.count ? ordered[index + 1] : nil
@@ -72,14 +74,15 @@ public enum TranscriptCleaner {
             let wordCount = readingText[index].split(whereSeparator: \.isWhitespace).count
             let previousGap = previous.map { segment.range.startSeconds - $0.range.endSeconds }
             let nextGap = next.map { $0.range.startSeconds - segment.range.endSeconds }
-            let nearPrevious = previousGap.map { (-0.15...1.5).contains($0) } ?? false
-            let nearNext = nextGap.map { (-0.15...1.5).contains($0) } ?? false
+            let nearPrevious = previousGap.map { (-policy.maximumOverlapSeconds...policy.maximumNeighborGapSeconds).contains($0) } ?? false
+            let nearNext = nextGap.map { (-policy.maximumOverlapSeconds...policy.maximumNeighborGapSeconds).contains($0) } ?? false
             let labeledNeighbor = previousSpeaker != nil || nextSpeaker != nil
-            let briefSwitch = wordCount == 1 && previousSpeaker != nil
+            let briefSwitch = (!policy.preserveSpeakerChanges || segment.speakerID == nil)
+                && wordCount <= policy.maximumCandidateWords && previousSpeaker != nil
                 && previousSpeaker == nextSpeaker
                 && segment.speakerID != previousSpeaker && nearPrevious && nearNext
             let unknownContinuation = segment.speakerID == nil && labeledNeighbor
-                && (wordCount == 1 || (nearPrevious && !nearNext) || (!nearPrevious && nearNext))
+                && (wordCount <= policy.maximumCandidateWords || (nearPrevious && !nearNext) || (!nearPrevious && nearNext))
             guard briefSwitch || unknownContinuation else { continue }
 
             let disposition: CleanupDisposition
@@ -89,16 +92,16 @@ public enum TranscriptCleaner {
                nearPrevious && nearNext {
                 disposition = .bridge
                 speaker = left
-                reason = "Same labeled speaker on both sides; both gaps are within 1.5 seconds"
+                reason = "Same labeled speaker on both sides; both gaps satisfy the configured neighbor limits"
             } else if let left = previousSpeaker, nearPrevious,
                       (nextSpeaker != left || !nearNext),
-                      (previousGap ?? .infinity) <= 0.5 {
+                      (previousGap ?? .infinity) <= policy.maximumOneSidedGapSeconds {
                 disposition = .joinPrevious
                 speaker = left
                 reason = "Continuous with previous labeled speech; following turn differs or is distant"
             } else if let right = nextSpeaker, nearNext,
                       (previousSpeaker != right || !nearPrevious),
-                      (nextGap ?? .infinity) <= 0.5 {
+                      (nextGap ?? .infinity) <= policy.maximumOneSidedGapSeconds {
                 disposition = .joinNext
                 speaker = right
                 reason = "Continuous with following labeled speech; preceding turn differs or is distant"
@@ -120,10 +123,16 @@ public enum TranscriptCleaner {
         var groups: [[Int]] = []
         for index in ordered.indices {
             if let last = groups.indices.last,
-               let first = groups[last].first,
+               policy.grouping == .speakerTurns,
                effectiveSpeakers[groups[last].last!] == effectiveSpeakers[index],
-               ordered[index].range.startSeconds - ordered[groups[last].last!].range.endSeconds <= 1.5,
-               ordered[index].range.endSeconds - ordered[first].range.startSeconds <= 15 {
+               (effectiveSpeakers[index] != nil || policy.mergeUnassignedSegments),
+               policy.maximumReadingGapSeconds.map({
+                   ordered[index].range.startSeconds - ordered[groups[last].last!].range.endSeconds <= $0
+               }) ?? true,
+               policy.maximumReadingBlockSeconds.map({
+                   ordered[index].range.endSeconds - ordered[groups[last].first!].range.startSeconds <= $0
+               }) ?? true {
+                // Time caps are opt-in; neither duration nor silence splits by default.
                 groups[last].append(index)
             } else {
                 groups.append([index])

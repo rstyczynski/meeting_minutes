@@ -1,0 +1,31 @@
+Command: swift test --filter MultiStageTests/testTranscriptCleaning
+State: duration cut removed, before removal of the same-speaker pause cut.
+Captured completion output (initial compiler warnings are omitted):
+Building for debugging...
+[Computing dependencies]
+[2 / 21] MeetingCore
+[4 / 22] MeetingCore
+[13 / 25] meeting-summarizer-product
+[20 / 28] meeting-summarizer-product
+[24 / 31] MeetingIntegrationTests-product
+[28 / 34] meeting-review-product
+[32 / 37] meeting-review-product
+[33 / 37] MeetingCoreTests-product
+[35 / 37] MeetingCoreTests-product
+Build complete! (2,71 secs)
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+◇ Test run started.
+↳ Testing Library Version: 6.3.2 (70eff261d7f462c)
+◇ Suite MultiStageTests started.
+◇ Test testTranscriptCleaning() started.
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:57:9: Expectation failed: (amount.utterances.count → 2) == 1
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:58:9: Expectation failed: (amount.utterances[0].text → "35") == "35 779 milionów"
+✘ Test testTranscriptCleaning() recorded an issue at MultiStageTests.swift:59:9: Expectation failed: (amount.utterances[0].sourceSegmentIDs → ["amount_a"]) == ["amount_a", "amount_b"]
+± removed ["amount_b"]
+✘ Test testTranscriptCleaning() failed after 0.001 seconds with 3 issues.
+✘ Suite MultiStageTests failed after 0.001 seconds with 3 issues.
+✘ Test run with 1 test in 1 suite failed after 0.002 seconds with 3 issues.
+Note: Some test targets reported failures:
+  - MeetingCoreTests (Swift Testing)
