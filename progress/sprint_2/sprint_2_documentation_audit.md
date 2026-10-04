@@ -1,5 +1,45 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Architecture-first presentation reconciliation — 2026-10-04
+
+The Product Owner requested that the presentation open with Sprint goals and
+architecture. The current [16-slide deck](sprint_2_increment_demo_architecture_20261004.pptx)
+therefore places the Sprint goal on slide 2, the shared local Swift system
+and technologies on slide 3, and the ASR-versus-minutes model interfaces on
+slide 4, before the real AMI and Sejm demonstration. Slide 4 uses exact
+openings from the [current prompt ledger](sprint_2_implementation.md#current-staged-minutes-prompts-minutes-v41-multistage)
+and explains that ASR receives audio and a language setting rather than a
+free-text prompt. The final slide now treats the minutes defect as prototype
+evidence while withholding acceptance of the generated minutes. The older
+14-slide deck remains unchanged as historical evidence. README, handover,
+Product Owner brief, and documentation review link the current deck.
+
+The new deck has 16 slides and retains two editable native benchmark charts.
+The imported historical charts lacked source-workbook relationships, so
+they were rebuilt from the complete literal values in the [benchmark](ami_asr_benchmark.md):
+AMI WER 19.48% and 28.79%; English read-speech WER 11.49% and 18.39%;
+Polish read-speech WER 3.41% and 27.27%. The finalizer created new chart
+workbook snapshots and verified package structure, chart data, font policy,
+layout, and reimport. The [validation receipt](tests/presentation_validation_20261004.json)
+records the SHA-256 and checks. All 16 final slides were rendered; the new
+opening, changed quality-gate and conclusion slides, and both charts were
+visually inspected. This validates the presentation artifact, not a live
+Product Owner demonstration or the generated minutes.
+
+The SRS, architecture, test profile, Sprint 2 setup, accepted design,
+implementation prompt ledger, functional test record, benchmark, README,
+and progress board were checked for this presentation change. No product
+behavior, requirement, copyable product command, test outcome, or sprint
+status changed. The live demonstration and explicit managed handover
+decision remain pending. Local links, document wording, and
+`git diff --check` are the applicable pre-commit checks.
+
+The pre-commit scan checked 197 local links in the five updated narrative
+files and found no missing targets. PPTX inspection confirmed the intended
+slide order, 16 slides, two native charts, and the revised conclusion.
+`git diff --check` passed. No Swift or model test was rerun because this
+increment changes presentation and documentation only.
+
 ## Prototype-conclusion reconciliation — 2026-10-04
 
 The Product Owner directed that the minutes-content failure be documented as

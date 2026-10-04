@@ -10,8 +10,13 @@ pending. Sprint 2 remains `Progress` in
 
 The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [user manual](user_manual.md) gives prerequisites, runnable
-commands, expected results, and recovery. The [demonstration deck](sprint_2_increment_demo.pptx)
-guides the complete user journey. The [quality review slides](sprint_2_quality_review_20261004.pptx)
+commands, expected results, and recovery. The current [16-slide demonstration
+deck](sprint_2_increment_demo_architecture_20261004.pptx) starts with the
+Sprint goal, system architecture, and the distinct ASR and minutes-model
+interfaces before the real-meeting journey. It includes concise excerpts
+of the staged prompts; the [implementation prompt ledger](sprint_2_implementation.md#model-prompt-ledger-and-response-gate--2026-10-02)
+holds their full text. The earlier [14-slide deck](sprint_2_increment_demo.pptx)
+is retained as historical presentation evidence. The [quality review slides](sprint_2_quality_review_20261004.pptx)
 show the staged control architecture, measured coverage, and source-audit
 failures. The [Product Owner presentation
 brief](sprint_2_product_owner_presentation.md) explains the promise,
@@ -28,7 +33,7 @@ It preserved every raw segment and assigned every reading utterance in
 both real meeting excerpts, but only 2/5 AMI and 2/4 Sejm topic summaries
 were fully supported by their own cited ASR lines. Its Sejm decision
 extraction found one of two explicit signals in the saved excerpt. The
-new slides passed package, layout, font, and reimport checks and were
+quality-review slides passed package, layout, font, and reimport checks and were
 rendered for visual inspection. The earlier live-journey rehearsal below
 uses the historical single-call model; a fresh operator walkthrough of
 the staged candidate is still required before handover acceptance.

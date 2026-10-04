@@ -138,7 +138,7 @@ contract check and links the gate evidence.
 
 The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives the operator's four-step path and
 recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
-and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo.pptx)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_architecture_20261004.pptx)
 present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
 presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
 is the concise guide to that review set. A real Polish Sejm

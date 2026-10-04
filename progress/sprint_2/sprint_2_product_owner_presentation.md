@@ -17,12 +17,17 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the [14-slide live-journey presentation](sprint_2_increment_demo.pptx)
+Open the current [16-slide live-journey presentation](sprint_2_increment_demo_architecture_20261004.pptx)
 and the [three-slide quality review](sprint_2_quality_review_20261004.pptx)
 alongside
-the [operator manual](user_manual.md). Slides 3–8 show the real meeting
-inputs, saved transcript and warning, a speaker-label name entry, and source review
-of draft minutes. The manual supplies
+the [operator manual](user_manual.md). Slides 2–4 establish the Sprint goal,
+the shared Swift architecture, and the two model interfaces. ASR receives
+audio and a language setting, not a text prompt. The staged Qwen model
+receives transcript utterances and task-specific prompts; its responses go
+through Swift source checks and bounded repair. The full prompt templates
+are in the [implementation ledger](sprint_2_implementation.md#model-prompt-ledger-and-response-gate--2026-10-02).
+Slides 5–10 then show the real meeting inputs, saved transcript and warning,
+a speaker-label name entry, and source review of draft minutes. The manual supplies
 the exact runnable commands, local model and media prerequisites, readable
 `jq` checks, and recovery steps. The [handover record](sprint_2_handover.md)
 records the developer's rehearsal and the still-pending Product Owner
@@ -54,16 +59,17 @@ specific turns but does not verify every segment in S1. The alias was not
 passed into the separate minutes input.
 
 Finally, `summarize` runs the local model and validates its response before
-saving any review items. The active gate checks JSON structure, source IDs,
-exact quotations, and evidence types, then gives the model at most two
-specific repair requests. Controlled tests pass, but the current 4B
-model's real AMI and Sejm candidates fail the strict gate; the transcript
-survives and no new minutes are saved. Earlier drafts remain source-review
+saving any review items. The earlier evidence-first gate checked JSON
+structure, source IDs, exact quotations, and evidence types, with at most
+two specific repair requests. Controlled tests passed, but the 4B model's
+real AMI and Sejm candidates failed that strict gate; the transcript
+survived and no new minutes were saved. Those drafts remain source-review
 evidence: AMI contained an unsupported interpretation; Sejm contained a
 supported positive-opinion decision alongside a false action, invented
 question, and uncited summary. These are **not dependable meeting minutes**.
 The [bug record](sprint_2_bugs.md) distinguishes the repaired
-citation-format error from these open content defects.
+citation-format error from these open content defects. The later staged
+30B result is assessed below.
 
 ## What the benchmark establishes
 
