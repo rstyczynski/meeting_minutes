@@ -1,0 +1,2 @@
+# Preserve verbatim compiler/test evidence, including whitespace in source excerpts.
+progress/sprint_*/tests/*.log -whitespace

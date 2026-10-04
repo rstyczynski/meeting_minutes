@@ -10,6 +10,84 @@ struct MultiStageTests {
             speakerID: speaker, text: text)
     }
 
+    @Test func testSelectedTextCorrection() throws {
+        let raw = [try segment("a", 1, 1.2, "S1", "Zażółć"),
+                   try segment("b", 1.2, 1.4, "S1", "gęślą"),
+                   try segment("c", 1.4, 1.6, "S1", "jaźń."),
+                   try segment("d", 1.6, 2, "S1", "Zażółć gęślą jaźń."),
+                   try segment("e", 2, 3, "S2", "Inny głos")]
+        var record = MeetingRecord(sourcePath: "/tmp/test.wav", segments: raw,
+                                   backend: "fixture", modelRevision: "test")
+        let utterance = try record.readableTranscript().utterances[0]
+        let first = (utterance.text as NSString).range(of: "Zażółć gęślą jaźń.")
+        let selection = try record.transcriptSelection(utteranceID: utterance.id, range: first)
+        #expect(selection.sourceSegmentIDs == ["a", "b", "c"])
+        #expect(selection.text == "Zażółć gęślą jaźń.")
+        #expect(throws: Error.self) {
+            try record.correctTranscript(selection, to: "Poprawiona fraza.", audioReviewed: false)
+        }
+        try record.correctTranscript(selection, to: "Poprawiona fraza.", audioReviewed: true)
+        #expect(try record.readableTranscript().utterances[0].text == "Poprawiona fraza. Zażółć gęślą jaźń.")
+        #expect(record.segments == raw)
+        #expect(try record.readableTranscript().utterances.flatMap(\.sourceSegmentIDs) == raw.map(\.id))
+        #expect(throws: Error.self) {
+            try record.correctTranscript(selection, to: "Stale", audioReviewed: true)
+        }
+        #expect(throws: Error.self) {
+            try record.correctTranscript("b", to: "Conflict", audioReviewed: true)
+        }
+        let current = try record.readableTranscript().utterances[0]
+        let partial = try record.transcriptSelection(utteranceID: current.id,
+                                                      range: NSRange(location: 1, length: 2))
+        #expect(partial.text == "op")
+        let expanded = try record.transcriptSelection(utteranceID: current.id,
+            range: (current.text as NSString).range(of: "Poprawiona fraza."))
+        #expect(expanded.text == "Poprawiona fraza.")
+        try record.correctTranscript(expanded, to: "Druga korekta.", audioReviewed: true)
+        let edited = try record.readableTranscript().utterances[0]
+        let restoring = try record.transcriptSelection(utteranceID: edited.id,
+            range: (edited.text as NSString).range(of: "Druga korekta."))
+        try record.correctTranscript(restoring, to: restoring.originalText,
+                                     audioReviewed: true, restore: true)
+        #expect(try record.readableTranscript().utterances[0].text == utterance.text)
+        #expect(record.transcriptRangeCorrections?.count == 3)
+        let repeated = try record.transcriptSelection(utteranceID: utterance.id,
+            range: (utterance.text as NSString).range(of: "gęślą", options: .backwards))
+        #expect(repeated.sourceSegmentIDs == ["d"])
+        try record.correctTranscript(repeated, to: "POPRAWIONE", audioReviewed: true)
+        #expect(try record.readableTranscript().utterances[0].text == "Zażółć gęślą jaźń. Zażółć POPRAWIONE jaźń.")
+        let disjointText = try record.readableTranscript().utterances[0].text
+        let disjoint = try record.transcriptSelection(utteranceID: utterance.id,
+            range: (disjointText as NSString).range(of: "jaźń.", options: .backwards))
+        try record.correctTranscript(disjoint, to: "KONIEC.", audioReviewed: true)
+        #expect(try record.readableTranscript().utterances[0].text == "Zażółć gęślą jaźń. Zażółć POPRAWIONE KONIEC.")
+        #expect(throws: Error.self) {
+            _ = try record.transcriptSelection(utteranceID: utterance.id, range: NSRange(location: 0, length: 0))
+        }
+        #expect(throws: Error.self) {
+            _ = try record.transcriptSelection(utteranceID: utterance.id, range: NSRange(location: 0, length: 10000))
+        }
+        let overlapping = try record.transcriptSelection(utteranceID: utterance.id,
+            range: NSRange(location: 0, length: (try record.readableTranscript().utterances[0].text as NSString).length))
+        try record.correctTranscript(overlapping, to: "Merged correction", audioReviewed: true)
+        #expect(try record.readableTranscript().utterances[0].text == "Merged correction")
+        #expect(record.segments == raw)
+        let emoji = try segment("emoji", 0, 1, "S1", "🙂 tekst")
+        let unicode = MeetingRecord(sourcePath: "/tmp/test.wav", segments: [emoji], backend: "fixture", modelRevision: "test")
+        #expect(throws: Error.self) {
+            _ = try unicode.transcriptSelection(utteranceID: "utt_1", range: NSRange(location: 1, length: 1))
+        }
+    }
+
+    @Test func testPlaybackContext() throws {
+        let target = try SourceRange(startSeconds: 1, endSeconds: 1.2)
+        #expect(try PlaybackContext().range(around: target, duration: 10) == SourceRange(startSeconds: 0, endSeconds: 3.2))
+        #expect(try PlaybackContext(beforeSeconds: 0, afterSeconds: 5).range(around: target, duration: 4) == SourceRange(startSeconds: 1, endSeconds: 4))
+        #expect(throws: Error.self) { _ = try PlaybackContext(beforeSeconds: -1).range(around: target, duration: 10) }
+        #expect(throws: Error.self) { _ = try PlaybackContext(afterSeconds: .infinity).range(around: target, duration: 10) }
+        #expect(throws: Error.self) { _ = try PlaybackContext().range(around: target, duration: 0.5) }
+    }
+
     @Test func testTranscriptCleaning() throws {
         let source = [
             try segment("a", 252.0, 253.2, "S2", "35 867 mln."),
@@ -129,6 +207,33 @@ struct MultiStageTests {
         policy.maximumOverlapSeconds = .infinity
         #expect(throws: Error.self) { try TranscriptCleaner.prepare(source, policy: policy) }
         #expect(try JSONDecoder().decode(TranscriptCleanupPolicy.self, from: Data("{}".utf8)) == TranscriptCleanupPolicy())
+    }
+
+    @Test func testLongSilenceBoundary() throws {
+        let parts = [try segment("before", 146.8, 148.4, "S1", "zaczynamy."),
+                     try segment("after", 181.68, 182.4, "S1", "Witam serdecznie.")]
+        var policy = TranscriptCleanupPolicy()
+        #expect(policy.longSilenceBoundarySeconds == 10)
+        let separated = try TranscriptCleaner.prepare(parts, policy: policy)
+        #expect(separated.utterances.count == 2)
+        #expect(separated.utterances.map(\.speakerID) == ["S1", "S1"])
+        #expect(separated.utterances.flatMap(\.sourceSegmentIDs) == parts.map(\.id))
+        #expect(separated.utterances[1].boundaryReason?.contains("33.28") == true)
+        policy.longSilenceBoundarySeconds = 60
+        #expect(try TranscriptCleaner.prepare(parts, policy: policy).utterances.count == 1)
+        let exact = [try segment("a", 0, 1, "S1", "35"),
+                     try segment("b", 11, 12, "S1", "779 milionów")]
+        #expect(try TranscriptCleaner.prepare(exact).utterances.count == 2)
+        policy.longSilenceBoundarySeconds = 10.01
+        #expect(try TranscriptCleaner.prepare(exact, policy: policy).utterances.count == 1)
+        for json in ["{}", "{\"maximumReadingGapSeconds\":null}", "{\"longSilenceBoundarySeconds\":null}"] {
+            #expect(try JSONDecoder().decode(TranscriptCleanupPolicy.self,
+                from: Data(json.utf8)).longSilenceBoundarySeconds == 10)
+        }
+        for value in [0.0, -1, Double.infinity, Double.nan] {
+            policy.longSilenceBoundarySeconds = value
+            #expect(throws: Error.self) { try TranscriptCleaner.prepare(parts, policy: policy) }
+        }
     }
 
     @Test func testTopicCoverage() throws {

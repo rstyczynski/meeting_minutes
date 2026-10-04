@@ -15,6 +15,11 @@ test_IT10_language_record() { swift test --filter 'MeetingIntegrationTests.Meeti
 test_IT11_evidence_first_cli() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testEvidenceFirstCLI'; }
 test_IT12_validation_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testModelValidationFailurePreservesRecord'; }
 test_IT13_multi_stage_cli() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testMultiStageCLI'; }
+test_IT14_review_store_correction() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testReviewStoreCorrection'; }
+
+test_IT15_range_store_correction() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testRangeStoreCorrection'; }
+
+test_IT16_long_silence_record() { swift test --filter 'MeetingIntegrationTests/testLongSilenceSavedRecord'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -32,4 +37,7 @@ else
   test_IT11_evidence_first_cli
   test_IT12_validation_preserves_record
   test_IT13_multi_stage_cli
+  test_IT14_review_store_correction
+  test_IT15_range_store_correction
+  test_IT16_long_silence_record
 fi

@@ -169,8 +169,12 @@ cases remain visible.
 The reading-layer segmentation and neighbor-join parameters shall be
 configurable through a documented profile shared by CLI inspection, operator
 review and multi-stage minutes preparation. The saved record shall retain
-the resolved profile. Default grouping shall preserve explicit speaker
-changes and shall not split same-speaker speech by duration or pause alone.
+the resolved profile. Default grouping shall preserve explicit speaker changes. A gap at least
+the configurable positive `longSilenceBoundarySeconds` threshold shall start
+a new segment even when the speaker label is unchanged. Its prototype
+default is 10 seconds; shorter pauses remain joinable, and no elapsed-duration
+cap applies by default. This temporal boundary does not assert a change of
+topic; semantic continuity remains a separate validation concern.
 A changed profile shall preserve source parts and operator corrections and
 invalidate dependent minutes. Existing diarization labels provide boundary
 evidence; semantic continuity and independent acoustic checks of uncertain
@@ -190,6 +194,13 @@ The CLI and review player shall use the same local meeting-record contract and
 store. The CLI shall print the created record identifier, and the review player
 shall open a record by that identifier. No background application, event
 subscription, or automatic refresh is required.
+
+Operator review shall expose a full-recording audio-position slider and
+current time/duration, including in the selected-text correction view.
+Seeking shall pause and cancel bounded fragment playback; the operator
+explicitly resumes from the selected position. The Product Owner directed
+this refinement during Sprint 2 after a long same-speaker silence was hidden
+inside one reading segment.
 
 #### FR-07 — Independent CLI capabilities
 

@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "scope": "Source-preserving segmentation and native player build; no new ASR/LLM inference or independent native listening check",
+  "recordID": "5C00CCF3-A242-4FB0-845D-92C6D30D7633",
+  "storeUsed": "/private/tmp/meeting-long-silence-check-20261004",
+  "liveStoreMutatedByTest": false,
+  "longSilenceBoundarySeconds": 10,
+  "gapStartSeconds": 148.4,
+  "gapEndSeconds": 181.68,
+  "gapSeconds": 33.28,
+  "utteranceCountBefore": 4,
+  "utteranceCountAfter": 5,
+  "sameSpeakerLabels": [
+    "S1",
+    "S1"
+  ],
+  "sourcePartsConserved": 802,
+  "correctionHistoryEntriesRetained": 2,
+  "savedCorrectionPreserved": true,
+  "testCases": [
+    "UT-21",
+    "IT-16",
+    "UT-19",
+    "UT-20",
+    "IT-15"
+  ],
+  "gates": [
+    "test_run_long_silence_verified_A1_smoke_20261004_230950.log",
+    "test_run_long_silence_verified_A2_unit_20261004_230950.log",
+    "test_run_long_silence_verified_A3_integration_20261004_230950.log",
+    "test_run_long_silence_verified_B1_smoke_20261004_230950.log",
+    "test_run_long_silence_verified_B2_unit_20261004_230950.log",
+    "test_run_long_silence_verified_B3_integration_20261004_230950.log"
+  ],
+  "output": "reading_blocks_long_silence_20261004.json",
+  "sliderBuilt": true,
+  "nativeSliderSeekAndListening": "PENDING",
+  "semanticTopicBoundaryDetection": "NOT IMPLEMENTED"
+}

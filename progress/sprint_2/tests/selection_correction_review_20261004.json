@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "automatedScope": "Selection mapping, exact replacement, superseded history, storage reload, CLI/model-input consistency, contextual bounds",
+  "gates": [
+    "test_run_selection_compatibility_verified_A1_smoke_20261004_230115.log",
+    "test_run_selection_compatibility_verified_A2_unit_20261004_230115.log",
+    "test_run_selection_compatibility_verified_A3_integration_20261004_230115.log",
+    "test_run_selection_compatibility_verified_B1_smoke_20261004_230115.log",
+    "test_run_selection_compatibility_verified_B2_unit_20261004_230115.log",
+    "test_run_selection_compatibility_verified_B3_integration_20261004_230115.log"
+  ],
+  "nativeSavedCrossingEdit": "Observed read-only; see selection_owner_session_20261004.json",
+  "remainingNativeChecks": [
+    "Slider seeking and actual listening",
+    "Restore and Cancel for range editor",
+    "Restart and keyboard selection"
+  ],
+  "failedAttempts": [
+    "selection_red: APIs absent",
+    "selection_implementation: emoji boundary regression",
+    "selection_saved_record: test fixture accidentally captured after owner repaired it; stable pre-repair fixture substituted"
+  ],
+  "rawSegmentsRetained": true,
+  "asrQualityImprovementMeasured": false,
+  "llmQualityImprovementMeasured": false
+}

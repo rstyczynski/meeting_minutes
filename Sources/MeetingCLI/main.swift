@@ -142,10 +142,8 @@ struct MeetingCLI {
         }
         let (_, store) = try context(values)
         let id = try recordID(parts[0])
-        var record = try store.load(id)
-        try record.correctTranscript(parts[1], to: parts[2], audioReviewed: true,
-                                     note: values["--note"])
-        try store.save(record)
+        _ = try store.correctTranscript(id, segmentID: parts[1], to: parts[2],
+                                        audioReviewed: true, note: values["--note"])
         print(id.uuidString)
     }
 
@@ -208,6 +206,7 @@ struct MeetingCLI {
             let generator = MLXMultiStageMinutesGenerator(executable: executable,
                 modelDirectory: model, speakerNames: existing.speakerNames,
                 corrections: existing.transcriptCorrections ?? [],
+                rangeCorrections: existing.transcriptRangeCorrections ?? [],
                 cleanupPolicy: existing.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
             _ = try MeetingSummarizer(store: store).summarize(id, generator: generator,
                 modelRevision: URL(fileURLWithPath: model).lastPathComponent)
@@ -252,9 +251,7 @@ struct MeetingCLI {
                                            allowed: ["--settings", "--store"])
         let (_, store) = try context(values)
         let record = try store.load(try recordID(parts[0]))
-        let cleanup = try TranscriptCleaner.prepare(record.segments,
-                                                    corrections: record.transcriptCorrections ?? [],
-                                                    policy: record.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
+        let cleanup = try record.readableTranscript()
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let json = try encoder.encode(cleanup)

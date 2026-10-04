@@ -1,0 +1,378 @@
+{
+  "id": "11111111-1111-4111-8111-111111111117",
+  "sourcePath": "/tmp/controlled-overlap.wav",
+  "segments": [
+    {
+      "text": "Chyba,",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 134.88,
+        "endSeconds": 135.28
+      },
+      "id": "segment_73"
+    },
+    {
+      "text": "że",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 135.28,
+        "endSeconds": 135.44
+      },
+      "id": "segment_74"
+    },
+    {
+      "text": "pan",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 135.44,
+        "endSeconds": 135.52
+      },
+      "id": "segment_75"
+    },
+    {
+      "text": "minister",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 135.68,
+        "endSeconds": 136
+      },
+      "id": "segment_76"
+    },
+    {
+      "text": "to",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 136,
+        "endSeconds": 136.16
+      },
+      "id": "segment_77"
+    },
+    {
+      "text": "tak",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 136.16,
+        "endSeconds": 136.32
+      },
+      "id": "segment_78"
+    },
+    {
+      "text": "krótkich",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 136.32,
+        "endSeconds": 136.72000000000003
+      },
+      "id": "segment_79"
+    },
+    {
+      "text": "słowa",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 136.72,
+        "endSeconds": 136.88000000000002
+      },
+      "id": "segment_80"
+    },
+    {
+      "text": "przedstawi",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 136.96,
+        "endSeconds": 137.36
+      },
+      "id": "segment_81"
+    },
+    {
+      "text": "i",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 137.44,
+        "endSeconds": 137.52
+      },
+      "id": "segment_82"
+    },
+    {
+      "text": "wszystkich",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 137.52,
+        "endSeconds": 137.76000000000002
+      },
+      "id": "segment_83"
+    },
+    {
+      "text": "zaskoczy",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 137.84,
+        "endSeconds": 138.48000000000002
+      },
+      "id": "segment_84"
+    },
+    {
+      "text": "pozytywnie,",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 138.48,
+        "endSeconds": 139.36
+      },
+      "id": "segment_85"
+    },
+    {
+      "text": "że",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 139.36,
+        "endSeconds": 139.60000000000002
+      },
+      "id": "segment_86"
+    },
+    {
+      "text": "temat",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 139.6,
+        "endSeconds": 139.92
+      },
+      "id": "segment_87"
+    },
+    {
+      "text": "być",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 139.92000000000002,
+        "endSeconds": 140.08
+      },
+      "id": "segment_88"
+    },
+    {
+      "text": "zamknięty,",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 140.08,
+        "endSeconds": 140.56
+      },
+      "id": "segment_89"
+    },
+    {
+      "text": "ale",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 140.64000000000001,
+        "endSeconds": 140.72000000000003
+      },
+      "id": "segment_90"
+    },
+    {
+      "text": "czekamy",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 140.72,
+        "endSeconds": 141.04
+      },
+      "id": "segment_91"
+    },
+    {
+      "text": "na",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 141.04,
+        "endSeconds": 141.12
+      },
+      "id": "segment_92"
+    },
+    {
+      "text": "minimum",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 141.44,
+        "endSeconds": 142
+      },
+      "id": "segment_93"
+    },
+    {
+      "text": "na",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 142.24,
+        "endSeconds": 142.48000000000002
+      },
+      "id": "segment_94"
+    },
+    {
+      "text": "kworum.",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 142.48,
+        "endSeconds": 144.24
+      },
+      "id": "segment_95"
+    },
+    {
+      "text": "Tak?",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 144.24,
+        "endSeconds": 144.64
+      },
+      "id": "segment_96"
+    },
+    {
+      "text": "Tak",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 144.64000000000001,
+        "endSeconds": 144.88000000000002
+      },
+      "id": "segment_97"
+    },
+    {
+      "text": "będzie",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 144.88,
+        "endSeconds": 145.2
+      },
+      "id": "segment_98"
+    },
+    {
+      "text": "kworum,",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 145.20000000000002,
+        "endSeconds": 145.52
+      },
+      "id": "segment_99"
+    },
+    {
+      "text": "proszę",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 145.52,
+        "endSeconds": 145.68
+      },
+      "id": "segment_100"
+    },
+    {
+      "text": "o",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 145.68,
+        "endSeconds": 145.76000000000002
+      },
+      "id": "segment_101"
+    },
+    {
+      "text": "nutygnął.",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 145.84,
+        "endSeconds": 146.56
+      },
+      "id": "segment_102"
+    },
+    {
+      "text": "Teraz",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 146.56,
+        "endSeconds": 146.64000000000001
+      },
+      "id": "segment_103"
+    },
+    {
+      "text": "zaczynamy.",
+      "speakerID": "S1",
+      "range": {
+        "startSeconds": 146.8,
+        "endSeconds": 148.4
+      },
+      "id": "segment_104"
+    }
+  ],
+  "speakerNames": {},
+  "reviewItems": [],
+  "backend": "fluid",
+  "modelRevision": "saved-range-compatibility",
+  "processingParameters": {},
+  "transcriptRangeCorrections": [
+    {
+      "startUTF16": 0,
+      "correctedText": "Chyba, że pan minister to tak krótkich słowa przedstawi i wszystkich zaskoczy pozytywnie, że temat być zamknięty, ale czekamy na minimum na kworum. Tak? Tak będzie kworum, proszę o sygnał.",
+      "sourceRange": {
+        "startSeconds": 134.88,
+        "endSeconds": 146.56
+      },
+      "sourceTexts": [
+        "Chyba,",
+        "że",
+        "pan",
+        "minister",
+        "to",
+        "tak",
+        "krótkich",
+        "słowa",
+        "przedstawi",
+        "i",
+        "wszystkich",
+        "zaskoczy",
+        "pozytywnie,",
+        "że",
+        "temat",
+        "być",
+        "zamknięty,",
+        "ale",
+        "czekamy",
+        "na",
+        "minimum",
+        "na",
+        "kworum.",
+        "Tak?",
+        "Tak",
+        "będzie",
+        "kworum,",
+        "proszę",
+        "o",
+        "nutygnął."
+      ],
+      "originalText": "Chyba, że pan minister to tak krótkich słowa przedstawi i wszystkich zaskoczy pozytywnie, że temat być zamknięty, ale czekamy na minimum na kworum. Tak? Tak będzie kworum, proszę o nutygnął.",
+      "sourceSegmentIDs": [
+        "segment_73",
+        "segment_74",
+        "segment_75",
+        "segment_76",
+        "segment_77",
+        "segment_78",
+        "segment_79",
+        "segment_80",
+        "segment_81",
+        "segment_82",
+        "segment_83",
+        "segment_84",
+        "segment_85",
+        "segment_86",
+        "segment_87",
+        "segment_88",
+        "segment_89",
+        "segment_90",
+        "segment_91",
+        "segment_92",
+        "segment_93",
+        "segment_94",
+        "segment_95",
+        "segment_96",
+        "segment_97",
+        "segment_98",
+        "segment_99",
+        "segment_100",
+        "segment_101",
+        "segment_102"
+      ],
+      "endUTF16": 9,
+      "audioReviewedAt": 812839785.586379,
+      "restored": false,
+      "id": "16FC17EC-1573-4292-8A46-76C0AF286C10"
+    }
+  ]
+}

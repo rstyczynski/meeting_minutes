@@ -1,8 +1,17 @@
 # Sprint 2 — Documentation review
 
+## Latest operator feedback: long silence and audio position
+
+The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.
+
+The [manual](user_manual.md#long-silence-and-audio-slider), [parameter guide](transcript_segmentation.md) and [repair evidence](tests/long_silence_review_20261004.json) describe the same current behavior.
+
+
 Status: presentation set prepared for Product Owner inspection in managed mode; documentation approval and sprint completion remain pending. The reopened FR-11 implementation, bilingual benchmark, and corrected parent quality gates have passed. The natural-meeting minutes defect is a documented prototype finding, and the generated drafts are not accepted as correct. The root plan keeps Sprint 2 in Progress.
 
 ## Purpose of this review
+
+The latest corrective increment implements selected phrases with configurable contextual playback and exact substring replacement across prior corrections. The [manual](user_manual.md#correct-words-inside-meeting-review), implementation, tests, demo, single PPTX and matching narrative describe the same range history, preservation and restoration scope. The prior word-sized editor and overlap rejection remain as failed design/history evidence. The [bugs](sprint_2_bugs.md) identify the Product Owner's real-session failures and the repaired automation coverage. A saved crossing edit has been observed; native slider playback and remaining controls still require a live check; the QA launch was declined. Passing automatic gates is not handover acceptance.
 
 The RUP Documentor's final responsibility is to validate the documentation
 as a usable account of the increment. That includes completeness for each
@@ -128,9 +137,9 @@ The prior documentation approval request was superseded by the FR-11 scope
 addition. The Product Owner then introduced P9, a developer-led handover
 before Phase 5 approval. The [single-command demo and presenter script](demo/README.md),
 [user manual](user_manual.md), [slide
-demonstration](sprint_2_increment_demo_word_error_rate_20261004.pptx), and [handover
+demonstration](sprint_2_increment_demo.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
-brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
+brief](sprint_2_increment_demo.md), now present the runnable increment and its
 failures. The Product Owner initially stated that the minutes defect blocked
 delivery. The structural crash was fixed, and the later staged trial
 measured the remaining content failures. The Product Owner subsequently
@@ -150,10 +159,10 @@ technical validation of every model response before downstream use. The
 defines the checks and bounded repair, and the [implementation
 record](sprint_2_implementation.md) includes the exact active and historical
 model prompts. The [test record](sprint_2_tests.md#evidence-first-minutes-and-response-gate--2026-10-02)
-links the controlled checks and six passing Sprint gates. The earlier [14-slide
-presentation](sprint_2_increment_demo_initial_20261002.pptx) includes the response gate and
+links the controlled checks and six passing Sprint gates. The earlier 14-slide
+presentation (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git) includes the response gate and
 its real Sejm failure. The [manual](user_manual.md) and [Product Owner
-brief](sprint_2_product_owner_presentation.md) now distinguish historical
+brief](sprint_2_increment_demo.md) now distinguish historical
 drafts from the active validator's rejected output. A passing technical gate
 does not establish useful minutes; current 4B and 7B real-meeting trials
 still prevent acceptance of dependable minutes.
@@ -174,9 +183,9 @@ default, the unvalidated minutes quality, or pending Product Owner walkthrough.
 
 ## Current reading-policy handover correction
 
-The [current pipeline deck](sprint_2_increment_demo_word_error_rate_20261004.pptx), [implementation pipeline](sprint_2_implementation.md) and [segmentation guide](transcript_segmentation.md) explicitly separate ASR, diarization, Swift grouping and LLM minutes. The guide enumerates every implemented reading control, its default and validation rules. The CLI example was exercised on a copy of the real record and retains the active record unchanged. The [test record](sprint_2_tests.md) distinguishes passing configuration/source checks from pending native playback and unimplemented semantic/acoustic reassessment. Earlier deck versions and model evidence remain historical.
+The [current pipeline deck](sprint_2_increment_demo.pptx), [implementation pipeline](sprint_2_implementation.md) and [segmentation guide](transcript_segmentation.md) explicitly separate ASR, diarization, Swift grouping and LLM minutes. The guide enumerates every implemented reading control, its default and validation rules. The CLI example was exercised on a copy of the real record and retains the active record unchanged. The [test record](sprint_2_tests.md) distinguishes passing configuration/source checks from pending native playback and unimplemented semantic/acoustic reassessment. Earlier deck versions and model evidence remain historical.
 
 
 ## Presentation closing correction — 4 October 2026
 
-The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_increment_demo.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

@@ -1,5 +1,27 @@
 # Sprint 2 — Functional test record
 
+## Long-silence and audio-slider verification — 4 October 2026
+
+The directed BUG-8 repair adds UT-21 and IT-16. UT-21 checks the actual 33.28-second same-S1 gap, exact threshold equality, a threshold above the gap, old/missing/null settings, invalid/nonfinite limits and source conservation. IT-16 decodes a text-only copied Sejm range with both corrections, verifies two S1 utterances separated at 148.40/181.68 s, compares CLI inspection, persists a 60-second variant that joins them, and rejects a zero limit without altering the saved file. Earlier short-pause and continuous >15-second regressions remain covered by UT-14.
+
+The red run `long_silence_red` passed A1 and failed A2 compilation because the proposed parameter/boundary field did not exist. After implementation all six `long_silence_verified` gates passed at `20261004_230950`. Smoke built the native slider/player; it did not perform listening or mouse/keyboard scrubbing. No new ASR or LLM inference ran.
+
+The [full-record receipt](tests/long_silence_review_20261004.json) and [reading output](tests/reading_blocks_long_silence_20261004.json) show five current segments, all 802 source IDs preserved and the first two paragraphs labeled S1. The first ends at 148.40 s, the second starts at 181.68 s; saved “sygnał - od razu zaczynamy.” remains present. Inspection and the guide's configure-cleanup example ran on `/private/tmp/meeting-long-silence-check-20261004`, a disposable copy of the owner's record. Tests never wrote the live session.
+
+The [current deck validation](tests/presentation_validation_selection_20261004.json) covers 21 slides and modified slides 9/18/19/21. The separate presentation review checks charts/workbooks, unchanged parts, local links, shell syntax and paired narrative. Native slider/listening, range Restore/Cancel/restart, documentation approval and live handover remain pending.
+
+## Selected-text correction verification — 4 October 2026
+
+The approved range editor adds UT-19, UT-20 and IT-15. UT-19 covers repeated Polish text, exact source/character mapping, Unicode boundaries, disjoint edits, crossing previous replacements and preserved prefix/suffix/history. UT-20 verifies independently configurable audio context, file-boundary clamping and invalid settings. IT-15 compares persisted corrected reading with CLI inspection and captured multi-stage model input, checks rejected stale/unconfirmed writes, restores history and tests the old saved Sejm range schema. The compatibility fixture is a text-only excerpt of the reported failure, with a controlled source path; it does not run ASR or claim improved transcription accuracy.
+
+The red `selection_red` run passed smoke and failed unit compilation before the new APIs existed. The first implementation passed smoke but UT-19 detected acceptance of a UTF-16 range splitting an emoji. A character-boundary check repaired it. The six `selection_verified` and `selection_final` gates then passed. The Product Owner's screenshot subsequently exposed a design failure in overlap rejection (BUG-7); the actual prior range was inspected read-only. Exact-selection replacement now supersedes the required events and preserves unselected words. All six `selection_merge` gates passed at `20261004_225506`. The `selection_saved_record` attempt failed because the fixture had accidentally been captured after the owner had already saved the repaired phrase. A stable pre-repair fixture replaced it. All six `selection_compatibility_verified` gates then passed at `20261004_230115`, including old-schema decode and that exact crossing regression. This failed fixture attempt is retained separately from product failures.
+
+The Product Owner's [native screenshot](tests/selection_overlap_user_failure_20261004.png) shows the prior failed save, confirmation checkbox and playback status. It does not prove the repaired action passes. A new isolated QA-window launch was rejected, so no automated native phrase-selection or audible-playback result is claimed. The original session was not changed by tests. The earlier controlled single-source GUI pass remains limited historical evidence. The subsequent [owner-session receipt](tests/selection_owner_session_20261004.json) observes a successfully saved crossing correction with prefix and history retained. BUG-7 is repaired. Listening and other native controls remain open checks.
+
+## Historical checkpoint: operator CLI and presentation clarification — 4 October 2026
+
+The [CLI documentation probe](tests/operator_cli_documentation_check_20261004.json) exercised correction, saved-result inspection and restoration on a disposable controlled record with simulated confirmation. It retained original words and two correction entries, and cleared draft items. It does not claim listening to real audio. The [deck validation](tests/presentation_validation_operator_steps_20261004.json) and [content/consolidation check](tests/presentation_operator_steps_review_20261004.json) covered that checkpoint's 21-slide presentation and clearer slide 9, matching narrative filename and removal of obsolete decks. The GUI editor was subsequently approved and implemented. IT-14 and all six smoke/unit/integration gates passed in review_editor_verified at 20261004_221532. The native controlled GUI check is in [review_editor_gui_20261004.json](tests/review_editor_gui_20261004.json). Real source listening remains pending.
+
 ## Presentation metric wording check — 4 October 2026
 
 The Product Owner requests “Word Error Rate” written in full. The [presentation validation](tests/presentation_validation_word_error_rate_20261004.json) passed package, layout, font, native chart/workbook and Artifact Tool import checks for the current 21-slide deck. The [terminology review](tests/presentation_word_error_rate_review_20261004.json) verifies full-name coverage, preservation of the quantitative evidence, unchanged parts and canonical-copy identity. Both changed visible slides were reviewed after rendering; nineteen unchanged slides remain pixel-identical. No product code or test contract changed, and no new product-test pass or native PowerPoint execution is claimed.
@@ -252,6 +274,78 @@ findings pass.
 ## Artifacts
 
 Every saved RUP gate log is listed below from the Sprint 2 `tests/` evidence directory. Failed attempts remain for diagnosis; the passing replacement is identified in the gate narrative above.
+
+[test_run_selection_final_A1_smoke_20261004_224722.log](tests/test_run_selection_final_A1_smoke_20261004_224722.log)
+
+[test_run_selection_final_A2_unit_20261004_224722.log](tests/test_run_selection_final_A2_unit_20261004_224722.log)
+
+[test_run_selection_final_A3_integration_20261004_224722.log](tests/test_run_selection_final_A3_integration_20261004_224722.log)
+
+[test_run_selection_final_B1_smoke_20261004_224722.log](tests/test_run_selection_final_B1_smoke_20261004_224722.log)
+
+[test_run_selection_final_B2_unit_20261004_224722.log](tests/test_run_selection_final_B2_unit_20261004_224722.log)
+
+[test_run_selection_final_B3_integration_20261004_224722.log](tests/test_run_selection_final_B3_integration_20261004_224722.log)
+
+[test_run_selection_implementation_A1_smoke_20261004_224218.log](tests/test_run_selection_implementation_A1_smoke_20261004_224218.log)
+
+[test_run_selection_implementation_A2_unit_20261004_224218.log](tests/test_run_selection_implementation_A2_unit_20261004_224218.log)
+
+[test_run_selection_merge_A1_smoke_20261004_225506.log](tests/test_run_selection_merge_A1_smoke_20261004_225506.log)
+
+[test_run_selection_merge_A2_unit_20261004_225506.log](tests/test_run_selection_merge_A2_unit_20261004_225506.log)
+
+[test_run_selection_merge_A3_integration_20261004_225506.log](tests/test_run_selection_merge_A3_integration_20261004_225506.log)
+
+[test_run_selection_merge_B1_smoke_20261004_225506.log](tests/test_run_selection_merge_B1_smoke_20261004_225506.log)
+
+[test_run_selection_merge_B2_unit_20261004_225506.log](tests/test_run_selection_merge_B2_unit_20261004_225506.log)
+
+[test_run_selection_merge_B3_integration_20261004_225506.log](tests/test_run_selection_merge_B3_integration_20261004_225506.log)
+
+[test_run_selection_red_A1_smoke_20261004_223704.log](tests/test_run_selection_red_A1_smoke_20261004_223704.log)
+
+[test_run_selection_red_A2_unit_20261004_223704.log](tests/test_run_selection_red_A2_unit_20261004_223704.log)
+
+[test_run_selection_saved_record_A1_smoke_20261004_225839.log](tests/test_run_selection_saved_record_A1_smoke_20261004_225839.log)
+
+[test_run_selection_saved_record_A2_unit_20261004_225839.log](tests/test_run_selection_saved_record_A2_unit_20261004_225839.log)
+
+[test_run_selection_saved_record_A3_integration_20261004_225839.log](tests/test_run_selection_saved_record_A3_integration_20261004_225839.log)
+
+[test_run_selection_verified_A1_smoke_20261004_224357.log](tests/test_run_selection_verified_A1_smoke_20261004_224357.log)
+
+[test_run_selection_verified_A2_unit_20261004_224357.log](tests/test_run_selection_verified_A2_unit_20261004_224357.log)
+
+[test_run_selection_verified_A3_integration_20261004_224357.log](tests/test_run_selection_verified_A3_integration_20261004_224357.log)
+
+[test_run_selection_verified_B1_smoke_20261004_224357.log](tests/test_run_selection_verified_B1_smoke_20261004_224357.log)
+
+[test_run_selection_verified_B2_unit_20261004_224357.log](tests/test_run_selection_verified_B2_unit_20261004_224357.log)
+
+[test_run_selection_verified_B3_integration_20261004_224357.log](tests/test_run_selection_verified_B3_integration_20261004_224357.log)
+
+The approved GUI editor adds IT-14 shared-store correction coverage and reuses UT-18 validation. Red run `20261004_221053` failed compilation before the store method existed and also exposed missing fixture arguments. The first implementation run `20261004_221246` still failed those arguments. The corrected `review_editor_verified` run at `20261004_221532` passed all six gates. The [native editor check](tests/review_editor_gui_20261004.json) separately verifies Save, refresh, Restore, Cancel and restart using controlled data and simulated confirmation; it does not verify real audio.
+
+[test_run_review_editor_A1_smoke_20261004_221246.log](tests/test_run_review_editor_A1_smoke_20261004_221246.log)
+
+[test_run_review_editor_A2_unit_20261004_221246.log](tests/test_run_review_editor_A2_unit_20261004_221246.log)
+
+[test_run_review_editor_red_A1_smoke_20261004_221053.log](tests/test_run_review_editor_red_A1_smoke_20261004_221053.log)
+
+[test_run_review_editor_red_A2_unit_20261004_221053.log](tests/test_run_review_editor_red_A2_unit_20261004_221053.log)
+
+[test_run_review_editor_verified_A1_smoke_20261004_221532.log](tests/test_run_review_editor_verified_A1_smoke_20261004_221532.log)
+
+[test_run_review_editor_verified_A2_unit_20261004_221532.log](tests/test_run_review_editor_verified_A2_unit_20261004_221532.log)
+
+[test_run_review_editor_verified_A3_integration_20261004_221532.log](tests/test_run_review_editor_verified_A3_integration_20261004_221532.log)
+
+[test_run_review_editor_verified_B1_smoke_20261004_221532.log](tests/test_run_review_editor_verified_B1_smoke_20261004_221532.log)
+
+[test_run_review_editor_verified_B2_unit_20261004_221532.log](tests/test_run_review_editor_verified_B2_unit_20261004_221532.log)
+
+[test_run_review_editor_verified_B3_integration_20261004_221532.log](tests/test_run_review_editor_verified_B3_integration_20261004_221532.log)
 
 The separate [Product Owner walkthrough nested-sandbox failure log](tests/product_owner_walkthrough_nested_sandbox_failure_20261002.log)
 is retained here as documentation-check evidence. It is not one of the 98
@@ -686,4 +780,36 @@ acceptance. The quality blocker remains open.
 
 ## Presentation closing check — 4 October 2026
 
-The [21-slide conclusion deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) passed the [package/layout/font/chart/reimport checks](tests/presentation_validation_conclusions_20261004.json) and [content/preservation review](tests/presentation_conclusions_review_20261004.json). Parameter slides moved unchanged to 17–18. Supported findings, quality limits and next validation priorities now end the presentation at 19–21. Fifteen earlier slides and two moved parameter slides render identically to the source; chart and embedded workbook bytes remain unchanged. Every final slide was rendered and the new closing slides were inspected individually. The source figures were checked against the existing benchmark, PDF review, staged-trial report and configuration receipt. Product code and test contracts are unchanged, so no repeat ASR/LLM run or fresh product gate is implied. Native playback and Product Owner acceptance remain pending.
+The [21-slide conclusion deck](sprint_2_increment_demo.pptx) passed the [package/layout/font/chart/reimport checks](tests/presentation_validation_conclusions_20261004.json) and [content/preservation review](tests/presentation_conclusions_review_20261004.json). Parameter slides moved unchanged to 17–18. Supported findings, quality limits and next validation priorities now end the presentation at 19–21. Fifteen earlier slides and two moved parameter slides render identically to the source; chart and embedded workbook bytes remain unchanged. Every final slide was rendered and the new closing slides were inspected individually. The source figures were checked against the existing benchmark, PDF review, staged-trial report and configuration receipt. Product code and test contracts are unchanged, so no repeat ASR/LLM run or fresh product gate is implied. Native playback and Product Owner acceptance remain pending.
+
+## Corrective increment evidence index
+
+[selection_correction_review_20261004.json](tests/selection_correction_review_20261004.json)
+
+[test_run_long_silence_red_A1_smoke_20261004_230725.log](tests/test_run_long_silence_red_A1_smoke_20261004_230725.log)
+
+[test_run_long_silence_red_A2_unit_20261004_230725.log](tests/test_run_long_silence_red_A2_unit_20261004_230725.log)
+
+[test_run_long_silence_verified_A1_smoke_20261004_230950.log](tests/test_run_long_silence_verified_A1_smoke_20261004_230950.log)
+
+[test_run_long_silence_verified_A2_unit_20261004_230950.log](tests/test_run_long_silence_verified_A2_unit_20261004_230950.log)
+
+[test_run_long_silence_verified_A3_integration_20261004_230950.log](tests/test_run_long_silence_verified_A3_integration_20261004_230950.log)
+
+[test_run_long_silence_verified_B1_smoke_20261004_230950.log](tests/test_run_long_silence_verified_B1_smoke_20261004_230950.log)
+
+[test_run_long_silence_verified_B2_unit_20261004_230950.log](tests/test_run_long_silence_verified_B2_unit_20261004_230950.log)
+
+[test_run_long_silence_verified_B3_integration_20261004_230950.log](tests/test_run_long_silence_verified_B3_integration_20261004_230950.log)
+
+[test_run_selection_compatibility_verified_A1_smoke_20261004_230115.log](tests/test_run_selection_compatibility_verified_A1_smoke_20261004_230115.log)
+
+[test_run_selection_compatibility_verified_A2_unit_20261004_230115.log](tests/test_run_selection_compatibility_verified_A2_unit_20261004_230115.log)
+
+[test_run_selection_compatibility_verified_A3_integration_20261004_230115.log](tests/test_run_selection_compatibility_verified_A3_integration_20261004_230115.log)
+
+[test_run_selection_compatibility_verified_B1_smoke_20261004_230115.log](tests/test_run_selection_compatibility_verified_B1_smoke_20261004_230115.log)
+
+[test_run_selection_compatibility_verified_B2_unit_20261004_230115.log](tests/test_run_selection_compatibility_verified_B2_unit_20261004_230115.log)
+
+[test_run_selection_compatibility_verified_B3_integration_20261004_230115.log](tests/test_run_selection_compatibility_verified_B3_integration_20261004_230115.log)

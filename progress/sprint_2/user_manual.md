@@ -1,16 +1,23 @@
 # Meeting Summarizer user manual
 
-Status: Sprint 2 architectural prototype. The handover and Product Owner
-documentation approval are pending. These instructions describe behavior
-that ran locally on the Sprint 2 Mac; this is not a release guide.
+## Selected-text correction and remaining live check
 
-For the Product Owner review, use the [single-command live demo and its
-slide-by-slide presenter script](demo/README.md). Run `bash
-progress/sprint_2/demo/run.sh --check` first, then `bash
-progress/sprint_2/demo/run.sh` from the repository root. That script creates
-the settings files and fresh result store itself, prints each saved result,
-and pauses for operator audio review. The longer commands below document
-individual operations; they are not the current presentation sequence.
+The Product Owner rejected the first word-sized editor because its audio was too brief to hear. The approved repair now offers phrase selection and configurable audio context. Automated mapping, storage and regression tests cover this implementation. The owner session now contains a successful crossing edit ([receipt](tests/selection_owner_session_20261004.json)). Slider seeking, actual audible bounds, keyboard selection, Restore/Cancel and restart still need a live check: the separate QA-window launch was declined, so no new native-UI pass is claimed. [BUG-6](sprint_2_bugs.md#bug-6-word-sized-correction-playback-is-too-short-for-operator-review) remains open for this verification.
+
+## Long silence and audio slider
+
+A 33.28-second gap after “zaczynamy” now starts a second S1 segment: the first ends at **148.40 s**, the next begins at **181.68 s**. The app shows why that boundary was created. The configurable threshold is `transcriptCleanup.longSilenceBoundarySeconds`, default **10 seconds**, positive and finite. The [segmentation guide](transcript_segmentation.md) shows the complete settings file and `configure-cleanup` command. Older files without this setting inherit 10; the previous 15-second duration cap remains disabled.
+
+In the main window and correction sheet, drag **Audio position** to inspect the pause. The displayed value is current time / recording duration in seconds. Dragging pauses and cancels the current bounded fragment; release to seek, then click **Play** or **Play from position**. To replay the selected range with context, click **Play selection with context** again. Missing/invalid duration disables the slider and displays an error. Native slider listening is a pending live check.
+
+Close the running review window and relaunch the updated executable for your existing session:
+
+~~~bash
+cd /Users/rstyczynski/projects/meeting_minutes
+swift run meeting-review 5C00CCF3-A242-4FB0-845D-92C6D30D7633 --store /private/tmp/meeting-sprint2-po-demo.Ry3oFz
+~~~
+
+Expected after relaunch: separate S1 cards across 148.40–181.68 s, preserved “sygnał - od razu zaczynamy.”, and the slider in both views. The named temporary store must still exist on this Mac.
 
 ## What the prototype does
 
@@ -183,6 +190,64 @@ not been exercised against an audio-verified real meeting. The
 [implementation record](sprint_2_implementation.md#prototype-conclusion-what-the-minutes-experiment-teaches-us)
 explains why this review is needed.
 
+### Correct words inside Meeting Review
+
+Select a phrase by dragging over the readable transcript text, or place the caret and use Shift with the arrow keys. Select within one speaker-turn card. Click **Correct selection** on that card. The editor shows the selected words, surrounding text, original wording and source time range. For example, select “Szanowni Państwo, tylko poinformuję,” at the beginning of the Sejm transcript; the available source interval is 108.08–109.84 seconds.
+
+Set **Audio before (s)** and **after (s)**, initially two seconds each. Click **Play selection with context**. This example requests 106.08–111.84 seconds: 5.76 seconds of context instead of a 1.76-second phrase alone. Listen and use **Pause** when needed. The player waits for seek completion and stops using media time. Settings apply in the current window; reopening uses the two-second defaults. Context is clamped to the recording start/end. Negative or nonfinite context and an invalid source range produce a visible error.
+
+Enter only the replacement for the selected phrase, check **I listened to this source audio**, then **Save correction**. Surrounding words remain unchanged, original ASR remains saved, and obsolete draft minutes/topics are cleared. The reading refreshes immediately after saving. The confirmation records your assertion; it cannot establish that you actually listened.
+
+Save is disabled without confirmation, for blank or unchanged text. **Cancel** discards unsaved input. To restore a saved range, select its replacement, reopen **Correct selection**, listen and confirm, then choose **Restore original**. Selecting text inside or across an existing replacement keeps your exact selected words as the edit target. Saving expands only the storage anchors and preserves the unselected words. Restore adds a history entry. It restores the wording before that range edit, including any earlier single-source correction, without deleting raw ASR or history.
+
+A selection spanning separate speaker-turn cards or noncontiguous fragments is unsupported. Correct each turn separately. A selection crossing existing corrections saves one combined event and retains prior events in history. The editor displays the complete original source range that Restore would reset. Disjoint edits are supported, including inside one multiword source part. A completed external text/profile/speaker edit makes an earlier selection stale; the app rejects it rather than changing the wrong words. Reopen the record and select again. Do not write to the same record simultaneously from independent processes.
+
+ASR timing limits the audio resolution: selection inside a multiword source part plays that part's available interval, plus context. Newly entered words inherit the selected source range; the product does not invent individual word timestamps. A reading-profile change that would split an active range correction is rejected before save; restore the range before changing those boundaries.
+
+The saved record's `transcriptRangeCorrections` array contains ordered source IDs, character anchors, original and replacement words, source range, confirmation time and restoration entries. It is separate from historical single-source `transcriptCorrections`. From the earlier manual steps, inspect it with:
+
+~~~bash
+cat "$store_dir/$polish_id.json" | jq '{rangeCorrections: [(.transcriptRangeCorrections // [])[] | {sourceSegmentIDs, originalText, correctedText, sourceRange, audioReviewedAt, restored}], draftItemsRemaining: (.reviewItems | length)}'
+swift run meeting-summarizer inspect-cleanup "$polish_id" --store "$store_dir" | jq -r '.utterances[] | "[\(.range.startSeconds)–\(.range.endSeconds)] \(.text)"'
+~~~
+
+A saved correction adds one history event; restore adds another, and old draft items are empty until regenerated. Inspection and the multi-stage minutes adapter receive the same corrected reading. Actual listening and native selection remain live validation steps.
+
+### Run the correction in Terminal
+
+The existing CLI corrects one source part; it does not submit the new phrase selection. Use a second Terminal. An edit inside an active range correction is rejected: edit or restore that range in Meeting Review first.
+The following commands use `polish_id` and `store_dir` from the
+earlier transcription steps. After listening, enter the exact ID displayed
+under **Source words and correction IDs** and the words you actually heard.
+Do not use the displayed reading-utterance ID in place of a source segment ID.
+
+~~~bash
+printf '%s\n' 'Source segment ID from Meeting Review:'
+IFS= read -r segment_id
+printf '%s\n' 'Corrected words verified against the audio:'
+IFS= read -r corrected_text
+swift run meeting-summarizer transcribe correct \
+  "$polish_id" "$segment_id" "$corrected_text" \
+  --audio-reviewed yes --store "$store_dir"
+~~~
+
+Run this only after checking the recording. `--audio-reviewed yes` records
+your confirmation; it cannot prove that listening occurred. A successful
+command prints the meeting UUID. Inspect the saved result:
+
+~~~bash
+cat "$store_dir/$polish_id.json" | jq --arg sid "$segment_id" '{original: [.segments[] | select(.id == $sid) | {id, text}], correctionHistory: [(.transcriptCorrections // [])[] | select(.segmentID == $sid) | {originalText, correctedText, audioReviewedAt}], draftItemsRemaining: (.reviewItems | length)}'
+~~~
+
+The original text remains unchanged, the history includes the new words,
+and old draft minutes are cleared. After an external CLI edit, close and
+reopen Meeting Review to load the updated reading. In-app saves refresh
+automatically. To restore the source wording, repeat the correction
+command using the original text shown above; this saves another history
+entry. Regenerate minutes after finishing the corrections. CLI storage and
+restore behavior are verified by controlled tests; a real-audio correction
+still requires the live operator check.
+
 ## 4. Inspect draft minutes
 
 The tested natural-audio minutes path uses a 120-second AMI excerpt. It
@@ -254,4 +319,6 @@ checks and Product Owner decision.
 
 ## Configure how transcript parts form readable turns
 
-[Transcript segmentation](transcript_segmentation.md) gives a complete copy-paste command for the current Sejm record and enumerates all ten JSON controls. `configure-cleanup` stores the profile for CLI inspection, Meeting Review and multi-stage minutes. By default, a labeled speaker change starts a new turn; a same-speaker pause or elapsed duration does not. Unassigned neighbor joins remain proposals to verify against audio. Restart the review app after a configuration change. A changed profile clears derived minutes so that old utterance IDs cannot be mistaken for current ones.
+[Transcript segmentation](transcript_segmentation.md) gives a complete copy-paste command for the current Sejm record and enumerates all eleven JSON controls. `configure-cleanup` stores the profile for CLI inspection, Meeting Review and multi-stage minutes. By default, a labeled speaker change starts a new turn; a pause of at least `longSilenceBoundarySeconds` (10 s by default) also starts a new segment with the same speaker. Short pauses can join; there is no default duration cap. Unassigned neighbor joins remain proposals to verify against audio. Restart the review app after a configuration change. A changed profile clears derived minutes so that old utterance IDs cannot be mistaken for current ones.
+
+If an older saved replacement itself spans a newly requested boundary, the profile operation rejects it rather than guessing which words belong on each side. Temporarily configure a larger positive long-silence threshold that contains that range, reopen the review and restore the affected replacement; then apply the intended profile and correct each segment separately. After upgrading an older record to the current reading defaults, regenerate derived minutes before relying on its utterance IDs.

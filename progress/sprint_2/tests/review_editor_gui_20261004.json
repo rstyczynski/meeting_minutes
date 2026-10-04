@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "recordID": "11111111-1111-4111-8111-111111111114",
+  "source": "Controlled one-segment record and approved synthetic WAV; no audio played",
+  "nativeControl": "Local QA bundle copied from current meeting-review binary; cua native UI",
+  "observed": [
+    "Edit opened source text form",
+    "Save disabled for unchanged text and without confirmation",
+    "Simulated confirmation enabled Save",
+    "Saved replacement refreshed transcript immediately",
+    "Original ASR remained visible",
+    "Restore appended second history entry",
+    "Cancel discarded unsaved text",
+    "Application restart reloaded saved corrections"
+  ],
+  "originalSegmentsUnchanged": true,
+  "historyEntries": 2,
+  "audioConfirmationSimulated": true,
+  "audioPlaybackVerified": false,
+  "realAudioCorrectionValidated": false,
+  "qaAppClosed": true,
+  "screenshot": "review_editor_controlled_ui_20261004.png"
+}

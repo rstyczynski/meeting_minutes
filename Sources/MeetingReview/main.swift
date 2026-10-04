@@ -17,51 +17,149 @@ private final class ReviewAppDelegate: NSObject, NSApplicationDelegate {
 }
 
 private struct ReviewScreen: View {
-    let record: MeetingRecord
-    private let readingView: TranscriptCleanupResult?
-    private let readingError: String?
-    @State private var player: AVPlayer
-    @State private var playbackMessage = "Ready to play local audio"
-    @State private var playbackToken = UUID()
+    @State private var record: MeetingRecord
+    private let store: MeetingStore
+    @State private var readingView: TranscriptCleanupResult?
+    @State private var readingError: String?
+    @StateObject private var playback: ReviewPlayback
+    @State private var selectedText: TranscriptSelection?
+    @State private var selectionError: String?
+    @State private var editingSelection: TranscriptSelection?
+    @State private var contextBefore = 2.0
+    @State private var contextAfter = 2.0
+    @State private var correctionText = ""
+    @State private var audioReviewed = false
+    @State private var correctionError: String?
+    @State private var correctionNotice: String?
 
-    init(record: MeetingRecord) {
-        self.record = record
-        _player = State(initialValue: AVPlayer(url: URL(fileURLWithPath: record.sourcePath)))
+    init(record: MeetingRecord, store: MeetingStore) {
+        _record = State(initialValue: record)
+        self.store = store
+        _playback = StateObject(wrappedValue: ReviewPlayback(url: URL(fileURLWithPath: record.sourcePath)))
         do {
-            readingView = try TranscriptCleaner.prepare(record.segments,
-                corrections: record.transcriptCorrections ?? [],
-                policy: record.transcriptCleanupPolicy ?? TranscriptCleanupPolicy())
-            readingError = nil
+            _readingView = State(initialValue: try record.readableTranscript())
+            _readingError = State(initialValue: nil)
         } catch {
-            readingView = nil
-            readingError = error.localizedDescription
+            _readingView = State(initialValue: nil)
+            _readingError = State(initialValue: error.localizedDescription)
         }
     }
 
     private func playRange(_ range: SourceRange, label: String) {
-        let token = UUID()
-        playbackToken = token
-        player.seek(to: CMTime(seconds: range.startSeconds, preferredTimescale: 600))
-        player.play()
-        playbackMessage = String(format: "Playing %@ from %.1f s", label,
-                                 range.startSeconds)
-        DispatchQueue.main.asyncAfter(deadline: .now() + range.endSeconds - range.startSeconds) {
-            guard playbackToken == token else { return }
-            player.pause()
-            playbackMessage = String(format: "Stopped at %.1f s", range.endSeconds)
-        }
+        playback.play(range, label: label)
     }
 
     private func latestCorrection(for segmentID: String) -> TranscriptCorrection? {
         record.transcriptCorrections?.last { $0.segmentID == segmentID }
     }
 
+    private func selectText(_ range: NSRange, utterance: CleanedUtterance) -> NSRange? {
+        guard range.length > 0, range.location != NSNotFound else {
+            if selectedText?.utteranceID == utterance.id { selectedText = nil }
+            selectionError = nil
+            return nil
+        }
+        do {
+            let selection = try record.transcriptSelection(utteranceID: utterance.id, range: range)
+            selectedText = selection
+            selectionError = nil
+            return selection.displayRange
+        } catch {
+            selectedText = nil
+            selectionError = error.localizedDescription
+            return nil
+        }
+    }
+
+    private func beginCorrection(_ selection: TranscriptSelection) {
+        correctionText = selection.text
+        audioReviewed = false
+        correctionError = nil
+        editingSelection = selection
+        playback.pause()
+    }
+
+    private func saveCorrection(_ selection: TranscriptSelection, restore: Bool = false) {
+        do {
+            let updated = try store.correctTranscript(record.id, selection: selection,
+                to: correctionText, audioReviewed: audioReviewed, restore: restore)
+            record = updated
+            readingView = try updated.readableTranscript()
+            readingError = nil
+            correctionNotice = "Correction saved. Original words retained; regenerate draft minutes."
+            selectedText = nil
+            editingSelection = nil
+        } catch {
+            correctionError = error.localizedDescription
+        }
+    }
+
+    private func correctionEditor(_ selection: TranscriptSelection) -> some View {
+        let replacement = correctionText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let utterance = readingView?.utterances.first { $0.id == selection.utteranceID }?.text ?? selection.text
+        let stringRange = Range(selection.displayRange, in: utterance)
+        let left = stringRange.map { String(utterance[..<$0.lowerBound].suffix(120)) } ?? ""
+        let right = stringRange.map { String(utterance[$0.upperBound...].prefix(120)) } ?? ""
+        return VStack(alignment: .leading, spacing: 12) {
+            Text("Correct selected text").font(.title2.bold())
+            Text(String(format: "Source %.2f–%.2f s · %d timed parts", selection.sourceRange.startSeconds,
+                        selection.sourceRange.endSeconds, selection.sourceSegmentIDs.count)).font(.caption)
+            Text("Context: \(left)⟦\(selection.text)⟧\(right)").foregroundStyle(.secondary)
+            Text("Selected: \(selection.text)").font(.headline)
+            ScrollView { Text("Original source range: \(selection.originalText)").font(.caption) }
+                .frame(maxHeight: 80)
+            if selection.isRangeCorrection {
+                Text("This selection touches an earlier correction. Save changes only your selected words. Restore original resets the complete source range shown above.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            HStack {
+                Text("Audio before (s)")
+                TextField("Before", value: $contextBefore, format: .number).frame(width: 60)
+                    .accessibilityIdentifier("contextBefore")
+                Text("after (s)")
+                TextField("After", value: $contextAfter, format: .number).frame(width: 60)
+                    .accessibilityIdentifier("contextAfter")
+            }
+            HStack {
+                Button("Play selection with context") {
+                    audioReviewed = false
+                    playback.play(selection.sourceRange, label: "selection",
+                        context: PlaybackContext(beforeSeconds: contextBefore, afterSeconds: contextAfter))
+                }
+                Button("Pause") { playback.pause() }
+            }
+            ReviewAudioTimeline(playback: playback)
+            Button("Play from position") { playback.playAll() }
+            Text(playback.message).font(.caption)
+            TextField("Corrected words", text: $correctionText, axis: .vertical)
+                .lineLimit(3...8).textFieldStyle(.roundedBorder)
+                .accessibilityIdentifier("correctionText")
+            Toggle("I listened to this source audio", isOn: $audioReviewed)
+                .toggleStyle(.checkbox).accessibilityIdentifier("audioReviewed")
+            Text("Only the selected words change. Original source and history remain saved. Regenerate draft minutes after saving.")
+                .font(.caption).foregroundStyle(.secondary)
+            if let correctionError { Text(correctionError).foregroundStyle(.red) }
+            HStack {
+                Button("Cancel") { editingSelection = nil }.keyboardShortcut(.cancelAction)
+                Button("Restore original") { saveCorrection(selection, restore: true) }
+                    .disabled(!audioReviewed || !selection.isRangeCorrection)
+                Spacer()
+                Button("Save correction") { saveCorrection(selection) }
+                    .disabled(!audioReviewed || replacement.isEmpty || replacement == selection.text)
+            }
+        }
+        .padding(24).frame(width: 650)
+        .onDisappear { playback.pause() }
+    }
+
     var body: some View {
         HStack(spacing: 18) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Transcript").font(.title2.bold())
-                Text("Readable utterances; source words and timestamps remain in the saved record.")
+                Text("Select a phrase in one speaker turn, then choose Correct selection. Source words and timestamps remain saved.")
                     .font(.caption).foregroundStyle(.secondary)
+                if let selectionError { Text(selectionError).font(.caption).foregroundStyle(.red) }
+                if let correctionNotice { Text(correctionNotice).font(.caption).foregroundStyle(.green) }
                 if let readingView {
                     let proposedIDs = Set(readingView.candidates.compactMap { candidate in
                         switch candidate.disposition {
@@ -86,9 +184,12 @@ private struct ReviewScreen: View {
                                                     utterance.range.endSeconds))
                                             .font(.caption).foregroundStyle(.secondary)
                                     }
-                                    Text(utterance.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .fixedSize(horizontal: false, vertical: true)
+                                    if let reason = utterance.boundaryReason {
+                                        Text(reason).font(.caption).foregroundStyle(.secondary)
+                                    }
+                                    SelectableTranscriptText(text: utterance.text, identifier: "transcript-\(utterance.id)") { range in
+                                        selectText(range, utterance: utterance)
+                                    }
                                     if proposed {
                                         Text("Speaker join proposed; verify against audio")
                                             .font(.caption).foregroundStyle(.orange)
@@ -97,6 +198,11 @@ private struct ReviewScreen: View {
                                         Text("\(utterance.sourceSegmentIDs.count) timed source parts")
                                             .font(.caption).foregroundStyle(.secondary)
                                         Spacer()
+                                        Button("Correct selection") {
+                                            if let selectedText { beginCorrection(selectedText) }
+                                        }
+                                        .disabled(selectedText?.utteranceID != utterance.id)
+                                        .accessibilityIdentifier("correct-\(utterance.id)")
                                         Button("Play this utterance") {
                                             playRange(utterance.range, label: "transcript")
                                         }
@@ -114,7 +220,8 @@ private struct ReviewScreen: View {
                                                     }
                                                     Spacer()
                                                     Button(String(format: "%.1f s", segment.range.startSeconds)) {
-                                                        playRange(segment.range, label: id)
+                                                        playback.play(segment.range, label: id,
+                                                            context: PlaybackContext(beforeSeconds: contextBefore, afterSeconds: contextAfter))
                                                     }
                                                 }
                                                 .font(.caption)
@@ -140,17 +247,14 @@ private struct ReviewScreen: View {
                     .font(.subheadline)
                 HStack {
                     Button("Play") {
-                        playbackToken = UUID()
-                        player.play()
-                        playbackMessage = "Playing local audio"
+                        playback.playAll()
                     }
                     Button("Pause") {
-                        playbackToken = UUID()
-                        player.pause()
-                        playbackMessage = "Paused"
+                        playback.pause()
                     }
                 }
-                Text(playbackMessage).font(.caption)
+                ReviewAudioTimeline(playback: playback)
+                Text(playback.message).font(.caption)
                 Text("Meeting \(record.id.uuidString)").font(.headline)
                 ScrollView {
                   LazyVStack(alignment: .leading) {
@@ -205,6 +309,8 @@ private struct ReviewScreen: View {
         }
         .padding()
         .frame(minWidth: 850, minHeight: 500)
+        .sheet(item: $editingSelection) { selection in correctionEditor(selection) }
+        .onDisappear { playback.pause() }
     }
 }
 
@@ -213,6 +319,7 @@ struct MeetingReviewApp: App {
     @NSApplicationDelegateAdaptor(ReviewAppDelegate.self) private var appDelegate
     private let record: MeetingRecord?
     private let error: String?
+    private let storeDirectory: URL?
 
     init() {
         let args = Array(CommandLine.arguments.dropFirst())
@@ -226,6 +333,7 @@ struct MeetingReviewApp: App {
             } else {
                 storeURL = defaultStore
             }
+            storeDirectory = storeURL
             do {
                 record = try MeetingStore(directory: storeURL).load(id)
                 error = nil
@@ -235,13 +343,16 @@ struct MeetingReviewApp: App {
             }
         } else {
             record = nil
+            storeDirectory = nil
             error = "Pass a meeting record ID as the first argument."
         }
     }
 
     var body: some Scene {
         WindowGroup {
-            if let record { ReviewScreen(record: record) }
+            if let record, let storeDirectory {
+                ReviewScreen(record: record, store: MeetingStore(directory: storeDirectory))
+            }
             else { Text(error ?? "Unable to open meeting").padding() }
         }
     }

@@ -10,6 +10,7 @@
     "maximumOverlapSeconds": 0.15,
     "maximumOneSidedGapSeconds": 0.5,
     "maximumReadingBlockSeconds": null,
-    "maximumReadingGapSeconds": null
+    "maximumReadingGapSeconds": null,
+    "longSilenceBoundarySeconds": 10
   }
 }

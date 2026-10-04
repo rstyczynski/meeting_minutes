@@ -105,3 +105,20 @@ their outcomes are recorded in the [Sprint 2 test record](../progress/sprint_2/s
 ## Reading-policy correction coverage — 4 October 2026
 
 The existing UT-14 transcript-cleaning case exercises every configurable reading control and protects continuous same-speaker speech across the former duration and pause cuts. The existing IT-13 multi-stage CLI case checks saved-profile application and propagation into captured model input, source/name preservation, stale-result invalidation and byte-preserving rejection/no-op behavior. Both remain selected in the Sprint 2 manifest; the six-gate wrapper command is unchanged. Native playback requires a human check and is not implied by these automated gates.
+
+## In-app transcript correction coverage — 4 October 2026
+
+The accepted GUI correction revision uses the existing UT-18 validator and
+adds IT-14 for persisted store corrections shared by GUI and CLI. IT-14 checks
+byte-preserving rejection, source preservation, reading refresh after reload,
+completed external name-edit preservation, restoration history and draft
+invalidation. It is selected by the Sprint 2 and component manifests. A
+native controlled GUI check covers Edit, confirmation guard, Save, Restore,
+Cancel and restart; real source listening remains a separate manual check.
+
+
+## Selected-text correction coverage
+
+The approved repair adds UT-19 selection/source mapping, UTF-16 validation, exact substring preservation, staleness, disjoint edits, crossing replacements and supersession/restoration history; UT-20 tests adjustable playback context and file bounds. IT-15 exercises reload, invalid-write preservation, captured multi-stage input matching CLI inspection, and the saved-record compatibility fixture reproducing the Sejm overlap failure. SM-1 builds the AppKit/SwiftUI selection interface. All use the existing single sprint-gate wrapper and full regression. The earlier controlled native word-editor check remains historical. The Product Owner supplied a new native overlap-failure screenshot; successful repaired selection/audio operation remains a live gate because the separate QA launch was declined.
+
+UT-21 and IT-16 cover the long-silence boundary on corrected Sejm data, threshold equality/override, old decoding, source/history conservation, CLI persistence and rejected-file preservation. The six `long_silence_verified` gates passed at 20261004_230950. Native slider seeking and audible playback are a live check, separate from the smoke build.

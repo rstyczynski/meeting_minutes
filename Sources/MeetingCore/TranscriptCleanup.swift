@@ -19,6 +19,7 @@ public struct CleanedUtterance: Codable, Sendable, Equatable, Identifiable {
     public let range: SourceRange
     public let speakerID: String?
     public let text: String
+    public let boundaryReason: String?
 }
 
 public struct TranscriptCleanupResult: Codable, Sendable, Equatable {
@@ -37,6 +38,7 @@ public struct TranscriptCleanupResult: Codable, Sendable, Equatable {
 public enum TranscriptCleaner {
     public static func prepare(_ segments: [TranscriptSegment],
                                corrections: [TranscriptCorrection] = [],
+                               rangeCorrections: [TranscriptRangeCorrection] = [],
                                policy: TranscriptCleanupPolicy = TranscriptCleanupPolicy()) throws -> TranscriptCleanupResult {
         try policy.validate()
         guard !segments.isEmpty else { throw MeetingError.adapterFailure("No transcript segments") }
@@ -52,6 +54,9 @@ public enum TranscriptCleaner {
         }
 
         let byID = Dictionary(uniqueKeysWithValues: ordered.map { ($0.id, $0) })
+        guard RangeProjection.active(rangeCorrections).allSatisfy({
+            !$0.sourceSegmentIDs.isEmpty && Set($0.sourceSegmentIDs).isSubset(of: Set(byID.keys))
+        }) else { throw MeetingError.adapterFailure("Range correction cites missing source parts") }
         for correction in corrections {
             guard let original = byID[correction.segmentID],
                   original.text == correction.originalText,
@@ -126,13 +131,14 @@ public enum TranscriptCleaner {
                policy.grouping == .speakerTurns,
                effectiveSpeakers[groups[last].last!] == effectiveSpeakers[index],
                (effectiveSpeakers[index] != nil || policy.mergeUnassignedSegments),
+               ordered[index].range.startSeconds - ordered[groups[last].last!].range.endSeconds < policy.longSilenceBoundarySeconds,
                policy.maximumReadingGapSeconds.map({
                    ordered[index].range.startSeconds - ordered[groups[last].last!].range.endSeconds <= $0
                }) ?? true,
                policy.maximumReadingBlockSeconds.map({
                    ordered[index].range.endSeconds - ordered[groups[last].first!].range.startSeconds <= $0
                }) ?? true {
-                // Time caps are opt-in; neither duration nor silence splits by default.
+                // Long silence ends a turn even for the same voice; duration caps stay opt-in.
                 groups[last].append(index)
             } else {
                 groups.append([index])
@@ -141,12 +147,19 @@ public enum TranscriptCleaner {
         let utterances = try groups.enumerated().map { number, indices in
             let first = ordered[indices[0]]
             let last = ordered[indices[indices.count - 1]]
+            let precedingIndex = indices[0] - 1
+            let gap = precedingIndex >= 0 ? first.range.startSeconds - ordered[precedingIndex].range.endSeconds : 0
+            let boundary = gap >= policy.longSilenceBoundarySeconds
+                ? String(format: "New segment after %.2f s without a timed speech part (longSilenceBoundarySeconds: %.2f s)", gap, policy.longSilenceBoundarySeconds)
+                : nil
             return CleanedUtterance(id: "utt_\(number + 1)",
                 sourceSegmentIDs: indices.map { ordered[$0].id },
                 range: try SourceRange(startSeconds: first.range.startSeconds,
                                        endSeconds: last.range.endSeconds),
                 speakerID: effectiveSpeakers[indices[0]],
-                text: indices.map { readingText[$0] }.joined(separator: " "))
+                text: try RangeProjection.project(ids: indices.map { ordered[$0].id },
+                    texts: indices.map { readingText[$0] }, history: rangeCorrections).text,
+                boundaryReason: boundary)
         }
         return TranscriptCleanupResult(utterances: utterances,
                                        candidates: candidates, artifactSegmentIDs: [])

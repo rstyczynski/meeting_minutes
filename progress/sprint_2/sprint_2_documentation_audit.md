@@ -1,10 +1,42 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Range correction and long-silence repair — pre-commit reconciliation, 4 October 2026
+
+This local corrective increment follows `f79341e` and supports PBI-011.5/011.4 without closing either the broader minutes work or Sprint 2. The Product Owner accepted the GUI and selected-text designs, then directly requested same-speaker separation after tens of seconds of silence, an exposed parameter and an audio-position slider. The design record preserves the original failures and specifies the directed repair before its test cases/code.
+
+The SRS FR-05 and NFR-04/05, candidate architecture, test profile, Sprint setup, accepted design/testing strategy, implementation, functional tests, README, manual, paired slide narrative, handover and progress board were checked against the code. FR-05/FR-06 were refined to reflect the Product Owner's directed long-silence boundary and slider; NFR-04/05 already cover traceability and non-destructive persistence. The setup clarifies the later explicitly requested public-meeting validation fixtures. No backlog/plan/status change is required for this usability repair. Core/store/CLI share correction validation; the GUI uses the same readable projection as multi-stage input. Raw text, source IDs, labels and history remain saved; obsolete derived results are invalidated. All eleven reading controls are now documented, including finite positive `longSilenceBoundarySeconds`, default 10 seconds. Short pauses remain joinable, and no default 15-second cap returns.
+
+The parameter separates the demonstrated 148.40–181.68 s gap despite S1 on both sides. UT-21/IT-16 verify configurable boundaries, threshold equality, legacy decoding, preserved corrections and rejection without writes. UT-19/20 and IT-15 verify exact selections, Unicode, superseded overlap history, stale writes, contextual bounds and captured model-input consistency. `selection_compatibility_verified` (20261004_230115) and `long_silence_verified` (20261004_230950) each passed all six gates. The red/API, emoji, accidental post-repair fixture and long-silence red failures are retained and explained in the test record; failed attempts are never described as passes.
+
+The full saved record was inspected and the documented configure-cleanup command executed on a disposable copy. The [receipt](tests/long_silence_review_20261004.json) shows five segments, both S1 paragraphs separated, 802/802 source parts conserved and both correction events retained. The [owner-session receipt](tests/selection_owner_session_20261004.json) observes the actual successful native crossing edit read-only. No test mutated the live store, and no new ASR/LLM inference or accuracy gain is claimed. The earlier controlled source-word GUI check remains historical. A separate QA launch was declined; native slider seeking/listening and range Restore/Cancel/restart are pending. The manual and handover expose those limits.
+
+There is one canonical PPTX paired with a same-basename narrative. Nine superseded tracked PPTX files were removed as requested and remain recoverable in Git. Slides 9/18/19/21 now explain selected-phrase correction, the audio slider, the new threshold and resulting conclusions. All 21 slides were rendered; the four changed visible slides were inspected. Note 2 also updates the renamed narrative reference. The [validation receipt](tests/presentation_validation_selection_20261004.json) passed package/layout/font/reimport and native chart/workbook structure checks; unchanged chart/workbook bytes and other slides are checked in the [content receipt](tests/presentation_selection_review_20261004.json). Inherited warnings on slides 4/16 remain unchanged. Native PowerPoint execution is not claimed. Historical receipts retain their old scope/hashes.
+
+Compiler excerpts in the retained red logs include trailing spaces. The scoped `.gitattributes` rule disables whitespace lint for raw Sprint test logs only, preserving their bytes; source and narrative diffs remain checked. Final pre-commit checks cover all local narrative links, shell syntax for the manual/demo, traceability links, the single-PPTX filename pairing, absence of narrative tables and git diff whitespace. The demo's optional single-source CLI correction now reports rejection and continues when a source is inside a range correction. Its full real-model journey is earlier rehearsal evidence, not a fresh complete live demo. Private slide build files and unrelated Finder metadata are excluded. The audit passes for committing the implemented repair and its evidence; native acceptance and broader sprint completion remain explicitly unresolved. No BACKLOG, PLAN or PROGRESS_BOARD status changed and no remote push is authorized.
+
+## Historical checkpoint: per-source editor and one presentation — pre-commit audit, 4 October 2026
+
+This corrective PBI-011.5 increment supports the PBI-011.4 operator workflow and follows completion marker `f79341e`. The Product Owner requested understandable correction instructions, one PPTX and a matching narrative, then approved the [GUI amendment](sprint_2_design.md#proposed-gui-transcript-corrections--2026-10-04): “Akceptuję — dodaj edytor do Meeting Review”, followed by “ok. accepted”. The accepted design and IT-14 specification preceded construction.
+
+Meeting Review now offers Edit on each source part, source playback, corrected words, an explicit listening confirmation, Save correction, Restore original and Cancel. GUI and CLI call the same core/store operation. Saving reloads completed external edits, preserves raw words and correction history, clears obsolete minutes and topic results, and refreshes the reading view immediately. Validation or storage errors retain the editor input. The confirmation records the operator's assertion; it cannot establish that listening occurred. Simultaneous writers remain unsupported; external CLI changes require reopening the review app.
+
+The SRS FR-05 and NFR-04/05, architecture, test profile, Sprint setup, accepted design/test specification and progress board were checked against the actual implementation. Store.swift, Record.swift, the CLI and Meeting Review implement the same non-destructive correction contract. IT-14 covers rejected writes, byte preservation, reload after a completed external name edit, correction, result invalidation, persistence and restoration. The existing UT-18 validator coverage is reused. Smoke gates build the native review product.
+
+The red run at `20261004_221053` passed smoke but failed compilation because the new store operation did not exist; it also exposed missing test-fixture initializer arguments. The first implementation run at `20261004_221246` passed smoke but still failed those fixture arguments. They were corrected. All six `review_editor_verified` gates passed at `20261004_221532`. Failed attempts and passing replacements are individually linked under [Artifacts](sprint_2_tests.md#artifacts); no skipped gate is claimed as passing.
+
+The [native GUI check](tests/review_editor_gui_20261004.json) used a QA bundle copied from the actual built executable and a controlled record. Edit, confirmation-dependent Save, immediate refresh, visible original ASR, Restore, Cancel and restart persistence were observed. Original segments remained unchanged and two correction entries persisted. The [screenshot](tests/review_editor_controlled_ui_20261004.png) shows this controlled editor. No audio was played; the checkbox was simulated. This verifies editing behavior, not real-audio accuracy or bounded playback. A separate [CLI documentation check](tests/operator_cli_documentation_check_20261004.json) executed correction, inspection and restoration on disposable controlled data with the same limited claim.
+
+There is one delivered [presentation](sprint_2_increment_demo.pptx), paired with [sprint_2_increment_demo.md](sprint_2_increment_demo.md). The detailed live command order remains in [demo/README.md](demo/README.md), and the [manual](user_manual.md#correct-words-inside-meeting-review) gives both GUI and copyable CLI routes, expected saved results and recovery. Slide 9 now presents the actual editor and CLI alternative. The demo script offers GUI review before an optional CLI correction. Nine superseded tracked decks were removed from the checkout and remain recoverable in Git at `f79341e`; current links use the canonical file, while historical raw receipts retain their original hashes and metadata.
+
+The [presentation validation](tests/presentation_validation_operator_steps_20261004.json) passed package, layout, font, chart/workbook and Artifact Tool reimport checks. All 21 slides were rendered and the final slide 9 visually reviewed. Twenty unchanged slides are pixel-identical; original chart/workbook bytes are preserved. The inherited slide 4/16 warnings are unchanged. [Content and consolidation checks](tests/presentation_operator_steps_review_20261004.json), local Markdown links, narrative format, demo/manual shell syntax and `git diff --check` form the final documentation gate. No native PowerPoint check or new ASR/LLM inference is claimed.
+
+README, architecture, test profile, implementation, tests, handover, documentation summary, manual, narrative and demo describe the same tools, files and limitations. PBI traceability links resolve. No backlog, plan or board status changed: Sprint 2 and PBI-011/011.5 remain under construction. Real listening, reliable minutes, live Product Owner review and documentation approval remain pending. This is a completed corrective increment, not sprint closure. Private authoring files and unrelated Finder metadata are excluded; no remote push is part of this increment.
+
 ## Full metric name — pre-commit audit, 4 October 2026
 
 The Product Owner requests the full name “Word Error Rate” instead of metric initials. This presentation/documentation correction follows completion marker `8fa8da0` and belongs to the PBI-011/PBI-018 handover. The separate [preferences file](../../RUPStrikesBack.patch/USER_PREFERENCES.md) records the durable terminology preference.
 
-The [current deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) expands the metric in the visible DOE limitation and AMI finding, and in the bilingual and AMI speaker notes. The canonical deck matches it. The earlier presentation remains as history. README, the benchmark, implementation, handover, documentation summary, functional test record, owner brief and presenter script use the full metric name and the current presentation link. Raw evidence and machine-readable metric fields retain their recorded form.
+The current deck (`sprint_2_increment_demo_word_error_rate_20261004.pptx`, historical version in Git) expands the metric in the visible DOE limitation and AMI finding, and in the bilingual and AMI speaker notes. The canonical deck matches it. The earlier presentation remains as history. README, the benchmark, implementation, handover, documentation summary, functional test record, owner brief and presenter script use the full metric name and the current presentation link. Raw evidence and machine-readable metric fields retain their recorded form.
 
 The SRS, architecture, test profile, sprint setup, accepted design/test specification and progress board were checked against the prior audit: this wording correction changes no requirement, product behavior, benchmark value, CLI command, scope or managed status. The same AMI reference comparison supports 19.48% and 28.79% Word Error Rate. Reliable minutes, manual playback and live Product Owner review remain pending. No new product inference or product-test pass is claimed.
 
@@ -14,7 +46,7 @@ Applicable checks are final package/layout/font/chart/workbook/reimport validati
 
 The Product Owner accepts the parameter content but requests that the PPTX end with the substantial conclusions of the prototype. This is a presentation/documentation correction to the PBI-011/PBI-018 handover, following completion marker `87bbdcf`; no new product scope or managed status transition is introduced.
 
-The [current 21-slide deck](sprint_2_increment_demo_conclusions_20261004_final.pptx) moves the unchanged parameter slides to positions 17–18. It ends with supported findings, remaining quality limits and next validation priorities on slides 19–21. The goals and architecture opening remains at the beginning. Slide 3's parameter pointer now names 17–18. The old ending's speaker/minutes limitations and pending Product Owner decision remain explicit in the new conclusion. The source pipeline deck is retained as history, and the canonical deck is the identical new validated file.
+The current 21-slide deck (`sprint_2_increment_demo_conclusions_20261004_final.pptx`, historical version in Git) moves the unchanged parameter slides to positions 17–18. It ends with supported findings, remaining quality limits and next validation priorities on slides 19–21. The goals and architecture opening remains at the beginning. Slide 3's parameter pointer now names 17–18. The old ending's speaker/minutes limitations and pending Product Owner decision remain explicit in the new conclusion. The source pipeline deck is retained as history, and the canonical deck is the identical new validated file.
 
 The owner brief, handover, presenter script, implementation pointer, architecture pointer, documentation summary and README now identify the same file and closing order. The script presents parameter details at operator review if useful and always ends with the conclusion. References in dated earlier audits remain historical. The [functional record](sprint_2_tests.md) distinguishes presentation checks from unchanged product gates.
 
@@ -40,7 +72,7 @@ Scope: the Product Owner requires every reading segmentation parameter to be con
 
 **Implementation and functional records checked:** the implementation begins with a six-step owner-facing pipeline, explains what runs on audio versus text, lists the complete ten-field JSON profile, and links runnable commands and interpretation. CLI inspection, review preparation and multi-stage minutes use the saved profile. Applying a changed profile clears stale derived results; applying the same profile skips a write. Invalid keys/values fail before save. The [Sejm receipt](tests/cleanup_configuration_20261004.json) tests profiles on a disposable copy, preserving all 802 source parts, names and active record bytes. It records four default turns, 802 source-part blocks, 32 duration-capped blocks and six gap-capped blocks. These are grouping counts, not word/speaker accuracy improvements. The operator command uses the current local record and was validated with only its store changed to a controlled copy. Optional time-limit fields omitted from encoded JSON mean disabled caps.
 
-**Owner materials and README checked:** the manual, demo README, handover, Product Owner brief and documentation summary explain the same pipeline and policy. Current entry links point to the [20-slide pipeline deck](sprint_2_increment_demo_pipeline_20261004_v2.pptx). Slide 3 shows processing order and technologies. Slide 4 separates ASR, diarizer and LLM. Slides 19–20 enumerate every control. Exact prompt examples remain on slide 4 and in implementation documentation. The canonical `sprint_2_increment_demo.pptx` is the identical validated copy. The former standalone naming deck remains historical evidence, and its slide 10 command remains unchanged in the new deck.
+**Owner materials and README checked:** the manual, demo README, handover, Product Owner brief and documentation summary explain the same pipeline and policy. Current entry links point to the 20-slide pipeline deck (`sprint_2_increment_demo_pipeline_20261004_v2.pptx`, historical version in Git). Slide 3 shows processing order and technologies. Slide 4 separates ASR, diarizer and LLM. Slides 19–20 enumerate every control. Exact prompt examples remain on slide 4 and in implementation documentation. The canonical `sprint_2_increment_demo.pptx` is the identical validated copy. The former standalone naming deck remains historical evidence, and its slide 10 command remains unchanged in the new deck.
 
 **Presentation checks:** the [receipt](tests/presentation_validation_pipeline_20261004.json) records package, geometry, reference-font, chart/workbook and Artifact Tool reimport passes for 20 slides. All slides were rendered. The four changed/new slides were inspected at full size and corrected for wrapping. The 16 unchanged slides render pixel-identically at the same scale; original chart and workbook package bytes remain identical. Slide 4's dense-paragraph warning was visually reviewed and fits; the inherited slide 16 chart text warnings are unchanged. No native PowerPoint execution pass is claimed.
 
@@ -54,7 +86,7 @@ Scope: the Product Owner requires every reading segmentation parameter to be con
 
 The Product Owner rejected the previous speaker-name slide because it used
 uninitialized record/store variables and could not be executed on its own.
-The current [deck](sprint_2_increment_demo_cli_ready_20261004.pptx) gives
+The current deck (`sprint_2_increment_demo_cli_ready_20261004.pptx`, historical version in Git) gives
 the actual open Sejm record UUID, store and working directory on slide 10.
 Its `bash -c` block asks for the verified name, then runs `recognize name`.
 The presenter script contains the same block. README, handover, Product
@@ -96,7 +128,7 @@ changed slide was inspected at full size.
 ## Speaker naming in the Product Owner presentation — 2026-10-04
 
 The Product Owner requested that the CLI naming explanation be included in
-the presentation. The current [18-slide deck](sprint_2_increment_demo_naming_20261004.pptx)
+the presentation. The current 18-slide deck (`sprint_2_increment_demo_naming_20261004.pptx`, historical version in Git)
 now shows `recognize name` on slide 10, its saved `speakerNames.S2` mapping,
 the whole-cluster scope, and the need to close and reopen Meeting Review.
 Stage 4 of the [demo script](demo/run.sh) prints the complete live command
@@ -150,7 +182,7 @@ whole Product Owner presentation. The [one-command script](demo/run.sh),
 goal, architecture, real English and Polish transcription, weak audio,
 operator review, neutral or verified speakers, staged 30B minutes, quality
 gate, benchmark, and decision. The previous 14-slide file was preserved as
-[dated history](sprint_2_increment_demo_initial_20261002.pptx) before the
+dated history (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git) before the
 validated 18-slide file became the canonical P9 path. The [deck validation
 receipt](tests/presentation_validation_operator_20261004.json) confirms
 18 slides, chart values, fonts, package integrity, layout and reimport;
@@ -176,7 +208,7 @@ checks; [Sprint setup](sprint_2_setup.md) and accepted
 No requirement, design or status was changed by this demonstration work.
 The [implementation](sprint_2_implementation.md), [functional tests](sprint_2_tests.md),
 [README](../../README.md), [user manual](user_manual.md),
-[documentation summary](sprint_2_documentation.md), [Product Owner brief](sprint_2_product_owner_presentation.md),
+[documentation summary](sprint_2_documentation.md), [Product Owner brief](sprint_2_increment_demo.md),
 and [handover](sprint_2_handover.md) were updated to point to the single
 entry point and present fresh versus historical outcomes consistently.
 The [progress board](../../PROGRESS_BOARD.md) still records the active
@@ -216,7 +248,7 @@ have the same SHA-256
 ## Architecture-first presentation reconciliation — 2026-10-04
 
 The Product Owner requested that the presentation open with Sprint goals and
-architecture. The current [16-slide deck](sprint_2_increment_demo_architecture_20261004.pptx)
+architecture. The current 16-slide deck (`sprint_2_increment_demo_architecture_20261004.pptx`, historical version in Git)
 therefore places the Sprint goal on slide 2, the shared local Swift system
 and technologies on slide 3, and the ASR-versus-minutes model interfaces on
 slide 4, before the real AMI and Sejm demonstration. Slide 4 uses exact
@@ -689,7 +721,7 @@ path is not represented as a successful minutes-quality result.
 The [manual](user_manual.md), [implementation record](sprint_2_implementation.md#product-owner-walkthrough--real-local-models),
 [test record](sprint_2_tests.md), [handover record](sprint_2_handover.md),
 [documentation review](sprint_2_documentation.md), README, and 13-slide
-[deck](sprint_2_increment_demo_initial_20261002.pptx) now reflect the real Sejm journey and
+deck (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git) now reflect the real Sejm journey and
 remaining blocker. At that point, the copied deck SHA-256 was
 `000ef7f4bda0e89b499b0e73a972ade07acbc55c07d27f6da0604d9db3d1d39f`;
 package, layout, native-chart, font, and import validation passed. All 13
@@ -747,8 +779,8 @@ passed. Minutes quality remains blocked independently of this ASR review.
 
 ## Product Owner presentation set and final consistency check — 2026-10-02
 
-The [presentation brief](sprint_2_product_owner_presentation.md),
-[13-slide deck](sprint_2_increment_demo_initial_20261002.pptx), [manual](user_manual.md),
+The [presentation brief](sprint_2_increment_demo.md),
+13-slide deck (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git), [manual](user_manual.md),
 and [handover record](sprint_2_handover.md) now form one review set. The deck
 shows real AMI and Sejm inputs, actual saved transcript and warning output,
 the deliberately invented AMI alias, neutral Sejm speakers, the supported
@@ -807,7 +839,7 @@ links each retained log.
 
 The Product Owner manual, presentation brief, documentation summary, and
 handover now distinguish old `minutes-v2` saved drafts from the current
-evidence-first gate. The 14-slide [deck](sprint_2_increment_demo_initial_20261002.pptx)
+evidence-first gate. The 14-slide deck (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git)
 contains a gate slide that states the real Sejm draft still fails. Package
 and layout validation found 14 slides and zero layout findings; all slides
 were rendered and the new slide was visually inspected. The Sprint and both
@@ -1009,9 +1041,9 @@ the topic-meaning failure, and the operator correction boundary. The
 [functional test record](sprint_2_tests.md) links the six gate logs and
 the [controlled trial](tests/multistage_minutes_trial_20261004.md).
 The [README](../../README.md), [user manual](user_manual.md),
-[handover](sprint_2_handover.md), and [Product Owner brief](sprint_2_product_owner_presentation.md)
+[handover](sprint_2_handover.md), and [Product Owner brief](sprint_2_increment_demo.md)
 all identify the content blocker and link the 3-slide
-[quality review](sprint_2_quality_review_20261004.pptx). The
+quality review (`sprint_2_quality_review_20261004.pptx`, historical version in Git). The
 [progress board](../../PROGRESS_BOARD.md) was read: Sprint 2 and
 PBI-011.5 remain under construction, consistent with failed natural-meeting
 content review; no status transition is claimed here.

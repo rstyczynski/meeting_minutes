@@ -1,27 +1,36 @@
 # Sprint 2 increment handover
 
-Status: the Product Owner directed that the minutes-content defect be recorded
-as a prototype result and a direction for further work. The generated minutes
-are not accepted as correct. Live walkthrough and handover decision are
-pending. Sprint 2 remains `Progress` in
-`PLAN.md`. This record does not claim Phase 5 documentation approval.
+## Latest operator feedback: long silence and audio position
+
+The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.
+
+The [manual](user_manual.md#long-silence-and-audio-slider), [parameter guide](transcript_segmentation.md) and [repair evidence](tests/long_silence_review_20261004.json) describe the same current behavior.
+
+
+## Current correction workflow and live check
+
+The Product Owner rejected word-sized playback and then exposed a rejected follow-up edit crossing an existing paragraph correction. Both failures remain documented as [BUG-6/7](sprint_2_bugs.md). The approved phrase-selection implementation now offers **Correct selection**, adjustable source-audio context, exact substring replacement and atomic supersession of touched prior corrections while retaining their unselected words and history. The [manual](user_manual.md#correct-words-inside-meeting-review), demo and slide 9 explain the same operation and Restore scope.
+
+Automated gates verify mapping, persistence and shared minutes input, including the exact earlier Sejm range format and crossing selection. The owner's saved session subsequently contained a successful crossing replacement preserving the earlier prefix and history ([receipt](tests/selection_owner_session_20261004.json)). The new QA launch was declined, so audible bounds, slider seeking, Restore/Cancel, keyboard selection and restart must be checked in the original session before acceptance. No actual session record was changed by implementation/tests. Minutes quality and Product Owner documentation approval remain pending.
 
 ## Purpose and review material
+
+The selected-text editor replaces the earlier per-source Edit workflow. Select a phrase within one speaker turn, choose **Correct selection**, play with before/after context, enter verified replacement words, confirm listening and save. The view refreshes immediately. Restore resets the complete mapped original source range, retaining history; the editor states this scope. External CLI edits require reopening and simultaneous writers are unsupported. The [paired narrative](sprint_2_increment_demo.md) has the same basename as the single delivered PPTX.
 
 The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [single-command demo and presenter script](demo/README.md)
 is the exact live order; the [user manual](user_manual.md) gives individual
 operations and recovery. The current [21-slide demonstration
-deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) starts with the
+deck](sprint_2_increment_demo.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
 interfaces before the real-meeting journey, then shows operator review,
 response validation and benchmark evidence. It includes concise excerpts
 of the staged prompts; the [implementation prompt ledger](sprint_2_implementation.md#model-prompt-ledger-and-response-gate--2026-10-02)
-holds their full text. The earlier [14-slide deck](sprint_2_increment_demo_initial_20261002.pptx)
-is retained as historical presentation evidence. The [quality review slides](sprint_2_quality_review_20261004.pptx)
+holds their full text. The earlier 14-slide deck (`sprint_2_increment_demo_initial_20261002.pptx`, historical version in Git)
+is retained as historical presentation evidence. The quality review slides (`sprint_2_quality_review_20261004.pptx`, historical version in Git)
 show the staged control architecture, measured coverage, and source-audit
 failures. The [Product Owner presentation
-brief](sprint_2_product_owner_presentation.md) explains the promise,
+brief](sprint_2_increment_demo.md) explains the promise,
 observed outcome, and review position in one place. The [implementation record](sprint_2_implementation.md#product-owner-walkthrough--real-local-models)
 and [functional tests](sprint_2_tests.md) contain lower-level execution
 evidence. The [benchmark](ami_asr_benchmark.md) interprets model measurements.
@@ -35,7 +44,7 @@ map names every segment in that cluster. Meeting Review must be closed and
 reopened to load the edited record. The [focused naming check](tests/speaker_naming_demo_20261004.md)
 passed on a disposable copy of the real Sejm record; real identity and UI
 display remain live operator checks. The prior
-[operator deck](sprint_2_increment_demo_operator_20261004.pptx) is retained
+operator deck (`sprint_2_increment_demo_operator_20261004.pptx`, historical version in Git) is retained
 as presentation history.
 
 The corrected slide also contains a standalone copyable block with the
@@ -50,7 +59,7 @@ the validator; both transcripts were retained. The demo therefore prints
 the fresh failure and explicitly labels the earlier successful staged
 run as recorded evidence. Operator playback, audio-reviewed correction,
 verified name entry and a Product Owner decision still require the live
-session. The earlier [16-slide deck](sprint_2_increment_demo_architecture_20261004.pptx)
+session. The earlier 16-slide deck (`sprint_2_increment_demo_architecture_20261004.pptx`, historical version in Git)
 remains the pre-operator revision.
 
 The 4 October staged 30B experiment is documented in the
@@ -295,11 +304,11 @@ the live handover.
 
 ## Pipeline and segmentation correction for the review
 
-Use the [current 21-slide deck](sprint_2_increment_demo_word_error_rate_20261004.pptx). Slide 3 shows the actual processing order and technologies; slide 4 separates ASR, FluidAudio diarization and the Qwen LLM. Slides 17–18 enumerate the complete reading profile. Use those parameter slides during the operator-review stage. The [implementation record](sprint_2_implementation.md) explains each input, output and quality gate, and the [segmentation guide](transcript_segmentation.md) supplies the executable command and expected reading result.
+Use the [current 21-slide deck](sprint_2_increment_demo.pptx). Slide 3 shows the actual processing order and technologies; slide 4 separates ASR, FluidAudio diarization and the Qwen LLM. Slides 17–18 enumerate the complete reading profile. Use those parameter slides during the operator-review stage. The [implementation record](sprint_2_implementation.md) explains each input, output and quality gate, and the [segmentation guide](transcript_segmentation.md) supplies the executable command and expected reading result.
 
 Show the same-speaker amount continuation and S3 phrase without arbitrary time cuts, then point out that an explicit S1/S2 change remains a boundary. The controlled Sejm copy preserved 802 source parts while reducing 32 reading blocks to four. Technical configuration tests passed; semantic boundary checks and independent voice reassessment remain open. The existing running QA window could not be attached by automation during this correction, so perform the paused-player and bounded-playback checks live. This update does not close the sprint or accept minutes quality.
 
 
 ## Presentation closing correction — 4 October 2026
 
-The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_product_owner_presentation.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.
+The Product Owner requested a conclusion-led ending. The [current 21-slide deck](sprint_2_increment_demo.pptx) places configuration on slides 17–18, followed by supported findings, remaining quality limits and next validation priorities on slides 19–21. It preserves the goals-first architecture opening and the live product journey. The [owner brief](sprint_2_increment_demo.md#closing-conclusions-from-sprint-2-evidence) and [presenter script](demo/README.md#closing-narrative) explain the same ending. Evidence supports an executable architectural prototype; it does not support acceptance of dependable minutes. No product code, test contract, scope or sprint status changed in this presentation correction.

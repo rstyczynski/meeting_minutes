@@ -1,5 +1,12 @@
 # Meeting Summarizer
 
+## Latest operator feedback: long silence and audio position
+
+The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.
+
+The [manual](progress/sprint_2/user_manual.md#long-silence-and-audio-slider), [parameter guide](progress/sprint_2/transcript_segmentation.md) and [repair evidence](progress/sprint_2/tests/long_silence_review_20261004.json) describe the same current behavior.
+
+
 ## Vision
 
 Meeting Summarizer is a private, local-first companion for macOS (OS X), with
@@ -139,15 +146,17 @@ contract check and links the gate evidence.
 
 The [Sprint 2 user manual](progress/sprint_2/user_manual.md) gives individual operations and
 recovery guidance. The [Sprint 2 handover](progress/sprint_2/sprint_2_handover.md)
-and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo_word_error_rate_20261004.pptx)
+and [product walkthrough slides](progress/sprint_2/sprint_2_increment_demo.pptx)
 present PBI-011 and PBI-018 outcomes and limitations. The [Product Owner
-presentation brief](progress/sprint_2/sprint_2_product_owner_presentation.md)
+presentation brief](progress/sprint_2/sprint_2_increment_demo.md)
 is the concise guide to that review set. A real Polish Sejm
 committee meeting now replaces single-speaker read speech in that walkthrough.
 The [official-PDF transcription review](progress/sprint_2/tests/polish_sejm_pdf_transcription_review_20261002.md)
 finds the main turns and decision recognizable, with word, name, acronym,
 and numeric-unit errors requiring correction; no whole-meeting Polish Word Error Rate
 is claimed.
+
+Meeting Review now offers phrase selection in the readable transcript and **Correct selection**. Before/after audio context is adjustable and initially two seconds. Save changes only selected words, retains original ASR and history, refreshes the reading and invalidates obsolete minutes. A selection touching an earlier replacement preserves its unselected words and supersedes the necessary active events atomically. The [manual](progress/sprint_2/user_manual.md#correct-words-inside-meeting-review) explains restoration scope and the historical one-source CLI. Automated gates cover mapping, persistence, same input to minutes and the reported saved-record overlap. The [live defects](progress/sprint_2/sprint_2_bugs.md#bug-6-word-sized-correction-playback-is-too-short-for-operator-review) still require successful native/audio verification: the Product Owner's screenshot showed the prior overlap rejection, and the separate QA launch was declined. One current presentation and matching narrative remain; earlier decks are in Git history.
 
 The approved staged-minutes experiment now preserves raw ASR, proposes
 reversible fragment joins, supports audio-reviewed operator text
@@ -160,8 +169,8 @@ not a quality pass for generated minutes.
 
 The [trial report](progress/sprint_2/tests/multistage_minutes_trial_20261004.md)
 gives measured runtime, memory, cited examples, and preserved failed
-runs; the [quality review slides](progress/sprint_2/sprint_2_quality_review_20261004.pptx)
-show the control architecture and Product Owner decision point. These
+runs; the [current presentation](progress/sprint_2/sprint_2_increment_demo.pptx)
+shows the control architecture and Product Owner decision point. These
 results are architecture evidence, not accepted participant minutes.
 
 The minutes citation crash was repaired, but the resulting draft still
@@ -181,4 +190,4 @@ the levels and the optional log label.
 
 ### Configurable transcript reading turns
 
-The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all ten reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo_word_error_rate_20261004.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes and remove arbitrary duration/pause cuts; semantic boundary validation and operator playback acceptance remain open.
+The [Sprint 2 segmentation guide](progress/sprint_2/transcript_segmentation.md) explains the ASR, separate FluidAudio diarizer, Swift joining and LLM pipeline. It documents all eleven reading controls and a runnable `configure-cleanup` example. The [updated owner deck](progress/sprint_2/sprint_2_increment_demo.pptx) shows the processing order and model responsibilities. Current defaults preserve speaker changes, leave the duration cap disabled, and split at a configurable long-silence threshold; semantic boundary validation and operator playback acceptance remain open.

@@ -21,6 +21,11 @@ test_UT16_stage_validation() { swift test --package-path experiments/MinutesAdap
 test_UT17_isolated_token_review() { swift test --filter 'MultiStageTests/testIsolatedTokenReview'; }
 test_UT18_operator_text_correction() { swift test --filter 'MultiStageTests/testAudioReviewedTextCorrectionIsReversible'; }
 
+test_UT19_selected_text() { swift test --filter 'MultiStageTests/testSelectedTextCorrection'; }
+test_UT20_playback_context() { swift test --filter 'MultiStageTests/testPlaybackContext'; }
+
+test_UT21_long_silence() { swift test --filter 'MultiStageTests/testLongSilenceBoundary'; }
+
 if [[ -n "${1:-}" ]]; then
   "$1"
 else
@@ -42,4 +47,7 @@ else
   test_UT16_stage_validation
   test_UT17_isolated_token_review
   test_UT18_operator_text_correction
+  test_UT19_selected_text
+  test_UT20_playback_context
+  test_UT21_long_silence
 fi

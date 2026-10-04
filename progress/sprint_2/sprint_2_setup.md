@@ -17,8 +17,10 @@ board. No remote push is authorized by this sprint request.
 
 The accepted test profile names exact Swift build, smoke, unit, and integration
 commands. Its introductory status and runner commands were reconciled during
-Sprint 2 documentation review. No real meeting data may enter
-source, fixtures, or logs. Sprint 2 is an architecture-risk prototype, not a
+Sprint 2 documentation review. Private meeting data must not enter source, fixtures, or logs. The Product
+Owner later explicitly requested public multi-person meeting recordings,
+including Sejm, as validation data. Their documented public provenance
+permits text-only regression excerpts; local audio remains outside Git. Sprint 2 is an architecture-risk prototype, not a
 production release.
 
 Open contracting questions: none. Ready for analysis.
@@ -174,3 +176,7 @@ request is superseded until this new work is completed and reconciled.
 ## Setup reconciliation — reading profile correction, 4 October 2026
 
 The Product Owner requested every reading segmentation parameter to be configurable and clarified that existing diarization labels can identify speaker boundaries now. The accepted correction belongs to PBI-011.5 with PBI-011.4 review integration. The [profile contract](transcript_segmentation.md) and [latest implementation](sprint_2_implementation.md) describe the actual behavior; earlier model measurements keep their original profiles. The active Sprint 2 and board statuses are unchanged. No new backlog item or acceptance claim is introduced.
+
+## Long-silence operator feedback — 4 October 2026
+
+The Product Owner directly requested same-speaker paragraph separation after tens of seconds of silence, an exposed threshold and a player-position slider. FR-05/FR-06 in the shared SRS now reflect this directed repair. The accepted Sprint design/test specification, implementation, manual and handover explain the configured 10-second prototype default and pending native playback checks. This revisits a shared requirement established earlier; it does not reopen or rewrite prior sprint evidence or change the active sprint assignment/status. Public Sejm text-only excerpts with controlled paths reproduce the reported bug.

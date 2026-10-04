@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "mode": "Controlled disposable record; simulated audio confirmation. No real-audio correction claimed.",
+  "recordID": "5DC83D71-D1B0-4568-A66D-70F3B9A71D46",
+  "store": "/private/tmp/meeting-operator-doc-cli-20261004",
+  "segmentID": "segment_758",
+  "commands": [
+    "swift run meeting-summarizer transcribe correct 5DC83D71-D1B0-4568-A66D-70F3B9A71D46 segment_758 'CONTROLLED corrected text' --audio-reviewed yes --store /private/tmp/meeting-operator-doc-cli-20261004",
+    "jq --arg sid segment_758 '{original: [.segments[] | select(.id == $sid) | {id, text}], correctionHistory: [(.transcriptCorrections // [])[] | select(.segmentID == $sid) | {originalText, correctedText, audioReviewedAt}], draftItemsRemaining: (.reviewItems | length)}' <record.json>",
+    "swift run meeting-summarizer transcribe correct 5DC83D71-D1B0-4568-A66D-70F3B9A71D46 segment_758 'CONTROLLED original text' --audio-reviewed yes --store /private/tmp/meeting-operator-doc-cli-20261004"
+  ],
+  "printedRecordID": "5DC83D71-D1B0-4568-A66D-70F3B9A71D46",
+  "originalSegmentsUnchanged": true,
+  "correctionHistoryEntries": 2,
+  "latestWords": "CONTROLLED original text",
+  "draftItemsRemaining": 0
+}

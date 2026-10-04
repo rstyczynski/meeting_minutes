@@ -3,6 +3,169 @@ import Testing
 @testable import MeetingCore
 
 struct MeetingIntegrationTests {
+    @Test func testLongSilenceSavedRecord() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let record = try JSONDecoder().decode(MeetingRecord.self, from: Data(contentsOf:
+            URL(fileURLWithPath: "tests/fixtures/long_silence_saved_record.json")))
+        let store = MeetingStore(directory: root)
+        try store.save(record)
+        let reading = try record.readableTranscript()
+        #expect(reading.utterances.count == 2)
+        #expect(reading.utterances.map(\.speakerID) == ["S1", "S1"])
+        #expect(reading.utterances[0].text.hasSuffix("sygnał - od razu zaczynamy."))
+        #expect(reading.utterances[0].range.endSeconds == 148.4)
+        #expect(reading.utterances[1].range.startSeconds == 181.68)
+        #expect(reading.utterances[1].sourceSegmentIDs.first == "segment_105")
+        let inspection = try cli(["inspect-cleanup", record.id.uuidString, "--store", root.path])
+        #expect(inspection.0 == 0)
+        #expect(try JSONDecoder().decode(TranscriptCleanupResult.self,
+            from: Data(inspection.1.utf8)) == reading)
+        let settings = root.appendingPathComponent("settings.json")
+        try Data("{\"transcriber\":\"fluid\",\"transcriptCleanup\":{\"longSilenceBoundarySeconds\":60}}".utf8).write(to: settings)
+        let command = ["configure-cleanup", record.id.uuidString, "--settings", settings.path, "--store", root.path]
+        #expect(try cli(command).0 == 0)
+        let joined = try store.load(record.id)
+        #expect(joined.transcriptCleanupPolicy?.longSilenceBoundarySeconds == 60)
+        #expect(try joined.readableTranscript().utterances.count == 1)
+        #expect(joined.segments == record.segments)
+        #expect(joined.transcriptRangeCorrections == record.transcriptRangeCorrections)
+        let path = root.appendingPathComponent("\(record.id.uuidString).json")
+        let before = try Data(contentsOf: path)
+        try Data("{\"transcriber\":\"fluid\",\"transcriptCleanup\":{\"longSilenceBoundarySeconds\":0}}".utf8).write(to: settings)
+        #expect(try cli(command).0 == 2)
+        #expect(try Data(contentsOf: path) == before)
+    }
+
+    @Test func testRangeStoreCorrection() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let raw = try ["To", "jest", "kwota", "milionów."] .enumerated().map { index, text in
+            TranscriptSegment(id: "p\(index)",
+                range: try SourceRange(startSeconds: Double(index), endSeconds: Double(index + 1)),
+                speakerID: "S1", text: text)
+        }
+        var record = MeetingRecord(sourcePath: "/tmp/fixture.wav", segments: raw,
+            backend: "fixture", modelRevision: "test")
+        record.reviewItems = [ReviewItem(kind: .summary, text: "Old draft", sourceSegmentIDs: ["p0"], sourceRange: raw[0].range)]
+        let store = MeetingStore(directory: root)
+        try store.save(record)
+        let target = try record.transcriptSelection(utteranceID: "utt_1", range: NSRange(location: 0, length: 13))
+        let path = root.appendingPathComponent("\(record.id.uuidString).json")
+        let before = try Data(contentsOf: path)
+        #expect(throws: Error.self) {
+            _ = try store.correctTranscript(record.id, selection: target, to: "To oznacza budżet", audioReviewed: false)
+        }
+        #expect(try Data(contentsOf: path) == before)
+        let updated = try store.correctTranscript(record.id, selection: target, to: "To oznacza budżet", audioReviewed: true)
+        #expect(updated.segments == raw && updated.reviewItems.isEmpty)
+        var reload = try store.load(record.id)
+        #expect(try reload.readableTranscript().utterances[0].text == "To oznacza budżet milionów.")
+        let overlappingPhrase = try reload.transcriptSelection(utteranceID: "utt_1",
+            range: (try reload.readableTranscript().utterances[0].text as NSString).range(of: "budżet milionów."))
+        #expect(overlappingPhrase.text == "budżet milionów.")
+        reload = try store.correctTranscript(record.id, selection: overlappingPhrase,
+            to: "budżet państwa.", audioReviewed: true)
+        #expect(try reload.readableTranscript().utterances[0].text == "To oznacza budżet państwa.")
+        #expect(reload.segments == raw)
+        #expect(reload.transcriptRangeCorrections?.last?.supersededCorrectionIDs?.count == 1)
+        let saved = try Data(contentsOf: path)
+        #expect(throws: Error.self) {
+            _ = try store.correctTranscript(record.id, selection: target, to: "Stale", audioReviewed: true)
+        }
+        #expect(try Data(contentsOf: path) == saved)
+        let inspection = try cli(["inspect-cleanup", record.id.uuidString, "--store", root.path])
+        #expect(inspection.0 == 0)
+        #expect(inspection.1.contains("To oznacza budżet państwa."))
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let captured = root.appendingPathComponent("captured.json")
+        let response = root.appendingPathComponent("response.json")
+        let helper = root.appendingPathComponent("capture.sh")
+        try "#!/bin/sh\ncp \"$2\" '\(captured.path)'\ncp '\(response.path)' \"$3\"\n".write(to: helper, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: helper.path)
+        let quote = "To oznacza budżet państwa."
+        let valid: [String: Any] = [
+            "topics": [["id": "t", "title": "Budżet", "sourceUtteranceIDs": ["utt_1"]]],
+            "assignments": [["utteranceID": "utt_1", "topicIDs": ["t"]]],
+            "summaries": [["topic_id": "t", "text": quote, "source_utterance_ids": ["utt_1"], "evidence_quote": quote]],
+            "candidates": []]
+        try JSONSerialization.data(withJSONObject: valid).write(to: response)
+        let settings = root.appendingPathComponent("settings.json")
+        try JSONSerialization.data(withJSONObject: ["transcriber": "fluid", "mlxModelDirectory": model.path,
+                                                    "mlxExecutable": helper.path]).write(to: settings)
+        let minutes = try cli(["summarize", record.id.uuidString, "--settings", settings.path, "--store", root.path])
+        #expect(minutes.0 == 0)
+        let input = try JSONSerialization.jsonObject(with: Data(contentsOf: captured)) as! [String: Any]
+        #expect((input["utterances"] as! [[String: Any]])[0]["text"] as? String == quote)
+        #expect(try store.load(record.id).reviewItems.first?.sourceSegmentIDs == raw.map(\.id))
+        let selection = try reload.transcriptSelection(utteranceID: "utt_1", range: NSRange(location: 0, length: 2))
+        let restored = try store.correctTranscript(record.id, selection: selection,
+            to: selection.originalText, audioReviewed: true, restore: true)
+        #expect(try restored.readableTranscript().utterances[0].text == "To jest kwota milionów.")
+        #expect(try store.load(record.id).transcriptRangeCorrections?.count == 3)
+        let legacy = try store.correctTranscript(record.id, segmentID: "p3", to: "miliardów.", audioReviewed: true)
+        #expect(try legacy.readableTranscript().utterances[0].text == "To jest kwota miliardów.")
+        #expect(legacy.segments == raw)
+        // Backward decoding and the exact source anchors from the reported Sejm failure.
+        let prior = try JSONDecoder().decode(MeetingRecord.self, from: Data(contentsOf:
+            URL(fileURLWithPath: "tests/fixtures/selection_overlap_saved_record.json")))
+        try store.save(prior)
+        let previousText = try prior.readableTranscript().utterances[0].text
+        let fragment = try prior.transcriptSelection(utteranceID: "utt_1",
+            range: (previousText as NSString).range(of: "sygnał. Teraz zaczynamy."))
+        #expect(fragment.text == "sygnał. Teraz zaczynamy.")
+        let merged = try store.correctTranscript(prior.id, selection: fragment,
+            to: "sygnał - od razu zaczynamy.", audioReviewed: true)
+        #expect(try merged.readableTranscript().utterances[0].text ==
+            previousText.replacingOccurrences(of: "sygnał. Teraz zaczynamy.", with: "sygnał - od razu zaczynamy."))
+        #expect(merged.segments == prior.segments)
+        #expect(merged.transcriptRangeCorrections?.count == 2)
+        #expect(merged.transcriptRangeCorrections?.last?.supersededCorrectionIDs == prior.transcriptRangeCorrections?.map(\.id))
+        #expect(try store.load(prior.id).readableTranscript() == merged.readableTranscript())
+
+    }
+
+    @Test func testReviewStoreCorrection() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let range = try SourceRange(startSeconds: 1, endSeconds: 3)
+        let segment = TranscriptSegment(id: "word", range: range, speakerID: "S1",
+                                        text: "The budget is thirty five million.")
+        var original = MeetingRecord(sourcePath: "/tmp/synthetic.wav", segments: [segment],
+            reviewItems: [ReviewItem(kind: .summary, text: "Old draft", sourceSegmentIDs: ["word"], sourceRange: range)],
+            backend: "fixture", modelRevision: "controlled-test")
+        original.cleanedTranscript = try TranscriptCleaner.prepare(original.segments)
+        original.processingParameters["topicCoverage"] = "1/1"
+        let store = MeetingStore(directory: root)
+        try store.save(original)
+        let file = root.appendingPathComponent("\(original.id.uuidString).json")
+        let bytes = try Data(contentsOf: file)
+        for (id, text, confirmed) in [("word", "New words", false), ("word", "  ", true), ("missing", "New words", true)] {
+            #expect(throws: (any Error).self) {
+                _ = try store.correctTranscript(original.id, segmentID: id, to: text, audioReviewed: confirmed)
+            }
+            #expect(try Data(contentsOf: file) == bytes)
+        }
+        var externallyEdited = try store.load(original.id)
+        try externallyEdited.assignSpeakerName("S1", to: "Chair")
+        try store.save(externallyEdited)
+        let corrected = try store.correctTranscript(original.id, segmentID: "word",
+            to: "The budget is thirty five billion.", audioReviewed: true)
+        #expect(corrected.speakerNames["S1"] == "Chair")
+        #expect(corrected.segments == original.segments)
+        #expect(corrected.reviewItems.isEmpty && corrected.cleanedTranscript == nil)
+        #expect(corrected.processingParameters["topicCoverage"] == nil)
+        let reloaded = try store.load(original.id)
+        let reading = try TranscriptCleaner.prepare(reloaded.segments, corrections: reloaded.transcriptCorrections ?? [])
+        #expect(reading.utterances.first?.text == "The budget is thirty five billion.")
+        let restored = try store.correctTranscript(original.id, segmentID: "word", to: segment.text, audioReviewed: true)
+        #expect(restored.transcriptCorrections?.count == 2)
+        #expect(try store.load(original.id).transcriptCorrections == restored.transcriptCorrections)
+        let restoredReading = try TranscriptCleaner.prepare(restored.segments, corrections: restored.transcriptCorrections ?? [])
+        #expect(restoredReading.utterances.first?.text == segment.text)
+    }
+
     @Test func testMultiStageCLI() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)

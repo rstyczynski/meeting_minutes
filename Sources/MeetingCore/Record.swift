@@ -132,6 +132,7 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
     public var topics: [MeetingTopic]?
     public var topicAssignments: [TopicAssignment]?
     public var transcriptCorrections: [TranscriptCorrection]?
+    public var transcriptRangeCorrections: [TranscriptRangeCorrection]?
 
     public init(id: UUID = UUID(), sourcePath: String,
                 segments: [TranscriptSegment], speakerNames: [String: String] = [:],
@@ -153,11 +154,14 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
         self.topics = nil
         self.topicAssignments = nil
         self.transcriptCorrections = nil
+        self.transcriptRangeCorrections = nil
     }
 
     public mutating func configureCleanup(_ policy: TranscriptCleanupPolicy) throws {
         try policy.validate()
         guard transcriptCleanupPolicy != policy else { return }
+        _ = try TranscriptCleaner.prepare(segments, corrections: transcriptCorrections ?? [],
+            rangeCorrections: transcriptRangeCorrections ?? [], policy: policy)
         transcriptCleanupPolicy = policy
         reviewItems = []
         cleanedTranscript = nil
@@ -177,6 +181,9 @@ public struct MeetingRecord: Codable, Sendable, Identifiable {
                                            at date: Date = Date()) throws {
         guard audioReviewed else {
             throw MeetingError.adapterFailure("Listen to the source audio before correcting text")
+        }
+        guard !RangeProjection.active(transcriptRangeCorrections ?? []).contains(where: { $0.sourceSegmentIDs.contains(segmentID) }) else {
+            throw MeetingError.adapterFailure("Source belongs to a range correction; edit or restore that range first")
         }
         guard let segment = segments.first(where: { $0.id == segmentID }) else {
             throw MeetingError.invalidSource(segmentID)

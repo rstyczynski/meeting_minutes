@@ -13,13 +13,14 @@ public struct TranscriptCleanupPolicy: Codable, Sendable, Equatable {
     public var maximumOneSidedGapSeconds = 0.5
     public var maximumReadingBlockSeconds: Double?
     public var maximumReadingGapSeconds: Double?
+    public var longSilenceBoundarySeconds = 10.0
 
     public init() {}
 
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case grouping, mergeUnassignedSegments, proposeNeighborSpeakers, preserveSpeakerChanges, maximumCandidateWords
         case maximumNeighborGapSeconds, maximumOverlapSeconds, maximumOneSidedGapSeconds
-        case maximumReadingBlockSeconds, maximumReadingGapSeconds
+        case maximumReadingBlockSeconds, maximumReadingGapSeconds, longSilenceBoundarySeconds
     }
     private struct AnyKey: CodingKey {
         let stringValue: String
@@ -46,16 +47,18 @@ public struct TranscriptCleanupPolicy: Codable, Sendable, Equatable {
         maximumOneSidedGapSeconds = try c.decodeIfPresent(Double.self, forKey: .maximumOneSidedGapSeconds) ?? maximumOneSidedGapSeconds
         maximumReadingBlockSeconds = try c.decodeIfPresent(Double.self, forKey: .maximumReadingBlockSeconds)
         maximumReadingGapSeconds = try c.decodeIfPresent(Double.self, forKey: .maximumReadingGapSeconds)
+        longSilenceBoundarySeconds = try c.decodeIfPresent(Double.self, forKey: .longSilenceBoundarySeconds) ?? longSilenceBoundarySeconds
         try validate()
     }
 
     public func validate() throws {
         let gaps = [maximumNeighborGapSeconds, maximumOverlapSeconds, maximumOneSidedGapSeconds]
-        guard maximumCandidateWords >= 1, gaps.allSatisfy({ $0.isFinite && $0 >= 0 }),
+        guard longSilenceBoundarySeconds.isFinite, longSilenceBoundarySeconds > 0,
+              maximumCandidateWords >= 1, gaps.allSatisfy({ $0.isFinite && $0 >= 0 }),
               maximumOneSidedGapSeconds <= maximumNeighborGapSeconds,
               maximumReadingBlockSeconds.map({ $0.isFinite && $0 > 0 }) ?? true,
               maximumReadingGapSeconds.map({ $0.isFinite && $0 >= 0 }) ?? true else {
-            throw MeetingError.adapterFailure("Invalid transcriptCleanup limits: use finite nonnegative gaps, positive block duration and candidate word count; one-sided gap must not exceed neighbor gap")
+            throw MeetingError.adapterFailure("Invalid transcriptCleanup limits: use finite nonnegative gaps, positive long-silence threshold, block duration and candidate word count; one-sided gap must not exceed neighbor gap")
         }
     }
 }

@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "slideCount": 21,
+  "changedSlide": 9,
+  "copyableCorrectionCLIVisible": true,
+  "unchangedSlidesPixelIdentical": 20,
+  "chartsAndWorkbooksBytePreserved": true,
+  "canonicalSha256": "9f661dacaa2ccdb0378067d7629a7f8307e979651418f821652b3afcc064a634",
+  "narrativeFile": "progress/sprint_2/sprint_2_increment_demo.md",
+  "consolidation": {
+    "removedPresentationFiles": [
+      "sprint_2_increment_demo_pipeline_20261004_v2.pptx",
+      "sprint_2_quality_review_20261004.pptx",
+      "sprint_2_increment_demo_cli_ready_20261004.pptx",
+      "sprint_2_increment_demo_initial_20261002.pptx",
+      "sprint_2_increment_demo_word_error_rate_20261004.pptx",
+      "sprint_2_increment_demo_architecture_20261004.pptx",
+      "sprint_2_increment_demo_operator_steps_20261004.pptx",
+      "sprint_2_increment_demo_conclusions_20261004_final.pptx",
+      "sprint_2_increment_demo_naming_20261004.pptx",
+      "sprint_2_increment_demo_operator_20261004.pptx"
+    ],
+    "canonicalPresentation": "progress/sprint_2/sprint_2_increment_demo.pptx",
+    "historicalTrackedVersionsRetainedInGit": true,
+    "powerPointOwnerLockFilesUntouched": true
+  },
+  "guiEditorImplemented": true,
+  "guiDesignApprovalPending": false,
+  "controlledNativeGUI": "PASS",
+  "realAudioCorrectionValidated": false,
+  "localLinksChecked": 680,
+  "missingLinks": [],
+  "manualShellSyntax": "PASS",
+  "demoShellSyntax": "PASS"
+}

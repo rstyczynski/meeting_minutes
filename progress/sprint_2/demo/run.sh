@@ -127,10 +127,18 @@ printf 'Kontrola na kopii realnego rekordu: brak --audio-reviewed yes → status
 if [[ "$mode" == live ]]; then
   printf '\nOtwórz drugie okno Terminala i uruchom dokładnie:\n'
   printf 'cd %q && swift run meeting-review %q --store %q\n' "$root" "$polish_id" "$store"
-  printf '%s\n' 'W aplikacji odsłuchaj około 565–569 s oraz wybrany problematyczny fragment; potem wróć tutaj.'
+  printf '%s\n' 'W Meeting Review zaznacz frazę w transkrypcji i kliknij Correct selection. Ustaw Audio before/after (domyślnie po 2 s), użyj Play selection with context.'
+  printf '%s\n' 'Suwak Audio position jest w widoku i edytorze. Przesunięcie zatrzymuje fragment; Play/Play from position wznawia. Pauza >= longSilenceBoundarySeconds (domyślnie 10 s) rozpoczyna nowy segment, nawet dla S1.'
+  printf '%s\n' 'Po odsłuchu wpisz poprawione słowa, zaznacz I listened to this source audio i kliknij Save correction. Widok odświeży się od razu.'
+  printf '%s\n' 'Restore original zapisuje przywrócenie oryginału w historii; Cancel porzuca niezapisany tekst. Jeżeli nie ma potwierdzonego błędu, nie zapisuj poprawki.'
   printf 'Czy odsłuchano zakres w Meeting Review? [tak/nie] '
   read -r audio_reviewed
   if [[ "$audio_reviewed" == tak ]]; then
+    printf '%s\n' 'Korekty zapisane w aplikacji:'
+    jq -r '(.transcriptRangeCorrections // [])[] | "  \(.sourceSegmentIDs|join(",")): \(.originalText) → \(.correctedText)"' "$store/$polish_id.json"
+    printf 'Czy chcesz dodatkowo wykonać korektę przez CLI? [tak/nie] '
+    read -r use_cli_correction
+    if [[ "$use_cli_correction" == tak ]]; then
     printf 'ID błędnego segmentu do korekty (Enter = brak): '
     read -r segment_id
     if [[ -n "$segment_id" ]]; then
@@ -144,13 +152,17 @@ if [[ "$mode" == live ]]; then
           printf 'Tekst potwierdzony odsłuchem (Enter = brak): '
           read -r corrected_text
           if [[ -n "$corrected_text" ]]; then
-            cli transcribe correct "$polish_id" "$segment_id" "$corrected_text" --audio-reviewed yes --note 'Product Owner demo: correction after operator playback' --store "$store" >/dev/null
+            if cli transcribe correct "$polish_id" "$segment_id" "$corrected_text" --audio-reviewed yes --note 'Product Owner demo: correction after operator playback' --store "$store" >/dev/null; then
             jq -r --arg id "$segment_id" '"Oryginał ASR: ", (.segments[] | select(.id == $id) | .text), "Historia korekt:", (.transcriptCorrections[] | select(.segmentID == $id) | "  \(.correctedText)")' "$store/$polish_id.json"
+            else
+              printf '%s\n' 'Korekta CLI odrzucona; dla źródła objętego korektą zakresową użyj Correct selection w aplikacji. Zapis nie zmienił się.'
+            fi
           fi
         else
           printf '%s\n' 'Korekta pominięta: wskazany segment nie został potwierdzony odsłuchem.'
         fi
       fi
+    fi
     fi
   else
     printf '%s\n' 'Bez odsłuchu nie zapisujemy korekty ani potwierdzenia jakości dźwięku.'
@@ -223,8 +235,8 @@ pause
 stage '6. Jakość, porównanie i decyzja'
 printf '%s\n' 'Dłuższy test angielski (zapisana próba DOE, 30 minut):'
 jq -r '"  \(.timedSegments) segmentów, \(.speakerIds|length) anonimowych identyfikatorów; próby minut: \(.minutesAttempts|length)"' "$root/progress/sprint_2/tests/doe_itiac_day2_run_20261002.json"
-printf '%s\n' 'Zmierzony benchmark AMI: Parakeet v2 WER 19,48%; Whisper base.en WER 28,79% (szczegóły i metodologia w ami_asr_benchmark.md).'
-printf '%s\n' 'Osobne czytane próbki językowe: Parakeet v3 EN 11,49% / PL 3,41%; Whisper base CPU EN 18,39% / PL 27,27%. To nie jest WER polskiego spotkania.'
+printf '%s\n' 'Zmierzony benchmark AMI: Parakeet v2 Word Error Rate 19,48%; Whisper base.en Word Error Rate 28,79% (szczegóły i metodologia w ami_asr_benchmark.md).'
+printf '%s\n' 'Osobne czytane próbki językowe: Parakeet v3 EN 11,49% / PL 3,41%; Whisper base CPU EN 18,39% / PL 27,27%. To nie jest Word Error Rate polskiego spotkania.'
 printf '%s\n' 'Zmierzony audyt poprzedniego, kontrolowanego uruchomienia 30B: AMI 2/5 i Sejm 2/4 podsumowań w pełni podpartych własnymi cytowaniami.'
 printf '%s\n' 'Te liczby pochodzą z zapisanych pomiarów, nie z niniejszego uruchomienia.'
 printf '%s\n' 'Wniosek: prototyp pokazuje architekturę i wykrywa część błędów; wygenerowane minuty wymagają kontroli człowieka i nie są gotowe do publikacji.'

@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "slideCount": 21,
+  "changedSlides": [
+    9,
+    18,
+    19,
+    21
+  ],
+  "visuallyReviewedSlides": [
+    9,
+    18,
+    19,
+    21
+  ],
+  "unchangedSlidesPixelIdentical": 17,
+  "chartsAndWorkbooksBytePreserved": true,
+  "canonicalSha256": "eae4ace1dff267b31e1460e1d62a104c0d7cb5e31feefc3bbeab9ed9bd2061ac",
+  "narrativeFile": "progress/sprint_2/sprint_2_increment_demo.md",
+  "oneCanonicalDeck": true,
+  "supersededTrackedDecksRemoved": 9,
+  "localLinksChecked": 744,
+  "missingLinks": [],
+  "manualShellSyntax": "PASS",
+  "demoShellSyntax": "PASS",
+  "nativePowerPointVerified": false,
+  "nativeSliderAndAudioVerified": false,
+  "actualSavedCrossingEditReceipt": "selection_owner_session_20261004.json"
+}

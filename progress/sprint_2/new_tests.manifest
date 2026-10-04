@@ -31,3 +31,9 @@ unit:test_core.sh:test_UT16_stage_validation
 unit:test_core.sh:test_UT17_isolated_token_review
 unit:test_core.sh:test_UT18_operator_text_correction
 integration:test_meeting_flow.sh:test_IT13_multi_stage_cli
+integration:test_meeting_flow.sh:test_IT14_review_store_correction
+unit:test_core.sh:test_UT19_selected_text
+unit:test_core.sh:test_UT20_playback_context
+integration:test_meeting_flow.sh:test_IT15_range_store_correction
+unit:test_core.sh:test_UT21_long_silence
+integration:test_meeting_flow.sh:test_IT16_long_silence_record

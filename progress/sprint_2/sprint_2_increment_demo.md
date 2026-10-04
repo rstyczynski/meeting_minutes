@@ -1,10 +1,15 @@
-# Sprint 2 presentation set for the Product Owner
+# Sprint 2 — Product Owner presentation narrative
 
-**Review state:** updated with measured staged-minutes findings on 4 October 2026. Sprint 2 remains
-in Progress. The Product Owner directed that the minutes quality failure be
-presented as a prototype conclusion and next-work direction; the draft
-minutes are not accepted as correct. The live demonstration, documentation
-approval, and sprint close have not occurred.
+## Latest operator feedback: long silence and audio position
+
+The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.
+
+The [manual](user_manual.md#long-silence-and-audio-slider), [parameter guide](transcript_segmentation.md) and [repair evidence](tests/long_silence_review_20261004.json) describe the same current behavior.
+
+
+## Selected-text correction and live verification
+
+The first word-sized source editor failed the Product Owner's Sejm review because its audio was too brief. A later selection crossing a saved correction also failed; the repair now preserves the exact selected substring and unselected surrounding words while retaining superseded events. The accepted repair now provides phrase selection, **Correct selection**, adjustable audio before/after the source, Save and Restore. Slide 9 describes this implementation. Automated checks verify mapping, storage and shared minutes input. Native phrase selection and audible playback remain pending after the QA-window launch was declined. [BUG-6](sprint_2_bugs.md#bug-6-word-sized-correction-playback-is-too-short-for-operator-review) remains open for that live verification; earlier controlled word-editor evidence does not close it.
 
 ## What this sprint promised
 
@@ -17,7 +22,15 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [21-slide live-journey presentation](sprint_2_increment_demo_word_error_rate_20261004.pptx)
+On slide 9 show the in-app correction journey: expand source words, click
+Select a phrase, choose Correct selection, play it with configurable context, correct the words, confirm listening and save. The view updates
+immediately, and Restore original retains the earlier correction in history.
+The [GUI instructions](user_manual.md#correct-words-inside-meeting-review)
+and [CLI alternative](user_manual.md#run-the-correction-in-terminal) explain
+both routes. The native controlled GUI check passed without playing audio;
+the real source-listening check remains pending.
+
+Open the current [21-slide live-journey presentation](sprint_2_increment_demo.pptx)
 and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
 The [operator manual](user_manual.md) documents individual commands and
 recovery. Slides 2–4 establish the Sprint goal,
@@ -192,9 +205,9 @@ validation set before any minutes-quality acceptance.
 
 ## Reading pipeline and rule clarification — 4 October 2026
 
-Start with goals, then use slide 3 of the [current deck](sprint_2_increment_demo_word_error_rate_20261004.pptx) to follow audio through ASR, optional diarization, Swift reading turns, operator review, optional Qwen minutes and output validation. On slide 4, state clearly that the separate FluidAudio diarizer, not Parakeet/Whisper or Qwen, detects anonymous voice turns. Swift aligns them to timed text by overlap and groups the resulting parts.
+Start with goals, then use slide 3 of the [current deck](sprint_2_increment_demo.pptx) to follow audio through ASR, optional diarization, Swift reading turns, operator review, optional Qwen minutes and output validation. On slide 4, state clearly that the separate FluidAudio diarizer, not Parakeet/Whisper or Qwen, detects anonymous voice turns. Swift aligns them to timed text by overlap and groups the resulting parts.
 
-During the operator stage show slides 17–18 with every profile field and its default. Demonstrate the [documented CLI profile](transcript_segmentation.md). Explain why a labeled speaker change ends a turn while a same-speaker pause does not, and show the number `35 779` staying together. Report 32-to-four reading blocks with 802/802 parts conserved as grouping evidence only. Use the preserved raw sources to inspect proposed unassigned joins. Meaning-based boundaries and rechecking the actual voice remain open. Reapplying a profile must not silently retain stale minutes when it changes.
+During the operator stage show slides 17–18 with every profile field and its default. Demonstrate the [documented CLI profile](transcript_segmentation.md). Explain why a labeled speaker change or a gap at least the long-silence threshold ends a segment, and show the number `35 779` staying together. Show the 33.28-second S1 gap becoming a separate segment, with five current segments and 802/802 parts conserved. The earlier 32-to-four result is historical. Demonstrate the position slider in both review views. Use the preserved raw sources to inspect proposed unassigned joins. Meaning-based boundaries and rechecking the actual voice remain open. Reapplying a profile must not silently retain stale minutes when it changes.
 
 
 ## Closing conclusions from Sprint 2 evidence

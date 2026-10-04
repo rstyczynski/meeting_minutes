@@ -172,14 +172,17 @@ public struct MLXMultiStageMinutesGenerator {
     public let speakerNames: [String: String]
     public let cleanupPolicy: TranscriptCleanupPolicy
     public let corrections: [TranscriptCorrection]
+    public let rangeCorrections: [TranscriptRangeCorrection]
 
     public init(executable: String, modelDirectory: String,
                 speakerNames: [String: String], corrections: [TranscriptCorrection] = [],
+                rangeCorrections: [TranscriptRangeCorrection] = [],
                 cleanupPolicy: TranscriptCleanupPolicy = TranscriptCleanupPolicy()) {
         self.executable = executable
         self.modelDirectory = modelDirectory
         self.speakerNames = speakerNames
         self.corrections = corrections
+        self.rangeCorrections = rangeCorrections
         self.cleanupPolicy = cleanupPolicy
     }
 
@@ -193,7 +196,7 @@ public struct MLXMultiStageMinutesGenerator {
         guard duration <= 600 else {
             throw MeetingError.adapterFailure("minutes input exceeds prototype limit (600 seconds)")
         }
-        let cleanup = try TranscriptCleaner.prepare(segments, corrections: corrections, policy: savedPolicy ?? cleanupPolicy)
+        let cleanup = try TranscriptCleaner.prepare(segments, corrections: corrections, rangeCorrections: rangeCorrections, policy: savedPolicy ?? cleanupPolicy)
         guard !cleanup.hasUnresolvedCandidates else {
             throw MeetingError.adapterFailure("Transcript cleanup needs review of unresolved candidates")
         }

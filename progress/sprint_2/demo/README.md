@@ -1,7 +1,14 @@
 # Sprint 2 — Product Owner live demonstration script
 
+## Latest operator feedback: long silence and audio position
+
+The Product Owner exposed a 33.28-second pause inside one S1 card. The directed repair adds `longSilenceBoundarySeconds` (10 s by default, configurable) and a full-recording slider in Meeting Review and its correction sheet. The same S1 label now appears on separate segments before/after the pause. All six gates passed at `20261004_230950`; saved-session inspection yields five segments and preserves 802/802 source parts and both text-correction events. The successful crossing edit was separately observed in the owner's saved session. Slider seeking/listening, Restore/Cancel/restart and full handover acceptance remain live checks. No ASR/LLM quality improvement is claimed.
+
+The [manual](../user_manual.md#long-silence-and-audio-slider), [parameter guide](../transcript_segmentation.md) and [repair evidence](../tests/long_silence_review_20261004.json) describe the same current behavior.
+
+
 This is the exact running order for the Sprint 2 review. Present the
-[21-slide deck](../sprint_2_increment_demo_word_error_rate_20261004.pptx) while
+[21-slide deck](../sprint_2_increment_demo.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -118,9 +125,17 @@ by the script. Listen to the source range and let the Product Owner see
 selection and playback. Only answer `tak` if this actually happened.
 The script first attempts a correction **without** audio confirmation on
 a disposable copy of the real Sejm record. The CLI must return 2 and the
-copy's SHA-256 must stay the same; this is the actual guard demonstration
-on slide 9. If a word is audibly wrong, enter its exact printed segment ID and
-replacement; the CLI keeps the original ASR and records the correction.
+copy's SHA-256 must stay the same; this is the guard demonstration recorded
+in the test evidence. Slide 9 now shows the tools and the actual correction
+command as an alternative. Select a phrase in Meeting Review's readable transcript and choose
+Correct selection to correct an audibly wrong word, confirm listening and save. The
+reading refreshes immediately. Demonstrate Restore original and Cancel;
+every saved correction keeps the original ASR and history. The script prints
+the saved correction history and offers the CLI route separately. The
+[GUI instructions](../user_manual.md#correct-words-inside-meeting-review) and
+[copyable CLI steps](../user_manual.md#run-the-correction-in-terminal)
+explain both routes. If using the CLI, enter its exact printed segment ID and
+replacement after listening.
 If there is no verified mistake, press Enter and show that no edit was
 made. Explain that a name is assigned only after checking the **whole**
 cluster. Given the known AMI merge, leaving names neutral is the expected
@@ -132,7 +147,7 @@ cluster**. Close Meeting Review and use the printed exact command to reopen
 the record: this prototype reads a snapshot and does not automatically
 refresh after a CLI edit. Point out that naming is the operator's decision;
 the product does not discover the person's identity. The controlled correction, restore, and CLI guard evidence
-on slide 9 is a test result, not a claim that a human previously listened
+linked in slide 9's notes is a test result, not a claim that a human previously listened
 to that source. If the player cannot be operated, record that limitation
 and continue without asserting audio review.
 
@@ -201,3 +216,10 @@ Explain: speaker changes form boundaries, same-speaker speech joins without a ti
 After the benchmark, show parameter slides 17–18 if they were not already used at the operator stage. Always finish with slides 19–21. On slide 19 summarize the working local transcription/review path, same-input ASR comparison, four-turn reading correction with source conservation, reversible controls and measured 30B memory cost. On slide 20 separate speaker clustering, transcript errors, LLM meaning failures, long-input limits and pending manual playback. On slide 21 explain the validation directions implied by those findings: operator review, human topic/item references, semantic and voice boundary checks, and comparative long-meeting/resource experiments.
 
 The conclusion is that Sprint 2 provides useful architecture evidence while dependable minutes remain unvalidated. These directions inform the already planned Sprint 3 evidence assessment; they do not assign new PBIs or imply Product Owner acceptance. Invite the Product Owner's actual reaction and record it in the handover, then end the presentation. Do not return to parameter slides after the conclusion.
+
+
+### Selected-text editor live check
+
+On slide 9, select “Szanowni Państwo, tylko poinformuję,” in the Sejm transcript, then choose **Correct selection**. Show the selected range 108.08–109.84 s and independently adjustable before/after context (2 s each initially). Play the requested 106.08–111.84 s range and confirm it is audible and bounded. Edit only an actual verified error, save, inspect range history and refreshed reading, restore and cancel an unsaved edit. Do not enter an invented correction into the real record merely to make the demo pass. If no error is present, use a disposable copy and label the controlled edit explicitly. Run the existing **Source words and correction IDs** view to show raw preservation.
+
+This native interaction was not rehearsed: the QA-window launch was declined. Record the real observed result in the handover; do not substitute the earlier word-editor GUI check. The CLI alternative affects one source part, and rejects source edits inside an active range correction. Range edits and restoration use Meeting Review; multi-stage minutes consumes the same corrected projection. The [manual](../user_manual.md#correct-words-inside-meeting-review) gives the exact steps and limitations.

@@ -29,7 +29,7 @@ participant and does not enter the live Product Owner record.
 
 ## Presentation and script checks
 
-The [updated deck](../sprint_2_increment_demo_naming_20261004.pptx) has 18
+The updated deck (`sprint_2_increment_demo_naming_20261004.pptx`, historical version in Git) has 18
 slides. Its [finalization receipt](presentation_validation_naming_20261004.json)
 records package, font, chart and reimport checks. Every final slide was
 rendered; slide 10 and both charts were inspected at full size, and the
@@ -50,7 +50,7 @@ reopening, and the Product Owner handover decision remain live checks.
 
 The Product Owner rejected slide 10's use of pre-existing `$polish_id` and
 `$store` variables: it did not provide an independently runnable command.
-The [corrected deck](../sprint_2_increment_demo_cli_ready_20261004.pptx)
+The corrected deck (`sprint_2_increment_demo_cli_ready_20261004.pptx`, historical version in Git)
 and [presenter script](../demo/README.md#standalone-speaker-naming-for-the-currently-open-record)
 now include the actual current record UUID, store, working directory and
 an input prompt for the name inside one `bash -c` block. Only the name is

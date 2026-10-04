@@ -8,3 +8,9 @@ integration:test_meeting_flow.sh:test_IT9_failure_preserves_record
 integration:test_meeting_flow.sh:test_IT11_evidence_first_cli
 integration:test_meeting_flow.sh:test_IT12_validation_preserves_record
 integration:test_meeting_flow.sh:test_IT13_multi_stage_cli
+integration:test_meeting_flow.sh:test_IT14_review_store_correction
+unit:test_core.sh:test_UT19_selected_text
+unit:test_core.sh:test_UT20_playback_context
+integration:test_meeting_flow.sh:test_IT15_range_store_correction
+unit:test_core.sh:test_UT21_long_silence
+integration:test_meeting_flow.sh:test_IT16_long_silence_record
