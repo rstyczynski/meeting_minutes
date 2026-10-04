@@ -35,7 +35,7 @@ require_file() {
 require_dir() {
   if [[ ! -d "$1" ]]; then printf 'Brak katalogu: %s\n' "$1" >&2; exit 2; fi
 }
-for command in swift jq; do
+for command in swift jq shasum; do
   if ! command -v "$command" >/dev/null; then
     printf 'Brak programu %s w PATH\n' "$command" >&2; exit 2
   fi
@@ -44,6 +44,7 @@ for path in "$ami" "$ami_short" "$sejm" "$fluid" "$mlx" "$shader" "$qwen/config.
 for path in "$models/parakeet-tdt-0.6b-v2" "$models/parakeet-tdt-0.6b-v3" "$models/offline-diarizer/speaker-diarization" "$qwen"; do require_dir "$path"; done
 require_file "$root/progress/sprint_2/tests/multistage_20261004/ami/record.json"
 require_file "$root/progress/sprint_2/tests/multistage_20261004/sejm/record.json"
+require_file "$root/progress/sprint_2/tests/5DC83D71-D1B0-4568-A66D-70F3B9A71D46.json"
 
 stage '0. Cel i architektura'
 printf '%s\n' 'Cel: sprawdzić lokalny przepływ nagranie → transkrypcja → rozpoznanie mówców → przegląd operatora → robocze minuty.'
@@ -107,6 +108,22 @@ jq -r '.segments[] | select(.range.startSeconds >= 565 and .range.startSeconds <
 printf '%s\n' 'Proponowana czytelnicza wypowiedź obejmująca ten zakres:'
 jq -r '.utterances[] | select(.range.startSeconds <= 567 and .range.endSeconds >= 567) | "  \(.id) \(.speakerID // "brak"): \(.text)"' "$store/sejm-cleanup.json"
 printf '%s\n' 'Surowe segmenty i proponowany widok czytelniczy pozostają osobno. Propozycja nie dowodzi tożsamości mówcy.'
+guard_segment="$(jq -r 'first(.segments[] | select(.range.startSeconds >= 565 and .range.startSeconds <= 569) | .id)' "$store/$polish_id.json")"
+if [[ -z "$guard_segment" || "$guard_segment" == null ]]; then
+  printf '%s\n' 'Brak segmentu Sejmu w zakresie pokazu kontroli; przerwij i sprawdź transkrypcję.' >&2
+  exit 2
+fi
+mkdir -p "$store/guard"
+cp "$store/$polish_id.json" "$store/guard/$polish_id.json"
+before_hash="$(shasum -a 256 "$store/guard/$polish_id.json")"
+guard_status=0
+cli transcribe correct "$polish_id" "$guard_segment" 'NIE ZAPISUJ' --store "$store/guard" >/dev/null || guard_status=$?
+after_hash="$(shasum -a 256 "$store/guard/$polish_id.json")"
+if [[ "$guard_status" != 2 || "$before_hash" != "$after_hash" ]]; then
+  printf '%s\n' 'BŁĄD: kontrola odmowy korekty bez odsłuchu nie przeszła.' >&2
+  exit 2
+fi
+printf 'Kontrola na kopii realnego rekordu: brak --audio-reviewed yes → status %s; SHA-256 bez zmiany.\n' "$guard_status"
 if [[ "$mode" == live ]]; then
   printf '\nOtwórz drugie okno Terminala i uruchom dokładnie:\n'
   printf 'cd %q && swift run meeting-review %q --store %q\n' "$root" "$polish_id" "$store"
@@ -193,6 +210,8 @@ printf '%s\n' 'Przykład błędu znaczenia, nie etykiety mówcy — AMI t5 versu
 jq -r '.cleanedTranscript.utterances[] | select(.id == "utt_10" or .id == "utt_13" or .id == "utt_21") | "  \(.id): \(.text)"' "$root/progress/sprint_2/tests/multistage_20261004/ami/record.json"
 printf '%s\n' 'Sejm, źródłowe słowa kandydackiej decyzji około 540–546 s:'
 jq -r '[.segments[] | select(.range.startSeconds >= 538 and .range.startSeconds <= 548) | .text] | join(" ")' "$root/progress/sprint_2/tests/multistage_20261004/sejm/record.json"
+printf '%s\n' 'Historyczny draft sprzed aktualnej bramki jakości (slajd 11; NIE jest wynikiem bieżącego modelu):'
+jq -r '.reviewItems[] | "  \(.kind): \(.text) | cytowane segmenty: \(.sourceSegmentIDs|length)"' "$root/progress/sprint_2/tests/5DC83D71-D1B0-4568-A66D-70F3B9A71D46.json"
 printf '%s\n' 'Audyt cytowań w zapisanej próbie: AMI 2/5, Sejm 2/4 podsumowań w pełni popartych własnymi źródłami; kandydat decyzji Sejmu 1/2 jawnych sygnałów.'
 pause
 

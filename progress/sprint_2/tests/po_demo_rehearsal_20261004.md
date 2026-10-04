@@ -74,3 +74,18 @@ the transcripts with zero review items. The script's own status 0 means
 the walkthrough reached its conclusion; it does **not** mean minutes
 quality passed. This final rehearsal still did not include human audio
 playback or a real correction.
+
+The corrected, fully slide-aligned demo then completed a fourth real-model
+`--rehearsal` with status 0. Store
+`/private/tmp/meeting-sprint2-po-demo.Zz35wD` contains AMI
+`F4841F18-9D25-4D91-BD09-D9A339D03B76`, Sejm
+`DD5E817B-C77A-46B6-A1E0-7648409B6586`, and AMI 120-second
+`0C92965D-D4DE-4A6C-81B8-147CFFB7922E`. The new slide-9 guard used a
+copy of the real Sejm record: without `--audio-reviewed yes`, the CLI
+returned 2 and its SHA-256 was identical before and after. The script
+also printed the four historical pre-gate Sejm review items on slide 11,
+including the supported decision, unsupported action, invented question,
+and uncited summary. All fresh transcription, warning and cleanup counts
+matched the preceding run; both fresh 30B minutes attempts were rejected
+and preserved their transcripts. No human playback, real correction,
+speaker name, or Product Owner decision is claimed.

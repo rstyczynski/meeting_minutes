@@ -89,7 +89,10 @@ output as the live result and call slide 8 a fixed evidence example. In
 the second Terminal, execute the exact `meeting-review` command printed
 by the script. Listen to the source range and let the Product Owner see
 selection and playback. Only answer `tak` if this actually happened.
-If a word is audibly wrong, enter its exact printed segment ID and
+The script first attempts a correction **without** audio confirmation on
+a disposable copy of the real Sejm record. The CLI must return 2 and the
+copy's SHA-256 must stay the same; this is the actual guard demonstration
+on slide 9. If a word is audibly wrong, enter its exact printed segment ID and
 replacement; the CLI keeps the original ASR and records the correction.
 If there is no verified mistake, press Enter and show that no edit was
 made. Explain that a name is assigned only after checking the **whole**
@@ -111,6 +114,10 @@ only 2/5 AMI and 2/4 Sejm topic summaries fully supported by their own
 cited transcript lines. The Sejm run found one of two explicit decision
 signals. The confusion between meeting-room equipment and product design
 on the AMI slide is a semantic topic error, not a speaker-label error.
+The script also prints the earlier Sejm draft from before the current
+quality gate: its supported positive-opinion decision sits beside an
+unsupported action, invented question and uncited summary. State that
+those are historical rejected candidates, not newly generated minutes.
 The response gate checks structure, IDs, quotations and bounded repair;
 it cannot establish that every paraphrase is true.
 

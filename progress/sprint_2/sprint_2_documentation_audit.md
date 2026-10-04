@@ -43,7 +43,7 @@ Sprint 2 and PBI-011/PBI-011.5 as under construction; this script does
 not change those statuses.
 
 The [rehearsal record](tests/po_demo_rehearsal_20261004.md) documents
-`--check` passing and three complete real-model `--rehearsal` runs, including
+`--check` passing and four complete real-model `--rehearsal` runs, including
 the final script's 0 exit status. Fresh minutes were rejected in both
 meetings, and the earlier source-audited successful 30B trial is labeled
 as recorded comparison in the script and presenter text. No synthetic
@@ -53,7 +53,7 @@ questions, and handover decision remain pending until a person operates
 the live script. The direct native UI replay could not be observed in
 the developer's earlier rehearsal, so the document does not claim it.
 
-The verification for this handover increment is the three full CLI
+The verification for this handover increment is the four full CLI
 rehearsals, shell syntax and preflight, deck finalizer and slide render,
 saved-record `jq` checks, local link and narrative-format scan, and
 `git diff --check`; their final pre-commit results are recorded with this
