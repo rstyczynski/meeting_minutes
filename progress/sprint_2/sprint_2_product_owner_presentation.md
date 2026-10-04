@@ -17,7 +17,7 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the current [18-slide live-journey presentation](sprint_2_increment_demo_operator_20261004.pptx)
+Open the current [18-slide live-journey presentation](sprint_2_increment_demo_naming_20261004.pptx)
 and follow the [single-command demo and slide-by-slide presenter script](demo/README.md).
 The [operator manual](user_manual.md) documents individual commands and
 recovery. Slides 2–4 establish the Sprint goal,
@@ -61,6 +61,15 @@ cluster. The current handover does not assign a participant name; the
 historical invented AMI alias was test-only and is excluded from the live
 journey. The official Sejm PDF identifies the chair on specific turns but
 does not verify every segment in S1.
+
+Slide 10 makes the CLI naming operation explicit. At stage 4 the operator
+enters the verified name; the script prints the complete `recognize name`
+command using the live meeting ID and store, runs it and displays the saved
+map. The name applies to all utterances in the chosen cluster. Close and
+reopen Meeting Review with the printed command to see the saved name.
+The [focused CLI check](tests/speaker_naming_demo_20261004.md) confirms
+persistence on a disposable copy without changing the active demo record.
+It does not establish a real participant identity.
 
 Finally, `summarize` runs the local 30B staged model and validates its
 response before saving any review items. The fresh 4 October script run

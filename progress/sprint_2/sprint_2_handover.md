@@ -12,7 +12,7 @@ The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [single-command demo and presenter script](demo/README.md)
 is the exact live order; the [user manual](user_manual.md) gives individual
 operations and recovery. The current [18-slide demonstration
-deck](sprint_2_increment_demo_operator_20261004.pptx) starts with the
+deck](sprint_2_increment_demo_naming_20261004.pptx) starts with the
 Sprint goal, system architecture, and the distinct ASR and minutes-model
 interfaces before the real-meeting journey, then shows operator review,
 response validation and benchmark evidence. It includes concise excerpts
@@ -28,6 +28,15 @@ evidence. The [benchmark](ami_asr_benchmark.md) interprets model measurements.
 The [documentation audit](sprint_2_documentation_audit.md) tracks consistency.
 The Product Owner must see the actual product operated live and be able to
 inspect or challenge a step before an acceptance decision is requested.
+
+Slide 10 demonstrates `recognize name`: the operator enters a verified
+name, the script prints and executes the complete command, and the saved
+map names every segment in that cluster. Meeting Review must be closed and
+reopened to load the edited record. The [focused naming check](tests/speaker_naming_demo_20261004.md)
+passed on a disposable copy of the real Sejm record; real identity and UI
+display remain live operator checks. The prior
+[operator deck](sprint_2_increment_demo_operator_20261004.pptx) is retained
+as presentation history.
 
 The [4 October single-command rehearsal](tests/po_demo_rehearsal_20261004.md)
 executed real English and Polish transcription, diarization, cleanup and

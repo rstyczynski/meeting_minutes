@@ -13,6 +13,13 @@ natural audio remain outside Git.
 
 ## How the Product Owner can validate this increment
 
+For the presentation, use the [single-command live demo](demo/README.md).
+Slide 10 and stage 4 demonstrate speaker naming through `recognize name`,
+show the saved map, explain its whole-cluster scope, and give the exact
+command to reopen Meeting Review after the edit. The
+[focused CLI check](tests/speaker_naming_demo_20261004.md) passed on a copy
+of the real Sejm record; a verified identity still requires source listening.
+
 Follow the [four-step real-model walkthrough](#product-owner-walkthrough--real-local-models)
 to transcribe English and Polish, inspect poor-audio warning ranges, assign a
 speaker name, and generate minutes. It gives runnable commands, human-readable

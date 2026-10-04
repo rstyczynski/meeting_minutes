@@ -176,8 +176,13 @@ if [[ "$mode" == live ]]; then
         printf 'Zweryfikowane imię i nazwisko: '
         read -r speaker_name
         if [[ -n "$speaker_name" ]]; then
+          printf '\nKomenda zapisu nazwiska dla bieżącego rekordu:\n'
+          printf 'swift run meeting-summarizer recognize name %q %q %q --store %q\n' "$chosen_id" "$speaker_id" "$speaker_name" "$store"
           cli recognize name "$chosen_id" "$speaker_id" "$speaker_name" --store "$store" >/dev/null
           jq -r '.speakerNames | to_entries[] | "\(.key) = \(.value)"' "$store/$chosen_id.json"
+          printf 'Nazwa dotyczy wszystkich wypowiedzi klastra %s.\n' "$speaker_id"
+          printf 'Zamknij otwarte okno Meeting Review i otwórz rekord ponownie:\n'
+          printf 'cd %q && swift run meeting-review %q --store %q\n' "$root" "$chosen_id" "$store"
         fi
       else
         printf 'Klaster %s nie istnieje; nazwa pominięta.\n' "$speaker_id"

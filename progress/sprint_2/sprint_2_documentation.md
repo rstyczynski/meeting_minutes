@@ -128,7 +128,7 @@ The prior documentation approval request was superseded by the FR-11 scope
 addition. The Product Owner then introduced P9, a developer-led handover
 before Phase 5 approval. The [single-command demo and presenter script](demo/README.md),
 [user manual](user_manual.md), [slide
-demonstration](sprint_2_increment_demo_operator_20261004.pptx), and [handover
+demonstration](sprint_2_increment_demo_naming_20261004.pptx), and [handover
 record](sprint_2_handover.md), with the [Product Owner
 brief](sprint_2_product_owner_presentation.md), now present the runnable increment and its
 failures. The Product Owner initially stated that the minutes defect blocked

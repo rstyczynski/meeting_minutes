@@ -1,5 +1,53 @@
 # Sprint 2 — Documentation reconciliation gate
 
+## Speaker naming in the Product Owner presentation — 2026-10-04
+
+The Product Owner requested that the CLI naming explanation be included in
+the presentation. The current [18-slide deck](sprint_2_increment_demo_naming_20261004.pptx)
+now shows `recognize name` on slide 10, its saved `speakerNames.S2` mapping,
+the whole-cluster scope, and the need to close and reopen Meeting Review.
+Stage 4 of the [demo script](demo/run.sh) prints the complete live command
+and reopening command. The presenter script, Product Owner brief,
+handover, implementation, functional test record, documentation summary
+and README were reconciled with that operation. The canonical deck is an
+identical copy of the new dated revision; the prior operator deck remains
+historical evidence.
+
+The SRS FR-04 and FR-05 were checked for chair-assigned names and use of
+neutral labels. Architecture was checked for the shared record and player
+reload; the test profile and Sprint setup for CLI persistence and operator
+review; the accepted design and its test specification for `recognize
+name`, existing-cluster validation and PBI-011.2/PBI-011.4. The board still
+marks those children tested within the active, under-construction sprint.
+No requirement, design, test contract or status changed. Shared review-app
+and user-manual edits belong to a separate ongoing increment and are not
+included in this presentation commit.
+
+The [focused naming check](tests/speaker_naming_demo_20261004.md) executed
+the actual CLI on a disposable copy of the real Sejm record. It saved the
+supplied S2 label, left raw segments unchanged and preserved the active
+record's empty name map. This checks persistence, not real identity or UI
+playback. Human source listening, verified identity, display after reopening,
+live handover and Product Owner acceptance remain pending.
+
+All 18 final slides were rendered. The changed slide and both charts were
+inspected at full size, followed by a whole-deck visual scan. The
+[finalization receipt](tests/presentation_validation_naming_20261004.json)
+records package, font, chart-data and reimport passes. Its slide 16 overlap
+warnings were visually reviewed with no visible clipping. The SHA-256 is
+`41175ba6518d0fc142220bdb22d381aa2d764d823fa6984d4068e75cf5eed7ae`.
+Shell syntax, demo `--check`, local-link and narrative-format checks, and
+`git diff --check` are the applicable pre-commit checks. Product code and
+model prompts did not change in this increment, so ASR and minutes
+benchmarks were not rerun.
+
+Final pre-commit results: `bash -n progress/sprint_2/demo/run.sh` and
+`bash progress/sprint_2/demo/run.sh --check` passed. The local-link scan
+checked 517 targets with zero missing; revised narrative files contain no
+Markdown tables. PPTX text comparison found only slide 10 changed, and the
+canonical deck matched the validated dated revision byte for byte.
+`git diff --check` passed.
+
 ## Product Owner single-command demonstration — 2026-10-04
 
 The Product Owner requested a script they can execute which matches the

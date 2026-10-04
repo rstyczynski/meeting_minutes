@@ -12,6 +12,12 @@ successful 30B output as recorded comparison evidence. Operator listening,
 audio-confirmed correction, name assignment, and Product Owner review were
 not part of the automated rehearsal.
 
+The subsequent [speaker-naming presentation check](tests/speaker_naming_demo_20261004.md)
+saved a label for S2 on a disposable copy of the real Sejm record and
+confirmed unchanged raw segments and unchanged active-record names. This
+is CLI persistence evidence; human identity verification and the reopened
+player's display remain live checks.
+
 ## Environment and fixtures
 
 The tests run from the repository root on macOS with Swift 6.3.3 and the pinned open-source Swift Testing 6.3.2 package. Xcode 27 is installed for the MLX Metal experiment. The synthetic WAV and reference JSON are invented and checked in. AMI ES2002a audio and annotations were approved by the Product Owner and are held outside Git with the local models. Their source, license, and hashes are in [the fixture record](ami_es2002a_fixture.md). The synthetic tests need no credentials or meeting service.

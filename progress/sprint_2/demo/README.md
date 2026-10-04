@@ -1,7 +1,7 @@
 # Sprint 2 — Product Owner live demonstration script
 
 This is the exact running order for the Sprint 2 review. Present the
-[18-slide deck](../sprint_2_increment_demo_operator_20261004.pptx) while
+[18-slide deck](../sprint_2_increment_demo_naming_20261004.pptx) while
 running the product in Terminal. The deck gives context and recorded
 benchmark results; the Terminal shows a fresh execution. Say explicitly
 when a result comes from an earlier controlled run. The real AMI English and
@@ -97,7 +97,14 @@ replacement; the CLI keeps the original ASR and records the correction.
 If there is no verified mistake, press Enter and show that no edit was
 made. Explain that a name is assigned only after checking the **whole**
 cluster. Given the known AMI merge, leaving names neutral is the expected
-safe outcome. The controlled correction, restore, and CLI guard evidence
+safe outcome. Slide 10 now shows the `recognize name` operation explicitly.
+Stage 4 asks the operator for the meeting, existing speaker ID and verified
+name, prints the complete command with the current UUID and store, executes
+it, and shows the saved mapping. A name applies to **every segment in that
+cluster**. Close Meeting Review and use the printed exact command to reopen
+the record: this prototype reads a snapshot and does not automatically
+refresh after a CLI edit. Point out that naming is the operator's decision;
+the product does not discover the person's identity. The controlled correction, restore, and CLI guard evidence
 on slide 9 is a test result, not a claim that a human previously listened
 to that source. If the player cannot be operated, record that limitation
 and continue without asserting audio review.
