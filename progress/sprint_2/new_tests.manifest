@@ -25,3 +25,9 @@ unit:test_core.sh:test_UT12_minutes_input_bound
 unit:test_core.sh:test_UT13_adapter_validation
 integration:test_meeting_flow.sh:test_IT11_evidence_first_cli
 integration:test_meeting_flow.sh:test_IT12_validation_preserves_record
+unit:test_core.sh:test_UT14_transcript_cleaning
+unit:test_core.sh:test_UT15_topic_coverage
+unit:test_core.sh:test_UT16_stage_validation
+unit:test_core.sh:test_UT17_isolated_token_review
+unit:test_core.sh:test_UT18_operator_text_correction
+integration:test_meeting_flow.sh:test_IT13_multi_stage_cli

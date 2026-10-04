@@ -105,6 +105,11 @@ neutral speaker labels elsewhere. The local operator reads the result with
 links to relevant transcript time ranges. Transcription does not
 automatically trigger this step.
 
+Before presenting a complete minutes draft, the operator can inspect a
+corrected reading layer derived from the saved transcript. The original ASR
+segments remain available. The draft organizes substantive utterances by
+topic and shows any unresolved correction or topic-coverage gap.
+
 ### Coordinate UI and CLI
 
 The CLI and review player use the same local meeting-record store. After
@@ -151,6 +156,23 @@ available and otherwise retain neutral labels; it shall not invent a person's
 identity or transcribe the media again. It may retain and show source
 references for an operator's review, but those references are optional and
 are not part of the participant-facing minutes delivery.
+
+The system shall prepare a reviewable correction layer without overwriting
+the raw timed transcript. It shall examine each isolated-token or short
+speaker-split candidate against both neighboring fragments and retain the
+source IDs, timestamps, original speaker labels, correction, reason, and
+review status. It shall not discard a word merely because it is short or
+unassigned. A suspected audio/ASR artifact can be excluded from the
+minutes input only with recorded evidence or operator review; unresolved
+cases remain visible.
+
+For a complete minutes draft, the system shall identify meeting topics and
+assign every substantive utterance to one or more topics. It shall account
+for every raw text-bearing segment in a corrected utterance or an explicitly
+reviewed artifact record. Any unresolved correction or unassigned
+substantive utterance prevents presentation of the result as complete
+minutes. The detailed method and tests are in the accepted Sprint 2 design;
+real-meeting quality is still under validation.
 
 #### FR-06 — Share local records between CLI and review player
 

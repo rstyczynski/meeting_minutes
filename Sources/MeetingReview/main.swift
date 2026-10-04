@@ -28,6 +28,10 @@ private struct ReviewScreen: View {
         }
     }
 
+    private func latestCorrection(for segmentID: String) -> TranscriptCorrection? {
+        record.transcriptCorrections?.last { $0.segmentID == segmentID }
+    }
+
     var body: some View {
         HStack(spacing: 18) {
             List(record.segments) { segment in
@@ -35,10 +39,17 @@ private struct ReviewScreen: View {
                     playRange(segment.range, label: "transcript")
                 } label: {
                     VStack(alignment: .leading) {
+                        let correction = latestCorrection(for: segment.id)
                         Text(record.speakerNames[segment.speakerID ?? ""]
                              ?? segment.speakerID ?? "Speaker")
                             .font(.headline)
-                        Text(segment.text)
+                        Text(correction?.correctedText ?? segment.text)
+                        if let correction {
+                            Text("ASR original: \(correction.originalText)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Text(segment.id).font(.caption).foregroundStyle(.secondary)
                         Text(String(format: "%.1f–%.1f s", segment.range.startSeconds,
                                     segment.range.endSeconds)).font(.caption)
                     }
@@ -64,10 +75,19 @@ private struct ReviewScreen: View {
                 List(record.reviewItems) { item in
                     VStack(alignment: .leading) {
                         Text(item.kind.rawValue.capitalized).font(.headline)
+                        if let topicID = item.topicID,
+                           let topic = record.topics?.first(where: { $0.id == topicID }) {
+                            Text(topic.title).font(.subheadline)
+                        }
                         Text(item.text)
                         if let owner = item.ownerSpeakerID {
                             Text("Owner: \(record.speakerNames[owner] ?? owner)")
                                 .font(.subheadline)
+                        }
+                        if item.ownerMissing == true { Text("Owner needs review").font(.caption) }
+                        if let dueDate = item.dueDate { Text("Due: \(dueDate)").font(.caption) }
+                        else if item.dueDateMissing == true {
+                            Text("Due date needs review").font(.caption)
                         }
                         if let range = item.sourceRange {
                             Button("Play source") {

@@ -660,3 +660,106 @@ sequence, checked local links and `git diff --check`, and confirmed the
 three source record counts: 2,582, 217, and 801 segments. This is an
 evidence-presentation change; it does not improve transcription accuracy
 or clear the minutes delivery blocker.
+
+## Accepted multi-stage minutes repair design — 2026-10-03
+
+The Product Owner asked to retain the earlier evidence-first design, show
+why it failed on real meetings, and add a multi-stage repair with mandatory
+utterance-to-topic coverage. The [Sprint design](sprint_2_design.md#approved-multi-stage-minutes-repair-design--2026-10-03)
+now keeps the approved one-call design intact, cites the AMI and Sejm 30B
+trial and earlier benchmark, and specifies transcription cleanup, topic
+discovery, complete utterance assignment, per-topic summaries, decisions,
+commitments, tasks, questions, cross-topic checks, and human review. The
+Product Owner identified Sejm speaker splits around isolated `Na` and `i`
+tokens and a longer S1/`Unassigned` continuation. The separate transcription
+correction-method section now
+requires each isolated-token candidate to be checked against both
+neighbors, with a recorded merge, independent-turn, artifact, or unresolved
+result. A direct scan of the saved Sejm segments found 12 one-word
+`Unassigned` tokens between the same labeled speaker with at most 1.5
+seconds on each side; this is a candidate count, not confirmed error count.
+The design accounts for every saved text-bearing segment in one cleaned
+utterance or an explicitly reviewed artifact record. Every substantive
+utterance needs at least one topic; unresolved cleanup or topic assignment
+blocks a complete draft. The section names unit, integration, and
+real-model evaluation checks, but no test skeleton or code has been
+changed. The Product Owner accepted this revised design on 2026-10-03;
+that decision does not count as a product-quality pass.
+
+Reconciliation updated the [FR-05 use case and requirement](../../docs/srs.md)
+with the accepted correction, traceability, and topic-coverage outcomes.
+The durable [architecture](../../docs/architecture.md) now distinguishes the
+accepted next design from the implemented one-call prototype. Reconciliation
+also checked NFR-06, the [test profile](../../docs/test-profile.md),
+[Sprint setup](sprint_2_setup.md), [implementation](sprint_2_implementation.md),
+[functional test evidence](sprint_2_tests.md), [README](../../README.md),
+and [progress board](../../PROGRESS_BOARD.md). The latter documents still
+describe the executed prototype; none is rewritten as if the new candidate
+already works. Sprint 2 and PBI-011.5 remain `under_construction`; the minutes
+delivery blocker remains. Test skeletons, product code, and real-meeting
+evaluation are the remaining work before an increment-completion commit.
+This documentation-only
+change requires link, formatting, and `git diff --check` verification, not
+a new product test run. The final static pass resolved 83 local links across
+the edited SRS, architecture, design, and audit with zero missing targets.
+The new narrative section has no Markdown table, and `git diff --check`
+passed.
+
+## Executed staged-minutes experiment and Product Owner conclusions — 2026-10-04
+
+This audit reconciles the approved PBI-011.5 repair with executable code,
+tests, real-model outputs, and the Product Owner-facing account. The
+[root SRS](../../docs/srs.md) still requires immutable raw transcription,
+reversible correction, topic coverage, and model-response validation;
+the [architecture](../../docs/architecture.md) now identifies the staged
+pipeline as an implemented experiment rather than an unbuilt proposal.
+The [test profile](../../docs/test-profile.md) and [Sprint setup](sprint_2_setup.md)
+still select the prescribed six gates. The [accepted design](sprint_2_design.md)
+retains the failed one-call concept and the approved correction/coverage
+repair. The [implementation record](sprint_2_implementation.md) now
+states the final AMI and Sejm results, all staged model prompt templates,
+the topic-meaning failure, and the operator correction boundary. The
+[functional test record](sprint_2_tests.md) links the six gate logs and
+the [controlled trial](tests/multistage_minutes_trial_20261004.md).
+The [README](../../README.md), [user manual](user_manual.md),
+[handover](sprint_2_handover.md), and [Product Owner brief](sprint_2_product_owner_presentation.md)
+all identify the content blocker and link the 3-slide
+[quality review](sprint_2_quality_review_20261004.pptx). The
+[progress board](../../PROGRESS_BOARD.md) was read: Sprint 2 and
+PBI-011.5 remain under construction, consistent with failed natural-meeting
+content review; no status transition is claimed here.
+
+The final 30B staged model runs used unchanged saved real-meeting ASR
+records. AMI kept 217/217 segments and assigned 21/21 reading utterances;
+Sejm kept 801/801 and assigned 32/32. Manual claim-level citation review
+passed only 2/5 AMI and 2/4 Sejm topic summaries. The Sejm output found
+one of two explicit decision signals in the saved excerpt. Thus source
+and schema gates passed while factual quality failed. Earlier failed
+stage attempts and different candidate outputs remain under the trial's
+evidence directory. No operator word correction was applied in the
+measured runs. The short unassigned Sejm continuation was proposed for
+one reading utterance by the final deterministic cleanup, but its speaker
+identity has not been checked against audio.
+
+Verification for this audited experiment: `swift test` passed 13
+integration and 18 core tests; the release adapter built and the focused
+`PipelineValidationTests` passed. The prescribed runner passed A1, A2,
+A3, B1, B2, and B3 at stamp `20261004_103418`; its individual logs are
+linked from the functional test record. The quality deck passed PPTX
+package, layout, font, and reimport validation and all three rendered
+slides were visually inspected. A local Markdown-link check examined
+392 links across the edited narrative documents and found zero missing
+targets. `swift run meeting-summarizer inspect-cleanup` on the staged
+Sejm record returned 16 proposals and 32 reading utterances; the
+manual's `jq` inspection shape was also executed. The trial runner passed
+Python compilation, the editable draw.io file parsed as two pages, and
+`git diff --check` passed. The commands in the existing real-model walkthrough have not
+yet been rerun as one fresh 30B live handover journey; that rehearsal,
+operator audio review, and Product Owner handover decision remain
+pending. The current candidate is an architecture result, not a
+participant-ready minutes capability.
+
+The bounded staged-minutes experiment is ready for an evidence commit.
+This commit will record tested prototype code, both successful and failed
+model attempts, the manual content failure, and reconciled sprint material
+together. It does not complete PBI-011.5 or change the sprint state.

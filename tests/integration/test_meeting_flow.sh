@@ -14,6 +14,7 @@ test_IT9_failure_preserves_record() { swift test --filter 'MeetingIntegrationTes
 test_IT10_language_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testLanguageRecord'; }
 test_IT11_evidence_first_cli() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testEvidenceFirstCLI'; }
 test_IT12_validation_preserves_record() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testModelValidationFailurePreservesRecord'; }
+test_IT13_multi_stage_cli() { swift test --filter 'MeetingIntegrationTests.MeetingIntegrationTests/testMultiStageCLI'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -30,4 +31,5 @@ else
   test_IT10_language_record
   test_IT11_evidence_first_cli
   test_IT12_validation_preserves_record
+  test_IT13_multi_stage_cli
 fi

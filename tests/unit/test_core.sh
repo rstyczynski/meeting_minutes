@@ -15,6 +15,11 @@ test_UT10_language_compatibility() { swift test --filter 'MeetingCoreTests.Meeti
 test_UT11_evidence_first_minutes() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testEvidenceFirstMinutes'; }
 test_UT12_minutes_input_bound() { swift test --filter 'MeetingCoreTests.MeetingCoreTests/testMinutesInputBound'; }
 test_UT13_adapter_validation() { swift test --package-path experiments/MinutesAdapter --filter ResponseValidationTests; }
+test_UT14_transcript_cleaning() { swift test --filter 'MultiStageTests/testTranscriptCleaning'; }
+test_UT15_topic_coverage() { swift test --filter 'MultiStageTests/testTopicCoverage'; }
+test_UT16_stage_validation() { swift test --package-path experiments/MinutesAdapter --filter 'PipelineValidationTests/testStageValidation'; }
+test_UT17_isolated_token_review() { swift test --filter 'MultiStageTests/testIsolatedTokenReview'; }
+test_UT18_operator_text_correction() { swift test --filter 'MultiStageTests/testAudioReviewedTextCorrectionIsReversible'; }
 
 if [[ -n "${1:-}" ]]; then
   "$1"
@@ -32,4 +37,9 @@ else
   test_UT11_evidence_first_minutes
   test_UT12_minutes_input_bound
   test_UT13_adapter_validation
+  test_UT14_transcript_cleaning
+  test_UT15_topic_coverage
+  test_UT16_stage_validation
+  test_UT17_isolated_token_review
+  test_UT18_operator_text_correction
 fi

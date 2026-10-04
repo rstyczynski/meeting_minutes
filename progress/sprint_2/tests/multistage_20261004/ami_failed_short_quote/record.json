@@ -1,0 +1,1942 @@
+{
+  "reviewItems": [],
+  "qualityWarnings": [],
+  "speakerNames": {},
+  "id": "4395B92A-60B8-4B8C-9A20-3AE37642FE92",
+  "modelRevision": "parakeet-tdt-0.6b-v2",
+  "processingParameters": {
+    "engine": "FluidAudio",
+    "minutesModelRevision": "qwen3-4b-instruct-2507-4bit",
+    "diarizerRevision": "speaker-diarization",
+    "requestedLanguage": "en",
+    "minutesSource": "local-model",
+    "diarizer": "fluid"
+  },
+  "sourcePath": "/tmp/meeting-minutes-ami/ES2002a/ES2002a.Headset.120s.wav",
+  "backend": "fluid",
+  "segments": [
+    {
+      "id": "segment_1",
+      "text": "My",
+      "range": {
+        "startSeconds": 4.72,
+        "endSeconds": 4.88
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_2",
+      "text": "gosh,",
+      "range": {
+        "startSeconds": 4.88,
+        "endSeconds": 5.28
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_3",
+      "text": "you've",
+      "range": {
+        "startSeconds": 5.28,
+        "endSeconds": 5.5200000000000005
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_4",
+      "text": "already",
+      "range": {
+        "startSeconds": 5.44,
+        "endSeconds": 5.760000000000001
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_5",
+      "text": "produced",
+      "range": {
+        "startSeconds": 6.08,
+        "endSeconds": 6.5600000000000005
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_6",
+      "text": "a",
+      "range": {
+        "startSeconds": 6.5600000000000005,
+        "endSeconds": 6.640000000000001
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_7",
+      "text": "PowerPoint",
+      "range": {
+        "startSeconds": 6.640000000000001,
+        "endSeconds": 7.2
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_8",
+      "text": "reservation.",
+      "range": {
+        "startSeconds": 7.2,
+        "endSeconds": 7.680000000000001
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_9",
+      "text": "I",
+      "range": {
+        "startSeconds": 8,
+        "endSeconds": 8.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_10",
+      "text": "think",
+      "range": {
+        "startSeconds": 8.08,
+        "endSeconds": 8.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_11",
+      "text": "it's",
+      "range": {
+        "startSeconds": 8.16,
+        "endSeconds": 8.4
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_12",
+      "text": "already",
+      "range": {
+        "startSeconds": 8.32,
+        "endSeconds": 8.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_13",
+      "text": "one,",
+      "range": {
+        "startSeconds": 8.72,
+        "endSeconds": 9.280000000000001
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_14",
+      "text": "actually.",
+      "range": {
+        "startSeconds": 9.28,
+        "endSeconds": 9.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_15",
+      "text": "Uh",
+      "range": {
+        "startSeconds": 12.16,
+        "endSeconds": 12.64
+      }
+    },
+    {
+      "id": "segment_16",
+      "text": "god,",
+      "range": {
+        "startSeconds": 14.8,
+        "endSeconds": 15.120000000000001
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_17",
+      "text": "how",
+      "range": {
+        "startSeconds": 15.120000000000001,
+        "endSeconds": 15.200000000000001
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_18",
+      "text": "do",
+      "range": {
+        "startSeconds": 15.280000000000001,
+        "endSeconds": 15.360000000000001
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_19",
+      "text": "you",
+      "range": {
+        "startSeconds": 15.36,
+        "endSeconds": 15.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_20",
+      "text": "make",
+      "range": {
+        "startSeconds": 15.52,
+        "endSeconds": 15.6
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_21",
+      "text": "this",
+      "range": {
+        "startSeconds": 15.6,
+        "endSeconds": 15.76
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_22",
+      "text": "thing",
+      "range": {
+        "startSeconds": 15.76,
+        "endSeconds": 15.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_23",
+      "text": "work?",
+      "range": {
+        "startSeconds": 16,
+        "endSeconds": 16.8
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_24",
+      "text": "Maybe",
+      "range": {
+        "startSeconds": 19.28,
+        "endSeconds": 19.52
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_25",
+      "text": "then",
+      "range": {
+        "startSeconds": 19.68,
+        "endSeconds": 19.759999999999998
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_26",
+      "text": "Uh",
+      "range": {
+        "startSeconds": 20.88,
+        "endSeconds": 21.36
+      }
+    },
+    {
+      "id": "segment_27",
+      "text": "sorry.",
+      "range": {
+        "startSeconds": 24.400000000000002,
+        "endSeconds": 25.2
+      }
+    },
+    {
+      "id": "segment_28",
+      "text": "I",
+      "range": {
+        "startSeconds": 25.84,
+        "endSeconds": 26
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_29",
+      "text": "you",
+      "range": {
+        "startSeconds": 26.72,
+        "endSeconds": 26.88
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_30",
+      "text": "have",
+      "range": {
+        "startSeconds": 26.88,
+        "endSeconds": 27.04
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_31",
+      "text": "to",
+      "range": {
+        "startSeconds": 27.04,
+        "endSeconds": 27.2
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_32",
+      "text": "hello.",
+      "range": {
+        "startSeconds": 30.560000000000002,
+        "endSeconds": 31.279999999999998
+      }
+    },
+    {
+      "id": "segment_33",
+      "text": "Have",
+      "range": {
+        "startSeconds": 32.24,
+        "endSeconds": 32.4
+      }
+    },
+    {
+      "id": "segment_34",
+      "text": "you",
+      "range": {
+        "startSeconds": 32.4,
+        "endSeconds": 32.559999999999995
+      }
+    },
+    {
+      "id": "segment_35",
+      "text": "done",
+      "range": {
+        "startSeconds": 32.56,
+        "endSeconds": 32.72
+      }
+    },
+    {
+      "id": "segment_36",
+      "text": "that?",
+      "range": {
+        "startSeconds": 32.72,
+        "endSeconds": 32.96
+      }
+    },
+    {
+      "id": "segment_37",
+      "text": "I've",
+      "range": {
+        "startSeconds": 33.36,
+        "endSeconds": 33.6
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_38",
+      "text": "plugged",
+      "range": {
+        "startSeconds": 33.6,
+        "endSeconds": 33.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_39",
+      "text": "it",
+      "range": {
+        "startSeconds": 33.92,
+        "endSeconds": 34.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_40",
+      "text": "in",
+      "range": {
+        "startSeconds": 34.08,
+        "endSeconds": 34.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_41",
+      "text": "the",
+      "range": {
+        "startSeconds": 34.160000000000004,
+        "endSeconds": 34.400000000000006
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_42",
+      "text": "back,",
+      "range": {
+        "startSeconds": 34.4,
+        "endSeconds": 34.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_43",
+      "text": "but",
+      "range": {
+        "startSeconds": 34.72,
+        "endSeconds": 34.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_44",
+      "text": "yeah,",
+      "range": {
+        "startSeconds": 35.28,
+        "endSeconds": 35.519999999999996
+      }
+    },
+    {
+      "id": "segment_45",
+      "text": "you",
+      "range": {
+        "startSeconds": 35.52,
+        "endSeconds": 35.6
+      }
+    },
+    {
+      "id": "segment_46",
+      "text": "have",
+      "range": {
+        "startSeconds": 35.68,
+        "endSeconds": 35.76
+      }
+    },
+    {
+      "id": "segment_47",
+      "text": "to",
+      "range": {
+        "startSeconds": 35.84,
+        "endSeconds": 35.92
+      }
+    },
+    {
+      "id": "segment_48",
+      "text": "see",
+      "range": {
+        "startSeconds": 36.08,
+        "endSeconds": 36.16
+      }
+    },
+    {
+      "id": "segment_49",
+      "text": "the",
+      "range": {
+        "startSeconds": 36.32,
+        "endSeconds": 36.48
+      }
+    },
+    {
+      "id": "segment_50",
+      "text": "function.",
+      "range": {
+        "startSeconds": 36.800000000000004,
+        "endSeconds": 38
+      }
+    },
+    {
+      "id": "segment_51",
+      "text": "Yep,",
+      "range": {
+        "startSeconds": 38,
+        "endSeconds": 38.4
+      }
+    },
+    {
+      "id": "segment_52",
+      "text": "the",
+      "range": {
+        "startSeconds": 38.480000000000004,
+        "endSeconds": 38.56
+      }
+    },
+    {
+      "id": "segment_53",
+      "text": "sky",
+      "range": {
+        "startSeconds": 38.64,
+        "endSeconds": 38.96
+      }
+    },
+    {
+      "id": "segment_54",
+      "text": "ID.",
+      "range": {
+        "startSeconds": 39.04,
+        "endSeconds": 39.44
+      }
+    },
+    {
+      "id": "segment_55",
+      "text": "Okay,",
+      "range": {
+        "startSeconds": 40,
+        "endSeconds": 40.480000000000004
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_56",
+      "text": "right.",
+      "range": {
+        "startSeconds": 40.480000000000004,
+        "endSeconds": 40.64
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_57",
+      "text": "And",
+      "range": {
+        "startSeconds": 41.44,
+        "endSeconds": 41.599999999999994
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_58",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 42.24,
+        "endSeconds": 44.800000000000004
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_59",
+      "text": "it's",
+      "range": {
+        "startSeconds": 44.800000000000004,
+        "endSeconds": 45.199999999999996
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_60",
+      "text": "doing",
+      "range": {
+        "startSeconds": 45.44,
+        "endSeconds": 45.599999999999994
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_61",
+      "text": "something.",
+      "range": {
+        "startSeconds": 45.76,
+        "endSeconds": 46.16
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_62",
+      "text": "Yes,",
+      "range": {
+        "startSeconds": 48.08,
+        "endSeconds": 48.4
+      }
+    },
+    {
+      "id": "segment_63",
+      "text": "there",
+      "range": {
+        "startSeconds": 48.56,
+        "endSeconds": 48.64
+      }
+    },
+    {
+      "id": "segment_64",
+      "text": "we",
+      "range": {
+        "startSeconds": 48.800000000000004,
+        "endSeconds": 48.96
+      }
+    },
+    {
+      "id": "segment_65",
+      "text": "go.",
+      "range": {
+        "startSeconds": 48.96,
+        "endSeconds": 49.440000000000005
+      }
+    },
+    {
+      "id": "segment_66",
+      "text": "Okay.",
+      "range": {
+        "startSeconds": 50.4,
+        "endSeconds": 51.36
+      }
+    },
+    {
+      "id": "segment_67",
+      "text": "Right.",
+      "range": {
+        "startSeconds": 53.52,
+        "endSeconds": 54.72
+      }
+    },
+    {
+      "id": "segment_68",
+      "text": "Uh",
+      "range": {
+        "startSeconds": 55.52,
+        "endSeconds": 55.76
+      }
+    },
+    {
+      "id": "segment_69",
+      "text": "um",
+      "range": {
+        "startSeconds": 55.92,
+        "endSeconds": 56.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_70",
+      "text": "Well,",
+      "range": {
+        "startSeconds": 56.480000000000004,
+        "endSeconds": 56.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_71",
+      "text": "this",
+      "range": {
+        "startSeconds": 56.72,
+        "endSeconds": 56.879999999999995
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_72",
+      "text": "is",
+      "range": {
+        "startSeconds": 56.88,
+        "endSeconds": 56.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_73",
+      "text": "the",
+      "range": {
+        "startSeconds": 56.96,
+        "endSeconds": 57.04
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_74",
+      "text": "kickoff",
+      "range": {
+        "startSeconds": 57.04,
+        "endSeconds": 57.599999999999994
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_75",
+      "text": "meeting",
+      "range": {
+        "startSeconds": 57.6,
+        "endSeconds": 58
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_76",
+      "text": "for",
+      "range": {
+        "startSeconds": 58,
+        "endSeconds": 58.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_77",
+      "text": "our",
+      "range": {
+        "startSeconds": 58.24,
+        "endSeconds": 58.56
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_78",
+      "text": "project.",
+      "range": {
+        "startSeconds": 58.88,
+        "endSeconds": 60.160000000000004
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_79",
+      "text": "Um",
+      "range": {
+        "startSeconds": 60.4,
+        "endSeconds": 62.4
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_80",
+      "text": "And",
+      "range": {
+        "startSeconds": 62.4,
+        "endSeconds": 62.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_81",
+      "text": "this",
+      "range": {
+        "startSeconds": 64,
+        "endSeconds": 64.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_82",
+      "text": "is",
+      "range": {
+        "startSeconds": 64.24,
+        "endSeconds": 64.47999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_83",
+      "text": "just",
+      "range": {
+        "startSeconds": 64.48,
+        "endSeconds": 64.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_84",
+      "text": "what",
+      "range": {
+        "startSeconds": 64.72,
+        "endSeconds": 64.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_85",
+      "text": "we're",
+      "range": {
+        "startSeconds": 64.88,
+        "endSeconds": 65.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_86",
+      "text": "going",
+      "range": {
+        "startSeconds": 65.04,
+        "endSeconds": 65.2
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_87",
+      "text": "to",
+      "range": {
+        "startSeconds": 65.2,
+        "endSeconds": 65.28
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_88",
+      "text": "be",
+      "range": {
+        "startSeconds": 65.28,
+        "endSeconds": 65.36
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_89",
+      "text": "doing",
+      "range": {
+        "startSeconds": 65.36,
+        "endSeconds": 65.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_90",
+      "text": "over",
+      "range": {
+        "startSeconds": 65.52,
+        "endSeconds": 65.67999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_91",
+      "text": "the",
+      "range": {
+        "startSeconds": 65.68,
+        "endSeconds": 65.76
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_92",
+      "text": "next",
+      "range": {
+        "startSeconds": 65.76,
+        "endSeconds": 65.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_93",
+      "text": "25",
+      "range": {
+        "startSeconds": 66,
+        "endSeconds": 66.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_94",
+      "text": "minutes.",
+      "range": {
+        "startSeconds": 66.64,
+        "endSeconds": 67.75999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_95",
+      "text": "So,",
+      "range": {
+        "startSeconds": 68.72,
+        "endSeconds": 69.19999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_96",
+      "text": "first",
+      "range": {
+        "startSeconds": 69.2,
+        "endSeconds": 69.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_97",
+      "text": "of",
+      "range": {
+        "startSeconds": 69.44,
+        "endSeconds": 69.6
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_98",
+      "text": "all,",
+      "range": {
+        "startSeconds": 69.60000000000001,
+        "endSeconds": 69.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_99",
+      "text": "just",
+      "range": {
+        "startSeconds": 69.84,
+        "endSeconds": 70.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_100",
+      "text": "to",
+      "range": {
+        "startSeconds": 70.08,
+        "endSeconds": 70.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_101",
+      "text": "kind",
+      "range": {
+        "startSeconds": 70.24,
+        "endSeconds": 70.55999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_102",
+      "text": "of",
+      "range": {
+        "startSeconds": 70.56,
+        "endSeconds": 70.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_103",
+      "text": "make",
+      "range": {
+        "startSeconds": 70.88,
+        "endSeconds": 71.19999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_104",
+      "text": "sure",
+      "range": {
+        "startSeconds": 71.2,
+        "endSeconds": 71.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_105",
+      "text": "that",
+      "range": {
+        "startSeconds": 71.44,
+        "endSeconds": 71.6
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_106",
+      "text": "we",
+      "range": {
+        "startSeconds": 71.60000000000001,
+        "endSeconds": 71.68
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_107",
+      "text": "all",
+      "range": {
+        "startSeconds": 71.68,
+        "endSeconds": 71.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_108",
+      "text": "know",
+      "range": {
+        "startSeconds": 71.92,
+        "endSeconds": 72.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_109",
+      "text": "each",
+      "range": {
+        "startSeconds": 72.08,
+        "endSeconds": 72.32
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_110",
+      "text": "other,",
+      "range": {
+        "startSeconds": 72.32000000000001,
+        "endSeconds": 72.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_111",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 72.72,
+        "endSeconds": 72.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_112",
+      "text": "Laura",
+      "range": {
+        "startSeconds": 72.96000000000001,
+        "endSeconds": 73.36
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_113",
+      "text": "and",
+      "range": {
+        "startSeconds": 73.44,
+        "endSeconds": 73.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_114",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 73.52,
+        "endSeconds": 73.76
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_115",
+      "text": "the",
+      "range": {
+        "startSeconds": 73.68,
+        "endSeconds": 73.76
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_116",
+      "text": "project",
+      "range": {
+        "startSeconds": 73.76,
+        "endSeconds": 74.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_117",
+      "text": "manager.",
+      "range": {
+        "startSeconds": 74.16,
+        "endSeconds": 75.03999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_118",
+      "text": "Great.",
+      "range": {
+        "startSeconds": 75.04,
+        "endSeconds": 75.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_119",
+      "text": "Do",
+      "range": {
+        "startSeconds": 75.84,
+        "endSeconds": 76.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_120",
+      "text": "you",
+      "range": {
+        "startSeconds": 76.08,
+        "endSeconds": 76.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_121",
+      "text": "want",
+      "range": {
+        "startSeconds": 76.16,
+        "endSeconds": 76.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_122",
+      "text": "to",
+      "range": {
+        "startSeconds": 76.24,
+        "endSeconds": 76.39999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_123",
+      "text": "introduce",
+      "range": {
+        "startSeconds": 76.4,
+        "endSeconds": 76.8
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_124",
+      "text": "yourself",
+      "range": {
+        "startSeconds": 76.8,
+        "endSeconds": 77.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_125",
+      "text": "again?",
+      "range": {
+        "startSeconds": 77.12,
+        "endSeconds": 77.6
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_126",
+      "text": "Hi,",
+      "range": {
+        "startSeconds": 77.60000000000001,
+        "endSeconds": 77.84
+      }
+    },
+    {
+      "id": "segment_127",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 77.84,
+        "endSeconds": 78.08
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_128",
+      "text": "David,",
+      "range": {
+        "startSeconds": 78.08,
+        "endSeconds": 78.64
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_129",
+      "text": "and",
+      "range": {
+        "startSeconds": 78.64,
+        "endSeconds": 78.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_130",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 78.72,
+        "endSeconds": 79.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_131",
+      "text": "supposed",
+      "range": {
+        "startSeconds": 79.12,
+        "endSeconds": 79.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_132",
+      "text": "to",
+      "range": {
+        "startSeconds": 79.44,
+        "endSeconds": 79.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_133",
+      "text": "be",
+      "range": {
+        "startSeconds": 79.52,
+        "endSeconds": 79.67999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_134",
+      "text": "an",
+      "range": {
+        "startSeconds": 79.68,
+        "endSeconds": 79.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_135",
+      "text": "industrial",
+      "range": {
+        "startSeconds": 79.84,
+        "endSeconds": 80.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_136",
+      "text": "designer.",
+      "range": {
+        "startSeconds": 80.24,
+        "endSeconds": 80.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_137",
+      "text": "Okay.",
+      "range": {
+        "startSeconds": 80.96000000000001,
+        "endSeconds": 81.36
+      }
+    },
+    {
+      "id": "segment_138",
+      "text": "And",
+      "range": {
+        "startSeconds": 82,
+        "endSeconds": 82.24
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_139",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 82.24,
+        "endSeconds": 82.48
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_140",
+      "text": "Andrew",
+      "range": {
+        "startSeconds": 82.48,
+        "endSeconds": 82.88
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_141",
+      "text": "and",
+      "range": {
+        "startSeconds": 82.96000000000001,
+        "endSeconds": 83.12
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_142",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 83.12,
+        "endSeconds": 83.36
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_143",
+      "text": "uh",
+      "range": {
+        "startSeconds": 83.36,
+        "endSeconds": 83.44
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_144",
+      "text": "our",
+      "range": {
+        "startSeconds": 83.68,
+        "endSeconds": 83.92
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_145",
+      "text": "marketing",
+      "range": {
+        "startSeconds": 83.92,
+        "endSeconds": 85.03999999999999
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_146",
+      "text": "expert.",
+      "range": {
+        "startSeconds": 86,
+        "endSeconds": 87.03999999999999
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_147",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 87.04,
+        "endSeconds": 87.28
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_148",
+      "text": "Greg",
+      "range": {
+        "startSeconds": 87.28,
+        "endSeconds": 87.6
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_149",
+      "text": "and",
+      "range": {
+        "startSeconds": 87.68,
+        "endSeconds": 87.76
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_150",
+      "text": "I'm",
+      "range": {
+        "startSeconds": 87.76,
+        "endSeconds": 88
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_151",
+      "text": "user",
+      "range": {
+        "startSeconds": 88,
+        "endSeconds": 88.32
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_152",
+      "text": "interface.",
+      "range": {
+        "startSeconds": 88.32000000000001,
+        "endSeconds": 89.28
+      },
+      "speakerID": "S2"
+    },
+    {
+      "id": "segment_153",
+      "text": "Great.",
+      "range": {
+        "startSeconds": 89.28,
+        "endSeconds": 90.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_154",
+      "text": "Okay.",
+      "range": {
+        "startSeconds": 90.16,
+        "endSeconds": 90.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_155",
+      "text": "Um",
+      "range": {
+        "startSeconds": 92.4,
+        "endSeconds": 92.56
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_156",
+      "text": "So",
+      "range": {
+        "startSeconds": 92.72,
+        "endSeconds": 92.8
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_157",
+      "text": "we're",
+      "range": {
+        "startSeconds": 92.88,
+        "endSeconds": 93.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_158",
+      "text": "designing",
+      "range": {
+        "startSeconds": 93.12,
+        "endSeconds": 93.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_159",
+      "text": "a",
+      "range": {
+        "startSeconds": 93.44,
+        "endSeconds": 93.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_160",
+      "text": "new",
+      "range": {
+        "startSeconds": 93.52,
+        "endSeconds": 93.67999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_161",
+      "text": "remote",
+      "range": {
+        "startSeconds": 93.76,
+        "endSeconds": 94.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_162",
+      "text": "control.",
+      "range": {
+        "startSeconds": 94.16,
+        "endSeconds": 95.11999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_163",
+      "text": "And",
+      "range": {
+        "startSeconds": 95.12,
+        "endSeconds": 95.36
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_164",
+      "text": "oh,",
+      "range": {
+        "startSeconds": 96.24000000000001,
+        "endSeconds": 96.64
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_165",
+      "text": "I",
+      "range": {
+        "startSeconds": 96.64,
+        "endSeconds": 96.8
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_166",
+      "text": "have",
+      "range": {
+        "startSeconds": 96.8,
+        "endSeconds": 96.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_167",
+      "text": "to",
+      "range": {
+        "startSeconds": 96.88,
+        "endSeconds": 97.03999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_168",
+      "text": "record",
+      "range": {
+        "startSeconds": 97.04,
+        "endSeconds": 97.36
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_169",
+      "text": "who's",
+      "range": {
+        "startSeconds": 97.44,
+        "endSeconds": 97.68
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_170",
+      "text": "here",
+      "range": {
+        "startSeconds": 97.68,
+        "endSeconds": 97.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_171",
+      "text": "actually.",
+      "range": {
+        "startSeconds": 97.92,
+        "endSeconds": 98.64
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_172",
+      "text": "So",
+      "range": {
+        "startSeconds": 98.64,
+        "endSeconds": 98.8
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_173",
+      "text": "that's",
+      "range": {
+        "startSeconds": 98.88,
+        "endSeconds": 99.67999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_174",
+      "text": "David,",
+      "range": {
+        "startSeconds": 100,
+        "endSeconds": 100.48
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_175",
+      "text": "Andrew,",
+      "range": {
+        "startSeconds": 100.48,
+        "endSeconds": 100.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_176",
+      "text": "and",
+      "range": {
+        "startSeconds": 100.96000000000001,
+        "endSeconds": 101.04
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_177",
+      "text": "Craig,",
+      "range": {
+        "startSeconds": 101.04,
+        "endSeconds": 101.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_178",
+      "text": "isn't",
+      "range": {
+        "startSeconds": 101.44,
+        "endSeconds": 101.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_179",
+      "text": "it?",
+      "range": {
+        "startSeconds": 101.84,
+        "endSeconds": 102.47999999999999
+      }
+    },
+    {
+      "id": "segment_180",
+      "text": "And",
+      "range": {
+        "startSeconds": 104.64,
+        "endSeconds": 104.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_181",
+      "text": "you",
+      "range": {
+        "startSeconds": 104.96000000000001,
+        "endSeconds": 105.2
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_182",
+      "text": "all",
+      "range": {
+        "startSeconds": 105.2,
+        "endSeconds": 105.36
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_183",
+      "text": "arrived",
+      "range": {
+        "startSeconds": 105.36,
+        "endSeconds": 105.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_184",
+      "text": "on",
+      "range": {
+        "startSeconds": 105.92,
+        "endSeconds": 106.24
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_185",
+      "text": "time.",
+      "range": {
+        "startSeconds": 106.24000000000001,
+        "endSeconds": 107.19999999999999
+      }
+    },
+    {
+      "id": "segment_186",
+      "text": "Um",
+      "range": {
+        "startSeconds": 108.72,
+        "endSeconds": 109.28
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_187",
+      "text": "yes,",
+      "range": {
+        "startSeconds": 109.60000000000001,
+        "endSeconds": 109.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_188",
+      "text": "so",
+      "range": {
+        "startSeconds": 109.84,
+        "endSeconds": 109.92
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_189",
+      "text": "des",
+      "range": {
+        "startSeconds": 110.08,
+        "endSeconds": 110.16
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_190",
+      "text": "uh",
+      "range": {
+        "startSeconds": 110.32000000000001,
+        "endSeconds": 110.4
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_191",
+      "text": "design",
+      "range": {
+        "startSeconds": 110.56,
+        "endSeconds": 110.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_192",
+      "text": "a",
+      "range": {
+        "startSeconds": 110.88,
+        "endSeconds": 110.96
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_193",
+      "text": "new",
+      "range": {
+        "startSeconds": 111.04,
+        "endSeconds": 111.2
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_194",
+      "text": "remote",
+      "range": {
+        "startSeconds": 111.2,
+        "endSeconds": 111.52
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_195",
+      "text": "control,",
+      "range": {
+        "startSeconds": 111.52,
+        "endSeconds": 112.32
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_196",
+      "text": "um",
+      "range": {
+        "startSeconds": 112.32000000000001,
+        "endSeconds": 112.64
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_197",
+      "text": "as",
+      "range": {
+        "startSeconds": 112.88,
+        "endSeconds": 113.03999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_198",
+      "text": "you",
+      "range": {
+        "startSeconds": 113.04,
+        "endSeconds": 113.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_199",
+      "text": "can",
+      "range": {
+        "startSeconds": 113.12,
+        "endSeconds": 113.2
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_200",
+      "text": "see",
+      "range": {
+        "startSeconds": 113.2,
+        "endSeconds": 113.28
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_201",
+      "text": "it's",
+      "range": {
+        "startSeconds": 113.36,
+        "endSeconds": 113.68
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_202",
+      "text": "supposed",
+      "range": {
+        "startSeconds": 113.60000000000001,
+        "endSeconds": 113.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_203",
+      "text": "to",
+      "range": {
+        "startSeconds": 113.76,
+        "endSeconds": 113.84
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_204",
+      "text": "be",
+      "range": {
+        "startSeconds": 113.84,
+        "endSeconds": 114
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_205",
+      "text": "original,",
+      "range": {
+        "startSeconds": 114,
+        "endSeconds": 114.48
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_206",
+      "text": "trendy",
+      "range": {
+        "startSeconds": 114.48,
+        "endSeconds": 114.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_207",
+      "text": "and",
+      "range": {
+        "startSeconds": 114.96000000000001,
+        "endSeconds": 115.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_208",
+      "text": "user",
+      "range": {
+        "startSeconds": 115.12,
+        "endSeconds": 115.28
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_209",
+      "text": "friendly.",
+      "range": {
+        "startSeconds": 115.36,
+        "endSeconds": 116.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_210",
+      "text": "Um",
+      "range": {
+        "startSeconds": 116.72,
+        "endSeconds": 117.12
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_211",
+      "text": "so",
+      "range": {
+        "startSeconds": 118.08,
+        "endSeconds": 118.32
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_212",
+      "text": "that's",
+      "range": {
+        "startSeconds": 118.32000000000001,
+        "endSeconds": 118.72
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_213",
+      "text": "kind",
+      "range": {
+        "startSeconds": 118.72,
+        "endSeconds": 118.88
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_214",
+      "text": "of",
+      "range": {
+        "startSeconds": 118.88,
+        "endSeconds": 119.03999999999999
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_215",
+      "text": "our",
+      "range": {
+        "startSeconds": 119.04,
+        "endSeconds": 119.28
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_216",
+      "text": "our",
+      "range": {
+        "startSeconds": 119.28,
+        "endSeconds": 119.44
+      },
+      "speakerID": "S1"
+    },
+    {
+      "id": "segment_217",
+      "text": "brief.",
+      "range": {
+        "startSeconds": 119.44,
+        "endSeconds": 120
+      },
+      "speakerID": "S1"
+    }
+  ]
+}

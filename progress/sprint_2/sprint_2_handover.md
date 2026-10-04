@@ -10,7 +10,9 @@ pending. Sprint 2 remains `Progress` in
 The Product Owner asked for a developer-led handover under P9 of the local
 RUP patch. The [user manual](user_manual.md) gives prerequisites, runnable
 commands, expected results, and recovery. The [demonstration deck](sprint_2_increment_demo.pptx)
-guides the complete user journey. The [Product Owner presentation
+guides the complete user journey. The [quality review slides](sprint_2_quality_review_20261004.pptx)
+show the staged control architecture, measured coverage, and source-audit
+failures. The [Product Owner presentation
 brief](sprint_2_product_owner_presentation.md) explains the promise,
 observed outcome, and review position in one place. The [implementation record](sprint_2_implementation.md#product-owner-walkthrough--real-local-models)
 and [functional tests](sprint_2_tests.md) contain lower-level execution
@@ -18,6 +20,17 @@ evidence. The [benchmark](ami_asr_benchmark.md) interprets model measurements.
 The [documentation audit](sprint_2_documentation_audit.md) tracks consistency.
 The Product Owner must see the actual product operated live and be able to
 inspect or challenge a step before an acceptance decision is requested.
+
+The 4 October staged 30B experiment is documented in the
+[controlled trial report](tests/multistage_minutes_trial_20261004.md).
+It preserved every raw segment and assigned every reading utterance in
+both real meeting excerpts, but only 2/5 AMI and 2/4 Sejm topic summaries
+were fully supported by their own cited ASR lines. Its Sejm decision
+extraction found one of two explicit signals in the saved excerpt. The
+new slides passed package, layout, font, and reimport checks and were
+rendered for visual inspection. The earlier live-journey rehearsal below
+uses the historical single-call model; a fresh operator walkthrough of
+the staged candidate is still required before handover acceptance.
 
 The journey starts with two real multi-person inputs: the [AMI ES2002a
 English meeting](ami_es2002a_fixture.md), which has a weak-headset

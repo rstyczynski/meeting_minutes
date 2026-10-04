@@ -1,0 +1,11 @@
+{
+  "case": "ami",
+  "record_id": "4395B92A-60B8-4B8C-9A20-3AE37642FE92",
+  "exit_code": 2,
+  "elapsed_seconds": 28.335,
+  "maximum_child_rss_bytes": 12480233472,
+  "previous_child_rss_bytes": 7782400,
+  "raw_segment_count": 217,
+  "prompt_revision": "minutes-v4-multistage",
+  "model": "qwen3-30b-a3b-instruct-2507-4bit"
+}

@@ -5,12 +5,16 @@ private let help = """
 meeting-summarizer transcribe <local.wav> --transcriber fluid|whisper
   [--language en|pl|auto]
   [--settings settings.json] [--store directory] [--fixture-reference reference.json]
+meeting-summarizer transcribe correct <record-id> <segment-id> <corrected-text>
+  --audio-reviewed yes [--note explanation] [--store directory]
 meeting-summarizer recognize <record-id> --diarizer fluid
   [--settings settings.json] [--store directory] [--fixture-reference reference.json]
 meeting-summarizer recognize name <record-id> <speaker-id> <display-name> [--store directory]
 meeting-summarizer recognize move <record-id> <segment-id> <speaker-id> [--store directory]
 meeting-summarizer summarize <record-id> --summarizer mlx
-  [--settings settings.json] [--store directory] [--fixture-reference reference.json]
+  [--pipeline multi-stage|legacy] [--settings settings.json] [--store directory]
+  [--fixture-reference reference.json]
+meeting-summarizer inspect-cleanup <record-id> [--store directory]
 
 Transcribe creates a transcript-only record. Recognize and summarize are
 independent optional steps. --fixture-reference uses invented test data only.
@@ -35,10 +39,16 @@ struct MeetingCLI {
         }
         guard let command = args.first else { return }
         switch command {
-        case "transcribe": try transcribe(Array(args.dropFirst()), legacyImport: false)
+        case "transcribe":
+            if args.dropFirst().first == "correct" {
+                try correctTranscript(Array(args.dropFirst(2)))
+            } else {
+                try transcribe(Array(args.dropFirst()), legacyImport: false)
+            }
         case "import": try transcribe(Array(args.dropFirst()), legacyImport: true)
         case "recognize": try recognize(Array(args.dropFirst()))
         case "summarize": try summarize(Array(args.dropFirst()))
+        case "inspect-cleanup": try inspectCleanup(Array(args.dropFirst()))
         default: throw MeetingError.adapterFailure("Usage: \(help)")
         }
     }
@@ -122,6 +132,21 @@ struct MeetingCLI {
         print(record.id.uuidString)
     }
 
+    private static func correctTranscript(_ args: [String]) throws {
+        let (parts, values) = try options(args, positional: 3,
+            allowed: ["--audio-reviewed", "--note", "--settings", "--store"])
+        guard values["--audio-reviewed"] == "yes" else {
+            throw MeetingError.adapterFailure("Use --audio-reviewed yes after listening to the source range")
+        }
+        let (_, store) = try context(values)
+        let id = try recordID(parts[0])
+        var record = try store.load(id)
+        try record.correctTranscript(parts[1], to: parts[2], audioReviewed: true,
+                                     note: values["--note"])
+        try store.save(record)
+        print(id.uuidString)
+    }
+
     private static func recognize(_ args: [String]) throws {
         if let edit = args.first, edit == "name" || edit == "move" {
             let (parts, values) = try options(Array(args.dropFirst()), positional: 3,
@@ -161,7 +186,7 @@ struct MeetingCLI {
 
     private static func summarize(_ args: [String]) throws {
         let (parts, values) = try options(args, positional: 1,
-            allowed: ["--summarizer", "--settings", "--store", "--fixture-reference"])
+            allowed: ["--summarizer", "--pipeline", "--settings", "--store", "--fixture-reference"])
         guard values["--summarizer"] ?? "mlx" == "mlx" else {
             throw MeetingError.adapterFailure("Unsupported summarizer")
         }
@@ -169,6 +194,23 @@ struct MeetingCLI {
         let (config, store) = try context(values)
         let existing = try store.load(id)
         let fixture = try reference(values)
+        let pipeline = values["--pipeline"] ?? "multi-stage"
+        guard ["multi-stage", "legacy"].contains(pipeline) else {
+            throw MeetingError.adapterFailure("Unsupported minutes pipeline")
+        }
+        if fixture == nil && pipeline == "multi-stage" {
+            guard let model = config.mlxModelDirectory,
+                  let executable = config.mlxExecutable else {
+                throw MeetingError.missingModel("mlx")
+            }
+            let generator = MLXMultiStageMinutesGenerator(executable: executable,
+                modelDirectory: model, speakerNames: existing.speakerNames,
+                corrections: existing.transcriptCorrections ?? [])
+            _ = try MeetingSummarizer(store: store).summarize(id, generator: generator,
+                modelRevision: URL(fileURLWithPath: model).lastPathComponent)
+            print(id.uuidString)
+            return
+        }
         let generator: any MinutesGenerating
         let revision: String
         if let fixture {
@@ -186,5 +228,19 @@ struct MeetingCLI {
         _ = try MeetingSummarizer(store: store).summarize(
             id, generator: generator, modelRevision: revision, fixtureDerived: fixture != nil)
         print(id.uuidString)
+    }
+
+    private static func inspectCleanup(_ args: [String]) throws {
+        let (parts, values) = try options(args, positional: 1,
+                                           allowed: ["--settings", "--store"])
+        let (_, store) = try context(values)
+        let record = try store.load(try recordID(parts[0]))
+        let cleanup = try TranscriptCleaner.prepare(record.segments,
+                                                    corrections: record.transcriptCorrections ?? [])
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let json = try encoder.encode(cleanup)
+        FileHandle.standardOutput.write(json)
+        FileHandle.standardOutput.write(Data("\n".utf8))
     }
 }

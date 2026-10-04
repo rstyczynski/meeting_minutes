@@ -77,6 +77,23 @@ with checks suited to their output contract. The gate cannot establish
 audio or transcription truth on its own; chair review remains part of the
 workflow.
 
+The Product Owner accepted a [multi-stage minutes repair
+design](../progress/sprint_2/sprint_2_design.md#approved-multi-stage-minutes-repair-design--2026-10-03)
+after the one-call evidence-first adapter failed real-meeting quality
+checks. It adds an immutable-source transcription correction layer, topic
+assignment with complete coverage of substantive utterances, per-topic
+summaries, and separate extraction of decisions and tasks. This is the
+accepted design and is now an executable Sprint 2 experiment. The CLI
+defaults to the staged path while `--pipeline legacy` retains the one-call
+comparison. The [editable architecture diagram](architecture_overview.drawio)
+has a second page for cleanup, model-response gates, source checks, and
+operator review. On the same saved AMI and Sejm transcripts, the staged
+run achieved complete structural utterance coverage but only 2/5 and
+2/4 source-supported topic summaries under the documented manual audit.
+The [trial report](../progress/sprint_2/tests/multistage_minutes_trial_20261004.md)
+records the evidence and keeps the one-call failure visible. Source ID
+validity alone is insufficient to prove that a summary is true.
+
 ## Domain contract
 
 A `MeetingRecord` has an immutable local source reference, ordered transcript

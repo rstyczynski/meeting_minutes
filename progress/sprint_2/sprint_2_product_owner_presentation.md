@@ -1,6 +1,6 @@
 # Sprint 2 presentation set for the Product Owner
 
-**Review state:** prepared for inspection on 2 October 2026. Sprint 2 remains
+**Review state:** updated with measured staged-minutes findings on 4 October 2026. Sprint 2 remains
 in Progress. The Product Owner has already identified the minutes quality
 defect as a delivery blocker. The live demonstration, documentation
 approval, and sprint close have not occurred.
@@ -16,7 +16,9 @@ and failures clearly enough to guide the Sprint 3 architecture assessment.
 
 ## Presentation and live journey
 
-Open the [14-slide presentation](sprint_2_increment_demo.pptx) alongside
+Open the [14-slide live-journey presentation](sprint_2_increment_demo.pptx)
+and the [three-slide quality review](sprint_2_quality_review_20261004.pptx)
+alongside
 the [operator manual](user_manual.md). Slides 3–8 show the real meeting
 inputs, saved transcript and warning, a speaker-label name entry, and source review
 of draft minutes. The manual supplies
@@ -83,9 +85,65 @@ long meeting.
 
 ## Product Owner review position
 
+### 4 October prototype learning: minutes quality architecture
+
+The earlier single-call 30B experiment yielded one cited AMI quotation and
+no Polish Sejm minutes. The accepted repair now processes an immutable
+transcript through reversible operator corrections, topic discovery,
+utterance assignment, per-topic summaries, item extraction, and source
+validation. Its final AMI run conserved **217 of 217** raw segments,
+assigned **21 of 21** reading utterances, and produced **five** prose topic
+summaries. A strict manual audit found that only **2/5** summaries were
+fully supported by their own citations. The run took **24.981 seconds**
+and reached **16.01 GB** maximum child-process resident memory. Earlier
+staged candidates proposed four unsupported decision/action items, which
+the type gate withheld. Structure improved; content acceptance did not.
+
+On the saved Polish Sejm transcript, the final staged run retained **801 of
+801** raw segments, assigned **32 of 32** reading utterances to four topics,
+and saved four prose summaries and one candidate budget-opinion decision.
+The earlier same-input one-call 30B run saved no minutes. The staged run
+took **53.410 seconds** and reached **17.34 GB** maximum child-process
+resident memory. Only **2/4** summaries were fully supported by their own
+citations; a budget unit and additional PKN claims lack adequate cited
+words. The candidate detected one of two explicit decision signals found
+in a targeted audit of the saved ASR excerpt. The [trial report](tests/multistage_minutes_trial_20261004.md),
+[Sejm record](tests/multistage_20261004/sejm/record.json), and
+[run metrics](tests/multistage_20261004/sejm/metrics.json) make these
+findings inspectable.
+
+The source review found a concrete remaining error: the model treated
+remarks about setting up equipment in the room as a topic about the
+remote control being designed later in the meeting. The raw speaker
+labels did not cause that mix-up; it is an error in topic meaning.
+Another summary turns “PowerPoint reservation” into preparing a
+presentation. The model also called agenda/logistics statements and
+budget figures decisions or tasks. Schema, IDs, and citations can be
+checked by software, but a human must still assess whether the summary
+actually follows from those words. The [new architecture diagram](../../docs/architecture_overview.drawio)
+has a separate page, “Minutes quality controls,” and the
+[implementation conclusion](sprint_2_implementation.md#prototype-conclusion-what-the-minutes-experiment-teaches-us)
+records the reasoning and source links.
+
+Operator audio review fills another missing product step. The review
+player exposes every timed segment and source audio; the new
+`transcribe correct` command saves a reversible, audio-reviewed text
+correction while preserving the original ASR record. The candidate
+minutes use this corrected reading, and any previous draft is cleared
+when its source changes. The AMI/Sejm model comparison uses unchanged
+saved ASR transcripts, so these controls have not inflated its result.
+
+The next architecture assessment should test topic boundaries and claim
+support against human reference annotations, measure the precision and
+recall of extracted decisions and tasks, and determine where operator
+audio review gives the largest quality gain. The Sejm multi-stage result
+needs repair and a reviewed reference set before any accuracy score or
+acceptance claim. No natural-meeting acceptance claim follows from the
+passing technical gates alone.
+
 The prototype and benchmark provide inspectable architecture evidence.
-The minutes capability remains blocked by natural-meeting output that the
-new gate rejects and structured-output failure on the longer DOE input. The
+The minutes capability remains blocked by factual and topic errors in
+natural-meeting drafts and structured-output failure on the longer DOE input. The
 separate [30B same-input trial](tests/qwen3_30b_minutes_trial_20261003.md)
 did not clear that blocker: on AMI it saved only an exact citation of the
 meeting brief after repair, while on Sejm it repeated malformed JSON and
@@ -96,9 +154,11 @@ needs a manual replay check. The current handover must therefore not be
 presented as acceptance of dependable minutes or a completed Sprint 2.
 
 The next live review should show the actual saved transcript, a weak-audio
-warning, a speaker-name assignment, the earlier supported Sejm decision
-and false items as historical evidence, then the active gate's explicit
-failure and retained transcript. The Product Owner can inspect a record or
-request a repeat. Record their reaction and explicit decision in the
-[handover record](sprint_2_handover.md). The approved evidence-first repair
-still needs real-model quality verification before delivery readiness.
+warning, a speaker-name assignment, the operator's source-audio review
+path, and the current staged AMI and Sejm drafts alongside the cited
+utterances. Show the unsupported claims and the missed protocol decision,
+then compare with the earlier one-call failure. The Product Owner can
+inspect a record or request a repeat. Record their reaction and explicit decision in the
+[handover record](sprint_2_handover.md). The measured staged candidate
+still fails content quality and requires a corrected, human-reviewed
+validation set before delivery readiness.

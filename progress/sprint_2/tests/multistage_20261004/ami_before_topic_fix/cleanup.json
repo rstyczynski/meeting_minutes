@@ -1,0 +1,546 @@
+{
+  "artifactSegmentIDs" : [
+
+  ],
+  "candidates" : [
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_16",
+      "previousSegmentID" : "segment_14",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_15"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_27",
+      "previousSegmentID" : "segment_25",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_26"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_28",
+      "previousSegmentID" : "segment_26",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_27"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_33",
+      "previousSegmentID" : "segment_31",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_32"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_37",
+      "previousSegmentID" : "segment_35",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_36"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_45",
+      "previousSegmentID" : "segment_43",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_44"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_55",
+      "previousSegmentID" : "segment_53",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_54"
+    },
+    {
+      "disposition" : "retainIndependent",
+      "nextSegmentID" : "segment_63",
+      "previousSegmentID" : "segment_61",
+      "reason" : "Both neighbors checked; no safe reassignment, so source words retain their original speaker label",
+      "segmentID" : "segment_62"
+    },
+    {
+      "disposition" : "joinNext",
+      "nextSegmentID" : "segment_69",
+      "previousSegmentID" : "segment_67",
+      "proposedSpeakerID" : "S1",
+      "reason" : "Continuous with following labeled speech; preceding turn differs or is distant",
+      "segmentID" : "segment_68"
+    },
+    {
+      "disposition" : "bridge",
+      "nextSegmentID" : "segment_127",
+      "previousSegmentID" : "segment_125",
+      "proposedSpeakerID" : "S1",
+      "reason" : "Same labeled speaker on both sides; both gaps are within 1.5 seconds",
+      "segmentID" : "segment_126"
+    },
+    {
+      "disposition" : "joinPrevious",
+      "nextSegmentID" : "segment_138",
+      "previousSegmentID" : "segment_136",
+      "proposedSpeakerID" : "S1",
+      "reason" : "Continuous with previous labeled speech; following turn differs or is distant",
+      "segmentID" : "segment_137"
+    },
+    {
+      "disposition" : "joinPrevious",
+      "nextSegmentID" : "segment_180",
+      "previousSegmentID" : "segment_178",
+      "proposedSpeakerID" : "S1",
+      "reason" : "Continuous with previous labeled speech; following turn differs or is distant",
+      "segmentID" : "segment_179"
+    },
+    {
+      "disposition" : "joinPrevious",
+      "nextSegmentID" : "segment_186",
+      "previousSegmentID" : "segment_184",
+      "proposedSpeakerID" : "S1",
+      "reason" : "Continuous with previous labeled speech; following turn differs or is distant",
+      "segmentID" : "segment_185"
+    }
+  ],
+  "utterances" : [
+    {
+      "id" : "utt_1",
+      "range" : {
+        "endSeconds" : 7.680000000000001,
+        "startSeconds" : 4.72
+      },
+      "sourceSegmentIDs" : [
+        "segment_1",
+        "segment_2",
+        "segment_3",
+        "segment_4",
+        "segment_5",
+        "segment_6",
+        "segment_7",
+        "segment_8"
+      ],
+      "speakerID" : "S2",
+      "text" : "My gosh, you've already produced a PowerPoint reservation."
+    },
+    {
+      "id" : "utt_2",
+      "range" : {
+        "endSeconds" : 9.84,
+        "startSeconds" : 8
+      },
+      "sourceSegmentIDs" : [
+        "segment_9",
+        "segment_10",
+        "segment_11",
+        "segment_12",
+        "segment_13",
+        "segment_14"
+      ],
+      "speakerID" : "S1",
+      "text" : "I think it's already one, actually."
+    },
+    {
+      "id" : "utt_3",
+      "range" : {
+        "endSeconds" : 12.64,
+        "startSeconds" : 12.16
+      },
+      "sourceSegmentIDs" : [
+        "segment_15"
+      ],
+      "text" : "Uh"
+    },
+    {
+      "id" : "utt_4",
+      "range" : {
+        "endSeconds" : 16.8,
+        "startSeconds" : 14.8
+      },
+      "sourceSegmentIDs" : [
+        "segment_16",
+        "segment_17",
+        "segment_18",
+        "segment_19",
+        "segment_20",
+        "segment_21",
+        "segment_22",
+        "segment_23"
+      ],
+      "speakerID" : "S1",
+      "text" : "god, how do you make this thing work?"
+    },
+    {
+      "id" : "utt_5",
+      "range" : {
+        "endSeconds" : 19.759999999999998,
+        "startSeconds" : 19.28
+      },
+      "sourceSegmentIDs" : [
+        "segment_24",
+        "segment_25"
+      ],
+      "speakerID" : "S2",
+      "text" : "Maybe then"
+    },
+    {
+      "id" : "utt_6",
+      "range" : {
+        "endSeconds" : 21.36,
+        "startSeconds" : 20.88
+      },
+      "sourceSegmentIDs" : [
+        "segment_26"
+      ],
+      "text" : "Uh"
+    },
+    {
+      "id" : "utt_7",
+      "range" : {
+        "endSeconds" : 25.2,
+        "startSeconds" : 24.400000000000002
+      },
+      "sourceSegmentIDs" : [
+        "segment_27"
+      ],
+      "text" : "sorry."
+    },
+    {
+      "id" : "utt_8",
+      "range" : {
+        "endSeconds" : 27.2,
+        "startSeconds" : 25.84
+      },
+      "sourceSegmentIDs" : [
+        "segment_28",
+        "segment_29",
+        "segment_30",
+        "segment_31"
+      ],
+      "speakerID" : "S2",
+      "text" : "I you have to"
+    },
+    {
+      "id" : "utt_9",
+      "range" : {
+        "endSeconds" : 32.96,
+        "startSeconds" : 30.560000000000002
+      },
+      "sourceSegmentIDs" : [
+        "segment_32",
+        "segment_33",
+        "segment_34",
+        "segment_35",
+        "segment_36"
+      ],
+      "text" : "hello. Have you done that?"
+    },
+    {
+      "id" : "utt_10",
+      "range" : {
+        "endSeconds" : 34.96,
+        "startSeconds" : 33.36
+      },
+      "sourceSegmentIDs" : [
+        "segment_37",
+        "segment_38",
+        "segment_39",
+        "segment_40",
+        "segment_41",
+        "segment_42",
+        "segment_43"
+      ],
+      "speakerID" : "S1",
+      "text" : "I've plugged it in the back, but"
+    },
+    {
+      "id" : "utt_11",
+      "range" : {
+        "endSeconds" : 39.44,
+        "startSeconds" : 35.28
+      },
+      "sourceSegmentIDs" : [
+        "segment_44",
+        "segment_45",
+        "segment_46",
+        "segment_47",
+        "segment_48",
+        "segment_49",
+        "segment_50",
+        "segment_51",
+        "segment_52",
+        "segment_53",
+        "segment_54"
+      ],
+      "text" : "yeah, you have to see the function. Yep, the sky ID."
+    },
+    {
+      "id" : "utt_12",
+      "range" : {
+        "endSeconds" : 44.800000000000004,
+        "startSeconds" : 40
+      },
+      "sourceSegmentIDs" : [
+        "segment_55",
+        "segment_56",
+        "segment_57",
+        "segment_58"
+      ],
+      "speakerID" : "S1",
+      "text" : "Okay, right. And I'm"
+    },
+    {
+      "id" : "utt_13",
+      "range" : {
+        "endSeconds" : 46.16,
+        "startSeconds" : 44.800000000000004
+      },
+      "sourceSegmentIDs" : [
+        "segment_59",
+        "segment_60",
+        "segment_61"
+      ],
+      "speakerID" : "S2",
+      "text" : "it's doing something."
+    },
+    {
+      "id" : "utt_14",
+      "range" : {
+        "endSeconds" : 51.36,
+        "startSeconds" : 48.08
+      },
+      "sourceSegmentIDs" : [
+        "segment_62",
+        "segment_63",
+        "segment_64",
+        "segment_65",
+        "segment_66"
+      ],
+      "text" : "Yes, there we go. Okay."
+    },
+    {
+      "id" : "utt_15",
+      "range" : {
+        "endSeconds" : 54.72,
+        "startSeconds" : 53.52
+      },
+      "sourceSegmentIDs" : [
+        "segment_67"
+      ],
+      "text" : "Right."
+    },
+    {
+      "id" : "utt_16",
+      "range" : {
+        "endSeconds" : 70.24,
+        "startSeconds" : 55.52
+      },
+      "sourceSegmentIDs" : [
+        "segment_68",
+        "segment_69",
+        "segment_70",
+        "segment_71",
+        "segment_72",
+        "segment_73",
+        "segment_74",
+        "segment_75",
+        "segment_76",
+        "segment_77",
+        "segment_78",
+        "segment_79",
+        "segment_80",
+        "segment_81",
+        "segment_82",
+        "segment_83",
+        "segment_84",
+        "segment_85",
+        "segment_86",
+        "segment_87",
+        "segment_88",
+        "segment_89",
+        "segment_90",
+        "segment_91",
+        "segment_92",
+        "segment_93",
+        "segment_94",
+        "segment_95",
+        "segment_96",
+        "segment_97",
+        "segment_98",
+        "segment_99",
+        "segment_100"
+      ],
+      "speakerID" : "S1",
+      "text" : "Uh um Well, this is the kickoff meeting for our project. Um And this is just what we're going to be doing over the next 25 minutes. So, first of all, just to"
+    },
+    {
+      "id" : "utt_17",
+      "range" : {
+        "endSeconds" : 81.36,
+        "startSeconds" : 70.24
+      },
+      "sourceSegmentIDs" : [
+        "segment_101",
+        "segment_102",
+        "segment_103",
+        "segment_104",
+        "segment_105",
+        "segment_106",
+        "segment_107",
+        "segment_108",
+        "segment_109",
+        "segment_110",
+        "segment_111",
+        "segment_112",
+        "segment_113",
+        "segment_114",
+        "segment_115",
+        "segment_116",
+        "segment_117",
+        "segment_118",
+        "segment_119",
+        "segment_120",
+        "segment_121",
+        "segment_122",
+        "segment_123",
+        "segment_124",
+        "segment_125",
+        "segment_126",
+        "segment_127",
+        "segment_128",
+        "segment_129",
+        "segment_130",
+        "segment_131",
+        "segment_132",
+        "segment_133",
+        "segment_134",
+        "segment_135",
+        "segment_136",
+        "segment_137"
+      ],
+      "speakerID" : "S1",
+      "text" : "kind of make sure that we all know each other, I'm Laura and I'm the project manager. Great. Do you want to introduce yourself again? Hi, I'm David, and I'm supposed to be an industrial designer. Okay."
+    },
+    {
+      "id" : "utt_18",
+      "range" : {
+        "endSeconds" : 89.28,
+        "startSeconds" : 82
+      },
+      "sourceSegmentIDs" : [
+        "segment_138",
+        "segment_139",
+        "segment_140",
+        "segment_141",
+        "segment_142",
+        "segment_143",
+        "segment_144",
+        "segment_145",
+        "segment_146",
+        "segment_147",
+        "segment_148",
+        "segment_149",
+        "segment_150",
+        "segment_151",
+        "segment_152"
+      ],
+      "speakerID" : "S2",
+      "text" : "And I'm Andrew and I'm uh our marketing expert. I'm Greg and I'm user interface."
+    },
+    {
+      "id" : "utt_19",
+      "range" : {
+        "endSeconds" : 102.47999999999999,
+        "startSeconds" : 89.28
+      },
+      "sourceSegmentIDs" : [
+        "segment_153",
+        "segment_154",
+        "segment_155",
+        "segment_156",
+        "segment_157",
+        "segment_158",
+        "segment_159",
+        "segment_160",
+        "segment_161",
+        "segment_162",
+        "segment_163",
+        "segment_164",
+        "segment_165",
+        "segment_166",
+        "segment_167",
+        "segment_168",
+        "segment_169",
+        "segment_170",
+        "segment_171",
+        "segment_172",
+        "segment_173",
+        "segment_174",
+        "segment_175",
+        "segment_176",
+        "segment_177",
+        "segment_178",
+        "segment_179"
+      ],
+      "speakerID" : "S1",
+      "text" : "Great. Okay. Um So we're designing a new remote control. And oh, I have to record who's here actually. So that's David, Andrew, and Craig, isn't it?"
+    },
+    {
+      "id" : "utt_20",
+      "range" : {
+        "endSeconds" : 107.19999999999999,
+        "startSeconds" : 104.64
+      },
+      "sourceSegmentIDs" : [
+        "segment_180",
+        "segment_181",
+        "segment_182",
+        "segment_183",
+        "segment_184",
+        "segment_185"
+      ],
+      "speakerID" : "S1",
+      "text" : "And you all arrived on time."
+    },
+    {
+      "id" : "utt_21",
+      "range" : {
+        "endSeconds" : 120,
+        "startSeconds" : 108.72
+      },
+      "sourceSegmentIDs" : [
+        "segment_186",
+        "segment_187",
+        "segment_188",
+        "segment_189",
+        "segment_190",
+        "segment_191",
+        "segment_192",
+        "segment_193",
+        "segment_194",
+        "segment_195",
+        "segment_196",
+        "segment_197",
+        "segment_198",
+        "segment_199",
+        "segment_200",
+        "segment_201",
+        "segment_202",
+        "segment_203",
+        "segment_204",
+        "segment_205",
+        "segment_206",
+        "segment_207",
+        "segment_208",
+        "segment_209",
+        "segment_210",
+        "segment_211",
+        "segment_212",
+        "segment_213",
+        "segment_214",
+        "segment_215",
+        "segment_216",
+        "segment_217"
+      ],
+      "speakerID" : "S1",
+      "text" : "Um yes, so des uh design a new remote control, um as you can see it's supposed to be original, trendy and user friendly. Um so that's kind of our our brief."
+    }
+  ]
+}

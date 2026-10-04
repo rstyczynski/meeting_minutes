@@ -1,0 +1,1 @@
+{"attempt":0,"promptRevision":"minutes-v4-multistage","response":"{\"text\":\"Remote control functionality requires proper setup and correct identification of device functions to operate effectively.\",\"source_utterance_ids\":[\"utt_11\",\"utt_14\"],\n\"evidence_quote\":\"you have to see the function. Yep, the sky ID.\"}","stage":"summary_t5","validation":"accepted"}

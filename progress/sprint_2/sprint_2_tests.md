@@ -607,3 +607,43 @@ wrapper then passed A1, A2, A3, B1, B2, and B3 on 2026-10-03 at stamp
 [B3](tests/test_run_qwen3_30b_final_B3_integration_20261003_143640.log).
 These tests verify contracts and failure preservation; they do not
 override the manual minutes-quality failure.
+
+## Staged minutes and transcript correction experiment — 2026-10-04
+
+The approved PBI-011.5 repair now has a reversible transcript reading
+layer, isolated-fragment proposals, audio-reviewed operator text
+corrections, topic assignment, per-topic summaries, extracted-item
+validation, and atomic failure preservation. `MultiStageTests` checks
+raw-segment conservation, multi-fragment speaker continuity, complete
+topic assignment, retention of an extracted item's originating topic,
+and reversible operator corrections. The integration suite checks the
+CLI correction path and that a failed model response leaves the record
+intact. The adapter's `PipelineValidationTests` checks invalid JSON,
+unknown or duplicate IDs, exact excerpts, bounded shortening of a
+near-miss quote, candidate type signals, and topic citation
+reconciliation. `swift test` passed 13 integration and 18 core tests;
+`swift test -c release --skip-build --filter PipelineValidationTests`
+passed its focused case after the release adapter build.
+
+The same saved 120-second AMI and approximately ten-minute Sejm ASR
+records were then run through the real local 30B staged pipeline. The
+[controlled trial report](tests/multistage_minutes_trial_20261004.md)
+provides inputs, final runtime and memory, all stage responses, the saved
+draft records, and a manual claim-level source audit. Both final runs
+passed technical source and coverage gates: 217/217 raw segments and
+21/21 reading utterances on AMI; 801/801 raw segments and 32/32 reading
+utterances on Sejm. Only 2/5 AMI and 2/4 Sejm topic summaries were fully
+supported by their own cited ASR utterances. The Sejm run found one of
+two explicit decisions in the saved excerpt. These content results are
+**FAIL** for dependable minutes; a technical pass does not override them.
+
+The full Sprint 2 runner passed all six prescribed gates under stamp
+`20261004_103418`: [A1 smoke](tests/test_run_staged_minutes_final_A1_smoke_20261004_103418.log),
+[A2 unit](tests/test_run_staged_minutes_final_A2_unit_20261004_103418.log),
+[A3 integration](tests/test_run_staged_minutes_final_A3_integration_20261004_103418.log),
+[B1 smoke](tests/test_run_staged_minutes_final_B1_smoke_20261004_103418.log),
+[B2 unit](tests/test_run_staged_minutes_final_B2_unit_20261004_103418.log),
+and [B3 integration](tests/test_run_staged_minutes_final_B3_integration_20261004_103418.log).
+The tests verify implementation contracts and non-destructive failure
+behavior; they do not establish factual minutes quality or Product Owner
+acceptance. The quality blocker remains open.

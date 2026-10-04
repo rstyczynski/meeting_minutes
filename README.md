@@ -145,6 +145,20 @@ The [official-PDF transcription review](progress/sprint_2/tests/polish_sejm_pdf_
 finds the main turns and decision recognizable, with word, name, acronym,
 and numeric-unit errors requiring correction; no whole-meeting Polish WER
 is claimed.
+
+The approved staged-minutes experiment now preserves raw ASR, proposes
+reversible fragment joins, supports audio-reviewed operator text
+corrections, assigns each reading utterance to a topic, and validates
+model responses before saving draft minutes. On the same saved real
+meeting transcripts, it covered 21/21 AMI and 32/32 Sejm reading
+utterances. A strict source audit accepted only 2/5 AMI and 2/4 Sejm
+topic summaries, so natural-meeting minutes remain a delivery blocker.
+The [trial report](progress/sprint_2/tests/multistage_minutes_trial_20261004.md)
+gives measured runtime, memory, cited examples, and preserved failed
+runs; the [quality review slides](progress/sprint_2/sprint_2_quality_review_20261004.pptx)
+show the control architecture and Product Owner decision point. These
+results are architecture evidence, not accepted participant minutes.
+
 The minutes citation crash was repaired, but the resulting draft still
 contains unsupported items. A longer [Department of Energy meeting
 fixture](progress/sprint_2/doe_itiac_day2_fixture.md) produced 4,216 English

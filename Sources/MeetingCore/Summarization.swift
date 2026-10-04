@@ -135,7 +135,7 @@ public struct MLXProcessMinutesGenerator: MinutesGenerating {
             let signals = ["decid", "approv", "accept", "reject", "voted", "no objection",
                            "nie slysze sprzeciwu", "pozytywnie opiniuje", "przyjeto", "zatwierdz"]
             guard signals.contains(where: lower.contains) else { return nil }
-        case .action:
+        case .action, .task:
             let signals = ["i will ", "we will ", "i shall ", "we shall ",
                            "zobowiazuje sie", "przygotuje", "wysle", "przeslemy"]
             let exclusions = ["please present", "poprosze", "przechodzimy", "we will now"]

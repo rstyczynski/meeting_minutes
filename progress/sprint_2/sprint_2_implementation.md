@@ -1,6 +1,14 @@
 # Sprint 2 — Implementation record
 
-Status: initial English prototype and PBI-011.6 bilingual CLI implemented and tested; the PBI-018 language comparison is measured. This is the Product Owner's account of what the executable prototype does, what was measured, and what still limits an architecture decision. The accepted [design](sprint_2_design.md), [functional test record](sprint_2_tests.md), and [benchmark report](ami_asr_benchmark.md) contain the corresponding criteria and evidence. Model weights and approved natural audio remain outside Git.
+Status: executable bilingual prototype and staged-minutes quality experiment
+measured; dependable natural-meeting minutes remain a delivery blocker.
+This is the Product Owner's account of what the prototype does, what was
+measured, and what still limits an architecture decision. The accepted
+[design](sprint_2_design.md), [functional test record](sprint_2_tests.md),
+[ASR benchmark](ami_asr_benchmark.md), and
+[staged-minutes trial](tests/multistage_minutes_trial_20261004.md) contain
+the corresponding criteria and evidence. Model weights and approved
+natural audio remain outside Git.
 
 ## How the Product Owner can validate this increment
 
@@ -27,6 +35,93 @@ and the [stored record](../../Sources/MeetingCore/Record.swift). The
 language experiment; the [fixture generator](../../tests/fixtures/README.md)
 documents the invented meeting. These links are for traceability after
 reading the result, not a substitute for its interpretation here.
+
+## Prototype conclusion: what the minutes experiment teaches us
+
+The one-call, quote-only minutes design failed as a way to produce usable
+minutes from natural meetings. On the same saved 120-second AMI transcript,
+the 30B model produced one source-exact excerpt of the product brief after a
+repair, but no topic-level account of the discussion. On the saved Polish
+Sejm transcript it repeated malformed JSON and saved no minutes. Those
+failures remain visible in the [controlled 30B trial](tests/qwen3_30b_minutes_trial_20261003.md);
+they prompted the accepted multi-stage design rather than being erased from
+the project history.
+
+The new candidate separates immutable ASR text, a reversible reading view,
+topic discovery, full utterance-to-topic assignment, per-topic summaries,
+item extraction, and source validation. The final recorded English AMI run
+retained all 217 raw segments, formed 21 reading utterances, assigned all
+21 to five proposed topics, and saved five source-linked prose summaries.
+It took 24.981 seconds and reached 16.01 GB maximum child-process resident
+memory on this Mac. The [saved AMI draft](tests/multistage_20261004/ami/record.json)
+demonstrates **coverage and readable draft structure**, but only **2/5**
+summaries passed a strict manual check that every material claim follows
+from its own cited utterances. One topic calls room-equipment setup
+remote-control functionality; another turns the ASR phrase “PowerPoint
+reservation” into making a presentation. An earlier staged AMI candidate
+also proposed four unsupported decision/action items, which were withheld.
+The [controlled trial report](tests/multistage_minutes_trial_20261004.md)
+separates that historical attempt from the final run.
+
+The final Polish Sejm run retained all 801 raw segments, formed 32 reading
+utterances, assigned all 32 to four topics, and saved four prose summaries
+and one candidate budget-opinion decision. It took 53.410 seconds and
+reached 17.34 GB maximum child-process resident memory on this Mac,
+compared with the earlier same-transcript one-call 30B run, which saved no
+minutes. These structural and runtime measurements come from the
+[Sejm run metrics](tests/multistage_20261004/sejm/metrics.json) and
+[saved draft](tests/multistage_20261004/sejm/record.json). Only **2/4**
+summaries passed the same strict manual citation audit: one budget number
+omits the cited source's next utterance containing its unit, and the PKN
+summary adds claims not supported by its sole cited utterance. The
+candidate decision is cited and assigned to the opinion-and-transition
+topic, but it misses the separate prior-protocol acceptance in the saved
+excerpt. This is an inspectable Polish draft, not dependable meeting
+minutes. Earlier staged candidates, including one that named the wrong
+committee and linked the decision to another topic, remain preserved in
+the trial evidence.
+
+The room-equipment/product confusion is a **topic-meaning error**. It came
+from grouping and naming utterances about plugging in and operating a
+device in the room, while the later project brief discusses designing a
+remote control. The saved source words and topic assignments show this;
+changing speaker labels alone would not resolve the ambiguity. The model
+also repeatedly called meeting logistics and budget amounts decisions or
+tasks. Conservative type gates now withhold candidates whose cited words
+do not explicitly support the proposed type. These gates protect the saved
+draft, but they can miss a real item phrased without a recognized signal,
+so their recall needs separate measurement.
+
+Technical response quality is a separate risk. The model generated too
+many narrow topics, malformed or trailing-punctuation JSON, an extraction
+array instead of the requested wrapper, overlong or incomplete citations,
+and inconsistent topic assignments across calls. The implementation
+validates each stage, asks for at most two repairs, allows only narrowly
+defined structural normalization, and keeps the previous record if any
+stage still fails. Passing these checks proves that IDs, schema, segment
+accounting, and cited excerpts are technically valid; it does not prove
+that a paraphrase is entailed by the recording.
+
+Operator transcript review is therefore part of the product path, not
+merely a test activity. The review player can replay a source range and
+shows the segment ID. `transcribe correct` requires the operator to confirm
+audio review before adding a text correction to a separate, reversible
+layer. The raw ASR words remain unchanged; the corrected reading is used
+by the multi-stage candidate, and existing minutes are invalidated until
+regenerated. The real-model AMI and Sejm runs did not include operator word
+corrections, so they measure the model on the saved ASR transcript, not on
+an edited reference. Audio-backed review is especially relevant to short
+unassigned Polish fragments, numbers, names, and speaker continuity; a
+structural cleanup proposal alone does not establish what the recording
+actually says.
+
+The architecture decision from this prototype is to keep deterministic
+segment preservation and source gates around a replaceable local minutes
+model, to evaluate topic correctness and claim support against human
+references, and to provide audio-backed operator corrections before
+participant use. The currently tested candidate is an experiment, and
+natural-meeting content quality remains a delivery criterion rather than
+something inferred from passing unit tests.
 
 ## Implementation and design compliance
 
@@ -421,15 +516,106 @@ The first four checks are implemented for Sprint 2 minutes. NFR-06 in the
 sets the same boundary for future model-backed capabilities. Human audio
 review is still required before a draft becomes participant-facing minutes.
 
-The local minutes experiments use `ChatSession` with the staged Qwen model,
-`maxTokens: 1024`, and `temperature: 0`. Temperature zero reduces sampling
-variation but does not make a model's words or schema dependable. FluidAudio
-ASR, whisper.cpp ASR, and Fluid diarization receive configuration and
-language hints, not free-text prompts. The MLX minutes adapter is the only
-product path in this sprint that sends the text prompts below. The 4B and
-7B candidate runs use the same prompt template; the model directory differs.
+The local minutes experiments use `ChatSession` with the staged Qwen model
+and `temperature: 0`. The earlier single-call pipeline uses `maxTokens:
+1024`; the current staged pipeline uses 512 for topics, 768 for item
+extraction, and 1536 for assignment and topic-summary calls. Temperature
+zero reduces sampling variation but does not make a model's words or schema
+dependable. FluidAudio ASR, whisper.cpp ASR, and Fluid diarization receive
+configuration and language hints, not free-text prompts. The MLX minutes
+adapter is the only product path in this sprint that sends free-text
+instructions. The prompt templates below show every current stage and the
+older single-call versions retained for comparison.
 
-For the active `minutes-v3-evidence` revision, the system instruction sent
+### Current staged minutes prompts (`minutes-v4.1-multistage`)
+
+The topics stage receives the following exact system instruction. Its first
+user message is one line per cleaned utterance in the form `utt_ID | speaker
+name or ID or Unknown | start-end s | text`, with actual values and no angle
+brackets. The speaker and time text is context, not evidence of correctness.
+
+~~~text
+Identify distinct substantive meeting topics from timed utterances.
+Return 2 to 5 broad topics for the whole excerpt. Merge closely
+related points. Do not list individual features, roles, names,
+sentences, or synonyms as separate topics. Stop after t5.
+Output only {"topics":[{"id":"t1","title":"short title",
+"source_utterance_ids":["utt_1"]}]}. Use t1,t2,... in order.
+Cite at least one exact utterance ID for every topic. Include real
+procedural topics when discussed; do not invent a catch-all topic.
+Keep titles short. Do not infer unsupported facts.
+~~~
+
+Assignment calls send at most 24 lines of `utt_ID | text`. Their system
+instruction is below; `<topic list>` is replaced by each actual `tN: title`
+line produced by the validated topics stage.
+
+~~~text
+Assign EVERY utterance to one or more substantive topics.
+Return only {"assignments":[{"utteranceID":"utt_1",
+"topicIDs":["t1"]}]}. Output each supplied utterance once.
+Never use a topic or utterance ID outside the supplied lists.
+Do not assign solely by speaker; use the spoken content.
+Topics:
+<topic list>
+~~~
+
+For each validated topic, a separate summary call sends only its assigned
+`utt_ID | text` lines and substitutes that topic's title for `<title>`.
+
+~~~text
+Summarize the topic “<title>” in one or two clear sentences.
+Paraphrase; do not present a quotation as the summary. Output only
+{"text":"factual topic summary","source_utterance_ids":["utt_1"],
+"evidence_quote":"exact contiguous words from cited utterance"}.
+Keep evidence_quote to 8–30 words and under 250 characters.
+Cite utterance IDs from this topic. The evidence_quote must be
+verbatim and support the summary. Omit unsupported detail.
+~~~
+
+For each topic with utterances containing an explicit item signal, an item
+call sends those `utt_ID | text` lines and substitutes its title for
+`<title>`. The signal filter is conservative and can miss a real item.
+
+~~~text
+Extract only explicit decisions, future commitments, tasks from
+commitments, and still-open questions for topic “<title>”.
+An agenda item, request to speak, or proposal is not a decision.
+A budget amount being reported is not a committee decision.
+A task requires a cited future commitment. Omit uncertainty.
+Return at most three items total. Do not enumerate budget lines.
+Return only {"items":[{"kind":"decision|action|task|openQuestion",
+"text":"brief factual statement","source_utterance_ids":["utt_1"],
+"evidence_quote":"exact contiguous source words",
+"owner_speaker_id":null,"due_date":null}]}.
+Keep each evidence_quote to 8–30 words and under 250 characters.
+Use [] when no qualifying item exists. Owner and due date may be
+non-null only when the cited words explicitly support them.
+Never invent a person, date, item, or source ID.
+~~~
+
+Every stage checks JSON and stage-specific IDs, coverage, quotes, and type
+signals. When a response fails, the same `ChatSession` receives this exact
+repair message, with `<stage>` and `<validation error>` replaced. At most
+two repairs are sent; every reply is fully revalidated.
+
+~~~text
+Your <stage> response failed validation: <validation error>.
+Correct your previous answer using only the supplied transcript
+and IDs. Follow the original JSON shape exactly. Output JSON only.
+~~~
+
+The adapter may reconcile an utterance cited by a proposed topic into its
+separate assignment and may shorten a final-attempt quote only to a
+substantial exact contiguous excerpt of the already cited utterance. The
+adapter itself attaches the originating `topic_id` to extracted items. It
+does not silently rewrite the substantive summary; a plausible but wrong
+paraphrase can still pass. See the [accepted design](sprint_2_design.md#approved-multi-stage-minutes-repair-design--2026-10-03)
+and the [stage implementation](../../experiments/MinutesAdapter/Sources/MeetingMLXMinutes/StagedPipeline.swift).
+
+### Earlier single-call prompts, retained as failure evidence
+
+For the legacy `minutes-v3-evidence` revision, the system instruction sent
 to `ChatSession` is exactly:
 
 ~~~text

@@ -11,6 +11,9 @@ below. The three-command contract governs the remaining construction.
 The Product Owner then added FR-11 English and Polish transcription to the
 active sprint and approved its design amendment on 2026-10-01. The earlier
 accepted design and completed English measurements remain historical evidence.
+A later approved multi-stage minutes repair design appears after the earlier
+evidence-first design. It records that design's real-meeting failure rather
+than replacing its rationale or test evidence.
 
 ## Approved minutes-quality recovery amendment — 2026-10-02
 
@@ -137,6 +140,220 @@ It checks specific reasons, a bounded repair attempt, and final rejection.
 transcript and speaker labels unchanged. Controlled adapter responses
 trigger these cases; test results do not depend on a model misbehaving on
 command.
+
+## Approved multi-stage minutes repair design — 2026-10-03
+
+**Status: accepted for implementation and quality evaluation by the Product
+Owner on 2026-10-03. Scope: PBI-011.5 minutes quality.** The Product Owner
+requested this design addition after inspecting the actual English and
+Polish transcriptions. It is a response to the failure of the earlier
+evidence-first concept above, which remains documented and is not silently
+superseded. Acceptance of the design does not establish implementation or
+real-meeting quality.
+
+### What failed in the previous concept
+
+The evidence-first adapter asks one local model call to return a complete
+summary, decisions, actions, and open questions as one JSON object. Its
+`minutes-v3-evidence` prompt also requires the summary to be a short
+verbatim quotation and caps each decision, action, and question at one.
+Those constraints protected source fidelity but did not yield useful
+meeting minutes. In the [same-input 30B trial](tests/qwen3_30b_minutes_trial_20261003.md),
+AMI produced only a cited quotation of the design brief, while all three
+Sejm responses repeated malformed JSON; the Polish quotation and citations
+also failed source review. The earlier [benchmark](ami_asr_benchmark.md#evidence-first-gate-and-larger-local-model-candidate)
+records the 4B and 7B limitations. The response validator correctly
+withheld bad results and preserved the transcript, but safe failure is not
+the FR-05 capability to produce useful minutes. The restrictive prompt,
+one-call output size, model capability, and ASR errors are possible causes;
+the existing evidence does not isolate their individual effects.
+
+### Transcription correction method
+
+This is a separate, required preparation step before topic discovery. The
+saved ASR transcript remains immutable. The correction layer contains
+cleaned utterances and a change record for each merge, speaker-continuity
+correction, word correction, or artifact classification. Every change keeps
+the original segment IDs, words, timestamps, and original speaker labels,
+plus the proposed result, reason, and review status. A reviewer can inspect
+the affected audio and reject or amend the proposal. Downstream topic and
+minutes citations always resolve back to the original timed segments.
+
+The first pass detects **isolated token candidates** and short speaker
+splits. A candidate is a one-word turn separated from neighboring speech,
+an abrupt brief switch to `Unassigned` or another speaker label, or a short
+continuation whose grammar suggests the same utterance. Detection does not
+declare the token wrong. In the saved [Sejm transcript](tests/transcripts/sejm_gor_10min.md),
+`Unassigned: Na` at 04:13.20 sits between S2's amount and “realizację
+projektów”, `Unassigned: i` at 04:27.52 joins an amount to “652 tysiące”,
+and `Unassigned: Na` at 06:05.52 precedes S2's “pokrycie kosztów”. At
+09:25.36 the longer `Unassigned: przedstawienie tej tego budżetu` continues
+S1's request from 09:22.88. The Product Owner identifies each of these as
+the same person's speech. A simple scan found 12 one-word `Unassigned`
+segments between segments of the same labeled speaker within 1.5 seconds
+on both sides; this is a review queue, not 12 confirmed defects.
+
+For **every candidate**, the correction method inspects the preceding and
+following segments, not just the nearest one. It compares both time gaps,
+speaker continuity, punctuation, grammar, and the local audio around the
+boundary. It then records one explicit outcome: join the previous
+utterance, join the next, bridge both sides into one utterance, retain a
+genuine independent turn, confirm an audio/ASR artifact, or leave the case
+unresolved for human review. A short word, a missing speaker label, or a
+plausible phrase alone cannot justify deletion. A confirmed artifact
+requires audio-backed evidence. If the speaker is uncertain, retain that
+uncertainty rather than assigning a person's identity.
+
+This pass also separates **word errors** from **segmentation and speaker
+errors**. A word such as an odd name, number, or unit may be proposed for
+correction, but its replacement is not accepted from grammar or an LLM
+guess alone; the operator must check the recording. Corrected text is a
+derived reading view and never silently replaces the raw ASR words. The
+cleanup may be used even when optional `recognize` was skipped and must
+not infer a person's name. If any candidate or word correction needed for
+the minutes remains unresolved, the record stays usable as a transcript
+but is not presented as a complete, validated minutes draft.
+
+### Proposed flow and data contracts
+
+The `summarize` CLI remains a separately invoked, local operation. The
+saved ASR segments remain immutable evidence. The proposed pipeline works
+on a separate, reviewable cleaned-transcript layer. Each cleaned utterance
+retains its original segment IDs, time range, raw text, original speaker
+labels, any proposed text or speaker correction, reason, and review status.
+It does not infer a person's name or transcribe audio again. Unknown speakers
+remain unknown when continuity cannot be supported. The layer can be
+discarded or revised without overwriting the raw record.
+
+1. **Clean the transcription.** Apply the correction method above to make
+   coherent, source-linked utterances, with every isolated-token candidate
+   reviewed against both neighbors. Preserve the raw segment record and
+   stop complete minutes generation if a material correction is unresolved.
+2. **Identify topics.** A bounded model call proposes distinct topics,
+   their short labels, and cited utterance ranges. Opening, procedural
+   matters, and closing can be real topics when spoken about; a catch-all
+   label invented solely to pass coverage is not acceptable. The code
+   assigns stable topic IDs and checks that cited utterance IDs exist.
+3. **Assign utterances to topics.** The model proposes one or more topic IDs
+   for every utterance ID. A single utterance may belong to multiple topics.
+   The code rejects unknown IDs, duplicate or missing utterance entries, and
+   nonexistent topic IDs. Speaker labels are context, not proof of a topic.
+4. **Summarize each topic separately.** The model writes a concise
+   paraphrase for one topic at a time, with claim-level links to supporting
+   utterances and time ranges. A summary should be readable prose, rather
+   than a quotation presented as a summary. Exact source excerpts remain
+   available for review. Source existence and schema can be checked by code;
+   whether a paraphrase is actually entailed by the speech needs a separate
+   content check and human review.
+5. **Extract decisions, commitments, and unresolved questions per topic.**
+   Each candidate cites the utterances that support its type and content.
+   An agenda item, suggestion, or invitation to speak is not automatically
+   a decision or commitment. Existing conservative type checks remain a
+   safeguard; uncertain candidates are withheld for review.
+6. **Form tasks from explicit commitments.** A task states the work to be
+   done and links back to its source commitment. An owner or due date is
+   recorded only when the transcript supports it; otherwise the task has
+   an explicit missing-owner or missing-date field. The model must not
+   turn every discussion point into a task.
+7. **Reconcile the meeting.** Code checks cross-topic duplicate items,
+   source IDs, time ranges, required fields, and the coverage rule below.
+   A separate content review checks whether each topic summary and extracted
+   item is supported. Only validated drafts reach the local review record;
+   the operator can inspect audio and correct them before participant use.
+
+### Mandatory utterance-to-topic coverage
+
+Every **substantive utterance** in the saved transcript must be assigned to
+**at least one substantive topic** before a complete meeting draft can be
+assembled. Short procedural turns and turns with an unknown speaker count
+when they contain meaningful speech. Length or `Unassigned` alone never
+justifies exclusion. The coverage check compares the substantive
+utterance-ID set with the union of all topic assignments and requires 100%
+coverage. Multi-topic assignment is allowed and does not inflate the
+denominator.
+
+Every persisted text-bearing segment must have exactly one accountable
+route in the cleaned-transcript layer: it is included in one utterance,
+possibly joined with neighboring segments, or is explicitly marked as a
+suspected ASR/audio artifact with its ID, time, text, reason, and review
+status. Every isolated-token candidate must have a recorded disposition
+after checking both neighbors. An artifact is excluded from
+the topic denominator only after a supported classification or human audio
+review; uncertain cases remain unresolved and prevent a complete draft.
+This is an accounting rule, not a way to discard inconvenient words. The
+`Na` example above belongs with “pokrycie kosztów” according to the Product
+Owner; it must not be removed merely because it is isolated and unlabeled.
+
+An unassigned or semantically unclear substantive utterance is reported
+with its text, time range, and source IDs for targeted retry or human
+classification. It does not disappear and is not assigned to a generic
+“other” topic merely to meet the number. If bounded repair still leaves
+an utterance unassigned or an artifact classification unresolved, the stage
+reports incomplete coverage and withholds the complete minutes draft while
+preserving the transcript and any earlier valid record. A syntactically
+complete but wrong topic assignment can still pass this coverage check;
+the real-meeting evaluation therefore also needs human assessment of topic
+correctness, artifact classification, and missed or fragmented topics.
+
+### Response gates, limits, and quality experiment
+
+Each stage returns a small, versioned result instead of one large minutes
+JSON object. The adapter checks parseability, schema, size, existing IDs,
+and stage-specific invariants before passing it onward. It gives the model
+specific validation errors for at most two repair attempts and then fails
+explicitly. Intermediate outputs are not participant-facing minutes.
+Atomic storage keeps the last valid meeting record when any stage fails.
+The existing ten-minute prototype bound remains until windowed processing
+is designed and measured; splitting prompts alone does not establish safe
+long-meeting support. Cleaning can correct reviewed errors, but it cannot
+guarantee that all ASR words or speaker labels are accurate.
+
+The first controlled comparison uses the same saved AMI and Sejm
+transcripts and records model version, prompt revision, token limits,
+runtime, memory, and every stage's validation outcome. Human annotation of
+the real transcripts supplies reference cleaning corrections, topics,
+utterance-to-topic assignments, decisions, commitments, tasks, and open
+questions. Assess cleaning precision, segment conservation, topic coverage
+**and correctness**, summary factual support and usefulness,
+decision/action precision and omissions, source-link accuracy, and speaker
+uncertainty. Compare against the existing one-call 4B, 7B, and 30B evidence
+without claiming a fair model ranking when inputs or prompts differ. A
+passing fixture or JSON schema check is not a real-meeting quality pass.
+
+**Accepted design test targets, pending implementation:** **UT-14**
+constructs utterances from timed segments with speaker changes, pauses,
+overlap, unknown speakers, the `Na` and `i` examples from 04:13–04:28,
+the isolated `Na` followed by “pokrycie”, and the S1/`Unassigned`
+continuation at 09:25.36.
+It requires every text-bearing segment ID exactly once across utterances
+and explicit artifact records, with unchanged source ranges and preserved
+raw speaker labels. It checks reversible corrections and that short tokens
+are not dropped by rule. **UT-17** checks detection and a recorded
+previous, next, bridge, independent, artifact, or unresolved disposition
+for each isolated-token candidate. It verifies both-neighbor inspection,
+that unresolved cases block complete synthesis, and that an artifact
+cannot be confirmed from length or label alone. **UT-15**
+supplies complete, missing, duplicate, multi-topic, and unknown-topic
+assignments plus supported, unsupported, and unresolved artifact labels.
+It requires 100% substantive-utterance coverage and resolved segment
+accounting for a complete draft, and an explicit incomplete result otherwise.
+An empty transcript must fail
+before model inference. **UT-16** injects malformed stage responses and
+repeated failed repairs; it checks stage isolation and preservation of the
+prior record. **IT-13** invokes the separate `summarize` CLI on a controlled
+transcript and checks source-linked per-topic results, topic coverage,
+neutral speakers, and withholding when one utterance is unassigned.
+**UT-18** checks the operator's audio-reviewed text correction: the raw ASR
+words remain immutable, the derived reading view changes, the audit keeps
+both edits when an operator restores the original words, and old minutes
+are cleared when a correction invalidates them. The review player shows
+both the corrected reading and original ASR text and exposes the segment ID
+used by the CLI correction command.
+**EXP-8** runs the pinned multi-stage candidate on the same saved AMI and
+Sejm transcripts, with human reference topics and item review, and records
+quality and resources against the one-call baseline. Fixture tests cannot
+substitute for EXP-8. No test skeleton or product code is changed by this
+design note.
 
 ## Approved FR-11 amendment — PBI-011.6 bilingual transcription
 

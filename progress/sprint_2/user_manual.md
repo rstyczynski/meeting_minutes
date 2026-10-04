@@ -55,10 +55,11 @@ printf 'Fresh store: %s\n' "$store_dir"
 
 Each step below shows the saved JSON state immediately after the command.
 The Polish excerpt contains several speakers; the weak-audio check uses the
-AMI meeting. The current evidence-first minutes gate rejects the tested
-4B output on these recordings and leaves the transcripts intact. Earlier
-drafts contained unsupported English interpretation and false Polish
-action and question items; they remain historical failure evidence. The
+AMI meeting. The historical 4B evidence-first minutes gate rejects the
+tested natural-audio output and leaves the transcripts intact. The newer
+30B multi-stage experiment saves source-linked draft topics, but its
+[manual quality review](tests/multistage_minutes_trial_20261004.md) finds
+unsupported claims. The
 [handover record](sprint_2_handover.md) reports the rehearsal and pending
 Product Owner walkthrough.
 
@@ -129,6 +130,31 @@ enter only a name the chair has verified. `recognize move` can reassign a
 wrongly labeled transcript segment to an existing speaker ID. The prototype
 does not automatically identify people from their voices.
 
+## Review and correct transcript words
+
+Before asking for minutes, inspect the reversible reading view for short
+unassigned fragments and listen to the affected source audio in Meeting
+Review. The command below prints candidate joins, their neighboring
+segment IDs, and the resulting utterances; it does not change the saved
+raw transcript.
+
+~~~bash
+swift run meeting-summarizer inspect-cleanup "$polish_id" --store "$store_dir" | jq '{candidates: .candidates, utterances: [.utterances[] | {id, speakerID, text, sourceSegmentIDs}]}'
+~~~
+
+The staged Sejm experiment proposed joining the short unassigned
+“przedstawienie tej tego budżetu” continuation with the chair's preceding
+turn. That is a proposal from timing and neighboring labels; confirm it
+against audio before trusting the speaker attribution. If a word is
+wrong, `transcribe correct` takes the meeting ID, exact segment ID, and
+audio-checked replacement text, followed by `--audio-reviewed yes`,
+`--store`, and an optional note. It saves an audit entry and leaves the
+original ASR segment untouched. A later correction can restore the
+original words. Every correction clears older draft minutes so the
+operator must regenerate them from the current reading view. The
+[implementation record](sprint_2_implementation.md#prototype-conclusion-what-the-minutes-experiment-teaches-us)
+explains why this review is needed.
+
 ## 4. Inspect draft minutes
 
 The tested natural-audio minutes path uses a 120-second AMI excerpt. It
@@ -140,11 +166,13 @@ run without recognition.
 ~~~bash
 short_id="$(swift run meeting-summarizer transcribe /private/tmp/meeting-minutes-ami/ES2002a/ES2002a.Headset.120s.wav --transcriber fluid --language en --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir")"
 swift run meeting-summarizer recognize "$short_id" --diarizer fluid --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
-swift run meeting-summarizer summarize "$short_id" --summarizer mlx --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
+swift run meeting-summarizer summarize "$short_id" --summarizer mlx --pipeline legacy --settings /private/tmp/meeting-owner-english-settings.json --store "$store_dir"
 cat "$store_dir/$short_id.json" | jq -r '"Transcript retained: \(.segments|length) segments", "Draft items: \(.reviewItems|length)"'
 ~~~
 
-The active 4B trial returned a validation error and left zero draft items.
+The shown 4B setup is a historical evidence-first comparison. The
+explicit `--pipeline legacy` selects it. The 4B trial returned a
+validation error and left zero draft items.
 The saved transcript remains available for review. In an earlier
 `minutes-v2` rehearsal, three items were saved, but one question added a
 remote-control meaning to the source's “this thing,” another added
@@ -152,7 +180,7 @@ inferred setup context, and the summary had no citation. That historical
 draft failed content review. The full meeting has not been validated for
 minutes quality.
 
-The same local model was attempted on the ten-minute Polish meeting. Its
+The same local 4B model was attempted on the ten-minute Polish meeting. Its
 first run returned `Unknown source segment: S1` with exit status 2. That
 structural error was repaired; a historical rerun saved four draft items.
 Its decision near 540–546 seconds was supported, while an invitation to
@@ -161,6 +189,16 @@ cited 380–387 second range. The summary had no source citation. The active
 validator rejects the new candidate instead of saving those items. The
 current command and its JSON check are in the
 [implementation walkthrough](sprint_2_implementation.md#4-generate-and-inspect-minutes).
+
+The current CLI default is `--pipeline multi-stage`. The controlled 30B
+candidate saved five AMI topic summaries and four Sejm topic summaries
+plus one candidate decision from the same saved ASR inputs. Its exact
+settings, run script, output records, costs, and source-level faults are
+in the [staged trial report](tests/multistage_minutes_trial_20261004.md).
+Read those summaries as drafts. Only two summaries in each meeting passed
+the report's strict citation audit; neither draft is ready to send to
+participants. A fresh 30B live-demo command needs its model and Metal
+shader library staged as described in the implementation record.
 
 ## Other behavior and recovery
 

@@ -3,6 +3,68 @@ import Testing
 @testable import MeetingCore
 
 struct MeetingIntegrationTests {
+    @Test func testMultiStageCLI() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = try TranscriptSegment(id: "d1", range: SourceRange(startSeconds: 3, endSeconds: 5),
+                                           speakerID: nil, text: "We approved the budget.")
+        let record = MeetingRecord(sourcePath: "/tmp/meeting.wav", segments: [source],
+                                   backend: "fluid", modelRevision: "test")
+        let store = MeetingStore(directory: root)
+        try store.save(record)
+        let model = root.appendingPathComponent("model")
+        try FileManager.default.createDirectory(at: model, withIntermediateDirectories: true)
+        let responseFile = root.appendingPathComponent("response.json")
+        let helper = root.appendingPathComponent("model-helper.sh")
+        try "#!/bin/sh\ncp '\(responseFile.path)' \"$3\"\n".write(to: helper,
+            atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: helper.path)
+        let settings = root.appendingPathComponent("settings.json")
+        try JSONSerialization.data(withJSONObject: ["transcriber": "fluid",
+                                                     "mlxModelDirectory": model.path,
+                                                     "mlxExecutable": helper.path]).write(to: settings)
+        let valid: [String: Any] = [
+            "topics": [["id": "t1", "title": "Budget", "sourceUtteranceIDs": ["utt_1"]]],
+            "assignments": [["utteranceID": "utt_1", "topicIDs": ["t1"]]],
+            "summaries": [["topic_id": "t1", "text": "The budget received approval.",
+                            "source_utterance_ids": ["utt_1"],
+                            "evidence_quote": "We approved the budget."]],
+            "candidates": [["topic_id": "t1", "kind": "decision", "text": "The budget was approved.",
+                            "source_utterance_ids": ["utt_1"],
+                            "evidence_quote": "We approved the budget."]]
+        ]
+        try JSONSerialization.data(withJSONObject: valid).write(to: responseFile)
+        let arguments = ["summarize", record.id.uuidString, "--summarizer", "mlx",
+                         "--pipeline", "multi-stage", "--settings", settings.path,
+                         "--store", root.path]
+        let success = try cli(arguments)
+        if success.0 != 0 { Issue.record("Multi-stage CLI failed: \(success.1)") }
+        #expect(success.0 == 0)
+        let completed = try store.load(record.id)
+        #expect(completed.reviewItems.map(\.kind) == [.summary, .decision])
+        #expect(completed.reviewItems.allSatisfy { $0.sourceSegmentIDs == ["d1"] })
+        #expect(completed.processingParameters["topicCoverage"] == "1/1")
+        #expect(completed.speakerNames.isEmpty)
+        let saved = root.appendingPathComponent("\(record.id.uuidString).json")
+        let beforeFailure = try Data(contentsOf: saved)
+        var invalid = valid
+        invalid["assignments"] = []
+        try JSONSerialization.data(withJSONObject: invalid).write(to: responseFile)
+        let failure = try cli(arguments)
+        #expect(failure.0 != 0)
+        #expect(try Data(contentsOf: saved) == beforeFailure)
+        let corrected = try cli(["transcribe", "correct", record.id.uuidString,
+                                 "d1", "We approved the revised budget.",
+                                 "--audio-reviewed", "yes", "--store", root.path])
+        #expect(corrected.0 == 0)
+        let afterCorrection = try store.load(record.id)
+        #expect(afterCorrection.segments[0].text == source.text)
+        #expect(afterCorrection.reviewItems.isEmpty)
+        #expect(afterCorrection.transcriptCorrections?.last?.correctedText ==
+                "We approved the revised budget.")
+    }
+
     @Test func testEvidenceFirstCLI() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -33,6 +95,7 @@ struct MeetingIntegrationTests {
                       "mlxExecutable": helper.path]
         try JSONSerialization.data(withJSONObject: config).write(to: settings)
         let result = try cli(["summarize", record.id.uuidString, "--summarizer", "mlx",
+                              "--pipeline", "legacy",
                               "--settings", settings.path, "--store", root.path])
         guard result.0 == 0 else {
             Issue.record("CLI summarize failed: \(result.1)")
@@ -73,6 +136,7 @@ struct MeetingIntegrationTests {
                       "mlxExecutable": helper.path]
         try JSONSerialization.data(withJSONObject: config).write(to: settings)
         let result = try cli(["summarize", record.id.uuidString, "--summarizer", "mlx",
+                              "--pipeline", "legacy",
                               "--settings", settings.path, "--store", root.path])
         XCTAssertTrue(result.0 != 0)
         XCTAssertTrue(result.1.contains("Model minutes response is not valid evidence JSON"))

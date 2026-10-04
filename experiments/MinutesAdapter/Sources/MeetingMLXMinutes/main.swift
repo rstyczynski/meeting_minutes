@@ -34,6 +34,11 @@ struct MeetingMLXMinutes {
     static func main() async {
         do {
             let args = Array(CommandLine.arguments.dropFirst())
+            if args.count == 4 && args[3] == "--multi-stage" {
+                try await StagedPipeline.run(modelPath: args[0], inputPath: args[1],
+                                             outputPath: args[2])
+                return
+            }
             guard args.count == 3 else {
                 throw NSError(domain: "MeetingMLXMinutes", code: 2,
                               userInfo: [NSLocalizedDescriptionKey:

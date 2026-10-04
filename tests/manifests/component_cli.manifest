@@ -7,3 +7,4 @@ integration:test_meeting_flow.sh:test_IT8_neutral_summary
 integration:test_meeting_flow.sh:test_IT9_failure_preserves_record
 integration:test_meeting_flow.sh:test_IT11_evidence_first_cli
 integration:test_meeting_flow.sh:test_IT12_validation_preserves_record
+integration:test_meeting_flow.sh:test_IT13_multi_stage_cli
