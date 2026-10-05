@@ -113,3 +113,19 @@ accounts, mailbox access, external lookup, or any departure from the local-only
 privacy boundary.
 
 Test: Review confirms that participant identification uses only explicitly supplied local information and requires no accounts, mailbox access, or network service.
+
+### PBI-019. Operator-controlled transcript segment splitting
+
+Status: Proposed
+
+Allow the operator to split a transcript segment at a selected point through both the CLI and Meeting Review. This lets the operator correct boundaries where one segment combines separate utterances or topics. Preserve source audio references, text corrections, speaker information, and a history of the boundary change.
+
+Test: Verify that splitting through either interface produces the same saved boundaries visible in both interfaces while preserving source text, corrections, speaker information, and audio references.
+
+### PBI-020. Operator-controlled transcript segment merging
+
+Status: Proposed
+
+Allow the operator to merge selected consecutive transcript segments through both the CLI and Meeting Review. This lets the operator correct unnecessary boundaries within a continuous utterance. Preserve source audio references, text corrections, speaker information, and a history of the boundary change.
+
+Test: Verify that merging through either interface produces the same saved segment visible in both interfaces while preserving source text, corrections, speaker information, and audio references.
